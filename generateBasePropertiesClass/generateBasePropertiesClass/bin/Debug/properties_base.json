@@ -1,0 +1,707 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pictureUrl": {
+      "description": "the picture url of customer",
+      "type": "string",
+      "format": "uri",
+      "contactlabProperties": {
+        "label": "Picture",
+        "enabled": true
+      }
+    },
+    "title": {
+      "description": "the title",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "Title",
+        "enabled": true
+      }
+    },
+    "prefix": {
+      "description": "the prefix",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "Prefix",
+        "enabled": true
+      }
+    },
+    "firstName": {
+      "description": "the first name",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "First name",
+        "enabled": true
+      }
+    },
+    "lastName": {
+      "description": "the last name",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "Last name",
+        "enabled": true
+      }
+    },
+    "middleName": {
+      "description": "the middle name",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "Middle name",
+        "enabled": true
+      }
+    },
+    "gender": {
+      "description": "gender",
+      "type": "string",
+      "contactlabProperties": {
+        "label": "Gender",
+        "enabled": true
+      }
+    },
+    "dob": {
+      "description": "dob",
+      "type": "string",
+      "pattern": "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$",
+      "contactlabProperties": {
+        "label": "dob",
+        "enabled": true
+      }
+    },
+    "locale": {
+      "description": "the locale",
+      "type": "string",
+      "pattern": "^[a-z]{2}(_([a-zA-Z]{2}){1,2})?_[A-Z]{2}$",
+      "contactlabProperties": {
+        "label": "Locale",
+        "enabled": true
+      }
+    },
+    "timezone": {
+      "description": "the time zone",
+      "type": "string",
+      "enum": [
+        "Acre Time",
+        "Afghanistan Time",
+        "Alaska Standard Time",
+        "Alma-Ata Time",
+        "Amazon Time",
+        "Anadyr Time",
+        "Aqtau Time",
+        "Aqtobe Time",
+        "Arabia Standard Time",
+        "Argentine Time",
+        "Armenia Time",
+        "Atlantic Standard Time",
+        "Australian Central Standard Time (Northern Territory)",
+        "Australian Central Standard Time (South Australia)",
+        "Australian Central Standard Time (South Australia/New South Wales)",
+        "Australian Central Western Standard Time",
+        "Australian Eastern Standard Time (New South Wales)",
+        "Australian Eastern Standard Time (Queensland)",
+        "Australian Eastern Standard Time (Tasmania)",
+        "Australian Eastern Standard Time (Victoria)",
+        "Australian Western Standard Time",
+        "Azerbaijan Time",
+        "Azores Time",
+        "Bangladesh Time",
+        "Bhutan Time",
+        "Bolivia Time",
+        "Bougainville Standard Time",
+        "Brasilia Time",
+        "Brunei Time",
+        "Cape Verde Time",
+        "Central African Time",
+        "Central European Time",
+        "Central Indonesia Time",
+        "Central Standard Time",
+        "Chamorro Standard Time",
+        "Chatham Standard Time",
+        "Chile Time",
+        "China Standard Time",
+        "Choibalsan Time",
+        "Christmas Island Time",
+        "Chuuk Time",
+        "Cocos Islands Time",
+        "Colombia Time",
+        "Cook Is. Time",
+        "Coordinated Universal Time",
+        "Cuba Standard Time",
+        "Davis Time",
+        "Dumont-d'Urville Time",
+        "East Indonesia Time",
+        "Easter Is. Time",
+        "Eastern African Time",
+        "Eastern European Time",
+        "Eastern Greenland Time",
+        "Eastern Standard Time",
+        "Ecuador Time",
+        "Falkland Is. Time",
+        "Fernando de Noronha Time",
+        "Fiji Time",
+        "French Guiana Time",
+        "French Southern & Antarctic Lands Time",
+        "GMT+01:00",
+        "GMT+02:00",
+        "GMT+03:00",
+        "GMT+04:00",
+        "GMT+05:00",
+        "GMT+06:00",
+        "GMT+07:00",
+        "GMT+08:00",
+        "GMT+09:00",
+        "GMT+10:00",
+        "GMT+11:00",
+        "GMT+12:00",
+        "GMT+13:00",
+        "GMT+14:00",
+        "GMT-01:00",
+        "GMT-02:00",
+        "GMT-03:00",
+        "GMT-04:00",
+        "GMT-05:00",
+        "GMT-06:00",
+        "GMT-07:00",
+        "GMT-08:00",
+        "GMT-09:00",
+        "GMT-10:00",
+        "GMT-11:00",
+        "GMT-12:00",
+        "Galapagos Time",
+        "Gambier Time",
+        "Georgia Time",
+        "Ghana Mean Time",
+        "Gilbert Is. Time",
+        "Greenwich Mean Time",
+        "Gulf Standard Time",
+        "Guyana Time",
+        "Hawaii Standard Time",
+        "Hong Kong Time",
+        "Hovd Time",
+        "India Standard Time",
+        "Indian Ocean Territory Time",
+        "Indochina Time",
+        "Iran Standard Time",
+        "Irkutsk Time",
+        "Israel Standard Time",
+        "Japan Standard Time",
+        "Khandyga Time",
+        "Kirgizstan Time",
+        "Korea Standard Time",
+        "Kosrae Time",
+        "Krasnoyarsk Time",
+        "Line Is. Time",
+        "Lord Howe Standard Time",
+        "Macquarie Island Standard Time",
+        "Magadan Time",
+        "Malaysia Time",
+        "Maldives Time",
+        "Marquesas Time",
+        "Marshall Islands Time",
+        "Mauritius Time",
+        "Mawson Time",
+        "Middle Europe Time",
+        "Moscow Standard Time",
+        "Mountain Standard Time",
+        "Myanmar Time",
+        "Nauru Time",
+        "Nepal Time",
+        "New Caledonia Time",
+        "New Zealand Standard Time",
+        "Newfoundland Standard Time",
+        "Niue Time",
+        "Norfolk Time",
+        "Novosibirsk Time",
+        "Omsk Time",
+        "Oral Time",
+        "Pacific Standard Time",
+        "Pakistan Time",
+        "Palau Time",
+        "Papua New Guinea Time",
+        "Paraguay Time",
+        "Peru Time",
+        "Petropavlovsk-Kamchatski Time",
+        "Philippines Time",
+        "Phoenix Is. Time",
+        "Pierre & Miquelon Standard Time",
+        "Pitcairn Standard Time",
+        "Pohnpei Time",
+        "Qyzylorda Time",
+        "Reunion Time",
+        "Rothera Time",
+        "Sakhalin Time",
+        "Samara Time",
+        "Samoa Standard Time",
+        "Seychelles Time",
+        "Singapore Time",
+        "Solomon Is. Time",
+        "South Africa Standard Time",
+        "South Georgia Standard Time",
+        "Srednekolymsk Time",
+        "Suriname Time",
+        "Syowa Time",
+        "Tahiti Time",
+        "Tajikistan Time",
+        "Timor-Leste Time",
+        "Tokelau Time",
+        "Tonga Time",
+        "Turkmenistan Time",
+        "Tuvalu Time",
+        "Ulaanbaatar Time",
+        "Uruguay Time",
+        "Ust-Nera Time",
+        "Uzbekistan Time",
+        "Vanuatu Time",
+        "Venezuela Time",
+        "Vladivostok Time",
+        "Vostok Time",
+        "Wake Time",
+        "Wallis & Futuna Time",
+        "West Indonesia Time",
+        "West Samoa Standard Time",
+        "Western African Time",
+        "Western European Time",
+        "Western Greenland Time",
+        "Xinjiang Standard Time",
+        "Yakutsk Time",
+        "Yekaterinburg Time"
+      ],
+      "contactlabProperties": {
+        "label": "Time zone",
+        "enabled": true
+      }
+    },
+    "contacts": {
+      "contactlabProperties": {
+        "label": "Contacts",
+        "enabled": true
+      },
+      "description": "the contact information",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "description": "the e-mail",
+          "type": "string",
+          "format": "email",
+          "contactlabProperties": {
+            "label": "Email",
+            "enabled": true
+          }
+        },
+        "fax": {
+          "description": "the fax number",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Fax number",
+            "enabled": true
+          }
+        },
+        "mobilePhone": {
+          "description": "the mobile phone number",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Mobile number",
+            "enabled": true
+          }
+        },
+        "phone": {
+          "description": "the phone",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Phone number",
+            "enabled": true
+          }
+        },
+        "otherContacts": {
+          "description": "other contacts",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "MOBILE",
+                  "PHONE",
+                  "EMAIL",
+                  "FAX",
+                  "OTHER"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          "contactlabProperties": {
+            "label": "Other contacts",
+            "enabled": true
+          }
+        },
+        "mobileDevice": {
+          "description": "mobile device",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "IOS",
+                  "GCM",
+                  "WP"
+                ]
+              }
+            }
+          },
+          "contactlabProperties": {
+            "label": "Mobile devices",
+            "enabled": true
+          }
+        }
+      }
+    },
+    "address": {
+      "contactlabProperties": {
+        "label": "Address",
+        "enabled": true
+      },
+      "description": "the address information",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "street": {
+          "description": "the street",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Street",
+            "enabled": true
+          }
+        },
+        "city": {
+          "description": "the city",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "City",
+            "enabled": true
+          }
+        },
+        "country": {
+          "description": "the country",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Country",
+            "enabled": true
+          }
+        },
+        "province": {
+          "description": "the province",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Province",
+            "enabled": true
+          }
+        },
+        "zip": {
+          "description": "the zip code",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "zip",
+            "enabled": true
+          }
+        },
+        "geo": {
+          "contactlabProperties": {
+            "label": "Geographic localization",
+            "enabled": true
+          },
+          "description": "the geographic localization",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lat": {
+              "type": "number",
+              "description": "latitude"
+            },
+            "lng": {
+              "type": "number",
+              "description": "longitude"
+            }
+          }
+        }
+      }
+    },
+    "credential": {
+      "contactlabProperties": {
+        "label": "Credential",
+        "enabled": true
+      },
+      "description": "credential",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "password": {
+          "description": "the password",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Password",
+            "enabled": true
+          }
+        },
+        "username": {
+          "description": "the user name",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "User name",
+            "enabled": true
+          }
+        }
+      }
+    },
+    "educations": {
+      "description": "educations",
+      "contactlabProperties": {
+        "label": "Educations",
+        "enabled": true
+      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolType": {
+            "type": "string",
+            "enum": [
+              "PRIMARY_SCHOOL",
+              "SECONDARY_SCHOOL",
+              "HIGH_SCHOOL",
+              "COLLEGE",
+              "OTHER"
+            ]
+          },
+          "schoolName": {
+            "type": "string"
+          },
+          "schoolConcentration": {
+            "type": "string"
+          },
+          "start_year": {
+            "type": "integer"
+          },
+          "end_year": {
+            "type": "integer"
+          },
+          "isCurrent": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "likes": {
+      "description": "likes",
+      "contactlabProperties": {
+        "label": "Likes",
+        "enabled": true
+      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "socialProfile": {
+      "contactlabProperties": {
+        "label": "Social profile",
+        "enabled": true
+      },
+      "description": "Social profile",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "facebook": {
+          "description": "facebook",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Facebook",
+            "enabled": true
+          }
+        },
+        "google+": {
+          "description": "google+",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Google plus",
+            "enabled": true
+          }
+        },
+        "instagram": {
+          "description": "instagram",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Instagram",
+            "enabled": true
+          }
+        },
+        "linkedin": {
+          "description": "linkedin",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Linkedin",
+            "enabled": true
+          }
+        },
+        "qzone": {
+          "description": "qzone",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Qzone",
+            "enabled": true
+          }
+        },
+        "twitter": {
+          "description": "twitter",
+          "type": "string",
+          "contactlabProperties": {
+            "label": "Twitter",
+            "enabled": true
+          }
+        }
+      }
+    },
+    "jobs": {
+      "description": "jobs",
+      "contactlabProperties": {
+        "label": "Jobs",
+        "enabled": true
+      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyIndustry": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string",
+            "pattern": "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+          },
+          "end_date": {
+            "type": "string",
+            "pattern": "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+          },
+          "isCurrent": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "subscriptions": {
+      "description": "subscriptions",
+      "contactlabProperties": {
+        "label": "Subscriptions",
+        "enabled": true
+      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "DIGITAL_MESSAGE",
+              "SERVICE",
+              "OTHER"
+            ]
+          },
+          "enable": {
+            "type": "boolean"
+          },
+          "dateStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subscriberId": {
+            "type": "string"
+          },
+          "registeredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preferences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

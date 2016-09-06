@@ -1,0 +1,8 @@
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.exe.config
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.exe
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.pdb
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\bin\Debug\ContactHubSdkLibrary.dll
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\bin\Debug\ContactHubSdkLibrary.pdb
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.csprojResolveAssemblyReference.cache
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.exe
+C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.pdb

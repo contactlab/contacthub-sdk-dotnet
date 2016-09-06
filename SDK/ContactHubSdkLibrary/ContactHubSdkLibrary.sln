@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactHubSdkLibrary", "ContactHubSdkLibrary\ContactHubSdkLibrary.csproj", "{D6FDFB90-3729-48EE-AD89-061F95B3AD5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSample", "..\ConsoleSample\ConsoleSample\ConsoleSample.csproj", "{22F3A216-C045-4CBF-AA76-6DEA702275ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6FDFB90-3729-48EE-AD89-061F95B3AD5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6FDFB90-3729-48EE-AD89-061F95B3AD5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6FDFB90-3729-48EE-AD89-061F95B3AD5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6FDFB90-3729-48EE-AD89-061F95B3AD5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F3A216-C045-4CBF-AA76-6DEA702275ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F3A216-C045-4CBF-AA76-6DEA702275ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F3A216-C045-4CBF-AA76-6DEA702275ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F3A216-C045-4CBF-AA76-6DEA702275ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

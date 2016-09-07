@@ -56,7 +56,7 @@ namespace ContactHubSdkLibrary
         public Customer GetCustomer(string id)
         {
            Customer returnValue = null;
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{1}?id={1}&nodeId={0}", _node,id));
+            string jsonResponse = DoGetWebRequest(String.Format("/customers/{1}?nodeId={0}", _node,id));
 
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
             return returnValue;
@@ -65,7 +65,7 @@ namespace ContactHubSdkLibrary
 
         public void DeleteCustomer(string id)
         {
-            string jsonResponse = DoDeleteWebRequest(String.Format("/customers/{1}?id={1}&nodeId={0}", _node, id));
+            string jsonResponse = DoDeleteWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
         }
 
         #endregion

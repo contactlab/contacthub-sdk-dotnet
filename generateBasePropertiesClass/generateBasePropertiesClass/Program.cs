@@ -46,12 +46,12 @@ namespace generateBasePropertiesClass
 
 
             outputFileStr += "/* version 0.0.0.1 */\n\n\n";
-            outputFileStr += "using System;\n";
+   //         outputFileStr += "using System;\n";
             outputFileStr += "using System.Collections.Generic;\n";
-            outputFileStr += "using System.ComponentModel;\n";
+//            outputFileStr += "using System.ComponentModel;\n";
             outputFileStr += "using Newtonsoft.Json;\n";
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
-            outputFileStr += "namespace ContactHubSdklibrary {\n";
+            outputFileStr += "namespace ContactHubSdkLibrary {\n";
 
             //            outputFileStr += @"
             //[AttributeUsage(AttributeTargets.Field)]

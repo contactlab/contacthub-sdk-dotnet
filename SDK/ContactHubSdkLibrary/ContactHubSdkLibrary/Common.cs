@@ -1,4 +1,4 @@
-﻿using ContactHubSdklibrary;
+﻿using ContactHubSdkLibrary;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 

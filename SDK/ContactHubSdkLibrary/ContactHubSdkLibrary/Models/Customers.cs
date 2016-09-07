@@ -1,9 +1,9 @@
-﻿using ContactHubSdklibrary;
+﻿using ContactHubSdkLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace ContactHubSdkLibrary
+namespace ContactHubSdkLibrary.Models
 {
     #region definition
     public class Customer : PostCustomer

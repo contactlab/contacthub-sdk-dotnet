@@ -1,5 +1,7 @@
-﻿using ContactHubSdklibrary;
+﻿
 using ContactHubSdkLibrary;
+using ContactHubSdkLibrary.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,7 +18,7 @@ namespace ConsoleSample
 
             string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
 
-            /* Example 1: open contacthub node */
+            /* Example: open contacthub node */
             
             CHubNode currentNode = new CHubNode(
                         ConfigurationManager.AppSettings["workspaceID"].ToString(),
@@ -24,7 +26,7 @@ namespace ConsoleSample
                         currentNodeID
                         );
 
-            /* Example 2: retrieve customers list from node (first page) */
+            /* Example: retrieve customers list from node (first page) */
 
 
             if (currentNode.isValid)
@@ -33,7 +35,8 @@ namespace ConsoleSample
 
             }
 
-            /* Example 3: create new customers in node */
+
+            /* Example: create new customers in node */
             //define new customer
             PostCustomer newCustomer = new PostCustomer()
             {
@@ -51,10 +54,30 @@ namespace ConsoleSample
                 }
             };
             //post new customer
+            string customerID = null;
             if (currentNode.isValid)
             {
-               
                 Customer createdCustomer = currentNode.CreateCustomer(newCustomer);
+                customerID = createdCustomer.id;
+            }
+
+            /* Example: get specific customer */
+            if (currentNode.isValid)
+            {
+                Customer customer=currentNode.GetCustomer(customerID);
+                customerID = customer.id;
+            }
+
+            /* Example: delete customers in node */
+            if (currentNode.isValid)
+            {
+                currentNode.DeleteCustomer(customerID);
+                //verify if deleted customer exists
+                Customer customer = currentNode.GetCustomer(customerID);
+                if (customer==null)
+                {
+                    //customer does not exists
+                }
             }
         }
     }

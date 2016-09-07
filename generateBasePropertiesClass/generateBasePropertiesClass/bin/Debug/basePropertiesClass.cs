@@ -4,7 +4,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace ContactHubSdklibrary
+namespace ContactHubSdkLibrary
 {
 
     public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute

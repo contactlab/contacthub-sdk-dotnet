@@ -48,9 +48,9 @@
     <Compile Include="..\..\..\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\basePropertiesClass.cs">
       <Link>basePropertiesClass.cs</Link>
     </Compile>
-    <Compile Include="CHubNode.cs" />
+    <Compile Include="SDKclasses\CHubNode.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="Customers.cs" />
+    <Compile Include="Models\Customers.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

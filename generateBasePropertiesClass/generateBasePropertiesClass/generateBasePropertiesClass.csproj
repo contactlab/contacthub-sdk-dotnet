@@ -38,7 +38,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.RegularExpressions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bin\Debug\basePropertiesClass.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Datatype.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

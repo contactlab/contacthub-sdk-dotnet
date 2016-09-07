@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContactHubSdklibrary;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
-namespace ContactHubSdkLibrary
+
+public static class Common
 {
-    public static class Common
+    public static string makeValidFileName(string name)
     {
-        private static string _workspaceID;
-
-        public static string workspaceID
-        {
-            get { return _workspaceID; }
-            set { _workspaceID = value; }
-        }
-
-
+        name = name.Replace("-", "Minus");
+        Regex illegalInFileName = new Regex(@"[^a-zA-Z0-9]");
+        name = illegalInFileName.Replace(name, "");
+        return name;
     }
+
+
 }
+

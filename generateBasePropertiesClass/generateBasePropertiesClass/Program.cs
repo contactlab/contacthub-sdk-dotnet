@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace generateBasePropertiesClass
 {
@@ -46,24 +45,27 @@ namespace generateBasePropertiesClass
             string outputFileStr = String.Empty;
 
 
+            outputFileStr += "/* version 0.0.0.1 */\n\n\n";
             outputFileStr += "using System;\n";
             outputFileStr += "using System.Collections.Generic;\n";
-            outputFileStr += "/* version 0.0.0.1 */\n\n";
+            outputFileStr += "using System.ComponentModel;\n";
+            outputFileStr += "using Newtonsoft.Json;\n";
+            outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
             outputFileStr += "namespace ContactHubSdklibrary {\n";
 
-            outputFileStr += @"
-[AttributeUsage(AttributeTargets.Field)]
-public class EnumDisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
-{
-    public EnumDisplayNameAttribute(string data) : base(data) { }
-}
-            ";
-            outputFileStr += @"
-public class FieldDisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
-{
-    public FieldDisplayNameAttribute(string data) : base(data) { }
-}
-            ";
+            //            outputFileStr += @"
+            //[AttributeUsage(AttributeTargets.Field)]
+            //public class EnumDisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
+            //{
+            //    public EnumDisplayNameAttribute(string data) : base(data) { }
+            //}
+            //            ";
+            //            outputFileStr += @"
+            //public class FieldDisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
+            //{
+            //    public FieldDisplayNameAttribute(string data) : base(data) { }
+            //}
+            //            ";
             outputFileStr += @"
 public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
 {
@@ -78,13 +80,6 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
         }
 
 
-        private static string makeValidFileName(string name)
-        {
-            name = name.Replace("-", "Minus");
-            Regex illegalInFileName = new Regex(@"[^a-zA-Z0-9]");
-            name = illegalInFileName.Replace(name, "");
-            return name;
-        }
 
         private static string processObject(BasePropertiesItem2 p)
         {
@@ -97,7 +92,7 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
             string processObject = "";
 
             if (p.description != null)
-                processObject = String.Format("\t[FieldDisplayName(\"{0}\")]\n", p.description);
+                processObject = String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
             processObject = String.Format("    public {0} {1} {{get;set;}}\n", uppercaseFirst(JsonUtil.fixName(name)), JsonUtil.fixName(name));
             return processObject;
         }
@@ -115,7 +110,7 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
                 processString += String.Format("\t[ValidatePattern(@\"{0}\")]\n", p.pattern);
             }
             if (p.description != null)
-                processString += String.Format("\t[FieldDisplayName(\"{0}\")]\n", p.description);
+                processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
             processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             return processString;
         }
@@ -133,7 +128,7 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
                 processString += String.Format("\t[ValidatePattern(@\"{0}\")]\n", p.pattern);
             }
             if (p.description != null)
-                processString += String.Format("\t[FieldDisplayName(\"{0}\")]\n", p.description);
+                processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
             processString += String.Format("    public decimal {0} {{get;set;}}\n", JsonUtil.fixName(name));
             return processString;
         }
@@ -147,8 +142,28 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
             }
             string processEnum = "";
             if (p.description != null)
-                processEnum += String.Format("\t[FieldDisplayName(\"{0}\")]\n", p.description);
-            processEnum += String.Format("    public {0} {1} {{get;set;}}\n", uppercaseFirst(parent.name) + uppercaseFirst(JsonUtil.fixName(name) + "Enum"), JsonUtil.fixName(name));
+            {
+                processEnum += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
+            }
+            processEnum += String.Format("[JsonProperty(\"{0}\")]", JsonUtil.fixName(name));
+            processEnum += String.Format("public string _{0} {{get;set;}}\n", JsonUtil.fixName(name));
+            processEnum += String.Format("[JsonProperty(\"hidden_{0}\")]", JsonUtil.fixName(name));
+            processEnum += String.Format("[JsonIgnore]");
+            processEnum += String.Format(@"
+                    public {0} {1} 
+            {{
+                get
+                {{
+                        {0} enumValue =ContactHubSdkLibrary.EnumHelper<{0}>.GetValueFromDisplayName(_{1});
+                        return enumValue;
+                }}
+                set
+                {{
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<{0}>.GetDisplayValue(value);
+                        _{1} = (displayValue==""{2}""? null : displayValue);
+                }}
+            }}
+            ", uppercaseFirst(parent.name) + uppercaseFirst(JsonUtil.fixName(name) + "Enum"), JsonUtil.fixName(name), Common.NO_VALUE);
             return processEnum;
         }
 
@@ -161,7 +176,7 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
             }
             string processArray = "";
             if (p.description != null)
-                processArray += String.Format("\t[FieldDisplayName(\"{0}\")]\n", p.description);
+                processArray += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
             processArray += String.Format("    public List<{0}> {1} {{get;set;}}\n", uppercaseFirst(JsonUtil.fixName(name)), JsonUtil.fixName(name));
             return processArray;
         }
@@ -183,11 +198,6 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
                     {
                         foreach (BasePropertiesItem2 p in outputProperties.properties)
                         {
-                            var x = p.name;
-                            if (p.name == "geo")
-                            {
-
-                            }
                             //se è un contenitore, allora processa le properties all'interno
                             switch (p.type)
                             {
@@ -262,10 +272,11 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
                 key = "@" + key;
             }
             outputFileStr += String.Format("public enum {0} {{\n", key);
+            outputFileStr += String.Format("\t{0},\n",Common.NO_VALUE);
             foreach (string enumItem in (string[])enumObj.Value)
             {
-                outputFileStr += String.Format("\t[EnumDisplayName(\"{0}\")]\n", enumItem);
-                outputFileStr += String.Format("\t{0},\n", makeValidFileName(enumItem));
+                outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);
+                outputFileStr += String.Format("\t{0},\n", Common.makeValidFileName(enumItem));
             }
             if (outputFileStr.EndsWith(",\n"))
             {

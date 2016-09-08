@@ -48,6 +48,7 @@
     <Compile Include="..\..\..\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\basePropertiesClass.cs">
       <Link>basePropertiesClass.cs</Link>
     </Compile>
+    <Compile Include="Models\ExtendedProperties.cs" />
     <Compile Include="SDKclasses\CHubNode.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Models\Customers.cs" />

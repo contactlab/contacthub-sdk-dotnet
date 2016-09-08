@@ -37,16 +37,17 @@ namespace ContactHubSdkLibrary.Models
         public string externalId { get; set; }
         public string nodeId { get; set; }
         public BaseProperties @base { get; set; }
-        public Extended extended { get; set; }  /* da completare*/
+        [JsonIgnore]
+        [JsonProperty("_extended")]
+        public List<ExtendedProperty> extended { get; set; }
+        [JsonProperty("extended")]
+        public object _extended { get; set; }
         public string extra { get; set; }
         public Tags tags { get; set; }
         public bool? enabled { get; set; }
     }
 
-    public class Extended
-    {
-
-    }
+ 
 
     public class PagedCustomer
     {

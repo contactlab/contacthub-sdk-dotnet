@@ -50,12 +50,12 @@ namespace ContactHubSdkLibrary
         {
             try
             {
-                T enumValue = ContactHubSdkLibrary.EnumHelper<T>.Parse(Common.makeValidFileName(x));
+                T enumValue = ContactHubSdkLibrary.EnumHelper<T>.Parse(Common.MakeValidFileName(x));
                 return enumValue;
             }
             catch
             {
-                T enumValue = ContactHubSdkLibrary.EnumHelper<T>.Parse(Common.makeValidFileName("NoValue"));
+                T enumValue = ContactHubSdkLibrary.EnumHelper<T>.Parse(Common.MakeValidFileName("NoValue"));
                 return enumValue;
             }
         }

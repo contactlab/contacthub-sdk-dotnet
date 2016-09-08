@@ -1,9 +1,13 @@
 ﻿using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+
 
 namespace ContactHubSdkLibrary
 {
@@ -14,6 +18,8 @@ namespace ContactHubSdkLibrary
         private string _token = null;
         private string _node = null;
         private const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
+
+        public object Util { get; private set; }
 
         #region Node
         public CHubNode(string workspaceID, string token, string node)
@@ -29,6 +35,43 @@ namespace ContactHubSdkLibrary
         }
         #endregion
 
+        #region extendedProperties
+
+        public string GetExtendedPropertiesConfiguration()
+        {
+            //            /configuration/properties/extended
+            //var returnValue = null;
+            string jsonResponse = DoGetWebRequest(String.Format("/configuration/properties/extended"));
+
+            var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            return null;
+        }
+
+        public string SetExtendedPropertiesConfiguration()
+        {
+            //            /configuration/properties/extended
+            //var returnValue = null;
+            string jsonData = @"{
+                        ""membership_card_nr"": {
+                            ""description"": ""il numero della membership card"",
+                            ""type"": ""number"",
+                            ""contactlabProperties"":{
+                                          ""label"": ""Membership Card"",
+                                          ""mergePolicy"": ""OBJ_PRIORITY"",
+                                          ""enabled"": true
+                                 }
+                           }
+                        }";
+            string jsonResponse = DoPutWebRequest(String.Format("/configuration/properties/extended"),jsonData);
+
+            var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            return null;
+        }
+
+
+
+        #endregion
+
         #region Customers
 
         public PagedCustomer GetCustomers()
@@ -39,7 +82,7 @@ namespace ContactHubSdkLibrary
             return returnValue;
         }
 
-        public Customer CreateCustomer(PostCustomer customer)
+        public Customer AddCustomer(PostCustomer customer)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -47,8 +90,19 @@ namespace ContactHubSdkLibrary
             };
 
             string postData = JsonConvert.SerializeObject(customer, settings);
-            string jsonResponse =  DoPostWebRequest("/customers", postData);
 
+            //ottiene un JObject in modo da poterlo modificare aggiungendoci le extended properties
+            JObject o = JObject.Parse(postData);
+            //serializza le extendedProperties in modo dinamico 
+            string extendedPropertiesData =  ExtendedPropertiesUtil.SerializeExtendedProperties(customer.extended,"extended",customer.GetType());
+            JObject extendedProperties = JObject.Parse(extendedPropertiesData);
+            //crea il nodo da aggiungere
+            JToken jValue = null;
+            extendedProperties.TryGetValue("extended", out jValue);
+            o.AddFirst(new JProperty("extended", jValue ));
+            //ottiene il json finale
+            postData = o.ToString();
+            string jsonResponse =  DoPostWebRequest("/customers", postData);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
             return returnCustomer;
         }
@@ -61,7 +115,6 @@ namespace ContactHubSdkLibrary
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
             return returnValue;
         }
-
 
         public void DeleteCustomer(string id)
         {
@@ -165,9 +218,44 @@ namespace ContactHubSdkLibrary
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                jsonResponse = "{\"error\":\"" + ex.Message + "\"}";
             }
             return jsonResponse;
         }
+        private string DoPutWebRequest(string functionPath, string jsonData)
+        {
+            string jsonResponse = null;
+            try
+            {
+                string url = GetUrl(functionPath);
+                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
+                Encoding encoding = new UTF8Encoding();
+                string postData = jsonData;
+                byte[] data = encoding.GetBytes(postData);
+                httpWReq.Method = "PUT";
+                httpWReq.ContentType = "application/json";
+                httpWReq.Headers.Add("Authorization", "Bearer " + _token);
+                httpWReq.ContentLength = data.Length;
+                Stream stream = httpWReq.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                string s = response.ToString();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                String temp = null;
+                while ((temp = reader.ReadLine()) != null)
+                {
+                    jsonResponse += temp;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                jsonResponse="{\"error\":\"" + ex.Message + "\"}";
+            }
+            return jsonResponse;
+        }
+
 
         private string GetBaseUrl()
         {
@@ -189,6 +277,8 @@ namespace ContactHubSdkLibrary
         }
 
         #endregion
+
+       
     }
 }
 

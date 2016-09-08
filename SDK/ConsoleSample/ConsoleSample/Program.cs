@@ -5,9 +5,6 @@ using ContactHubSdkLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleSample
 {
@@ -19,12 +16,18 @@ namespace ConsoleSample
             string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
 
             /* Example: open contacthub node */
-            
+
             CHubNode currentNode = new CHubNode(
                         ConfigurationManager.AppSettings["workspaceID"].ToString(),
                         ConfigurationManager.AppSettings["token"].ToString(),
                         currentNodeID
                         );
+
+
+            //  currentNode.SetExtendedPropertiesConfiguration();
+
+            //currentNode.GetExtendedPropertiesConfiguration();
+            //Console.ReadKey();
 
             /* Example: retrieve customers list from node (first page) */
 
@@ -36,8 +39,37 @@ namespace ConsoleSample
             }
 
 
-            /* Example: create new customers in node */
+            ///* Example: create new customers in node */
+            ////define new customer
+            //PostCustomer newCustomer = new PostCustomer()
+            //{
+            //    nodeId = currentNodeID,
+            //    externalId = Guid.NewGuid().ToString(),
+            //    @base = new BaseProperties()
+            //    {
+            //        firstName = "Diego",
+            //        lastName = "Feltrin",
+            //        contacts = new Contacts()
+            //        {
+            //            email = "diego@dimension.it"
+            //        },
+            //        timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+            //    }
+            //};
+            ////post new customer
+            //string customerID = null;
+            //if (currentNode.isValid)
+            //{
+            //    Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+            //    customerID = createdCustomer.id;
+            //}
+
+
+            /* Example: create new customers in node with extended properties*/
             //define new customer
+
+
+
             PostCustomer newCustomer = new PostCustomer()
             {
                 nodeId = currentNodeID,
@@ -50,21 +82,96 @@ namespace ConsoleSample
                     {
                         email = "diego@dimension.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                },
+                extended = new List<ExtendedProperty>()
+                {
+                    new ExtendedPropertyNumber()
+                    {
+                        name="point",
+                        value=100
+                    },
+                    new ExtendedPropertyString()
+                    {
+                        name="Length",
+                        value="123"
+                    },
+                    new ExtendedPropertyStringArray()
+                    {
+                        name="myStringArray",
+                        value=new List<String>() { "123", "456" }
+                    },
+                    new ExtendedPropertyNumberArray()
+                    {
+                        name="myNumberArray",
+                        value=new List<Double>() { 123.99, 456.99 }
+                    },
+                    new ExtendedPropertyBoolean()
+                    {
+                        name="myBoolean",
+                        value=true
+                    },
+                    new ExtendedPropertyObject()
+                    {
+                        name="myObject",
+                        value=new List<ExtendedProperty>()
+                        {
+                               new ExtendedPropertyNumber()
+                                        {
+                                            name="Height",
+                                            value=1000
+                                        }
+                        }
+                    },
+                    new ExtendedPropertyObjectArray()
+                    {
+                        name="myObjectArray",
+                        value=new List<ExtendedProperty>()
+                        {
+                               new ExtendedPropertyNumber()
+                                        {
+                                            name="Height",
+                                            value=1000
+                                        },
+                                        new ExtendedPropertyNumber()
+                                        {
+                                            name="Width",
+                                            value=1000
+                                        }
+                        }
+                    },
+                    new ExtendedPropertyDateTime()
+                    {
+                        name="myDateTime",
+                        value=DateTime.Now
+                    },
+                    new ExtendedPropertyDate()
+                    {
+                        name="myDate",
+                        value=DateTime.Now.Date
+                    },
+                    new ExtendedPropertyDateArray()
+                    {
+                        name="myDateArray",
+                        value=new List<DateTime>()
+                        {
+                            DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
+                        }
+                    }
                 }
             };
             //post new customer
             string customerID = null;
             if (currentNode.isValid)
             {
-                Customer createdCustomer = currentNode.CreateCustomer(newCustomer);
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
                 customerID = createdCustomer.id;
             }
 
             /* Example: get specific customer */
             if (currentNode.isValid)
             {
-                Customer customer=currentNode.GetCustomer(customerID);
+                Customer customer = currentNode.GetCustomer(customerID);
                 customerID = customer.id;
             }
 
@@ -74,7 +181,7 @@ namespace ConsoleSample
                 currentNode.DeleteCustomer(customerID);
                 //verify if deleted customer exists
                 Customer customer = currentNode.GetCustomer(customerID);
-                if (customer==null)
+                if (customer == null)
                 {
                     //customer does not exists
                 }

@@ -1,5 +1,5 @@
-﻿using ContactHubSdkLibrary;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -39,16 +39,44 @@ namespace ContactHubSdkLibrary.Models
         public BaseProperties @base { get; set; }
         [JsonIgnore]
         [JsonProperty("_extended")]
-        public List<ExtendedProperty> extended { get; set; }
+        public List<ExtendedProperty> extended
+        {
+            get
+            {
+                if (_extended != null)
+                {
+                    JObject jObj = JObject.FromObject(_extended);
+                    List<ExtendedProperty> list = ExtendedPropertiesUtil.DeserializeExtendedProperties(jObj);
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                string extendedPropertiesData = ExtendedPropertiesUtil.SerializeExtendedProperties(value, "extended", typeof(Customer));
+                if (!string.IsNullOrEmpty(extendedPropertiesData))
+                {
+                    JObject extendedProperties = JObject.Parse(extendedPropertiesData);
+                    //crea il nodo da aggiungere
+                    JToken jValue = null;
+                    extendedProperties.TryGetValue("extended", out jValue);
+                    _extended = jValue;
+                }
+                else
+                {
+                    _extended = null;
+                }
+            }
+        }
         [JsonProperty("extended")]
         public object _extended { get; set; }
         public string extra { get; set; }
         public Tags tags { get; set; }
         public bool? enabled { get; set; }
     }
-
- 
-
     public class PagedCustomer
     {
         public Embedded _embedded { get; set; }
@@ -60,7 +88,6 @@ namespace ContactHubSdkLibrary.Models
     {
         public List<Customer> customers;
     }
-
     public class PageLink
     {
         public Link first { get; set; }
@@ -69,7 +96,6 @@ namespace ContactHubSdkLibrary.Models
         public Link previous { get; set; }
         public Link self { get; set; }
     }
-
     public class Page
     {
         public int size { get; set; }

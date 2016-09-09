@@ -91,17 +91,22 @@ namespace ContactHubSdkLibrary
 
             string postData = JsonConvert.SerializeObject(customer, settings);
 
-            //ottiene un JObject in modo da poterlo modificare aggiungendoci le extended properties
-            JObject o = JObject.Parse(postData);
             //serializza le extendedProperties in modo dinamico 
-            string extendedPropertiesData =  ExtendedPropertiesUtil.SerializeExtendedProperties(customer.extended,"extended",customer.GetType());
-            JObject extendedProperties = JObject.Parse(extendedPropertiesData);
-            //crea il nodo da aggiungere
-            JToken jValue = null;
-            extendedProperties.TryGetValue("extended", out jValue);
-            o.AddFirst(new JProperty("extended", jValue ));
-            //ottiene il json finale
-            postData = o.ToString();
+            //string extendedPropertiesData =  ExtendedPropertiesUtil.SerializeExtendedProperties(customer.extended,"extended",customer.GetType());
+            //if (!string.IsNullOrEmpty(extendedPropertiesData))
+            //{
+            //    //ottiene un JObject in modo da poterlo modificare aggiungendoci le extended properties
+            //    JObject o = JObject.Parse(postData);
+            //    JObject extendedProperties = JObject.Parse(extendedPropertiesData);
+            //    //crea il nodo da aggiungere
+            //    JToken jValue = null;
+            //    extendedProperties.TryGetValue("extended", out jValue);
+            //    o.AddFirst(new JProperty("extended", jValue));
+
+            //    //ottiene il json finale
+            //    postData = o.ToString();
+            //}
+
             string jsonResponse =  DoPostWebRequest("/customers", postData);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
             return returnCustomer;

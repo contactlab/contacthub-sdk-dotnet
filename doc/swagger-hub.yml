@@ -941,7 +941,7 @@ paths:
   '/workspaces/{id-workspace}/audit':
     get:
       description:
-        Gets the associated event for the anonymous event
+        Gets audit event
       parameters:
         - name: id-workspace
           in: path
@@ -957,11 +957,11 @@ paths:
           description: The name of event type
           type: string
           enum:
-            - customerCreate
-            - customerUpdate
-            - customerDelete
-            - eventCreate
-            - eventDelete
+            - customerCreated
+            - customerUpdated
+            - customerDeleted
+            - eventCreated
+            - eventDeleted
         - name: nodeId
           in: query
           description: The node identifier
@@ -1329,6 +1329,38 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - customer
+  '/workspaces/{id-workspace}/customers/{customerId}/educations':
+    post:
+      description: |
+        Create customer education
+      parameters:
+        - name: customerId
+          in: path
+          description: The unique identifier of customer
+          required: true
+          type: string
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+        - name: education
+          in: body
+          required: true
+          description: Object necessary to create customer education
+          schema:
+            $ref: '#/definitions/Education'
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Education'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - customer
   '/workspaces/{id-workspace}/customers/{customerId}/educations/{id}':
     get:
       description: |
@@ -1392,6 +1424,38 @@ paths:
           description: Successful response
           schema:
             $ref: '#/definitions/Education'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - customer
+  '/workspaces/{id-workspace}/customers/{customerId}/likes':
+    post:
+      description: |
+        Create customer like
+      parameters:
+        - name: customerId
+          in: path
+          description: The unique identifier of customer
+          required: true
+          type: string
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+        - name: like
+          in: body
+          required: true
+          description: Object necessary to create customer like
+          schema:
+            $ref: '#/definitions/Like'
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Like'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -1463,6 +1527,38 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - customer
+  '/workspaces/{id-workspace}/customers/{customerId}/jobs':
+    post:
+      description: |
+        Create customer job
+      parameters:
+        - name: customerId
+          in: path
+          description: The unique identifier of customer
+          required: true
+          type: string
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+        - name: job
+          in: body
+          required: true
+          description: Object necessary to create customer job
+          schema:
+            $ref: '#/definitions/Job'
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Job'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - customer
   '/workspaces/{id-workspace}/customers/{customerId}/jobs/{id}':
     get:
       description: |
@@ -1513,7 +1609,7 @@ paths:
           description: The unique identifier of customer job
           required: true
           type: string
-        - name: education
+        - name: job
           in: body
           required: true
           description: Object necessary to update customer job
@@ -1530,6 +1626,39 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - customer
+  '/workspaces/{id-workspace}/customers/{customerId}/subscriptions':
+    post:
+      description: |
+        Create customer subscription
+      parameters:
+        - name: customerId
+          in: path
+          description: The unique identifier of customer
+          required: true
+          type: string
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+        - name: subscription
+          in: body
+          required: true
+          description: Object necessary to create customer subscription
+          schema:
+            $ref: '#/definitions/Subscription'
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Subscription'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - customer
+
   '/workspaces/{id-workspace}/customers/{customerId}/subscriptions/{id}':
     get:
       description: |
@@ -1580,7 +1709,7 @@ paths:
           description: The unique identifier of customer subscription
           required: true
           type: string
-        - name: education
+        - name: subscription
           in: body
           required: true
           description: Object necessary to update customer subscription
@@ -2112,7 +2241,7 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - segment
-  '/workspaces/{id-workspace}/analytics/trend':
+  '/workspaces/{id-workspace}/analytics/trend/customer':
     get:
       description: |
         Trend of customer base
@@ -2178,7 +2307,7 @@ paths:
           ],
           "_links": {
             "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/trend?mode=MONTHLY&startDate=2016-01-01&endDate=2016-08-31"
+              "href": "http://xxx/workspaces/xxx/analytics/trend/customer?mode=MONTHLY&startDate=2016-01-01&endDate=2016-08-31"
             }
           }
         }
@@ -2192,6 +2321,114 @@ paths:
         - name: mode
           in: query
           description: 'Mode of aggretation daily, weekly,monthly'
+          required: true
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+            - MONTHLY
+          default: DAILY
+        - name: startDate
+          in: query
+          description: The start date for get the trend
+          required: true
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: The end date for get the trend
+          required: true
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: The list of nodeId separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Trend'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+  '/workspaces/{id-workspace}/analytics/trend/event':
+    get:
+      description: |
+        Trend of events.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Events trend analytics",
+          "parameters": {
+            "nodes": null,
+            "mode": "MONTHLY",
+            "startDate": "2015-12-31",
+            "endDate": "2016-08-31"
+          },
+          "headers": {
+            "nodeId": {
+              "description": "Node identifier",
+              "type": "string"
+            },
+            "values": {
+              "description": "Distribution list",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "time": {
+                    "description": "Date referral to mode defined in request",
+                    "type": "string"
+                  },
+                  "new": {
+                    "description": "Number of new events",
+                    "type": "number"
+                  },
+                  "total": {
+                    "description": "Number of total events in the node",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "values": [
+                {
+                  "new": 1,
+                  "total": 2,
+                  "time": "2016-01"
+                },
+                {
+                  "new": 12,
+                  "total": 13,
+                  "time": "2016-02"
+                }, ...
+              ],
+              "nodeId": "node_1"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/trend/event?mode=MONTHLY&startDate=2016-01-01&endDate=2016-08-31"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+        - name: mode
+          in: query
+          description: 'Mode of aggretation daily, weekly and monthly'
           required: true
           type: string
           enum:
@@ -2642,6 +2879,635 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - analytic
+
+  '/workspaces/{id-workspace}/analytics/distribution/customer/node':
+    get:
+      description: |
+        Distribution of new customers, aggregated for nodes.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of new customers, aggregated for nodes",
+          "parameters": {
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": "2016-08-25",
+            "endDate": "2016-09-02"
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node of 'customerCreated' events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "count": {
+                    "description": "Count of events",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "count": 0,
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/node?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionCustomerNode'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+
+  '/workspaces/{id-workspace}/analytics/distribution/customer/source':
+    get:
+      description: |
+        Distribution of new customers, aggregated for nodes and sources.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of new customers, aggregated for nodes and sources",
+          "parameters": {
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": "2016-08-25",
+            "endDate": "2016-09-02"
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node and sources of 'customerCreated' events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "Distribution for sources of events",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "sourceId": {
+                          "description": "Source identifier",
+                          "type": "string"
+                        },
+                        "count": {
+                          "description": "Count of events",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "values": [
+                {
+                  "sourceId": "4f3096ca-65ec-4f2e-8332-a4dc0edacd8f",
+                  "count": 86
+                }
+              ],
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/source?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionCustomerSource'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+  '/workspaces/{id-workspace}/analytics/distribution/customer/time':
+    get:
+      description: |
+        Distribution of new customers, aggregated for nodes and time.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of new customers, aggregated for nodes and time",
+          "parameters": {
+            "mode": "DAYOFWEEK",
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": null,
+            "endDate": null
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node and time of 'customerCreated' events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "Distribution for time of events",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "time": {
+                          "description": "Time label",
+                          "type": "string"
+                        },
+                        "count": {
+                          "description": "Count of events",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "values": [
+                {
+                  "count": 2,
+                  "time": "Tue"
+                },
+                {
+                  "count": 7,
+                  "time": "Wed"
+                },
+                {
+                  "count": 5,
+                  "time": "Thu"
+                },
+                {
+                  "count": 5,
+                  "time": "Fri"
+                },
+                {
+                  "count": 2,
+                  "time": "Sat"
+                },
+                {
+                  "count": 3,
+                  "time": "Sun"
+                },
+                {
+                  "count": 4,
+                  "time": "Mon"
+                }
+              ],
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/time?mode=DAYOFWEEK&nodes=bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: mode
+          in: query
+          description: Distribution mode
+          type: string
+          enum:
+            - HOUROFDAY
+            - DAYOFWEEK
+            - DAYOFMONTH
+          default: HOUROFDAY
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionCustomerTime'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+
+  '/workspaces/{id-workspace}/analytics/distribution/event/node':
+    get:
+      description: |
+        Distribution of events, aggregated for nodes.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of new events, aggregated for nodes",
+          "parameters": {
+            "context": null,
+            "eventType": null,
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": "2016-08-25",
+            "endDate": "2016-09-02"
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node of events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "count": {
+                    "description": "Count of events",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "count": 12,
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/event/node?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: context
+          in: query
+          description: Event context
+          type: string
+        - name: eventType
+          in: query
+          description: Event type
+          type: string
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionEventNode'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+  '/workspaces/{id-workspace}/analytics/distribution/event/source':
+    get:
+      description: |
+        Distribution of events, aggregated for nodes and sources.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of events, aggregated for nodes and sources",
+          "parameters": {
+            "context": null,
+            "eventType": null,
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": "2016-08-25",
+            "endDate": "2016-09-02"
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node and sources of events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "Distribution for sources of events",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "sourceId": {
+                          "description": "Source identifier",
+                          "type": "string"
+                        },
+                        "count": {
+                          "description": "Count of events",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "values": [
+                {
+                  "sourceId": "4f3096ca-65ec-4f2e-8332-a4dc0edacd8f",
+                  "count": 86
+                }
+              ],
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/event/source?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: context
+          in: query
+          description: Event context
+          type: string
+        - name: eventType
+          in: query
+          description: Event type
+          type: string
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionEventSource'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+  '/workspaces/{id-workspace}/analytics/distribution/event/time':
+    get:
+      description: |
+        Distribution of events, aggregated for nodes and time.
+        #### EXAMPLE
+        ```json
+        {
+          "name": "Distribution of events, aggregated for nodes and time",
+          "parameters": {
+            "context": null,
+            "mode": "DAYOFWEEK",
+            "nodes": "bebbe268-0900-4184-9849-bc609fc90a32",
+            "startDate": null,
+            "endDate": null
+          },
+          "headers": {
+            "data": {
+              "description": "Distribution for node and time of events",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "description": "Node identifier",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "Distribution for time of events",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "time": {
+                          "description": "Time label",
+                          "type": "string"
+                        },
+                        "count": {
+                          "description": "Count of events",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "data": [
+            {
+              "values": [
+                {
+                  "count": 2,
+                  "time": "Tue"
+                },
+                {
+                  "count": 7,
+                  "time": "Wed"
+                },
+                {
+                  "count": 5,
+                  "time": "Thu"
+                },
+                {
+                  "count": 5,
+                  "time": "Fri"
+                },
+                {
+                  "count": 2,
+                  "time": "Sat"
+                },
+                {
+                  "count": 3,
+                  "time": "Sun"
+                },
+                {
+                  "count": 4,
+                  "time": "Mon"
+                }
+              ],
+              "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          ],
+          "_links": {
+            "self": {
+              "href": "http://xxx/workspaces/xxx/analytics/distribution/events/time?mode=DAYOFWEEK&nodes=bebbe268-0900-4184-9849-bc609fc90a32"
+            }
+          }
+        }
+        ```
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: context
+          in: query
+          description: Event context
+          type: string
+        - name: eventType
+          in: query
+          description: Event type
+          type: string
+        - name: mode
+          in: query
+          description: Distribution mode
+          type: string
+          enum:
+            - HOUROFDAY
+            - DAYOFWEEK
+            - DAYOFMONTH
+          default: HOUROFDAY
+        - name: startDate
+          in: query
+          description: Start date of the distribution
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of the distribution
+          type: string
+          format: date
+        - name: nodes
+          in: query
+          description: List of node identifiers separated by comma
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticDistributionEventTime'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+
   '/workspaces/{id-workspace}/models/properties/base':
     get:
       description: >
@@ -3184,6 +4050,351 @@ definitions:
               type: array
               items:
                 $ref: '#/definitions/KpiValue'
+
+  AnalyticDistributionCustomerNode:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node identifiers
+        items:
+          $ref: '#/definitions/AnalyticDistributionCustomerNodeValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionCustomerNodeValue:
+    type: array
+    description: Distribution for node of 'customerCreated' events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        count:
+          type: integer
+          description: Count of events
+
+  AnalyticDistributionCustomerSource:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: Eend date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node and source identifiers
+        items:
+          $ref: '#/definitions/AnalyticDistributionCustomerSourceValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionCustomerSourceValue:
+    type: array
+    description: Distribution for node and source of 'customerCreated' events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        values:
+          type: array
+          description: Distribution for sources of events
+          items:
+            type: object
+            properties:
+              sourceId:
+                type: string
+                description: Source identifier
+              count:
+                type: integer
+                description: Count of events
+
+  AnalyticDistributionCustomerTime:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          mode:
+            description: Distribution mode
+            type: string
+            enum:
+              - DAYOFWEEK
+              - HOUROFDAY
+              - DAYOFMONTH
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node identifiers and time format
+        items:
+          $ref: '#/definitions/AnalyticDistributionCustomerTimeValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionCustomerTimeValue:
+    type: array
+    description: Distribution for node and time of 'customerCreated' events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        values:
+          type: array
+          description: Distribution for time of events
+          items:
+            type: object
+            properties:
+              time:
+                type: string
+                description: Time label
+              count:
+                type: integer
+                description: Count of events
+
+  AnalyticDistributionEventNode:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          context:
+            description: Event context
+            type: string
+          eventType:
+            description: Event type
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node identifiers
+        items:
+          $ref: '#/definitions/AnalyticDistributionEventNodeValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionEventNodeValue:
+    type: array
+    description: Distribution for node of events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        count:
+          type: integer
+          description: Count of events
+
+  AnalyticDistributionEventSource:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          context:
+            description: Event context
+            type: string
+          eventType:
+            description: Event type
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: Eend date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node and source identifiers
+        items:
+          $ref: '#/definitions/AnalyticDistributionEventSourceValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionEventSourceValue:
+    type: array
+    description: Distribution for node and source of events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        values:
+          type: array
+          description: Distribution for sources of events
+          items:
+            type: object
+            properties:
+              sourceId:
+                type: string
+                description: Source identifier
+              count:
+                type: integer
+                description: Count of events
+
+  AnalyticDistributionEventTime:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          mode:
+            description: Distribution mode
+            type: string
+            enum:
+              - DAYOFWEEK
+              - HOUROFDAY
+              - DAYOFMONTH
+          context:
+            description: Event context
+            type: string
+          eventType:
+            description: Event type
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          nodes:
+            description: The list of node identifiers separated by comma
+            type: string
+      data:
+        type: array
+        description: List of data aggregated by node identifiers and time format
+        items:
+          $ref: '#/definitions/AnalyticDistributionEventTimeValue'
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  AnalyticDistributionEventTimeValue:
+    type: array
+    description: Distribution for node and time of events
+    items:
+      type: object
+      properties:
+        nodeId:
+          type: string
+          description: Node identifier
+        values:
+          type: array
+          description: Distribution for time of events
+          items:
+            type: object
+            properties:
+              time:
+                type: string
+                description: Time label
+              count:
+                type: integer
+                description: Count of events
+
   KpiValue:
     type: object
     properties:
@@ -3885,23 +5096,23 @@ definitions:
         $ref: '#/definitions/BringBackProperty'
       type:
         type: string
-        description: the name of type event youâ€™re tracking
+        description: the name of type event you are tracking
       context:
         type: string
         description: >-
-          the name of context event youâ€™re tracking. The value are defined in
+          the name of context event you are tracking. The value are defined in
           `id` property of method /model/contexts
       properties:
-        type: string
+        type: object
         description: the json schema related to event type
       contextInfo:
-        type: string
+        type: object
         description: the json schema related to event context
       date:
         type: string
         format: datetime
         description: the timestamp of event
-
+    required: [type,context]
   Event:
     allOf:
       - $ref: '#/definitions/PostEvent'
@@ -3935,7 +5146,7 @@ definitions:
         description: customer id
       type:
         type: string
-        description: the name of type event youâ€™re tracking
+        description: the name of type event you're tracking
       properties:
         type: object
         description: the json schema related to event type

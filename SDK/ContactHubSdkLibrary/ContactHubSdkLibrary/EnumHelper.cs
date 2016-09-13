@@ -31,9 +31,6 @@ namespace ContactHubSdkLibrary
             return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
         }
 
-
-  
-
         public static string GetDisplayValue(T value)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
@@ -44,8 +41,6 @@ namespace ContactHubSdkLibrary
             if (descriptionAttributes == null) return string.Empty;
             return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
         }
-
-
 
         public static T GetValueFromDisplayName(string x)
         {

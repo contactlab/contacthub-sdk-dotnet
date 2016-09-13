@@ -2,8 +2,10 @@
 
 
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 namespace ContactHubSdkLibrary
 {
 
@@ -49,7 +51,7 @@ namespace ContactHubSdkLibrary
             set
             {
                 var displayValue = ContactHubSdkLibrary.EnumHelper<BasePropertiesTimezoneEnum>.GetDisplayValue(value);
-                _timezone = (displayValue == "_NoValue" ? null : displayValue);
+                _timezone = (displayValue == "NoValue" ? null : displayValue);
             }
         }
         public Contacts contacts { get; set; }
@@ -101,7 +103,7 @@ namespace ContactHubSdkLibrary
             set
             {
                 var displayValue = ContactHubSdkLibrary.EnumHelper<OtherContactsTypeEnum>.GetDisplayValue(value);
-                _type = (displayValue == "_NoValue" ? null : displayValue);
+                _type = (displayValue == "NoValue" ? null : displayValue);
             }
         }
         public string value { get; set; }
@@ -109,7 +111,7 @@ namespace ContactHubSdkLibrary
 
     public enum OtherContactsTypeEnum
     {
-        _NoValue,
+        NoValue,
         [Display(Name = "MOBILE")]
         MOBILE,
         [Display(Name = "PHONE")]
@@ -139,14 +141,14 @@ namespace ContactHubSdkLibrary
             set
             {
                 var displayValue = ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetDisplayValue(value);
-                _type = (displayValue == "_NoValue" ? null : displayValue);
+                _type = (displayValue == "NoValue" ? null : displayValue);
             }
         }
     }
 
     public enum MobileDeviceTypeEnum
     {
-        _NoValue,
+        NoValue,
         [Display(Name = "IOS")]
         IOS,
         [Display(Name = "GCM")]
@@ -205,7 +207,7 @@ namespace ContactHubSdkLibrary
             set
             {
                 var displayValue = ContactHubSdkLibrary.EnumHelper<EducationsSchoolTypeEnum>.GetDisplayValue(value);
-                _schoolType = (displayValue == "_NoValue" ? null : displayValue);
+                _schoolType = (displayValue == "NoValue" ? null : displayValue);
             }
         }
         public string schoolName { get; set; }
@@ -214,7 +216,7 @@ namespace ContactHubSdkLibrary
 
     public enum EducationsSchoolTypeEnum
     {
-        _NoValue,
+        NoValue,
         [Display(Name = "PRIMARY_SCHOOL")]
         PRIMARYSCHOOL,
         [Display(Name = "SECONDARY_SCHOOL")]
@@ -231,7 +233,38 @@ namespace ContactHubSdkLibrary
         public string id { get; set; }
         public string category { get; set; }
         public string name { get; set; }
-        public string createdTime { get; set; }
+        [JsonProperty("createdTime")]
+        public string _createdTime { get; set; }
+        [JsonProperty("_createdTime")]
+        [JsonIgnore]
+
+        public DateTime createdTime
+        {
+            get
+            {
+                if (_createdTime != null)
+                {
+                    return
+                         DateTime.ParseExact(_createdTime,
+                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _createdTime = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _createdTime = null; }
+            }
+        }
     }
 
 
@@ -284,7 +317,7 @@ namespace ContactHubSdkLibrary
             set
             {
                 var displayValue = ContactHubSdkLibrary.EnumHelper<SubscriptionsKindEnum>.GetDisplayValue(value);
-                _kind = (displayValue == "_NoValue" ? null : displayValue);
+                _kind = (displayValue == "NoValue" ? null : displayValue);
             }
         }
         public string dateStart { get; set; }
@@ -304,7 +337,7 @@ namespace ContactHubSdkLibrary
 
     public enum SubscriptionsKindEnum
     {
-        _NoValue,
+        NoValue,
         [Display(Name = "DIGITAL_MESSAGE")]
         DIGITALMESSAGE,
         [Display(Name = "SERVICE")]
@@ -314,7 +347,7 @@ namespace ContactHubSdkLibrary
     }
     public enum BasePropertiesTimezoneEnum
     {
-        _NoValue,
+        NoValue,
         [Display(Name = "Acre Time")]
         AcreTime,
         [Display(Name = "Afghanistan Time")]

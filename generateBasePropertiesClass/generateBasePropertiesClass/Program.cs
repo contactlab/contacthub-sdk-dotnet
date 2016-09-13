@@ -46,9 +46,10 @@ namespace generateBasePropertiesClass
 
 
             outputFileStr += "/* version 0.0.0.1 */\n\n\n";
-   //         outputFileStr += "using System;\n";
+            //         outputFileStr += "using System;\n";
+            outputFileStr += "using System;\n";
             outputFileStr += "using System.Collections.Generic;\n";
-//            outputFileStr += "using System.ComponentModel;\n";
+            outputFileStr += "using System.Globalization;\n";
             outputFileStr += "using Newtonsoft.Json;\n";
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
             outputFileStr += "namespace ContactHubSdkLibrary {\n";
@@ -99,19 +100,63 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
 
         private static string processString(BasePropertiesItem2 p)
         {
+            List<String> dateTimeListField = new List<String> { "createdTime" };
+
             string name = p.name;
             if (!cs.IsValidIdentifier(name))
             {
                 name = "@" + name;
             }
             string processString = "";
-            if (p.pattern != null)
+
+            if (!dateTimeListField.Contains(name))
             {
-                processString += String.Format("\t[ValidatePattern(@\"{0}\")]\n", p.pattern);
+                if (p.pattern != null)
+                {
+                    processString += String.Format("\t[ValidatePattern(@\"{0}\")]\n", p.pattern);
+                }
+                if (p.description != null)
+                    processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
+                processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             }
-            if (p.description != null)
-                processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
-            processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
+            else //è un elenco di campi particolari che vanno renderizzati come date
+            {
+
+                processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);
+                processString += String.Format("    public string _{0} {{get;set;}}\n", JsonUtil.fixName(name));
+                processString += String.Format("    [JsonProperty(\"_{0}\")]\n", name);
+                processString += String.Format("    [JsonIgnore]\n");
+                processString += @" 
+                 public DateTime $NAME$
+        {
+            get
+            {
+                if (_$NAME$ != null)
+                {
+                    return
+                         DateTime.ParseExact(_$NAME$,
+                                       ""yyyy-MM-dd'T'HH:mm:ss'Z'"",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _$NAME$ = value.ToString(""yyyy-MM-ddTHH\\:mm\\:ssZ"");
+                }
+                catch { _$NAME$ = null; }
+            }
+        }
+            ";
+            }
+            processString = processString.Replace("$NAME$", name);
             return processString;
         }
 
@@ -272,7 +317,7 @@ public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribu
                 key = "@" + key;
             }
             outputFileStr += String.Format("public enum {0} {{\n", key);
-            outputFileStr += String.Format("\t{0},\n",Common.NO_VALUE);
+            outputFileStr += String.Format("\t{0},\n", Common.NO_VALUE);
             foreach (string enumItem in (string[])enumObj.Value)
             {
                 outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);

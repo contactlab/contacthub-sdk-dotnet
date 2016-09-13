@@ -62,6 +62,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Compile Include="SDKclasses\CHubNode.Customers.Education.cs" />
+    <Compile Include="SDKclasses\CHubNode.Customers.Job.cs" />
+    <Compile Include="SDKclasses\CHubNode.Customers.Subscription.cs" />
     <Compile Include="SDKclasses\CHubNode.Customers.Like.cs" />
   </ItemGroup>
   <ItemGroup>

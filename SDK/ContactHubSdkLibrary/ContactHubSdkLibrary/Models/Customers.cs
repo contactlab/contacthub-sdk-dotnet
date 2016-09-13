@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace ContactHubSdkLibrary.Models
 {
@@ -129,10 +128,27 @@ namespace ContactHubSdkLibrary.Models
         public Page page { get; set; }
     }
 
+    public class SessionList
+    {
+        public Embedded _embedded { get; set; }
+        public PageLink _links { get; set; }
+    }
+
+    public class Session
+    {
+        public string id { get; set; }
+        public string value { get; set; }
+        public PageLink _links { get; set; }
+    }
+
+    /* embedded è usato in contesti diversi, dentro customers e come oggetto da passare a add session */
     public class Embedded
     {
         public List<Customer> customers;
+        public List<Session> sources;
     }
+
+
     public class PageLink
     {
         public Link first { get; set; }
@@ -149,49 +165,5 @@ namespace ContactHubSdkLibrary.Models
         public int number { get; set; }
     }
     #endregion
-
-    #region like
-    //public class Like
-    //{
-    //    public string id { get; set; }
-    //    public string category { get; set; }
-    //    public string name { get; set; }
-    //    [JsonProperty("createdTime")]
-
-    //    public string _createdTime { get; set; }
-    //    [JsonIgnore]
-    //    [JsonProperty("_createdTime")]
-
-    //    public DateTime createdTime
-    //    {
-    //        get
-    //        {
-    //            if (_createdTime != null)
-    //            {
-    //                return
-    //                     DateTime.ParseExact(_createdTime,
-    //                                   "yyyy-MM-dd'T'HH:mm:ss'Z'",
-    //                                   CultureInfo.InvariantCulture,
-    //                                   DateTimeStyles.AssumeUniversal |
-    //                                   DateTimeStyles.AdjustToUniversal);
-    //                // return Convert.ToDateTime(_createdTime);
-    //            }
-    //            else
-    //            {
-    //                return DateTime.MinValue;
-    //            }
-    //        }
-    //        set
-    //        {
-    //            try
-    //            {
-    //                _createdTime = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-    //            }
-    //            catch { _createdTime = null; }
-    //        }
-    //    }
-    //}
-    #endregion
-
 
 }

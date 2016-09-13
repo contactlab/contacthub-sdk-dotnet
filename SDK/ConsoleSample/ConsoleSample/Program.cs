@@ -1,5 +1,4 @@
-﻿using ContactHubSdkLibrary;
-using ContactHubSdkLibrary.Models;
+﻿using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
 using System;
 using System.Collections.Generic;
@@ -286,9 +285,9 @@ namespace ConsoleSample
 
             //Example: add education to customer
 
-            Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
 
-            
+            /*
+            Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             Educations newEdu = new Educations()
             {
                 id = "0eae64f3-12fb-49ad-abb9-82ee595037a2",
@@ -299,13 +298,95 @@ namespace ConsoleSample
             };
 
             Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu);
-            
+            */
 
-            //Example: get edu detail
+            //Example: get education detail
+            /*
+            Educations returnEdu= currentNode.GetCustomerEducation(myCustomer.id, "0eae64f3-12fb-49ad-abb9-82ee595037a2");
+            */
 
-            Educations returnLike = currentNode.GetCustomerEducation(myCustomer.id, "0eae64f3-12fb-49ad-abb9-82ee595037a2");
+            //Example: add subscription 
+            /*
+            Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+            Subscriptions newSubscription = new Subscriptions()
+            {
+                id = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab",
+                name = "prova",
+                type = "miotipo",
+                kind = SubscriptionsKindEnum.DIGITALMESSAGE,
+                enable = true,
+                dateStart = DateTime.Now,
+                dateEnd = DateTime.Now,
+                subscriberId = "e3ab0e11-4310-4329-b70b-a8b0d0250f67",
+                registeredAt = DateTime.Now,
+                updatedAt = DateTime.Now,
+                preferences = new List<Preferences>()
+                            {
+                                new Preferences()
+                                            {
+                                                key="chiave1", value="valore123"
+                                            }
+                                }
+            };
+
+            Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription);
+            */
+
+            //Example: get subscription detail
+            /*
+            Subscriptions returnSub = currentNode.GetCustomerSubscription(myCustomer.id, "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab");
+            */
+
+            //Example: add job to customer
+
+            /*
+            Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+
+            Jobs newJob = new Jobs()
+            {
+                id = "9cb52d39-233b-4739-9830-bcf02186930e",
+                companyIndustry = "123",
+                companyName = "123",
+                jobTitle = "123",
+                start_date = DateTime.Now,
+                end_date = DateTime.Now,
+                isCurrent = true
+            };
+
+            Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+            */
+            //Example: get job detail
+            /*
+            Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
+            */
 
 
+            //Example: add session to customer
+
+            //SESSION DA FINIRE
+
+            //Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+            //Session newSession = new Session()
+            //{
+            //    _embedded=new Embedded()
+            //    {
+            //        sources=new List<Session>()
+            //        {
+            //            new Session()
+            //            {
+            //                id="741307a8-2831-46f1-ad09-943ec8fd8b5a",
+            //                value="123",
+            //                _links=
+            //            }
+            //        }
+            //    }
+            //};
+
+            //Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+
+            ////Example: get job detail
+
+            //Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
 
 
         }

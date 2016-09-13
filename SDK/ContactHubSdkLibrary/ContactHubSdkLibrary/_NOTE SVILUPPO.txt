@@ -1,4 +1,5 @@
-﻿- considerare versionamento delle base properties e lettura dinamica (da ws non da file)
+﻿- considerare versionamento delle base properties  visto che la lettura è dinamica dal webservice che restituisce il model
 - provare filtri su customer
 - non si riesce a annidare le extended properties da portale web
 - verificare country cosa passare, potrebbe essere comodo definire un enum
+- eventi: si possono leggere dinamicamente la definizione del model?

@@ -1,5 +1,4 @@
-﻿using ContactHubSdkLibrary.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 
 
@@ -8,7 +7,7 @@ namespace ContactHubSdkLibrary.SDKclasses
     public partial class CHubNode
     {
         #region customers likes
-        // get like detail
+        /// get like detail
         public Likes GetCustomerLike(string customerID, string likeID)
         {
             var settings = new JsonSerializerSettings()
@@ -19,7 +18,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             Likes returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
             return returnLike;
         }
-        //add like to customer
+        ///add like to customer
         public Likes AddCustomerLike(string customerID, Likes like)
         {
             var settings = new JsonSerializerSettings()

@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.RegularExpressions" />
     <Reference Include="System.Xml.Linq" />
@@ -51,6 +52,7 @@
   <ItemGroup>
     <Compile Include="bin\Debug\basePropertiesClass.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Datatype.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Program.cs" />
@@ -59,7 +61,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="properties_base.json">
+    <None Include="example.properties_base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

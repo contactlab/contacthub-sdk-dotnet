@@ -78,6 +78,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Encoding encoding = new UTF8Encoding();
 
                 string postData = jsonData;
+
                 byte[] data = encoding.GetBytes(postData);
 
                 httpWReq.Method = "POST";

@@ -1,5 +1,8 @@
-﻿- considerare versionamento delle base properties  visto che la lettura è dinamica dal webservice che restituisce il model
+﻿- considerare versionamento delle base properties e delle event properties visto che la lettura è dinamica dal webservice che restituisce il model
 - provare filtri su customer
-- non si riesce a annidare le extended properties da portale web
+- non si riesce a annidare le extended properties da portale web (pubblicano il 19)
 - verificare country cosa passare, potrebbe essere comodo definire un enum
-- eventi: si possono leggere dinamicamente la definizione del model?
+- non vanno le post delle job, provare dopo il 19, confermano la mancanza del metodo corrispondente.
+- da vedere contextInfo dopo il 19. da leggere dinamicamente da /workspaces/{id-workspace}/models/contexts
+- gestione degli errori
+

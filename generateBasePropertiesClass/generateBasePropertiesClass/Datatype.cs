@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace generateBasePropertiesClass
 {
-
     public static class JsonUtil
     {
         public static string fixName(string label)
@@ -13,14 +12,14 @@ namespace generateBasePropertiesClass
 
             return label.Replace("+", String.Empty);
         }
-        public static List<BasePropertiesItem2> deserializeProperties(dynamic list)
+        public static List<BasePropertiesItem> deserializeProperties(dynamic list)
         {
             if (list == null) return null;
 
-            List<BasePropertiesItem2> returnValue = new List<BasePropertiesItem2>();
+            List<BasePropertiesItem> returnValue = new List<BasePropertiesItem>();
             foreach (var property in list)
             {
-                BasePropertiesItem2 prop = JsonConvert.DeserializeObject<BasePropertiesItem2>(property.Value.ToString());
+                BasePropertiesItem prop = JsonConvert.DeserializeObject<BasePropertiesItem>(property.Value.ToString());
                 prop.name = property.Name;
                 returnValue.Add(prop);
             }
@@ -28,11 +27,11 @@ namespace generateBasePropertiesClass
         }
 
         /* deserializza la proprietà items che contiene la definizione degli array */
-        public static BasePropertiesItem2 deserializeItems(dynamic list)
+        public static BasePropertiesItem deserializeItems(dynamic list)
         {
             if (list == null) return null;
 
-            BasePropertiesItem2 returnValue = JsonConvert.DeserializeObject<BasePropertiesItem2>(list.ToString());
+            BasePropertiesItem returnValue = JsonConvert.DeserializeObject<BasePropertiesItem>(list.ToString());
             return returnValue;
         }
 
@@ -46,16 +45,37 @@ namespace generateBasePropertiesClass
         }
     }
 
-
-
-
     public class ContactLabProperty
     {
         public string label;
         public bool enabled;
     }
 
-    public class BasePropertiesItem2
+
+    public class EventPropertiesSchemaRoot
+    {
+        [JsonProperty("_embedded")]
+        public EventPropertySchema embedded { get; set; }
+    }
+
+    public class EventPropertySchema
+    {
+        public List<Event> events { get; set; }
+    }
+
+    public class Event
+    {
+        public string id { get; set; }
+        public string type { get; set; }
+        public string mode { get; set; }
+        public string label { get; set; }
+        public string description { get; set; }
+        public bool enabled { get; set; }
+        public object propertiesSchema { get; set; }
+      
+    }
+
+    public class BasePropertiesItem
     {
         public string name { get; set; }
         public string description { get; set; }
@@ -100,9 +120,9 @@ namespace generateBasePropertiesClass
                 _properties = JsonUtil.deserializeProperties(value);
             }
         }
-        private List<BasePropertiesItem2> _properties;
+        private List<BasePropertiesItem> _properties;
 
-        private BasePropertiesItem2 _items;
+        private BasePropertiesItem _items;
 
     }
 

@@ -240,6 +240,7 @@ namespace ConsoleSample
             }
             */
 
+
             /* Example: get specific customer */
             /*
             if (currentNode.isValid)
@@ -355,10 +356,13 @@ namespace ConsoleSample
 
             Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
             */
+
             //Example: get job detail
             /*
             Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
             */
+
+
 
 
             //Example: add session to customer
@@ -388,7 +392,16 @@ namespace ConsoleSample
 
             //Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
 
+            //Example: add event to customer
+            Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+            PostEvent newEvent = new PostEvent()
+            {
+                customerId=myCustomer.id,
+                type=EventTypeEnum.ClickedLink,
+                context= EventContextEnum.OTHER
+            };
 
+            PostEvent postedEvent = currentNode.AddEvent(newEvent);
         }
     }
 }

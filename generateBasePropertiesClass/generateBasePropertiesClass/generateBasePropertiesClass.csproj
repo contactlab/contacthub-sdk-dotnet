@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bin\Debug\basePropertiesClass.cs" />
+    <Compile Include="bin\Debug\eventContextClass.cs" />
+    <Compile Include="bin\Debug\eventPropertiesClass.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Datatype.cs" />
@@ -59,8 +61,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="example.properties_base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

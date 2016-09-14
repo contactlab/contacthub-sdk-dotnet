@@ -15,3 +15,4 @@ C:\Projects\ContactLab\ContactHub\generateBasePropertiesClass\generateBaseProper
 C:\Projects\ContactLab\ContactHub\generateBasePropertiesClass\generateBasePropertiesClass\obj\Debug\generateBasePropertiesClass.exe
 C:\Projects\ContactLab\ContactHub\generateBasePropertiesClass\generateBasePropertiesClass\obj\Debug\generateBasePropertiesClass.pdb
 C:\Projects\ContactLab\ContactHub\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\example.properties_base.json
+C:\Projects\ContactLab\ContactHub\generateBasePropertiesClass\generateBasePropertiesClass\obj\Debug\generateBasePropertiesClass.csprojResolveAssemblyReference.cache

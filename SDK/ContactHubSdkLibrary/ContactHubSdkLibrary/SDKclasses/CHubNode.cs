@@ -12,20 +12,22 @@ namespace ContactHubSdkLibrary.SDKclasses
         private string _token = null;
         private string _node = null;
         private const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
+        public string id;
 
         public object Util { get; private set; }
         public object HttpServerUtility { get; private set; }
 
         #region Node builder
-        public CHubNode(string workspaceID, string token, string node)
+        public CHubNode(string workspaceID, string token, string nodeID)
         {
-            Init(workspaceID, token, node);
+            Init(workspaceID, token, nodeID);
+            id = nodeID;
         }
-        private void Init(string workspaceID, string token, string node)
+        private void Init(string workspaceID, string token, string nodeID)
         {
             _workspaceID = workspaceID;
             _token = token;
-            _node = node;
+            _node = nodeID;
             isValid = true;  //da implementare controllo
         }
         #endregion

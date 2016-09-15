@@ -65,7 +65,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
-        private string DoPostWebRequest(string functionPath, string jsonData)
+        private string DoPostWebRequest(string functionPath, string jsonData,ref string statusCode)
         {
             string jsonResponse = null;
             try
@@ -98,7 +98,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-
+                statusCode = response.StatusCode.ToString();
                 //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
                 if (string.IsNullOrEmpty(jsonResponse))
                 {

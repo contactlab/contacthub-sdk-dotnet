@@ -30,7 +30,8 @@ namespace ContactHubSdkLibrary.SDKclasses
                 NullValueHandling = NullValueHandling.Ignore
             };
             string postData = JsonConvert.SerializeObject(job, settings);
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/jobs", customerID), postData);
+            string statusCode = null;
+            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/jobs", customerID), postData,ref statusCode);
             Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }

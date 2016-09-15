@@ -422,8 +422,8 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add event to customer
-
             /*
+            
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             PostEvent newEvent = new PostEvent()
             {
@@ -435,6 +435,29 @@ namespace ConsoleSample
 
             string result = currentNode.AddEvent(newEvent);
             if(result!="Accepted")
+            {
+                //errore inserimento
+            }
+            */
+            #endregion
+
+            #region Example: add anonymous event (with external ID)
+            /*
+            PostEvent newEvent = new PostEvent()
+            {
+                bringBackProperties = new BringBackProperty()
+                {
+                    nodeId = currentNode.id,
+                    type = BringBackPropertyTypeEnum.EXTERNAL_ID,
+                    value = Guid.NewGuid().ToString()
+                },
+                type = EventTypeEnum.loggedIn,
+                context = EventContextEnum.WEB,
+                properties = new EventBaseProperty()
+            };
+
+            string result = currentNode.AddEvent(newEvent);
+            if (result != "Accepted")
             {
                 //errore inserimento
             }
@@ -524,8 +547,6 @@ namespace ConsoleSample
             }
             */
             #endregion
-
-
 
         }
     }

@@ -186,8 +186,8 @@ namespace ContactHubSdkLibrary.SDKclasses
             //    //ottiene il json finale
             //    postData = o.ToString();
             //}
-
-            string jsonResponse = DoPostWebRequest("/customers", postData);
+            string statusCode = null;
+            string jsonResponse = DoPostWebRequest("/customers", postData,ref statusCode);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
             return returnCustomer;
         }

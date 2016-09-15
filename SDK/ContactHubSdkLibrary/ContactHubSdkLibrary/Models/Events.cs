@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
 namespace ContactHubSdkLibrary.Models
 {
@@ -40,7 +39,6 @@ namespace ContactHubSdkLibrary.Models
                 _type = (displayValue == "NoValue" ? null : displayValue);
             }
         }
-
         public string value { get; set; }
         public string nodeId { get; set; }
 

@@ -11,7 +11,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         #region Events
 
         /// <summary>
-        /// Crea un nuovo evento 
+        /// Crea un nuovo evento legato a un customer o anonimo
         /// <summary>
         public string AddEvent(PostEvent event_)
         {
@@ -19,15 +19,12 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-
             string postData = JsonConvert.SerializeObject(event_, settings);
-            string jsonResponse = DoPostWebRequest("/events", postData);
+            string statusCode = null;
+            string jsonResponse = DoPostWebRequest("/events", postData,ref statusCode);
             //la json response dovrebbe contenere in questo caso solo la status code perchè l'inserimento è asyncrono (coda)
-            JObject Jresponse = JObject.Parse(jsonResponse);
-            string statusCode = Jresponse["statusCode"].ToString();
             return statusCode;
         }
-
 
         /// <summary>
         /// Ottiene la prima pagina della lista events, da effettuarsi quando si chiamano gli events la prima volta

@@ -26,7 +26,8 @@ namespace ContactHubSdkLibrary.SDKclasses
                 NullValueHandling = NullValueHandling.Ignore
             };
             string postData = JsonConvert.SerializeObject(like, settings);
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/subscriptions", customerID), postData);
+            string statusCode = null;
+            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/subscriptions", customerID), postData,ref statusCode);
             Subscriptions returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
             return returnLike;
         }

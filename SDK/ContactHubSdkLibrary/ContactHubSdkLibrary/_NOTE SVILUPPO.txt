@@ -5,4 +5,5 @@
 - non vanno le post delle job, provare dopo il 19, confermano la mancanza del metodo corrispondente.
 - da vedere contextInfo dopo il 19. da leggere dinamicamente da /workspaces/{id-workspace}/models/contexts
 - gestione degli errori
-
+- implementare isvalid sul nodo
+- problema delle date

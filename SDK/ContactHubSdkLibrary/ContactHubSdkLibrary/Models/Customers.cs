@@ -123,32 +123,53 @@ namespace ContactHubSdkLibrary.Models
     }
     public class PagedCustomer
     {
-        public Embedded _embedded { get; set; }
+        public EmbeddedCustomers _embedded { get; set; }
         public PageLink _links { get; set; }
         public Page page { get; set; }
     }
 
     public class SessionList
     {
-        public Embedded _embedded { get; set; }
-        public PageLink _links { get; set; }
+        public EmbeddedSessions _embedded { get; set; }
+       // public SessionPageLink _links { get; set; }  //DA COMPLETARE
     }
+
 
     public class Session
     {
         public string id { get; set; }
         public string value { get; set; }
-        public PageLink _links { get; set; }
+     //   public PageLink _links { get; set; }  //DA COMPLETARE
     }
 
     /* embedded è usato in contesti diversi, dentro customers e come oggetto da passare a add session */
-    public class Embedded
+    public class EmbeddedCustomers
     {
         public List<Customer> customers;
+    }
+    public class EmbeddedSessions
+    {
         public List<Session> sources;
     }
 
+    public class EmbeddedEvents
+    {
+        public List<Event> events;
+    }
 
+    public class Event : PostEvent
+    {
+        public EventPageLink _links { get; set; }
+        public string id { get; set; }
+    }
+
+
+    public class EventPageLink
+    {
+        public Link customer { get; set; }
+        public Link events { get; set; }
+        public Link self { get; set; }
+    }
     public class PageLink
     {
         public Link first { get; set; }

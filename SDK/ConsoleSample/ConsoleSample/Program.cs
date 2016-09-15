@@ -5,31 +5,30 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 
-
 namespace ConsoleSample
 {
     class Program
     {
         static void Main(string[] args)
         {
-
+            #region common variables
             PagedCustomer pagedCustomers = null;
-
+            PagedEvent pagedEvents = null;
             string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
+            #endregion
 
-            /* Example: open contacthub node */
-
+            #region Example: init contacthub node 
             CHubNode currentNode = new CHubNode(
                         ConfigurationManager.AppSettings["workspaceID"].ToString(),
                         ConfigurationManager.AppSettings["token"].ToString(),
                         currentNodeID
                         );
 
-            /* Example: retrieve customers list from node (first page) */
+            #endregion
+
+            #region Example: get all customers
             if (currentNode.isValid)
             {
-                //Example get all customers pages
-
                 List<Customer> allCustomers = new List<Customer>();
                 int pageSize = 5;
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
@@ -39,17 +38,21 @@ namespace ConsoleSample
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetCustomers(ref pagedCustomers, CustomersPage.next);
+                        pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
                         allCustomers.AddRange(pagedCustomers._embedded.customers);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     }
                 }
+            }
+            #endregion
 
-
-                //Example: alternative method to get all customers pages
-                /*
-                allCustomers = new List<Customer>();
-                pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+            #region Example: alternative method to get all customers pages
+            /*
+            if (currentNode.isValid)
+            {
+                List<Customer> allCustomers = new List<Customer>();
+                int pageSize = 5;
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
                 if (pageIsValid)
                 {
                     allCustomers.AddRange(pagedCustomers._embedded.customers);
@@ -61,54 +64,74 @@ namespace ConsoleSample
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     }
                 }
-                */
-
-                //Example: get single page (pageCustomer value must not be null!!!)
-                /*
-                pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
-                */
-
-                //Example: invalid method to get single page (pageCustomer value must not be null!!!)
-                // return invalid response
-                /*
-                pagedCustomers = null;
-                pageIsValid= currentNode.GetCustomers(ref pagedCustomers, 1);
-                */
-
-                //Example: chiama una pagina next fuori dal set esistente
-                /*
-                 currentNode.GetCustomers(ref pagedCustomers, CustomersPage.next); //returns the same page if there are no other
-                 */
-                //Example: get customer by externalID
-                /*
-                bool isValid= currentNode.GetCustomers(ref pagedCustomers,10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
-                */
-
-                //Example: get customer by query  (DA TESTARE)
-                /*
-                currentNode.GetCustomers(ref pagedCustomers, null, "externalId='2dc51963-4a15-4ffa-943d-16bcc28d19e0'", null);
-                */
-
-                //Example: get selected fields form customer  
-                //return customer with only values in selected fields.
-                /*
-                 currentNode.GetCustomers(ref pagedCustomers, null, null, "base.firstName,base.lastName");
-                */
-                //Example: delete customer by name
-                /*
-                foreach (Customer c in allCustomers)
-                {
-                    if (c.@base.firstName == "Diego")
-                    {
-                        currentNode.DeleteCustomer(c.id);
-                    }
-                }
-                */
             }
+            */
+            #endregion
 
+            #region Example: get single page (pageCustomer value must not be null!!!)
+            /*
+            if (currentNode.isValid)
+            {
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
+            }
+            */
+            #endregion
 
-            ///* Example: create new customers in node */
-            //define new customer
+            #region Example: invalid method to get single page (pageCustomer value must not be null!!!)
+            /*
+            if (currentNode.isValid)
+            {
+                //this sample return invalid response
+                pagedCustomers = null;
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1);
+            }
+            */
+            #endregion
+
+            #region Example: chiama una pagina next fuori dal set esistente
+            /*
+            if (currentNode.isValid)
+            {
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, CustomersPage.next);
+            }
+            */
+            #endregion
+
+            #region  Example: get customer by externalID
+            /*
+            if (currentNode.isValid)
+            {
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+            }
+            */
+            #endregion
+
+            #region Example: get customer by query  (DA TESTARE)
+            /*
+            currentNode.GetCustomers(ref pagedCustomers, null, "externalId='2dc51963-4a15-4ffa-943d-16bcc28d19e0'", null);
+            */
+            #endregion
+
+            #region Example: get selected fields form customer  
+            //return customer with only values in selected fields.
+            /*
+             currentNode.GetCustomers(ref pagedCustomers, null, null, "base.firstName,base.lastName");
+            */
+            #endregion
+
+            #region Example: delete customer by name
+            /*
+            foreach (Customer c in allCustomers)
+            {
+                if (c.@base.firstName == "Diego")
+                {
+                    currentNode.DeleteCustomer(c.id);
+                }
+            }
+            */
+            #endregion
+
+            #region Example: create new customers in node 
             /*
             PostCustomer newCustomer = new PostCustomer()
             {
@@ -133,12 +156,11 @@ namespace ConsoleSample
                 customerID = createdCustomer.id;
             }
             */
+            #endregion
 
-            /* Example: create new customers in node with extended properties*/
+            #region Example: create new customers in node with extended properties
             //define new customer
-
             /*
-
             PostCustomer newCustomer = new PostCustomer()
             {
                 nodeId = currentNodeID,
@@ -239,9 +261,9 @@ namespace ConsoleSample
                 }
             }
             */
+            #endregion
 
-
-            /* Example: get specific customer */
+            #region Example: get specific customer 
             /*
             if (currentNode.isValid)
             {
@@ -249,8 +271,9 @@ namespace ConsoleSample
                 customerID = customer.id;
             }
             */
+            #endregion
 
-            /* Example: delete customers in node */
+            #region Example: delete customers in node 
             /*
             if (currentNode.isValid)
             {
@@ -263,11 +286,12 @@ namespace ConsoleSample
                 }
             }
             */
+            #endregion
 
-            //Example: add like to customer
+            #region Example: add like to customer
             /*
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
-            
+
             Likes newLike = new Likes()
             {
                 category = "sport",
@@ -278,15 +302,15 @@ namespace ConsoleSample
 
             Likes returnLike=currentNode.AddCustomerLike(myCustomer.id, newLike);
             */
+            #endregion
 
-            //Example: get like detail
+            #region Example: get like detail
             /*
             Likes returnLike = currentNode.GetCustomerLike(myCustomer.id, "eee8c9d6-e30a-4aa9-93f0-db949ba32840");
-          */
+            */
+            #endregion
 
-            //Example: add education to customer
-
-
+            #region Example: add education to customer
             /*
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             Educations newEdu = new Educations()
@@ -300,13 +324,15 @@ namespace ConsoleSample
 
             Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu);
             */
+            #endregion
 
-            //Example: get education detail
+            #region Example: get education detail
             /*
             Educations returnEdu= currentNode.GetCustomerEducation(myCustomer.id, "0eae64f3-12fb-49ad-abb9-82ee595037a2");
             */
+            #endregion
 
-            //Example: add subscription 
+            #region Example: add subscription 
             /*
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             Subscriptions newSubscription = new Subscriptions()
@@ -332,14 +358,15 @@ namespace ConsoleSample
 
             Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription);
             */
+            #endregion
 
-            //Example: get subscription detail
+            #region Example: get subscription detail
             /*
             Subscriptions returnSub = currentNode.GetCustomerSubscription(myCustomer.id, "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab");
             */
+            #endregion
 
-            //Example: add job to customer
-
+            #region Example: add job to customer
             /*
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
 
@@ -356,16 +383,15 @@ namespace ConsoleSample
 
             Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
             */
+            #endregion
 
-            //Example: get job detail
+            #region  Example: get job detail
             /*
             Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
             */
+            #endregion
 
-
-
-
-            //Example: add session to customer
+            #region Example: add session to customer  (DA COMPLETARE!!!)
 
             //SESSION DA FINIRE
 
@@ -387,21 +413,55 @@ namespace ConsoleSample
             //};
 
             //Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+            #endregion
 
-            ////Example: get job detail
+            #region Example: get session detail (DA COMPLETARE)
 
-            //Jobs returnSub = currentNode.GetCustomerJob(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
+            //Sessions returnSub = currentNode.GetCustomerSession(myCustomer.id, "9cb52d39-233b-4739-9830-bcf02186930e");
 
-            //Example: add event to customer
+            #endregion
+
+            #region Example: add event to customer
+
+            /*
             Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             PostEvent newEvent = new PostEvent()
             {
-                customerId=myCustomer.id,
-                type=EventTypeEnum.ClickedLink,
-                context= EventContextEnum.OTHER
+                customerId = myCustomer.id,
+                type = EventTypeEnum.clickedLink,
+                context = EventContextEnum.OTHER,
+                properties =  new EventBaseProperty()
             };
 
-            PostEvent postedEvent = currentNode.AddEvent(newEvent);
+            string result = currentNode.AddEvent(newEvent);
+            if(result!="Accepted")
+            {
+                //errore inserimento
+            }
+            */
+            #endregion
+
+            #region Example: get events
+            if (currentNode.isValid)
+            {
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 2;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, null, null);
+                if (pageIsValid)
+                {
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
+                    {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        allEvents.AddRange(pagedEvents._embedded.events);
+                        Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    }
+                }
+            }
+
+            #endregion
         }
     }
 }
+

@@ -8,100 +8,100 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 namespace ContactHubSdkLibrary {
 
-                                public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
-                                {
-                                    public ValidatePatternAttribute(string data) : base(data) { }
-                                }
-            
+								public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
+								{
+									public ValidatePatternAttribute(string data) : base(data) { }
+								}
+			
 public class BaseProperties
 {
 	[Display(Name="the picture url of customer")]
-    public string pictureUrl {get;set;}
+	public string pictureUrl {get;set;}
 	[Display(Name="the title")]
-    public string title {get;set;}
+	public string title {get;set;}
 	[Display(Name="the prefix")]
-    public string prefix {get;set;}
+	public string prefix {get;set;}
 	[Display(Name="the first name")]
-    public string firstName {get;set;}
+	public string firstName {get;set;}
 	[Display(Name="the last name")]
-    public string lastName {get;set;}
+	public string lastName {get;set;}
 	[Display(Name="the middle name")]
-    public string middleName {get;set;}
+	public string middleName {get;set;}
 	[Display(Name="gender")]
-    public string gender {get;set;}
+	public string gender {get;set;}
 	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
 	[Display(Name="dob")]
-    public string dob {get;set;}
+	public string dob {get;set;}
 	[ValidatePattern(@"^[a-z]{2}(_([a-zA-Z]{2}){1,2})?_[A-Z]{2}$")]
 	[Display(Name="the locale")]
-    public string locale {get;set;}
+	public string locale {get;set;}
 	[Display(Name="the time zone")]
 [JsonProperty("timezone")]public string _timezone {get;set;}
 [JsonProperty("hidden_timezone")][JsonIgnore]
-                    public BasePropertiesTimezoneEnum timezone 
-            {
-                get
-                {
-                        BasePropertiesTimezoneEnum enumValue =ContactHubSdkLibrary.EnumHelper<BasePropertiesTimezoneEnum>.GetValueFromDisplayName(_timezone);
-                        return enumValue;
-                }
-                set
-                {
-                        var displayValue = ContactHubSdkLibrary.EnumHelper<BasePropertiesTimezoneEnum>.GetDisplayValue(value);
-                        _timezone = (displayValue=="NoValue"? null : displayValue);
-                }
-            }
-                public Contacts contacts {get;set;}
-    public Address address {get;set;}
-    public Credential credential {get;set;}
+					public BasePropertiesTimezoneEnum timezone 
+			{
+				get
+				{
+						BasePropertiesTimezoneEnum enumValue =ContactHubSdkLibrary.EnumHelper<BasePropertiesTimezoneEnum>.GetValueFromDisplayName(_timezone);
+						return enumValue;
+				}
+				set
+				{
+						var displayValue = ContactHubSdkLibrary.EnumHelper<BasePropertiesTimezoneEnum>.GetDisplayValue(value);
+						_timezone = (displayValue=="NoValue"? null : displayValue);
+				}
+			}
+				public Contacts contacts {get;set;}
+	public Address address {get;set;}
+	public Credential credential {get;set;}
 	[Display(Name="educations")]
-    public List<Educations> educations {get;set;}
+	public List<Educations> educations {get;set;}
 	[Display(Name="likes")]
-    public List<Likes> likes {get;set;}
-    public SocialProfile socialProfile {get;set;}
+	public List<Likes> likes {get;set;}
+	public SocialProfile socialProfile {get;set;}
 	[Display(Name="jobs")]
-    public List<Jobs> jobs {get;set;}
+	public List<Jobs> jobs {get;set;}
 	[Display(Name="subscriptions")]
-    public List<Subscriptions> subscriptions {get;set;}
+	public List<Subscriptions> subscriptions {get;set;}
 }
 
 
 public class Contacts
 {
 	[Display(Name="the e-mail")]
-    public string email {get;set;}
+	public string email {get;set;}
 	[Display(Name="the fax number")]
-    public string fax {get;set;}
+	public string fax {get;set;}
 	[Display(Name="the mobile phone number")]
-    public string mobilePhone {get;set;}
+	public string mobilePhone {get;set;}
 	[Display(Name="the phone")]
-    public string phone {get;set;}
+	public string phone {get;set;}
 	[Display(Name="other contacts")]
-    public List<OtherContacts> otherContacts {get;set;}
+	public List<OtherContacts> otherContacts {get;set;}
 	[Display(Name="mobile device")]
-    public List<MobileDevice> mobileDevice {get;set;}
+	public List<MobileDevice> mobileDevice {get;set;}
 }
 
 
 public class OtherContacts
 {
-    public string name {get;set;}
+	public string name {get;set;}
 [JsonProperty("type")]public string _type {get;set;}
 [JsonProperty("hidden_type")][JsonIgnore]
-                    public OtherContactsTypeEnum type 
-            {
-                get
-                {
-                        OtherContactsTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<OtherContactsTypeEnum>.GetValueFromDisplayName(_type);
-                        return enumValue;
-                }
-                set
-                {
-                        var displayValue = ContactHubSdkLibrary.EnumHelper<OtherContactsTypeEnum>.GetDisplayValue(value);
-                        _type = (displayValue=="NoValue"? null : displayValue);
-                }
-            }
-                public string value {get;set;}
+					public OtherContactsTypeEnum type 
+			{
+				get
+				{
+						OtherContactsTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<OtherContactsTypeEnum>.GetValueFromDisplayName(_type);
+						return enumValue;
+				}
+				set
+				{
+						var displayValue = ContactHubSdkLibrary.EnumHelper<OtherContactsTypeEnum>.GetDisplayValue(value);
+						_type = (displayValue=="NoValue"? null : displayValue);
+				}
+			}
+				public string value {get;set;}
 }
 
 public enum OtherContactsTypeEnum {
@@ -119,24 +119,24 @@ public enum OtherContactsTypeEnum {
 }
 public class MobileDevice
 {
-    public string identifier {get;set;}
-    public string name {get;set;}
+	public string identifier {get;set;}
+	public string name {get;set;}
 [JsonProperty("type")]public string _type {get;set;}
 [JsonProperty("hidden_type")][JsonIgnore]
-                    public MobileDeviceTypeEnum type 
-            {
-                get
-                {
-                        MobileDeviceTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetValueFromDisplayName(_type);
-                        return enumValue;
-                }
-                set
-                {
-                        var displayValue = ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetDisplayValue(value);
-                        _type = (displayValue=="NoValue"? null : displayValue);
-                }
-            }
-            }
+					public MobileDeviceTypeEnum type 
+			{
+				get
+				{
+						MobileDeviceTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetValueFromDisplayName(_type);
+						return enumValue;
+				}
+				set
+				{
+						var displayValue = ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetDisplayValue(value);
+						_type = (displayValue=="NoValue"? null : displayValue);
+				}
+			}
+			}
 
 public enum MobileDeviceTypeEnum {
 	NoValue,
@@ -150,60 +150,60 @@ public enum MobileDeviceTypeEnum {
 public class Address
 {
 	[Display(Name="the street")]
-    public string street {get;set;}
+	public string street {get;set;}
 	[Display(Name="the city")]
-    public string city {get;set;}
+	public string city {get;set;}
 	[Display(Name="the country")]
-    public string country {get;set;}
+	public string country {get;set;}
 	[Display(Name="the province")]
-    public string province {get;set;}
+	public string province {get;set;}
 	[Display(Name="the zip code")]
-    public string zip {get;set;}
-    public Geo geo {get;set;}
+	public string zip {get;set;}
+	public Geo geo {get;set;}
 }
 
 
 public class Geo
 {
 	[Display(Name="latitude")]
-    public decimal lat {get;set;}
+	public decimal lat {get;set;}
 	[Display(Name="longitude")]
-    public decimal lng {get;set;}
+	public decimal lng {get;set;}
 }
 
 
 public class Credential
 {
 	[Display(Name="the password")]
-    public string password {get;set;}
+	public string password {get;set;}
 	[Display(Name="the user name")]
-    public string username {get;set;}
+	public string username {get;set;}
 }
 
 
 public class Educations
 {
-    public string id {get;set;}
+	public string id {get;set;}
 [JsonProperty("schoolType")]public string _schoolType {get;set;}
 [JsonProperty("hidden_schoolType")][JsonIgnore]
-                    public EducationsSchoolTypeEnum schoolType 
-            {
-                get
-                {
-                        EducationsSchoolTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<EducationsSchoolTypeEnum>.GetValueFromDisplayName(_schoolType);
-                        return enumValue;
-                }
-                set
-                {
-                        var displayValue = ContactHubSdkLibrary.EnumHelper<EducationsSchoolTypeEnum>.GetDisplayValue(value);
-                        _schoolType = (displayValue=="NoValue"? null : displayValue);
-                }
-            }
-                public string schoolName {get;set;}
-    public string schoolConcentration {get;set;}
-    public decimal start_year {get;set;}
-    public decimal end_year {get;set;}
-    public Boolean isCurrent {get;set;}
+					public EducationsSchoolTypeEnum schoolType 
+			{
+				get
+				{
+						EducationsSchoolTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<EducationsSchoolTypeEnum>.GetValueFromDisplayName(_schoolType);
+						return enumValue;
+				}
+				set
+				{
+						var displayValue = ContactHubSdkLibrary.EnumHelper<EducationsSchoolTypeEnum>.GetDisplayValue(value);
+						_schoolType = (displayValue=="NoValue"? null : displayValue);
+				}
+			}
+				public string schoolName {get;set;}
+	public string schoolConcentration {get;set;}
+	public decimal start_year {get;set;}
+	public decimal end_year {get;set;}
+	public Boolean isCurrent {get;set;}
 }
 
 public enum EducationsSchoolTypeEnum {
@@ -221,293 +221,293 @@ public enum EducationsSchoolTypeEnum {
 }
 public class Likes
 {
-    public string id {get;set;}
-    public string category {get;set;}
-    public string name {get;set;}
-    [JsonProperty("createdTime")]
-    public string _createdTime {get;set;}
-    [JsonProperty("_createdTime")]
-    [JsonIgnore]
+	public string id {get;set;}
+	public string category {get;set;}
+	public string name {get;set;}
+	[JsonProperty("createdTime")]
+	public string _createdTime {get;set;}
+	[JsonProperty("_createdTime")]
+	[JsonIgnore]
  
-                 public DateTime createdTime
-        {
-            get
-            {
-                if (_createdTime != null)
-                {
-                    return
-                         DateTime.ParseExact(_createdTime,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _createdTime = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-                }
-                catch { _createdTime = null; }
-            }
-        }
-            }
+				 public DateTime createdTime
+		{
+			get
+			{
+				if (_createdTime != null)
+				{
+					return
+						 DateTime.ParseExact(_createdTime,
+									   "yyyy-MM-dd'T'HH:mm:ss'Z'",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_createdTime = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+				}
+				catch { _createdTime = null; }
+			}
+		}
+			}
 
 
 public class SocialProfile
 {
 	[Display(Name="facebook")]
-    public string facebook {get;set;}
+	public string facebook {get;set;}
 	[Display(Name="google+")]
-    public string @google {get;set;}
+	public string @google {get;set;}
 	[Display(Name="instagram")]
-    public string instagram {get;set;}
+	public string instagram {get;set;}
 	[Display(Name="linkedin")]
-    public string linkedin {get;set;}
+	public string linkedin {get;set;}
 	[Display(Name="qzone")]
-    public string qzone {get;set;}
+	public string qzone {get;set;}
 	[Display(Name="twitter")]
-    public string twitter {get;set;}
+	public string twitter {get;set;}
 }
 
 
 public class Jobs
 {
-    public string id {get;set;}
-    public string companyIndustry {get;set;}
-    public string companyName {get;set;}
-    public string jobTitle {get;set;}
-    [JsonProperty("start_date")]
-    public string _start_date {get;set;}
-    [JsonProperty("_start_date")]
-    [JsonIgnore]
+	public string id {get;set;}
+	public string companyIndustry {get;set;}
+	public string companyName {get;set;}
+	public string jobTitle {get;set;}
+	[JsonProperty("start_date")]
+	public string _start_date {get;set;}
+	[JsonProperty("_start_date")]
+	[JsonIgnore]
  
-                 public DateTime start_date
-        {
-            get
-            {
-                if (_start_date != null)
-                {
-                    return
-                         DateTime.ParseExact(_start_date,
-                                       "yyyy-MM-dd",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _start_date = value.ToString("yyyy-MM-dd");
-                }
-                catch { _start_date = null; }
-            }
-        }
-                [JsonProperty("end_date")]
-    public string _end_date {get;set;}
-    [JsonProperty("_end_date")]
-    [JsonIgnore]
+				 public DateTime start_date
+		{
+			get
+			{
+				if (_start_date != null)
+				{
+					return
+						 DateTime.ParseExact(_start_date,
+									   "yyyy-MM-dd",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_start_date = value.ToString("yyyy-MM-dd");
+				}
+				catch { _start_date = null; }
+			}
+		}
+				[JsonProperty("end_date")]
+	public string _end_date {get;set;}
+	[JsonProperty("_end_date")]
+	[JsonIgnore]
  
-                 public DateTime end_date
-        {
-            get
-            {
-                if (_end_date != null)
-                {
-                    return
-                         DateTime.ParseExact(_end_date,
-                                       "yyyy-MM-dd",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _end_date = value.ToString("yyyy-MM-dd");
-                }
-                catch { _end_date = null; }
-            }
-        }
-                public Boolean isCurrent {get;set;}
+				 public DateTime end_date
+		{
+			get
+			{
+				if (_end_date != null)
+				{
+					return
+						 DateTime.ParseExact(_end_date,
+									   "yyyy-MM-dd",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_end_date = value.ToString("yyyy-MM-dd");
+				}
+				catch { _end_date = null; }
+			}
+		}
+				public Boolean isCurrent {get;set;}
 }
 
 
 public class Subscriptions
 {
-    public string id {get;set;}
-    public string name {get;set;}
-    public string type {get;set;}
+	public string id {get;set;}
+	public string name {get;set;}
+	public string type {get;set;}
 [JsonProperty("kind")]public string _kind {get;set;}
 [JsonProperty("hidden_kind")][JsonIgnore]
-                    public SubscriptionsKindEnum kind 
-            {
-                get
-                {
-                        SubscriptionsKindEnum enumValue =ContactHubSdkLibrary.EnumHelper<SubscriptionsKindEnum>.GetValueFromDisplayName(_kind);
-                        return enumValue;
-                }
-                set
-                {
-                        var displayValue = ContactHubSdkLibrary.EnumHelper<SubscriptionsKindEnum>.GetDisplayValue(value);
-                        _kind = (displayValue=="NoValue"? null : displayValue);
-                }
-            }
-                public Boolean enable {get;set;}
-    [JsonProperty("dateStart")]
-    public string _dateStart {get;set;}
-    [JsonProperty("_dateStart")]
-    [JsonIgnore]
+					public SubscriptionsKindEnum kind 
+			{
+				get
+				{
+						SubscriptionsKindEnum enumValue =ContactHubSdkLibrary.EnumHelper<SubscriptionsKindEnum>.GetValueFromDisplayName(_kind);
+						return enumValue;
+				}
+				set
+				{
+						var displayValue = ContactHubSdkLibrary.EnumHelper<SubscriptionsKindEnum>.GetDisplayValue(value);
+						_kind = (displayValue=="NoValue"? null : displayValue);
+				}
+			}
+				public Boolean enable {get;set;}
+	[JsonProperty("dateStart")]
+	public string _dateStart {get;set;}
+	[JsonProperty("_dateStart")]
+	[JsonIgnore]
  
-                 public DateTime dateStart
-        {
-            get
-            {
-                if (_dateStart != null)
-                {
-                    return
-                         DateTime.ParseExact(_dateStart,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-                }
-                catch { _dateStart = null; }
-            }
-        }
-                [JsonProperty("dateEnd")]
-    public string _dateEnd {get;set;}
-    [JsonProperty("_dateEnd")]
-    [JsonIgnore]
+				 public DateTime dateStart
+		{
+			get
+			{
+				if (_dateStart != null)
+				{
+					return
+						 DateTime.ParseExact(_dateStart,
+									   "yyyy-MM-dd'T'HH:mm:ss'Z'",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+				}
+				catch { _dateStart = null; }
+			}
+		}
+				[JsonProperty("dateEnd")]
+	public string _dateEnd {get;set;}
+	[JsonProperty("_dateEnd")]
+	[JsonIgnore]
  
-                 public DateTime dateEnd
-        {
-            get
-            {
-                if (_dateEnd != null)
-                {
-                    return
-                         DateTime.ParseExact(_dateEnd,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-                }
-                catch { _dateEnd = null; }
-            }
-        }
-                public string subscriberId {get;set;}
-    [JsonProperty("registeredAt")]
-    public string _registeredAt {get;set;}
-    [JsonProperty("_registeredAt")]
-    [JsonIgnore]
+				 public DateTime dateEnd
+		{
+			get
+			{
+				if (_dateEnd != null)
+				{
+					return
+						 DateTime.ParseExact(_dateEnd,
+									   "yyyy-MM-dd'T'HH:mm:ss'Z'",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+				}
+				catch { _dateEnd = null; }
+			}
+		}
+				public string subscriberId {get;set;}
+	[JsonProperty("registeredAt")]
+	public string _registeredAt {get;set;}
+	[JsonProperty("_registeredAt")]
+	[JsonIgnore]
  
-                 public DateTime registeredAt
-        {
-            get
-            {
-                if (_registeredAt != null)
-                {
-                    return
-                         DateTime.ParseExact(_registeredAt,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _registeredAt = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-                }
-                catch { _registeredAt = null; }
-            }
-        }
-                [JsonProperty("updatedAt")]
-    public string _updatedAt {get;set;}
-    [JsonProperty("_updatedAt")]
-    [JsonIgnore]
+				 public DateTime registeredAt
+		{
+			get
+			{
+				if (_registeredAt != null)
+				{
+					return
+						 DateTime.ParseExact(_registeredAt,
+									   "yyyy-MM-dd'T'HH:mm:ss'Z'",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_registeredAt = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+				}
+				catch { _registeredAt = null; }
+			}
+		}
+				[JsonProperty("updatedAt")]
+	public string _updatedAt {get;set;}
+	[JsonProperty("_updatedAt")]
+	[JsonIgnore]
  
-                 public DateTime updatedAt
-        {
-            get
-            {
-                if (_updatedAt != null)
-                {
-                    return
-                         DateTime.ParseExact(_updatedAt,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
-            }
-            set
-            {
-                try
-                {
-                    _updatedAt = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
-                }
-                catch { _updatedAt = null; }
-            }
-        }
-                public List<Preferences> preferences {get;set;}
+				 public DateTime updatedAt
+		{
+			get
+			{
+				if (_updatedAt != null)
+				{
+					return
+						 DateTime.ParseExact(_updatedAt,
+									   "yyyy-MM-dd'T'HH:mm:ss'Z'",
+									   CultureInfo.InvariantCulture,
+									   DateTimeStyles.AssumeUniversal |
+									   DateTimeStyles.AdjustToUniversal);
+				}
+				else
+				{
+					return DateTime.MinValue;
+				}
+			}
+			set
+			{
+				try
+				{
+					_updatedAt = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+				}
+				catch { _updatedAt = null; }
+			}
+		}
+				public List<Preferences> preferences {get;set;}
 }
 
 
 public class Preferences
 {
-    public string key {get;set;}
-    public string value {get;set;}
+	public string key {get;set;}
+	public string value {get;set;}
 }
 
 public enum SubscriptionsKindEnum {

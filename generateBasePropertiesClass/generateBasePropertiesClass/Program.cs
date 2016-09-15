@@ -167,7 +167,7 @@ namespace generateBasePropertiesClass
             foreach(String s in generatedClass)
             {
                 if (s.Contains(": EventBaseProperty"))
-                    classEnum.Add(s.Replace(": EventBaseProperty","").Replace("EventProperty",""));
+                    classEnum.Add(  lowercaseFirst( s.Replace(": EventBaseProperty","").Replace("EventProperty","")));
             }
             DictionaryEntry dic = new DictionaryEntry();
             dic.Key = "EventTypeEnum";
@@ -537,6 +537,17 @@ namespace generateBasePropertiesClass
             }
             // Return char and concat substring.
             return char.ToUpper(s[0]) + s.Substring(1);
+        }
+
+        static string lowercaseFirst(string s)
+        {
+            // Check for empty string.
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            // Return char and concat substring.
+            return char.ToLower(s[0]) + s.Substring(1);
         }
     }
 }

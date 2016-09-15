@@ -22,7 +22,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                     webRequest.Timeout = 30000;
                     webRequest.ContentType = "application/json";
                     webRequest.Headers.Add("Authorization", "Bearer " + _token);
-                    using (System.IO.Stream s = webRequest.GetResponse().GetResponseStream())
+                    using (System.IO.Stream s = webRequest.GetResponseWithoutException().GetResponseStream())
                     {
                         using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
                         {
@@ -89,8 +89,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Stream stream = httpWReq.GetRequestStream();
                 stream.Write(data, 0, data.Length);
                 stream.Close();
-
-                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
                 string s = response.ToString();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
 
@@ -99,7 +98,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
+
+                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
+                if (string.IsNullOrEmpty(jsonResponse))
+                {
+                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
+                }
             }
+
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());

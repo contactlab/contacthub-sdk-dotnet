@@ -5,7 +5,7 @@ using System.Net;
 
 namespace ContactHubSdkLibrary.SDKclasses
 {
-    public enum CustomersPage
+    public enum PageRefEnum
     {
         first,
         last,
@@ -17,30 +17,36 @@ namespace ContactHubSdkLibrary.SDKclasses
     public partial class CHubNode
     {
         #region Customers
-
-        //chiamata per ottenere la prima pagina, da effettuarsi quando si chiamano i customer la prima volta
+        /// <summary>
+        /// Ottiene la prima pagina della lista customers, da effettuarsi quando si chiamano i customer la prima volta
+        /// <summary>
         public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageSize, string externalId, string query, string fields)
         {
             pagedCustomer = null; //lo azzera prima della chiamata in modo da ottenere la pagina 0
-            return GetCustomers(ref pagedCustomer, CustomersPage.first, pageSize, 0, externalId, query, fields);
+            return GetCustomers(ref pagedCustomer, PageRefEnum.first, pageSize, 0, externalId, query, fields);
         }
-        //chiamata per ottenere le altre pagine, da effetuarsi quando si chiamano i customer successivamente alla prima pagina
-        public bool GetCustomers(ref PagedCustomer pagedCustomer, CustomersPage page)
+        /// <summary>
+        /// Ottiene le altre pagine customers, da effetuarsi quando si chiamano i customer successivamente alla prima pagina
+        /// </summary>
+        public bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page)
         {
             if (pagedCustomer == null)
                 return false;
             else
                 return GetCustomers(ref pagedCustomer, page, pagedCustomer.page.size, 0, null, null, null);
         }
-        //chiamata per ottenere le altre pagine specificando il n. di pagina esatto
+        /// <summary>
+        /// Ottiene le altre pagine customers specificando il n. di pagina esatto
+        /// </summary>
         public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageNumber)
         {
             if (pagedCustomer == null)
                 return false;
             else
-                return GetCustomers(ref pagedCustomer, CustomersPage.none, pagedCustomer.page.size, pageNumber, null, null, null);
+                return GetCustomers(ref pagedCustomer, PageRefEnum.none, pagedCustomer.page.size, pageNumber, null, null, null);
         }
-        private bool GetCustomers(ref PagedCustomer pagedCustomer, CustomersPage page, int pageSize, int pageNumber, string externalId, string query, string fields)
+
+        private bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page, int pageSize, int pageNumber, string externalId, string query, string fields)
         {
             /* parameters:            
              * nodeId: Identifier of the node where you want to do the search  Required:Yes   (
@@ -49,7 +55,7 @@ namespace ContactHubSdkLibrary.SDKclasses
              * fields: Comma - separated list of properties to include in the response  Required:No
              */
 
-            if (pagedCustomer == null && page == CustomersPage.first)
+            if (pagedCustomer == null && page == PageRefEnum.first)
             {
                 string querySTR = String.Format("/customers?nodeId={0}", _node);
                 /* crea la stringa */
@@ -76,19 +82,19 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 return true;
             }
-            else if (page != CustomersPage.none)  //pagine relative first|last|next|prev
+            else if (page != PageRefEnum.none)  //pagine relative first|last|next|prev
             {
                 //in questi casi il link contiene anche i filtri applicati precedentemente 
                 string otherPageUrl = null;
                 switch (page)
                 {
-                    case CustomersPage.first:
+                    case PageRefEnum.first:
                         otherPageUrl = pagedCustomer._links.first.href;
                         break;
-                    case CustomersPage.last:
+                    case PageRefEnum.last:
                         otherPageUrl = pagedCustomer._links.last.href;
                         break;
-                    case CustomersPage.next:
+                    case PageRefEnum.next:
                         if (pagedCustomer._links.next != null)
                         {
                             otherPageUrl = pagedCustomer._links.next.href;
@@ -98,7 +104,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                             return false; //ritorna pagina non valida
                         }
                         break;
-                    case CustomersPage.previous:
+                    case PageRefEnum.previous:
                         if (pagedCustomer._links.prev != null)
                         {
                             otherPageUrl = pagedCustomer._links.prev.href;
@@ -120,7 +126,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 return true;
             }
-            else if (page == CustomersPage.none)
+            else if (page == PageRefEnum.none)
             {
                 //è un page number specifico. Può ottenere il link semplicemente sostituendo il page number da link 'self'
                 string currentUrl = pagedCustomer._links.self.href;
@@ -145,7 +151,6 @@ namespace ContactHubSdkLibrary.SDKclasses
                     if (!param.StartsWith("page="))
                     {
                         currentQuery += String.Format("{0}{1}", (isFirst ? "?" : "&"), param);
-
                     }
                     else
                     {

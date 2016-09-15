@@ -1,12 +1,17 @@
 ﻿using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace ContactHubSdkLibrary.Models
 {
+    public enum EventModeEnum
+    {
+        ACTIVE,
+        PASSIVE
+    }
+
     public enum BringBackPropertyTypeEnum
     {
         [Display(Name = "SESSION_ID")]
@@ -79,38 +84,33 @@ namespace ContactHubSdkLibrary.Models
             }
         }
 
-        public List<EventBaseProperty> properties { get; set; }
-        // public object contextInfo { get; set; }   //DA COMPLETARE DOPO IL 19
+        public EventBaseProperty properties { get; set; }
         [JsonProperty("date")]
         public string _date { get; set; }
         [JsonProperty("_date")]
         [JsonIgnore]
         public DateTime date
         {
+            //format:  2016-09-15T08:41:20.224+0000
             get
             {
-                if (_date != null)
-                {
-                    return
-                         DateTime.ParseExact(_date,
-                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                       CultureInfo.InvariantCulture,
-                                       DateTimeStyles.AssumeUniversal |
-                                       DateTimeStyles.AdjustToUniversal);
-                }
-                else
+                var currentValue = _date;
+                if (currentValue == null)
                 {
                     return DateTime.MinValue;
                 }
-            }
-            set
-            {
-                try
+                else
                 {
-                    _date = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    return Convert.ToDateTime(_date);
                 }
-                catch { _date = null; }
             }
+            set { }
         }
+    }
+    public class PagedEvent
+    {
+        public EmbeddedEvents _embedded { get; set; }
+        public PageLink _links { get; set; }
+        public Page page { get; set; }
     }
 }

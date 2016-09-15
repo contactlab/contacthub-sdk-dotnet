@@ -66,6 +66,7 @@
     <Compile Include="SDKclasses\CHubNode.Events.cs" />
     <Compile Include="SDKclasses\CHubNode.Customers.cs" />
     <Compile Include="SDKclasses\CHubNode.Connections.cs" />
+    <Compile Include="WebResponseExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

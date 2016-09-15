@@ -87,14 +87,31 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     querySTR += String.Format("&customerId={0}", WebUtility.UrlEncode(customerID));
                 }
-                //if (!string.IsNullOrEmpty(query))
-                //{
-                //    querySTR += String.Format("&query={0}", WebUtility.UrlEncode(query));
-                //}
-                //if (!string.IsNullOrEmpty(fields))
-                //{
-                //    querySTR += String.Format("&fields={0}", WebUtility.UrlEncode(fields));
-                //}
+                if (type != null)
+                {
+                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventTypeEnum>.GetDisplayValue((EventTypeEnum)type);
+                    querySTR += String.Format("&type={0}", WebUtility.UrlEncode(displayValue));
+                }
+                if (context != null)
+                {
+                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventContextEnum>.GetDisplayValue((EventContextEnum)context);
+                    querySTR += String.Format("&type={0}", WebUtility.UrlEncode(displayValue));
+                }
+                if (mode != null)
+                {
+                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventModeEnum>.GetDisplayValue((EventModeEnum)mode);
+                    querySTR += String.Format("&mode={0}", WebUtility.UrlEncode(displayValue));
+                }
+                if (dateFrom != null)
+                {
+                    string dateStr = ((DateTime)dateFrom).ToString("o");//.ToString("yyyy-MM-dd");
+                    querySTR += String.Format("&dateFrom={0}", WebUtility.UrlEncode(dateStr));
+                }
+                if (dateTo != null)
+                {
+                    string dateStr = ((DateTime)dateTo).ToString("o");//.ToString("yyyy-MM-dd");
+                    querySTR += String.Format("&dateTo={0}", WebUtility.UrlEncode(dateStr));
+                }
                 querySTR += String.Format("&size={0}", pageSize);
                 querySTR += String.Format("&page={0}", 0); //first page
 
@@ -187,15 +204,22 @@ namespace ContactHubSdkLibrary.SDKclasses
             return false; //ritorna pagina non valida
         }
 
-
-
-
-        //        Get Customer Event(context, type)
-        //Senza filtro: GET /workspaces/{id-workspace
-        //    }/events? customerId = { customerId }
-        //Con filtro: GET /workspaces/{id-workspace
-        //}/events? customerId = { customerId }&context={context}&type={type}
-
+        /// <summary>
+        /// Get single event by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Event GetEvent(string id)
+        {
+            Event returnValue = null;
+            string jsonResponse = DoGetWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
+            returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse) : null);
+            return returnValue;
+        }
+        //public void DeleteEvent(string id)
+        //{
+        //    string jsonResponse = DoDeleteWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
+        //}
         #endregion
     }
 }

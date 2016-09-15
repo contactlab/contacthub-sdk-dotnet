@@ -106,7 +106,7 @@ namespace ConsoleSample
             */
             #endregion
 
-            #region Example: get customer by query  (DA TESTARE)
+            #region Example: get customer by query (DA TESTARE)
             /*
             currentNode.GetCustomers(ref pagedCustomers, null, "externalId='2dc51963-4a15-4ffa-943d-16bcc28d19e0'", null);
             */
@@ -441,11 +441,13 @@ namespace ConsoleSample
             */
             #endregion
 
-            #region Example: get events
+            #region Example: get customers events (with paging)
+            /*
             if (currentNode.isValid)
             {
                 List<Event> allEvents = new List<Event>();
-                int pageSize = 2;
+                int pageSize = 3;
+                //filter by customer id (required)
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, null, null);
                 if (pageIsValid)
                 {
@@ -459,8 +461,72 @@ namespace ConsoleSample
                     }
                 }
             }
+            */
+            #endregion
+
+            #region Example: get customers events filtered by customer id (required) + eventtype
+            /*
+            if (currentNode.isValid)
+            {
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
+            }
+            */
+            #endregion
+
+            #region Example: get customers events filtered  by customer id (required) + eventtype + context
+            /*
+            if (currentNode.isValid)
+            {
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
+            }
+            */
+            #endregion
+
+            #region Example: get customers events filtered  by customer id (required) + mode
+            /*
+            if (currentNode.isValid)
+            {
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",null,null, EventModeEnum.ACTIVE, null, null);
+            }
+            */
+            #endregion
+
+            #region Example: get customers events filtered  by customer id (required) + date from|to  ( DA TESTARE, SEMBRA NON FUNZIONARE)
+
+            if (currentNode.isValid)
+            {
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+            }
 
             #endregion
+
+            #region Example: get event by id
+            /*
+            if (currentNode.isValid)
+            {
+                Event ev = currentNode.GetEvent("a47c02d8-c8e0-4d8a-93c0-d35988eaa204");
+            }
+            */
+            #endregion
+
+
+
         }
     }
 }

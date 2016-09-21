@@ -6,4 +6,5 @@
 - da vedere contextInfo dopo il 19. da leggere dinamicamente da /workspaces/{id-workspace}/models/contexts
 - gestione degli errori
 - implementare isvalid sul nodo
-- problema delle date  (Attenzioen dopo il 19 uniformare a iso 8601)
+- problema delle date  (Attenzione dopo il 19 uniformare a iso 8601)
+- verificare schema della query

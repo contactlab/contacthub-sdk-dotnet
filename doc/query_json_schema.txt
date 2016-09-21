@@ -1,0 +1,197 @@
+{
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"required": true
+		},
+		"query": {
+			"oneOf": [{
+				"$ref": "#/definitions/SimpleQuery"
+			}, {
+				"$ref": "#/definitions/CombinedQuery"
+			}]
+		}
+	},
+	"additionalProperties": false,
+
+	"definitions": {
+
+		"CompositeCondition": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"pattern": "^composite$",
+					"required": true
+				},
+				"conjunction": {
+					"type": "string",
+					"enum": [
+						"and",
+						"or"
+					],
+					"required": true
+				},
+				"conditions": {
+					"type": "array",
+					"items": {
+						"oneOf": [{
+							"$ref": "#/definitions/AtomicCondition"
+						}, {
+							"$ref": "#/definitions/CompositeCondition"
+						}, {
+							"$ref": "#/definitions/CompositeNestedCondition"
+						}]
+					},
+					"required": true
+				}
+				
+			},
+			"additionalProperties": false
+		},
+
+		"CompositeNestedCondition": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"pattern": "^composite-nested$",
+					"required": true
+				},
+				"conjunction": {
+					"type": "string",
+					"enum": [
+						"and",
+						"or"
+					],
+					"required": true
+				},
+				"conditions": {
+					"type": "array",
+					"items": {
+						"oneOf": [{
+							"$ref": "#/definitions/AtomicCondition"
+						}, {
+							"$ref": "#/definitions/CompositeCondition"
+						}, {
+							"$ref": "#/definitions/CompositeNestedCondition"
+						}]
+					},
+					"required": true
+				}
+			},
+			"additionalProperties": false
+		},
+		
+		"AtomicCondition": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"pattern": "^atomic$",
+					"required": true
+				},
+				"attribute": {
+					"type": "string",
+					"required": true
+				},
+				"operator": {
+					"type": "string",
+					"enum": [
+						"EQUALS",
+						"NOT_EQUALS",
+						"BETWEEN",
+						"GTE",
+						"GT",
+						"LTE",
+						"LT",
+						"IS_NULL",
+						"IS_NOT_NULL",
+						"IN",
+						"NOT_IN"
+					],
+					"required": true
+				},
+				"value": {
+					"type": [
+						"string",
+						"number",
+						"array"
+					],
+					"required": true
+				}
+			},
+			"additionalProperties": false
+		},
+
+		"SimpleQuery": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"pattern": "^simple$",
+					"required": true
+				},
+				"name": {
+					"type": "string"
+				},
+				"are": {
+					"type": "object",
+					"properties": {
+						"condition": {
+							"type": "object",
+							"required": true,
+							"oneOf": [{
+								"$ref": "#/definitions/AtomicCondition"
+							}, {
+								"$ref": "#/definitions/CompositeCondition"
+							}, {
+								"$ref": "#/definitions/CompositeNestedCondition"
+							}]
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+
+		"CombinedQuery": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"pattern": "^combined$",
+					"required": true
+				},
+				"name": {
+					"type": "string"
+				},
+				"conjunction": {
+					"type": "string",
+					"enum": [
+						"INTERSECT",
+						"UNION",
+						"EXCEPT"
+					],
+					"required": true
+				},
+				"queries": {
+					"type": "array",
+					"required": true,
+					"items": {
+                      "oneOf": [{
+                          "$ref": "#/definitions/SimpleQuery"
+                      }, {
+                          "$ref": "#/definitions/CombinedQuery"
+                      }]
+					}
+				}
+			},
+			"additionalProperties": false
+		}
+
+	}
+
+}

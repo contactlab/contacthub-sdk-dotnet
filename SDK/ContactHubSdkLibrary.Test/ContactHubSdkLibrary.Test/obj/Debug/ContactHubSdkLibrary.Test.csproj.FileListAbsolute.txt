@@ -1,0 +1,11 @@
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\ContactHubSdkLibrary.Test.dll
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\ContactHubSdkLibrary.Test.pdb
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\ContactHubSdkLibrary.dll
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.framework.dll
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\ContactHubSdkLibrary.pdb
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.framework.xml
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.csprojResolveAssemblyReference.cache
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.dll
+C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.pdb

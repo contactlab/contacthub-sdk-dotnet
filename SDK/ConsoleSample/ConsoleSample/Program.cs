@@ -1,11 +1,9 @@
-﻿using ContactHubSdkLibrary;
-using ContactHubSdkLibrary.Models;
+﻿using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
 
 namespace ConsoleSample
 {
@@ -100,11 +98,20 @@ namespace ConsoleSample
             */
             #endregion
 
-            #region  Example: get customer by externalID
+            #region  Example: get customer by externalID (using GetCustomers() )
             /*
             if (currentNode.isValid)
             {
                 bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+            }
+            */
+            #endregion
+
+            #region  Example: get customer by externalID (using GetCustomer() )
+            /*
+            if (currentNode.isValid)
+            {
+                Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
             }
             */
             #endregion
@@ -190,14 +197,14 @@ namespace ConsoleSample
             #endregion
 
             #region Example: update customer (partial update)
-            currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
-            
+            Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
+
             PostCustomer partialData = new PostCustomer();
             partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
 
             if (currentNode.isValid)
             {
-                string customerID = pagedCustomers._embedded.customers.First().id;
+                string customerID = c.id;
                 Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
             }
             #endregion

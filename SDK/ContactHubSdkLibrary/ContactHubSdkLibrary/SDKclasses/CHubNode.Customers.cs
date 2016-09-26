@@ -1,6 +1,7 @@
 ﻿using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace ContactHubSdkLibrary.SDKclasses
@@ -204,7 +205,12 @@ namespace ContactHubSdkLibrary.SDKclasses
 
             return returnCustomer;
         }
-        public Customer GetCustomer(string id)
+        /// <summary>
+        /// Return a customer by internal ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Customer GetCustomerByID(string id)
         {
             Customer returnValue = null;
             string jsonResponse = DoGetWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
@@ -214,9 +220,32 @@ namespace ContactHubSdkLibrary.SDKclasses
         }
 
         /// <summary>
+        /// Return a customer by external ID
+        /// </summary>
+        /// <param name="externalID"></param>
+        /// <returns></returns>
+        public Customer GetCustomerByExternalID(string externalID)
+        {
+            Customer returnValue = null;
+            PagedCustomer pagedCustomers = null;
+            //richiede i customers filtrati per externalID
+            GetCustomers(ref pagedCustomers, 1, externalID, null, null);
+
+            if (pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
+            {
+                returnValue = pagedCustomers._embedded.customers.First();
+            }
+            else
+            {
+                returnValue = null;
+            }
+            return returnValue;
+        }
+
+        /// <summary>
         /// Add a new customer (force update if exists)
         /// </summary>
-        public Customer UpdateCustomer(PostCustomer customer,string customerID, bool fullUpdate = false)
+        public Customer UpdateCustomer(PostCustomer customer, string customerID, bool fullUpdate = false)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -228,7 +257,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (fullUpdate)
             {
                 //aggiorna tutto il customer intero
-                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}",customerID), postData, ref statusCode);
+                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
             }
             else
             {

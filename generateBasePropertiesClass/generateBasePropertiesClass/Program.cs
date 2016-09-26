@@ -23,6 +23,7 @@ namespace generateBasePropertiesClass
             generateEventContext();
         }
 
+
         static void generateEventContext()
         {
 
@@ -38,7 +39,7 @@ namespace generateBasePropertiesClass
             JToken embedded = propertiesTree["_embedded"];
             JToken contexts = embedded["contexts"];
             List<String> enumList = new List<string>();
-            foreach(JToken c in contexts.Children())
+            foreach (JToken c in contexts.Children())
             {
                 var item = c["id"].ToString();
 
@@ -51,7 +52,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "using System.Globalization;\n";
             outputFileStr += "using Newtonsoft.Json;\n";
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
-            
+
             //genera l'enum con l'elenco dei context
             DictionaryEntry dic = new DictionaryEntry();
             dic.Key = "EventContextEnum";
@@ -164,10 +165,10 @@ namespace generateBasePropertiesClass
 
             //genera l'enum con l'elenco delle classi generate di tipo evento
             List<String> classEnum = new List<string>();
-            foreach(String s in generatedClass)
+            foreach (String s in generatedClass)
             {
                 if (s.Contains(": EventBaseProperty"))
-                    classEnum.Add(  lowercaseFirst( s.Replace(": EventBaseProperty","").Replace("EventProperty","")));
+                    classEnum.Add(lowercaseFirst(s.Replace(": EventBaseProperty", "").Replace("EventProperty", "")));
             }
             DictionaryEntry dic = new DictionaryEntry();
             dic.Key = "EventTypeEnum";

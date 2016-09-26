@@ -162,7 +162,10 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return false; //ritorna pagina non valida
         }
-        public Customer AddCustomer(PostCustomer customer)
+        /// <summary>
+        /// Add a new customer (force update if exists)
+        /// </summary>
+        public Customer AddCustomer(PostCustomer customer, bool forceUpdate = false)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -187,8 +190,18 @@ namespace ContactHubSdkLibrary.SDKclasses
             //    postData = o.ToString();
             //}
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest("/customers", postData,ref statusCode);
+            string jsonResponse = DoPostWebRequest("/customers", postData, ref statusCode);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+
+            //simula un inserimento fallito, per causa doppioni. Questa funzionalità andrà testata dopo il rilascio di hub di metà ottobre '16, utilizzando l'errore specifico
+            //in teoria ritorna l'id dell'customer esistente, che va quindi usato per l'update
+            bool isError = (returnCustomer.id == null);
+            if (isError && forceUpdate)
+            {
+                string existingID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
+                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}", existingID), postData, ref statusCode);
+            }
+
             return returnCustomer;
         }
         public Customer GetCustomer(string id)
@@ -199,6 +212,33 @@ namespace ContactHubSdkLibrary.SDKclasses
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
             return returnValue;
         }
+
+        /// <summary>
+        /// Add a new customer (force update if exists)
+        /// </summary>
+        public Customer UpdateCustomer(PostCustomer customer,string customerID, bool fullUpdate = false)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            string postData = JsonConvert.SerializeObject(customer, settings);
+            string statusCode = null;
+            string jsonResponse = null;
+            if (fullUpdate)
+            {
+                //aggiorna tutto il customer intero
+                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}",customerID), postData, ref statusCode);
+            }
+            else
+            {
+                //aggiorna solo i campi valorizzati del customer
+                jsonResponse = DoPatchWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
+            }
+            Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+            return returnCustomer;
+        }
+
         public void DeleteCustomer(string id)
         {
             string jsonResponse = DoDeleteWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));

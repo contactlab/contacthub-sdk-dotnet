@@ -8,6 +8,10 @@ namespace ContactHubSdkLibrary.SDKclasses
     public partial class CHubNode
     {
         #region Connections
+        /// <summary>
+        /// Execute GET request on hub
+        /// </summary>
+
         private string DoGetWebRequest(string functionPath, bool relativePath = true)
         {
             string jsonResponse = null;
@@ -15,6 +19,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 //controlla se è stato passato un url relativo oppure assoluto
                 string url = (relativePath ? GetUrl(functionPath) : functionPath);
+                Common.FixApiUrl(ref url);
                 var webRequest = System.Net.WebRequest.Create(url);
                 if (webRequest != null)
                 {
@@ -37,12 +42,18 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
+        /// <summary>
+        /// Execute DELETE request on hub
+        /// </summary>
+
         private string DoDeleteWebRequest(string functionPath)
         {
             string jsonResponse = null;
             try
             {
                 string url = GetUrl(functionPath);
+                Common.FixApiUrl(ref url);
+
                 var webRequest = System.Net.WebRequest.Create(url);
                 if (webRequest != null)
                 {
@@ -65,12 +76,67 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
+        /// <summary>
+        /// Execute Patch request on hub
+        /// </summary>
+        private string DoPatchWebRequest(string functionPath, string jsonData, ref string statusCode)
+        {
+            string jsonResponse = null;
+            try
+            {
+                string url = GetUrl(functionPath);
+                Common.FixApiUrl(ref url);
+
+                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
+
+                Encoding encoding = new UTF8Encoding();
+
+                string postData = jsonData;
+
+                byte[] data = encoding.GetBytes(postData);
+
+                httpWReq.Method = "PATCH";
+                httpWReq.ContentType = "application/json";
+                httpWReq.Headers.Add("Authorization", "Bearer " + _token);
+                httpWReq.ContentLength = data.Length;
+
+                Stream stream = httpWReq.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
+                string s = response.ToString();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                String temp = null;
+                while ((temp = reader.ReadLine()) != null)
+                {
+                    jsonResponse += temp;
+                }
+                statusCode = response.StatusCode.ToString();
+                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
+                if (string.IsNullOrEmpty(jsonResponse))
+                {
+                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                jsonResponse = "{\"error\":\"" + ex.Message + "\"}";
+            }
+            return jsonResponse;
+        }
+        /// <summary>
+        /// Execute POST request on hub
+        /// </summary>
         private string DoPostWebRequest(string functionPath, string jsonData,ref string statusCode)
         {
             string jsonResponse = null;
             try
             {
                 string url = GetUrl(functionPath);
+                Common.FixApiUrl(ref url);
 
 
                 HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
@@ -113,12 +179,17 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
-        private string DoPutWebRequest(string functionPath, string jsonData)
+        /// <summary>
+        /// Execute PUT request on hub
+        /// </summary>
+        private string DoPutWebRequest(string functionPath, string jsonData, ref string statusCode)
         {
             string jsonResponse = null;
             try
             {
                 string url = GetUrl(functionPath);
+                Common.FixApiUrl(ref url);
+
                 HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
                 Encoding encoding = new UTF8Encoding();
                 string postData = jsonData;
@@ -130,13 +201,19 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Stream stream = httpWReq.GetRequestStream();
                 stream.Write(data, 0, data.Length);
                 stream.Close();
-                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
                 string s = response.ToString();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
                 String temp = null;
                 while ((temp = reader.ReadLine()) != null)
                 {
                     jsonResponse += temp;
+                }
+                statusCode = response.StatusCode.ToString();
+                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
+                if (string.IsNullOrEmpty(jsonResponse))
+                {
+                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
                 }
             }
             catch (Exception ex)
@@ -146,6 +223,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
+
         private string GetBaseUrl()
         {
             string returnValue = null;

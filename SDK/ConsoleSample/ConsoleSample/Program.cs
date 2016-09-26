@@ -1,9 +1,11 @@
-﻿using ContactHubSdkLibrary.Models;
+﻿using ContactHubSdkLibrary;
+using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ConsoleSample
 {
@@ -15,6 +17,8 @@ namespace ConsoleSample
             PagedCustomer pagedCustomers = null;
             PagedEvent pagedEvents = null;
             string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
+            List<Customer> allCustomers = new List<Customer>();
+
             #endregion
 
             #region Example: init contacthub node 
@@ -29,7 +33,6 @@ namespace ConsoleSample
             #region Example: get all customers
             if (currentNode.isValid)
             {
-                List<Customer> allCustomers = new List<Customer>();
                 int pageSize = 5;
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
                 if (pageIsValid)
@@ -152,10 +155,51 @@ namespace ConsoleSample
             string customerID = null;
             if (currentNode.isValid)
             {
-                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer,false);
                 customerID = createdCustomer.id;
             }
             */
+            #endregion
+
+            #region Example: force update on existing customer on addCustomer
+            /*
+            currentNode.GetCustomers(ref pagedCustomers,110,"2dc51963-4a15-4ffa-943d-16bcc28d19e0",null,null);
+          
+            PostCustomer updateCustomer = pagedCustomers._embedded.customers.First();
+            updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+
+            if (currentNode.isValid)
+            {
+                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  //force update
+            }
+            */
+            #endregion
+
+            #region Example: update customer (full update)
+            /*
+            currentNode.GetCustomers(ref pagedCustomers,110,"2dc51963-4a15-4ffa-943d-16bcc28d19e0",null,null);
+          
+            Customer updateCustomer = pagedCustomers._embedded.customers.First();
+            updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+
+            if (currentNode.isValid)
+            {
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer,updateCustomer.id, true);
+            }
+            */
+            #endregion
+
+            #region Example: update customer (partial update)
+            currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+            
+            PostCustomer partialData = new PostCustomer();
+            partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
+
+            if (currentNode.isValid)
+            {
+                string customerID = pagedCustomers._embedded.customers.First().id;
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
+            }
             #endregion
 
             #region Example: create new customers in node with extended properties

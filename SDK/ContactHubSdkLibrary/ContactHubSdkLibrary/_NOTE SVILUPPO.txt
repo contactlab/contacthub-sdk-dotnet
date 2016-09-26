@@ -8,3 +8,7 @@
 - implementare isvalid sul nodo
 - problema delle date  (Attenzione dopo il 19 uniformare a iso 8601)
 - verificare schema della query
+
+
+DA SISTEMARE:
+- la addcustomer se trova un doppione dovrebbe fare l'update sull'id esistente, al momento l'id è cablato perchè la non è ancora implementato il controllo in hub

@@ -307,7 +307,7 @@ namespace generateBasePropertiesClass
             processString = processString.Replace("$NAME$", name);
             return processString;
         }
-        private static string processNumber(BasePropertiesItem p)
+        private static string processNumberDecimal(BasePropertiesItem p)
         {
             string name = p.name;
             if (!cs.IsValidIdentifier(name))
@@ -322,6 +322,23 @@ namespace generateBasePropertiesClass
             if (p.description != null)
                 processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
             processString += String.Format("    public decimal {0} {{get;set;}}\n", JsonUtil.fixName(name));
+            return processString;
+        }
+        private static string processNumberInteger(BasePropertiesItem p)
+        {
+            string name = p.name;
+            if (!cs.IsValidIdentifier(name))
+            {
+                name = "@" + name;
+            }
+            string processString = "";
+            if (p.pattern != null)
+            {
+                processString += String.Format("\t[ValidatePattern(@\"{0}\")]\n", p.pattern);
+            }
+            if (p.description != null)
+                processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
+            processString += String.Format("    public int {0} {{get;set;}}\n", JsonUtil.fixName(name));
             return processString;
         }
         private static string processBoolean(BasePropertiesItem p)
@@ -434,9 +451,13 @@ namespace generateBasePropertiesClass
                                         }
                                         break;
                                     case "number":
+                                        {
+                                            outputFileStr += processNumberDecimal(p);
+                                        }
+                                        break;
                                     case "integer":
                                         {
-                                            outputFileStr += processNumber(p);
+                                            outputFileStr += processNumberInteger(p);
                                         }
                                         break;
                                     case "boolean":

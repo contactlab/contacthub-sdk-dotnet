@@ -20,5 +20,19 @@ public static class Common
             returnValue = returnValue.Substring(0, returnValue.Length - 1);
         }
     }
+
+    /// <summary>
+    /// Force url to https
+    /// </summary>
+    /// <param name="url"></param>
+    public static void FixApiUrl(ref string url)
+    {
+        //fix url
+        if (url.Contains("http://"))
+        {
+            url = url.Replace("http://", "https://");
+        }
+
+    }
 }
 

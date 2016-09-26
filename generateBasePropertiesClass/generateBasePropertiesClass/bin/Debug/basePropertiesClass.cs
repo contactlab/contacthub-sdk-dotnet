@@ -79,7 +79,7 @@ public class Contacts
 	[Display(Name="other contacts")]
 	public List<OtherContacts> otherContacts {get;set;}
 	[Display(Name="mobile device")]
-	public List<MobileDevice> mobileDevice {get;set;}
+	public List<MobileDevices> mobileDevices {get;set;}
 }
 
 
@@ -117,28 +117,28 @@ public enum OtherContactsTypeEnum {
 	[Display(Name="OTHER")]
 	OTHER
 }
-public class MobileDevice
+public class MobileDevices
 {
 	public string identifier {get;set;}
 	public string name {get;set;}
 [JsonProperty("type")]public string _type {get;set;}
 [JsonProperty("hidden_type")][JsonIgnore]
-					public MobileDeviceTypeEnum type 
+					public MobileDevicesTypeEnum type 
 			{
 				get
 				{
-						MobileDeviceTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetValueFromDisplayName(_type);
+						MobileDevicesTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<MobileDevicesTypeEnum>.GetValueFromDisplayName(_type);
 						return enumValue;
 				}
 				set
 				{
-						var displayValue = ContactHubSdkLibrary.EnumHelper<MobileDeviceTypeEnum>.GetDisplayValue(value);
+						var displayValue = ContactHubSdkLibrary.EnumHelper<MobileDevicesTypeEnum>.GetDisplayValue(value);
 						_type = (displayValue=="NoValue"? null : displayValue);
 				}
 			}
 			}
 
-public enum MobileDeviceTypeEnum {
+public enum MobileDevicesTypeEnum {
 	NoValue,
 	[Display(Name="IOS")]
 	IOS,
@@ -201,8 +201,8 @@ public class Educations
 			}
 				public string schoolName {get;set;}
 	public string schoolConcentration {get;set;}
-	public decimal start_year {get;set;}
-	public decimal end_year {get;set;}
+	public int startYear {get;set;}
+	public int endYear {get;set;}
 	public Boolean isCurrent {get;set;}
 }
 
@@ -264,7 +264,7 @@ public class SocialProfile
 	[Display(Name="facebook")]
 	public string facebook {get;set;}
 	[Display(Name="google+")]
-	public string @google {get;set;}
+	public string google {get;set;}
 	[Display(Name="instagram")]
 	public string instagram {get;set;}
 	[Display(Name="linkedin")]
@@ -282,71 +282,11 @@ public class Jobs
 	public string companyIndustry {get;set;}
 	public string companyName {get;set;}
 	public string jobTitle {get;set;}
-	[JsonProperty("start_date")]
-	public string _start_date {get;set;}
-	[JsonProperty("_start_date")]
-	[JsonIgnore]
- 
-				 public DateTime start_date
-		{
-			get
-			{
-				if (_start_date != null)
-				{
-					return
-						 DateTime.ParseExact(_start_date,
-									   "yyyy-MM-dd",
-									   CultureInfo.InvariantCulture,
-									   DateTimeStyles.AssumeUniversal |
-									   DateTimeStyles.AdjustToUniversal);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				try
-				{
-					_start_date = value.ToString("yyyy-MM-dd");
-				}
-				catch { _start_date = null; }
-			}
-		}
-				[JsonProperty("end_date")]
-	public string _end_date {get;set;}
-	[JsonProperty("_end_date")]
-	[JsonIgnore]
- 
-				 public DateTime end_date
-		{
-			get
-			{
-				if (_end_date != null)
-				{
-					return
-						 DateTime.ParseExact(_end_date,
-									   "yyyy-MM-dd",
-									   CultureInfo.InvariantCulture,
-									   DateTimeStyles.AssumeUniversal |
-									   DateTimeStyles.AdjustToUniversal);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				try
-				{
-					_end_date = value.ToString("yyyy-MM-dd");
-				}
-				catch { _end_date = null; }
-			}
-		}
-				public Boolean isCurrent {get;set;}
+	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
+	public string startDate {get;set;}
+	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
+	public string endDate {get;set;}
+	public Boolean isCurrent {get;set;}
 }
 
 
@@ -370,7 +310,7 @@ public class Subscriptions
 						_kind = (displayValue=="NoValue"? null : displayValue);
 				}
 			}
-				public Boolean enable {get;set;}
+				public Boolean subscribed {get;set;}
 	[JsonProperty("dateStart")]
 	public string _dateStart {get;set;}
 	[JsonProperty("_dateStart")]

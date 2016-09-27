@@ -1,4 +1,5 @@
-﻿using ContactHubSdkLibrary.Models;
+﻿using ContactHubSdkLibrary;
+using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ConsoleSample
         {
             #region common variables
             PagedCustomer pagedCustomers = null;
-            PagedEvent pagedEvents = null;
+            //			PagedEvent pagedEvents = null;
             string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
             List<Customer> allCustomers = new List<Customer>();
 
@@ -138,12 +139,13 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customer with query builder
-            QueryBuilder qb = new QueryBuilder();
-            qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Diego" });
-            qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Feltrin" });
-            currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
+            /*
+			QueryBuilder qb = new QueryBuilder();
+			qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Diego" });
+			qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Feltrin" });
+			currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
+			*/
             #endregion
-
 
             #region Example: get selected fields form customer  
             //return customer with only values in selected fields.
@@ -220,16 +222,18 @@ namespace ConsoleSample
             #endregion
 
             #region Example: update customer (partial update)
-            Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
+            /*
+			Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
 
-            PostCustomer partialData = new PostCustomer();
-            partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
+			PostCustomer partialData = new PostCustomer();
+			partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
 
-            if (currentNode.isValid)
-            {
-                string customerID = c.id;
-                Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
-            }
+			if (currentNode.isValid)
+			{
+				string customerID = c.id;
+				Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
+			}
+            */
             #endregion
 
             #region Example: create new customers in node with extended properties
@@ -441,22 +445,22 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add job to customer
-            /*
-			Customer myCustomer = currentNode.GetCustomer("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+            if (true)
+            {
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Jobs newJob = new Jobs()
+                {
+                    id = "9cb52d39-233b-4739-9830-bcf02186930e",
+                    companyIndustry = "123",
+                    companyName = "123",
+                    jobTitle = "123",
+                    startDate = DateTime.Now,
+                    endDate = DateTime.Now,
+                    isCurrent = true
+                };
 
-			Jobs newJob = new Jobs()
-			{
-				id = "9cb52d39-233b-4739-9830-bcf02186930e",
-				companyIndustry = "123",
-				companyName = "123",
-				jobTitle = "123",
-				start_date = DateTime.Now,
-				end_date = DateTime.Now,
-				isCurrent = true
-			};
-
-			Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
-			*/
+                Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+            }
             #endregion
 
             #region  Example: get job detail
@@ -601,16 +605,16 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + date from|to  ( DA TESTARE, SEMBRA NON FUNZIONARE)
-
-            if (currentNode.isValid)
-            {
-                List<Event> allEvents = new List<Event>();
-                int pageSize = 3;
-                allEvents.Clear();
-                pagedEvents = null;
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
-            }
-
+            /*
+			if (currentNode.isValid)
+			{
+				List<Event> allEvents = new List<Event>();
+				int pageSize = 3;
+				allEvents.Clear();
+				pagedEvents = null;
+				bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+			}
+            */
             #endregion
 
             #region Example: get event by id
@@ -620,6 +624,34 @@ namespace ConsoleSample
 				Event ev = currentNode.GetEvent("a47c02d8-c8e0-4d8a-93c0-d35988eaa204");
 			}
 			*/
+            #endregion
+
+            #region Example: get customer tags
+
+            if (currentNode.isValid)
+            {
+                Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+            }
+
+            #endregion
+
+            #region Example: add customers tag
+
+            if (currentNode.isValid)
+            {
+                Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+                currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
+            }
+
+            #endregion
+
+            #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE)
+
+            if (currentNode.isValid)
+            {
+                Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+            }
+
             #endregion
 
         }

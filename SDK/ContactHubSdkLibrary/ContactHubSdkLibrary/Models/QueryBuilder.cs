@@ -3,29 +3,29 @@
 namespace ContactHubSdkLibrary.Models
 {
 
-	public enum QueryBuilderOperatorEnum
-	{
-		EQUALS,
-		NOT_EQUALS,
-		BETWEEN,
-		GTE,
-		GT,
-		LTE,
-		LT,
-		IS_NULL,
-		IS_NOT_NULL,
-		IN,
-		NOT_IN
-	}
+    public enum QueryBuilderOperatorEnum
+    {
+        EQUALS,
+        NOT_EQUALS,
+        BETWEEN,
+        GTE,
+        GT,
+        LTE,
+        LT,
+        IS_NULL,
+        IS_NOT_NULL,
+        IN,
+        NOT_IN
+    }
 
-	public enum QueryBuilderConjunctionEnum
-	{
-		AND,
-		OR
-	}
+    public enum QueryBuilderConjunctionEnum
+    {
+        AND,
+        OR
+    }
 
 
-	/*
+    /*
 	 *string querySTR = @"
 								{
    
@@ -66,73 +66,73 @@ namespace ContactHubSdkLibrary.Models
 
 	*/
 
-	public class QueryBuilderItem
-	{
-		public string attributeName { get; set; }
+    public class QueryBuilderItem
+    {
+        public string attributeName { get; set; }
 
-		public string attributeValue { get; set; }
+        public string attributeValue { get; set; }
 
-		public QueryBuilderOperatorEnum attributeOperator { get; set; }
-	}
-
-
-	public class QueryBuilder
-	{
-		List<QueryBuilderItem> queries = null;
+        public QueryBuilderOperatorEnum attributeOperator { get; set; }
+    }
 
 
-		public QueryBuilder()
-		{
-			//init
-			queries = new List<QueryBuilderItem>();
-		}
+    public class QueryBuilder
+    {
+        List<QueryBuilderItem> queries = null;
 
-		public void AddQuery(QueryBuilderItem item)
-		{
-			queries.Add(item);
-		}
 
-		public string GenerateQuery(QueryBuilderConjunctionEnum conjunction)
-		{
-			string conjunctionSTR = (conjunction == QueryBuilderConjunctionEnum.AND ? "INTERSECT" : "UNION");
-			string querySTR = @"{
+        public QueryBuilder()
+        {
+            //init
+            queries = new List<QueryBuilderItem>();
+        }
+
+        public void AddQuery(QueryBuilderItem item)
+        {
+            queries.Add(item);
+        }
+
+        public string GenerateQuery(QueryBuilderConjunctionEnum conjunction)
+        {
+            string conjunctionSTR = (conjunction == QueryBuilderConjunctionEnum.AND ? "INTERSECT" : "UNION");
+            string querySTR = @"{
 									""name"": ""no name"",
 									""query"": {
 												  ""type"": ""combined"",
 												  ""name"": ""no name"",
 												  ""conjunction"" : """;
-			querySTR += conjunctionSTR + @""",
+            querySTR += conjunctionSTR + @""",
 												  ""queries"" : 
 													  [";
 
-			foreach (QueryBuilderItem q in queries)
-			{
-				querySTR += "  {";
-				querySTR += @"""are"": { ";
-				querySTR += @" ""condition"": {";
-				querySTR += string.Format("\"attribute\": \"{0}\",", q.attributeName);
-				querySTR += string.Format("\"operator\": \"{0}\",", q.attributeOperator.ToString());
-				querySTR += @" ""type"": ""atomic"",";
-				querySTR += string.Format("\"value\": \"{0}\"", q.attributeValue);
-				querySTR += @"
+            foreach (QueryBuilderItem q in queries)
+            {
+                querySTR += "  {";
+                querySTR += @"""are"": { ";
+                querySTR += @" ""condition"": {";
+                querySTR += string.Format("\"attribute\": \"{0}\",", q.attributeName);
+                querySTR += string.Format("\"operator\": \"{0}\",", q.attributeOperator.ToString());
+                querySTR += @" ""type"": ""atomic"",";
+                querySTR += string.Format("\"value\": \"{0}\"", q.attributeValue);
+                querySTR += @"
 												}
 										 },
 														""name"": ""No name"",
 														""type"": ""simple""
 														}
-                        ";
+						";
                 querySTR += ",";
-			}
+            }
 
             if (querySTR.EndsWith(","))
             {
                 querySTR = querySTR.Substring(0, querySTR.Length - 1);
             }
-			querySTR += @" ]
+            querySTR += @" ]
 									}
 						}";
-			return querySTR;
-		}
-	}
+            return querySTR;
+        }
+    }
 
 }

@@ -282,11 +282,71 @@ public class Jobs
     public string companyIndustry {get;set;}
     public string companyName {get;set;}
     public string jobTitle {get;set;}
-	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
-    public string startDate {get;set;}
-	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
-    public string endDate {get;set;}
-    public Boolean isCurrent {get;set;}
+    [JsonProperty("startDate")]
+    public string _startDate {get;set;}
+    [JsonProperty("_startDate")]
+    [JsonIgnore]
+ 
+                 public DateTime startDate
+        {
+            get
+            {
+                if (_startDate != null)
+                {
+                    return
+                         DateTime.ParseExact(_startDate,
+                                       "yyyy-MM-dd",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _startDate = value.ToString("yyyy-MM-dd");
+                }
+                catch { _startDate = null; }
+            }
+        }
+                [JsonProperty("endDate")]
+    public string _endDate {get;set;}
+    [JsonProperty("_endDate")]
+    [JsonIgnore]
+ 
+                 public DateTime endDate
+        {
+            get
+            {
+                if (_endDate != null)
+                {
+                    return
+                         DateTime.ParseExact(_endDate,
+                                       "yyyy-MM-dd",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _endDate = value.ToString("yyyy-MM-dd");
+                }
+                catch { _endDate = null; }
+            }
+        }
+                public Boolean isCurrent {get;set;}
 }
 
 

@@ -212,7 +212,7 @@ namespace generateBasePropertiesClass
         private static string processString(BasePropertiesItem p)
         {
             List<String> dateTimeListField = new List<String> { "createdTime", "dateStart", "dateEnd", "updatedAt", "registeredAt" };
-            List<String> dateListField = new List<String> { "start_date", "end_date" };
+            List<String> dateListField = new List<String> { "startDate", "endDate" };
 
             string name = p.name;
             if (!cs.IsValidIdentifier(name))

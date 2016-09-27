@@ -128,18 +128,28 @@ namespace ContactHubSdkLibrary.Models
         public Page page { get; set; }
     }
 
-    public class SessionList
-    {
-        public EmbeddedSessions _embedded { get; set; }
-       // public SessionPageLink _links { get; set; }  //DA COMPLETARE
-    }
+    //public class SessionList
+    //{
+    //    public EmbeddedSessions _embedded { get; set; }
+    //   // public SessionPageLink _links { get; set; }  //DA COMPLETARE
+    //}
 
 
     public class Session
     {
+        public Session()
+        {
+            value = Guid.NewGuid().ToString();
+        }
+
+        public void ResetID()
+        {
+            value = Guid.NewGuid().ToString();
+        }
+
         public string id { get; set; }
         public string value { get; set; }
-     //   public PageLink _links { get; set; }  //DA COMPLETARE
+        public SessionPageLink _links { get; set; }
     }
 
     /* embedded è usato in contesti diversi, dentro customers e come oggetto da passare a add session */
@@ -170,6 +180,13 @@ namespace ContactHubSdkLibrary.Models
         public Link events { get; set; }
         public Link self { get; set; }
     }
+
+    public class SessionPageLink
+    {
+        public Link customer { get; set; }
+        public Link sessions { get; set; }
+        public Link self { get; set; }
+    }
     public class PageLink
     {
         public Link first { get; set; }
@@ -178,6 +195,8 @@ namespace ContactHubSdkLibrary.Models
         public Link prev { get; set; }
         public Link self { get; set; }
     }
+
+
     public class Page
     {
         public int size { get; set; }

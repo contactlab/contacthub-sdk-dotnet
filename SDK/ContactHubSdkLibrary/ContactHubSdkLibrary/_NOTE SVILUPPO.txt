@@ -12,3 +12,5 @@
 
 DA SISTEMARE:
 - la addcustomer se trova un doppione dovrebbe fare l'update sull'id esistente, al momento l'id è cablato perchè la non è ancora implementato il controllo in hub
+- la removeTag sembra non funzionare perchè la PATCH non ha effetto. -> stefano controlla
+- la removeJob e affini manca il metodo DELETE che verrà aggiunto nel prossimo sprint

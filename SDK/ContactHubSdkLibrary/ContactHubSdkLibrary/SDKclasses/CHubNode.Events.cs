@@ -1,6 +1,5 @@
 ﻿using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 
@@ -21,7 +20,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(event_, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest("/events", postData,ref statusCode);
+            string jsonResponse = DoPostWebRequest("/events", postData, ref statusCode);
             //la json response dovrebbe contenere in questo caso solo la status code perchè l'inserimento è asyncrono (coda)
             return statusCode;
         }
@@ -92,7 +91,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 if (context != null)
                 {
                     string displayValue = ContactHubSdkLibrary.EnumHelper<EventContextEnum>.GetDisplayValue((EventContextEnum)context);
-                    querySTR += String.Format("&type={0}", WebUtility.UrlEncode(displayValue));
+                    querySTR += String.Format("&context={0}", WebUtility.UrlEncode(displayValue));
                 }
                 if (mode != null)
                 {
@@ -101,12 +100,12 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 if (dateFrom != null)
                 {
-                    string dateStr = ((DateTime)dateFrom).ToString("o");//.ToString("yyyy-MM-dd");
+                    string dateStr = ((DateTime)dateFrom).ToString("yyyy-MM-ddTHH\\:mm\\:ss");//.ToString("o");//.ToString("yyyy-MM-dd");
                     querySTR += String.Format("&dateFrom={0}", WebUtility.UrlEncode(dateStr));
                 }
                 if (dateTo != null)
                 {
-                    string dateStr = ((DateTime)dateTo).ToString("o");//.ToString("yyyy-MM-dd");
+                    string dateStr = ((DateTime)dateTo).ToString("yyyy-MM-ddTHH\\:mm\\:ss"); //.ToString("o");//.ToString("yyyy-MM-dd");
                     querySTR += String.Format("&dateTo={0}", WebUtility.UrlEncode(dateStr));
                 }
                 querySTR += String.Format("&size={0}", pageSize);
@@ -117,6 +116,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
                 }
+                if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
                 return true;
             }
             else if (page != PageRefEnum.none)  //pagine relative first|last|next|prev
@@ -161,6 +161,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
                 }
+                if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
                 return true;
             }
             else if (page == PageRefEnum.none)
@@ -196,6 +197,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                     }
                     isFirst = false;
                 }
+
                 return true; //ritorna pagina valida
             }
             return false; //ritorna pagina non valida

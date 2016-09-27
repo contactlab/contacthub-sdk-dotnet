@@ -31,6 +31,22 @@ namespace ContactHubSdkLibrary.SDKclasses
             Subscriptions returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
             return returnLike;
         }
+
+        /// <summary>
+        /// Update customers subscription
+        /// </summary>
+        public Subscriptions  UpdateCustomerSubscription(string customerID, Subscriptions subscription)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            string postData = JsonConvert.SerializeObject(subscription, settings);
+            string statusCode = null;
+            string jsonResponse = DoPutWebRequest(String.Format("/customers/{0}/subscriptions/{1}", customerID, subscription.id), postData, ref statusCode);
+            Subscriptions returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
+            return returnSubscription;
+        }
         #endregion
     }
 }

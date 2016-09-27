@@ -81,6 +81,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
                 }
+                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
                 return true;
             }
             else if (page != PageRefEnum.none)  //pagine relative first|last|next|prev
@@ -125,6 +126,8 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
                 }
+                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
+
                 return true;
             }
             else if (page == PageRefEnum.none)
@@ -159,10 +162,18 @@ namespace ContactHubSdkLibrary.SDKclasses
                     }
                     isFirst = false;
                 }
+                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
+
                 return true; //ritorna pagina valida
             }
             return false; //ritorna pagina non valida
         }
+
+        public bool GetCustomers(ref PagedCustomer pagedCustomers, object next)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Add a new customer (force update if exists)
         /// </summary>

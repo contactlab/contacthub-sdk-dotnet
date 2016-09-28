@@ -394,7 +394,7 @@ namespace ConsoleSample
 
             #region LIKE
             #region Example: add like to customer
-            if (false)
+            if (true)
             {
                 Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
                 Likes newLike = new Likes()

@@ -100,12 +100,12 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 if (dateFrom != null)
                 {
-                    string dateStr = ((DateTime)dateFrom).ToString("yyyy-MM-ddTHH\\:mm\\:ss");//.ToString("o");//.ToString("yyyy-MM-dd");
+                    string dateStr = Common.ConvertToIso8601Date(((DateTime)dateFrom));
                     querySTR += String.Format("&dateFrom={0}", WebUtility.UrlEncode(dateStr));
                 }
                 if (dateTo != null)
                 {
-                    string dateStr = ((DateTime)dateTo).ToString("yyyy-MM-ddTHH\\:mm\\:ss"); //.ToString("o");//.ToString("yyyy-MM-dd");
+                    string dateStr = Common.ConvertToIso8601Date(((DateTime)dateTo));
                     querySTR += String.Format("&dateTo={0}", WebUtility.UrlEncode(dateStr));
                 }
                 querySTR += String.Format("&size={0}", pageSize);

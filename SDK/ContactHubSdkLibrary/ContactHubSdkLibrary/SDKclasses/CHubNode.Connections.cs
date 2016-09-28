@@ -11,7 +11,6 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Execute GET request on hub
         /// </summary>
-
         private string DoGetWebRequest(string functionPath, bool relativePath = true)
         {
             string jsonResponse = null;
@@ -76,8 +75,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
+
         /// <summary>
-        /// Execute Patch request on hub
+        /// Execute PATCH request on hub
         /// </summary>
         private string DoPatchWebRequest(string functionPath, string jsonData, ref string statusCode)
         {
@@ -91,7 +91,7 @@ namespace ContactHubSdkLibrary.SDKclasses
 
                 Encoding encoding = new UTF8Encoding();
 
-                string postData = jsonData;
+                string postData = jsonData ;
 
                 byte[] data = encoding.GetBytes(postData);
 
@@ -104,6 +104,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 stream.Write(data, 0, data.Length);
                 stream.Close();
                 HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
+                
                 string s = response.ToString();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
 
@@ -143,7 +144,7 @@ namespace ContactHubSdkLibrary.SDKclasses
 
                 Encoding encoding = new UTF8Encoding();
 
-                string postData = jsonData;
+                string postData = jsonData + "X";
 
                 byte[] data = encoding.GetBytes(postData);
 
@@ -179,6 +180,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
+
         /// <summary>
         /// Execute PUT request on hub
         /// </summary>
@@ -223,7 +225,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return jsonResponse;
         }
-
+        /// <summary>
+        /// Get Base Url with workspace
+        /// </summary>
         private string GetBaseUrl()
         {
             string returnValue = null;

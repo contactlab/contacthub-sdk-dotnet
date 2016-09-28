@@ -52,6 +52,8 @@ namespace generateBasePropertiesClass
     }
 
 
+    #region Event Properties
+
     public class EventPropertiesSchemaRoot
     {
         [JsonProperty("_embedded")]
@@ -72,8 +74,33 @@ namespace generateBasePropertiesClass
         public string description { get; set; }
         public bool enabled { get; set; }
         public object propertiesSchema { get; set; }
-      
     }
+    #endregion
+
+    #region Event Context
+
+    public class EventContextPropertiesSchemaRoot
+    {
+        [JsonProperty("_embedded")]
+        public EventContextPropertySchema embedded { get; set; }
+    }
+
+    public class EventContextPropertySchema
+    {
+        public List<Context> contexts { get; set; }
+    }
+
+    public class Context
+    {
+        public string id { get; set; }
+        public string type { get; set; }
+        public string mode { get; set; }
+        public string label { get; set; }
+        public string description { get; set; }
+        public bool enabled { get; set; }
+        public object propertiesSchema { get; set; }
+    }
+    #endregion
 
     public class BasePropertiesItem
     {

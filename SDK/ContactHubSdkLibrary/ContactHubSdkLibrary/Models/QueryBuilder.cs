@@ -123,11 +123,7 @@ namespace ContactHubSdkLibrary.Models
 						";
                 querySTR += ",";
             }
-
-            if (querySTR.EndsWith(","))
-            {
-                querySTR = querySTR.Substring(0, querySTR.Length - 1);
-            }
+            Common.CleanComma(ref querySTR);
             querySTR += @" ]
 									}
 						}";

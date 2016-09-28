@@ -1,11 +1,12 @@
-﻿using ContactHubSdkLibrary;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Text.RegularExpressions;
 
 
 public static class Common
 {
+    /// <summary>
+    /// Clean filename from invalid chars
+    /// </summary>
     public static string MakeValidFileName(string name)
     {
         name = name.Replace("-", "Minus");
@@ -14,6 +15,9 @@ public static class Common
         return name;
     }
 
+    /// <summary>
+    /// Delete last comma from comma-separated string array
+    /// </summary>
     public static void CleanComma(ref string returnValue)
     {
         if (returnValue.EndsWith(","))
@@ -25,7 +29,6 @@ public static class Common
     /// <summary>
     /// Force url to https
     /// </summary>
-    /// <param name="url"></param>
     public static void FixApiUrl(ref string url)
     {
         //fix url
@@ -39,8 +42,6 @@ public static class Common
     /// <summary>
     /// Converte la data in stringa formato Iso8601
     /// </summary>
-    /// <param name="d"></param>
-    /// <returns></returns>
     public static string ConvertToIso8601Date(DateTime d)
     {
         return d.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");

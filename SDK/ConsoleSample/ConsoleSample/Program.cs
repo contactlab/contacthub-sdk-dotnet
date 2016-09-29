@@ -394,7 +394,7 @@ namespace ConsoleSample
 
             #region LIKE
             #region Example: add like to customer
-            if (true)
+            if (false)
             {
                 Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
                 Likes newLike = new Likes()
@@ -584,8 +584,9 @@ namespace ConsoleSample
             }
             #endregion
 
-            #endregion  
+            #endregion
 
+            #region EVENTS
             #region Example: add event to customer
             if (false)
             {
@@ -601,7 +602,46 @@ namespace ConsoleSample
                 string result = currentNode.AddEvent(newEvent);
                 if (result != "Accepted")
                 {
-                    //errore inserimento
+                    //insert error
+                }
+            }
+            #endregion
+
+            #region Example: add customer event with properties and contextInfo (with external ID)
+            if (true)
+            {
+                Customer myCustomer = currentNode.GetCustomerByID("5a0c7812-daa9-467a-b641-012d25b9cdd5"); //giorgio napolitano
+                EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
+                {
+                    category = new List<String>() { "1" },
+                    idTicket = "1",
+                    subject = "web form question",
+                    text = "lorem ipsum"
+                };
+
+                EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
+                {
+                    client = new Client()
+                    {
+                        ip = "192.168.1.1/16",
+                        userAgent = "Mozilla"
+                    }
+                };
+
+                PostEvent newEvent = new PostEvent()
+                {
+                    customerId = myCustomer.id,
+                    type = EventTypeEnum.repliedTicket,
+                    context = EventContextEnum.WEB,
+                    properties = typeProperties,
+                    contextInfo = contextProperties,
+                    date = DateTime.Now
+                };
+
+                string result = currentNode.AddEvent(newEvent);
+                if (result != "Accepted")
+                {
+                    //insert error
                 }
             }
             #endregion
@@ -625,12 +665,14 @@ namespace ConsoleSample
                 string result = currentNode.AddEvent(newEvent);
                 if (result != "Accepted")
                 {
-                    //errore inserimento
+                    //insert error
                 }
             }
             #endregion
 
-            #region Example: add anonymous event (with sessionID) + customers reconciliation
+
+
+            #region Example: add anonymous event (with sessionID) + customers reconciliation  (DA FINIRE DI TESTARE, AL MOMENTO HUB NON RICONCILIA VIA SESSION_ID)
             if (false)
             {
                 //create new session
@@ -651,11 +693,11 @@ namespace ConsoleSample
                 string result = currentNode.AddEvent(newEvent);
                 if (result != "Accepted")
                 {
-                    //errore inserimento
+                    //insert error
                 }
                 else
                 {
-                    //riconciglia gli eventi sul customer attraverso il session ID
+                    //reconciles the events on the customer through the session ID
                     Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
                 }
             }
@@ -667,10 +709,10 @@ namespace ConsoleSample
                 List<Event> allEvents = new List<Event>();
                 if (currentNode.isValid)
                 {
-                    int pageSize = 3;
+                    int pageSize = 10;
                     //filter by customer id (required)
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, null, null);
-                    if (pageIsValid )
+                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
+                    if (pageIsValid)
                     {
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
@@ -686,7 +728,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events filtered by customer id (required) + eventtype
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 if (currentNode.isValid)
@@ -711,7 +753,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + eventtype + context
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 if (currentNode.isValid)
@@ -761,7 +803,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + date from|to  ( DA TESTARE, SEMBRA NON FUNZIONARE)
-            if (true)
+            if (false)
             {
                 if (currentNode.isValid)
                 {
@@ -794,7 +836,9 @@ namespace ConsoleSample
                 }
             }
             #endregion
+            #endregion
 
+            #region TAGS
             #region Example: get customer tags
             if (false)
             {
@@ -817,7 +861,7 @@ namespace ConsoleSample
             }
             #endregion
 
-            #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE)
+            #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE) CONFERMATO BUG VA SU il 3/10
             if (false)
             {
                 if (currentNode.isValid)
@@ -825,6 +869,7 @@ namespace ConsoleSample
                     Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
                 }
             }
+            #endregion
             #endregion
 
         }

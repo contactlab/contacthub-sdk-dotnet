@@ -104,7 +104,7 @@ namespace ContactHubSdkLibrary.Models
                 if (!string.IsNullOrEmpty(extendedPropertiesData))
                 {
                     JObject extendedProperties = JObject.Parse(extendedPropertiesData);
-                    //crea il nodo da aggiungere
+                    //create the node to be added
                     JToken jValue = null;
                     extendedProperties.TryGetValue("extended", out jValue);
                     _extended = jValue;
@@ -128,13 +128,6 @@ namespace ContactHubSdkLibrary.Models
         public Page page { get; set; }
     }
 
-    //public class SessionList
-    //{
-    //    public EmbeddedSessions _embedded { get; set; }
-    //   // public SessionPageLink _links { get; set; }  //DA COMPLETARE
-    //}
-
-
     public class Session
     {
         public Session()
@@ -152,7 +145,6 @@ namespace ContactHubSdkLibrary.Models
         public SessionPageLink _links { get; set; }
     }
 
-    /* embedded è usato in contesti diversi, dentro customers e come oggetto da passare a add session */
     public class EmbeddedCustomers
     {
         public List<Customer> customers;
@@ -167,12 +159,16 @@ namespace ContactHubSdkLibrary.Models
         public List<Event> events;
     }
 
+    public class _Event : Event
+    {
+
+    }
+
     public class Event : PostEvent
     {
         public EventPageLink _links { get; set; }
         public string id { get; set; }
     }
-
 
     public class EventPageLink
     {
@@ -195,7 +191,6 @@ namespace ContactHubSdkLibrary.Models
         public Link prev { get; set; }
         public Link self { get; set; }
     }
-
 
     public class Page
     {

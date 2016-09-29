@@ -1,5 +1,7 @@
-﻿using ContactHubSdkLibrary.Models;
+﻿using ContactHubSdkLibrary.Events;
+using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 
@@ -10,7 +12,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         #region Events
 
         /// <summary>
-        /// Crea un nuovo evento legato a un customer o anonimo
+        /// Create a new event related to a customer or anonymous
         /// <summary>
         public string AddEvent(PostEvent event_)
         {
@@ -26,7 +28,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         }
 
         /// <summary>
-        /// Ottiene la prima pagina della lista events, da effettuarsi quando si chiamano gli events la prima volta
+        /// Get the first page of the event list, to be carried out when calling the events the first time
         /// <summary>
         public bool GetEvents(ref PagedEvent pagedEvent, int pageSize,
             string customerID,
@@ -37,18 +39,17 @@ namespace ContactHubSdkLibrary.SDKclasses
             return GetEvents(ref pagedEvent, PageRefEnum.first, pageSize, 0, customerID, type, context, mode, dateFrom, dateTo);
         }
         /// <summary>
-        /// Ottiene le altre pagine events, da effetuarsi quando si chiamano gli events successivamente alla prima pagina
+        /// Get other events pages, to be carried out when calling the events subsequent to the first page
         /// </summary>
         public bool GetEvents(ref PagedEvent pagedEvent, PageRefEnum page)
         {
             if (pagedEvent == null)
                 return false;
             else
-                // return GetCustomers(ref pagedCustomer, page, pagedCustomer.page.size, 0, null, null, null);
                 return GetEvents(ref pagedEvent, page, pagedEvent.page.size, 0, null, null, null, null, null, null);
         }
         /// <summary>
-        /// Ottiene le altre pagine customers specificando il n. di pagina esatto
+        /// Get other customers pages specifying the page number
         /// </summary>
         public bool GetEvents(ref PagedEvent pagedEvent, int pageNumber)
         {
@@ -114,14 +115,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                 string jsonResponse = DoGetWebRequest(querySTR);
                 if (jsonResponse != null)
                 {
-                    pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
+                    pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse, new EventPropertiesJsonConverter());
                 }
                 if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
                 return true;
             }
-            else if (page != PageRefEnum.none)  //pagine relative first|last|next|prev
+            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
             {
-                //in questi casi il link contiene anche i filtri applicati precedentemente 
+                //in these cases the link also contains the applied filters previously
                 string otherPageUrl = null;
                 switch (page)
                 {
@@ -138,7 +139,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                         }
                         else
                         {
-                            return false; //ritorna pagina non valida
+                            return false; //return not valid page
                         }
                         break;
                     case PageRefEnum.previous:
@@ -148,14 +149,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                         }
                         else
                         {
-                            return false; //ritorna pagina non valida
+                            return false; //return not valid page
                         }
                         break;
                     default:
                         otherPageUrl = pagedEvent._links.first.href;
                         break;
                 }
-                //chiama il link che rappresenta l'altra pagina, così come restituito precedentemente dal contactlab
+                //calls the link that represents the other page, as previously returned by ContactLab
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
                 if (jsonResponse != null)
                 {
@@ -166,15 +167,14 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             else if (page == PageRefEnum.none)
             {
-                //è un page number specifico. Può ottenere il link semplicemente sostituendo il page number da link 'self'
+                //this is a specific page number. You can get specific page link replacing page number from 'self' link.
                 string currentUrl = pagedEvent._links.self.href;
 
-                //se il page number non è valido, restituisce la pagecustomer corrente e un errore
+                //if page number is not valid, return current pagecustomer with error
                 if (pageNumber < 0 || pageNumber >= pagedEvent.page.totalPages)
                 {
-                    return false; //ritorna pagina non valida
+                    return false; //return invalid page
                 }
-
                 Uri currentUri = new Uri(currentUrl);
                 string currentQuery = currentUri.Query;
                 if (currentQuery.StartsWith("?"))
@@ -198,16 +198,42 @@ namespace ContactHubSdkLibrary.SDKclasses
                     isFirst = false;
                 }
 
-                return true; //ritorna pagina valida
+                return true; //return valid page
             }
-            return false; //ritorna pagina non valida
+            return false; //return invalid page
         }
+        /// <summary>
+        /// Custom deserializer for events. ReadJson() detect right class for 'properties' attribute.
+        /// The GetEventProperties method is self-generated from generateBasePropertiesClass projects.
+        /// Supported classes are self-generated from configuration json schema in the file eventPropertiesClass.cs 
+        /// </summary>
+        public class EventPropertiesJsonConverter : JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return (objectType == typeof(Event));
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                JObject jo = JObject.Load(reader);
+
+                //verify the type
+                _Event castEvent = jo.ToObject<_Event>(serializer);
+                castEvent.properties = (EventBaseProperty)EventPropertiesUtil.GetEventProperties(jo, serializer);
+                return castEvent;
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
 
         /// <summary>
         /// Get single event by id
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public Event GetEvent(string id)
         {
             Event returnValue = null;

@@ -62,7 +62,6 @@
     <Compile Include="Common.cs" />
     <Compile Include="Models\Customers.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="JsonHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDKclasses\CHubNode.Customers.Session.cs" />
     <Compile Include="SDKclasses\CHubNode.Customers.Tag.cs" />

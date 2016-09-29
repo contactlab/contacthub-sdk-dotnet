@@ -3,74 +3,93 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-/* Le extended property sono dinamiche lato contactHub. Lato client sdk possono essere rappresentate come un tree di oggetti tipizzati che ereditano
- * da ExtendedProperty e che specializzano il "value".
- * La serializzazione e deserializzazione di questi oggetti è completamente custom e passa attraverso due attributi nella classe Customer
- * - _extended: di tipo object, è rappresentazione come oggetto del json nel formato contanhub. Tale attributo è quello serializzato/deserializzato
- * - extended : di tipo List<ExtendedProperty>, rappresenta le extendend nel formato client SDK, cioè come tree di ExendedProperty. Questo attributo serve solo in lettura/scrittura
- *              lato sdk perchè poi la sua serializzazione avviene in modo trasparente tramite l'attributo _extended che non deve mai essere letto/scritto lato sdk. Per questo l'attributo
- *              extended è marcato come "ignore" lato serializzazione
- */
-
+/// <summary>
+/// The extended property are dynamic on contactHub database.
+/// Properties on sdk client side can be represented as a tree of typed objects that inherit from ExtendedProperty and specialize "value" attribute
+/// The serialization and de-serialization of these objects is completely custom and passes through two attributes in the Customer class
+/// - _extended: type is object, is the object representation as contanhub json format. This  is really attribute  serialized and deserialized
+/// - Extended: type is List<ExtendedProperty>: represents the extendend properties in client SDK format, that is as the tree ExendedProperty.This attribute is only read / write
+///   sdk side because then his serialization is performed transparently by the _extended attribute that should never be read / written from side sdk. This attribute
+///   is marked as "ignore" on serializer
+/// </summary>
 namespace ContactHubSdkLibrary.Models
 {
-    /* classe base ereditata da tutte le specializzazioni */
-
+    /// <summary>
+    /// Base class inherited by all specializations 
+    /// </summary>
     public class ExtendedProperty
     {
         public string name { get; set; }
     }
 
-    //tipizzazione String
+    /// <summary>
+    /// Type String
+    /// </summary>
     public class ExtendedPropertyString : ExtendedProperty
     {
         public string value { get; set; }
     }
 
-    //tipizzazione List of Strings
+    /// <summary>
+    /// Type List of Strings
+    /// </summary>
     public class ExtendedPropertyStringArray : ExtendedProperty
     {
         public List<string> value { get; set; }
     }
 
-    //tipizzazione Number
+    /// <summary>
+    /// Type Number
+    /// </summary>
     public class ExtendedPropertyNumber : ExtendedProperty
     {
         public Double value { get; set; }
     }
 
-    //tipizzazione Array of number
+    /// <summary>
+    /// Type Array of Number
+    /// </summary>
     public class ExtendedPropertyNumberArray : ExtendedProperty
     {
         public List<Double> value { get; set; }
     }
 
-    //tipizzazione Boolean
+    /// <summary>
+    /// Type Boolean
+    /// </summary>
     public class ExtendedPropertyBoolean : ExtendedProperty
     {
         public Boolean value { get; set; }
     }
 
-    //tipizzazione Object
+    /// <summary>
+    /// Type Object
+    /// </summary>
     public class ExtendedPropertyObject : ExtendedProperty
     {
-        /* la definizione di propertyobject appare identica a quella di propertyobjectarray, di fatto è un insieme di property, cambia solo la renderizzazione json */
+        //ExtendedPropertyObject definition appears identical to that of ExtendedPropertyObjectArray, in fact it is a set of property, only changes the rendering json
         public List<ExtendedProperty> value { get; set; }
     }
 
-    //tipizzazione Array of objects
+    /// <summary>
+    /// Type Array of Objects
+    /// </summary>
     public class ExtendedPropertyObjectArray : ExtendedProperty
     {
         public List<ExtendedProperty> value { get; set; }
     }
 
-    //tipizzazione DateTime
+    /// <summary>
+    /// Type DateTime
+    /// </summary>
     public class ExtendedPropertyDateTime : ExtendedProperty
     {
         public DateTime value { get; set; }
     }
 
-    //tipizzazione Array of date
+    /// <summary>
+    /// Type Array of Date
+    /// </summary>
     public class ExtendedPropertyDateTimeArray : ExtendedProperty
     {
         public List<DateTime> value { get; set; }
@@ -78,10 +97,14 @@ namespace ContactHubSdkLibrary.Models
 
     #region serialization util
 
-    /* funzioni statiche per serializzazione e deserializzazione delle extended properties */
+    /// <summary>
+    /// Static functions for serialization and de-serialization of the extended properties
+    /// </summary>
     public static class ExtendedPropertiesUtil
     {
-        /* deserializzazione  da oggetto jtoken (singolo nodo) a List<ExtendedProperty> tipizzata */
+        /// <summary>
+        /// Deserialization of object jtoken (single node) in List<ExtendedProperty> type
+        /// </summary>
         public static List<ExtendedProperty> DeserializeExtendedOject(JToken j)
         {
             List<ExtendedProperty> returnValue = new List<ExtendedProperty>();
@@ -95,7 +118,9 @@ namespace ContactHubSdkLibrary.Models
             return returnValue;
         }
 
-        /* deserializzazione  da oggetto jobject a List<ExtendedProperty> tipizzata */
+        /// <summary>
+        /// Deserialization from object to List<ExtendedProperty> type 
+        /// </summary>
         public static List<ExtendedProperty> DeserializeExtendedProperties(JObject jsonObj)
         {
 
@@ -110,8 +135,9 @@ namespace ContactHubSdkLibrary.Models
             return ext;
         }
 
-        /* conversione da nodo Jtoken a ExtendedProperty tipizzata */
-
+        /// <summary>
+        /// Conversion from Jtoken node to ExtendedProperty type 
+        /// </summary>
         public static ExtendedProperty getExtendedProperty(JToken j)
         {
             ExtendedProperty returnValue = null;
@@ -157,7 +183,7 @@ namespace ContactHubSdkLibrary.Models
                     }
                     break;
                 case JTokenType.Array:
-                    //determina il tipo di array da creare in funzione della tipologia del primo elemento presente
+                    //determines the type of array to be created depending on the type of the first element
                     JTokenType arrayType = getArrayType(prop.Value);
                     switch (arrayType)
                     {
@@ -199,7 +225,9 @@ namespace ContactHubSdkLibrary.Models
             return returnValue;
         }
 
-        //detect dell'array type
+        /// <summary>
+        /// Detect array type
+        /// </summary>
         private static JTokenType getArrayType(JToken prop)
         {
             JArray array = (JArray)prop;
@@ -212,14 +240,15 @@ namespace ContactHubSdkLibrary.Models
             return returnValue;
         }
 
-        /* serializzazione custom da List<ExtendeProperty> a string json */
-
+        /// <summary>
+        /// Custom serialization from List<ExtendedProperty> to json string
+        /// </summary>
         public static string SerializeExtendedProperties(List<ExtendedProperty> extendendProperties, string propertyName, Type parentType, bool first = true)
         {
             if (extendendProperties == null) return null;
 
             string returnValue = null;
-            //verifica se è un array
+            //verify if it is an array
             bool isArray = parentType.Name.ToLowerInvariant().EndsWith("array");
             if (!isArray)
             {
@@ -231,7 +260,7 @@ namespace ContactHubSdkLibrary.Models
             }
             foreach (ExtendedProperty ex in extendendProperties)
             {
-                //se è un array divide ogni elemento con una {}
+                //if it is an array divides each element with a {}
                 if (isArray) returnValue += "{";
                 switch (ex.GetType().Name)
                 {
@@ -279,12 +308,12 @@ namespace ContactHubSdkLibrary.Models
                             returnValue += String.Format("\"{0}\":{1}", ex.name, ((ExtendedPropertyBoolean)ex).value.ToString().ToLowerInvariant(), new CultureInfo("en-US"));
                         }
                         break;
-                    case "ExtendedPropertyObject": //è un set di property contenute in un oggetto, non è un array
+                    case "ExtendedPropertyObject": //is a Property Set contained in an object, is not an array
                         {
                             returnValue += SerializeExtendedProperties(((ExtendedPropertyObject)ex).value, ex.name, ex.GetType(), false);
                         }
                         break;
-                    case "ExtendedPropertyObjectArray": //è un set di property contenute in un array
+                    case "ExtendedPropertyObjectArray": //is a Property Set contained in an array
                         {
                             returnValue += SerializeExtendedProperties(((ExtendedPropertyObjectArray)ex).value, ex.name, ex.GetType(), false);
                         }
@@ -315,7 +344,7 @@ namespace ContactHubSdkLibrary.Models
                         break;
 
                 }
-                //se è un array divide ogni elemento con una {}
+                //if it is an array divides each element with a {}
                 if (isArray) returnValue += "}";
 
                 returnValue += ",";

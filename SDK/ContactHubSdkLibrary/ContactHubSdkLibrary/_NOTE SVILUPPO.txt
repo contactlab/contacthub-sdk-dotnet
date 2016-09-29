@@ -1,16 +1,18 @@
 ﻿- considerare versionamento delle base properties e delle event properties visto che la lettura è dinamica dal webservice che restituisce il model
 - provare filtri su customer
-- non si riesce a annidare le extended properties da portale web (pubblicano il 19)
+- non si riesce a annidare le extended properties da portale web (pubblicano il 19): il problema persiste ancora  (sale il 3/10)
 - verificare country cosa passare, potrebbe essere comodo definire un enum
-- non vanno le post delle job, provare dopo il 19, confermano la mancanza del metodo corrispondente.
+SISTEMATO: - non vanno le post delle job, provare dopo il 19, confermano la mancanza del metodo corrispondente.
 - da vedere contextInfo dopo il 19. da leggere dinamicamente da /workspaces/{id-workspace}/models/contexts
 - gestione degli errori
 - implementare isvalid sul nodo
 - problema delle date  (Attenzione dopo il 19 uniformare a iso 8601)
-- verificare schema della query
+SISTEMATO - verificare schema della query
 
 
 DA SISTEMARE:
 - la addcustomer se trova un doppione dovrebbe fare l'update sull'id esistente, al momento l'id è cablato perchè la non è ancora implementato il controllo in hub
 - la removeTag sembra non funzionare perchè la PATCH non ha effetto. -> stefano controlla
 - la removeJob e affini manca il metodo DELETE che verrà aggiunto nel prossimo sprint
+- problema con le extendend nidificate
+

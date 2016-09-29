@@ -1,6 +1,7 @@
 ﻿using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContactHubSdkLibrary.Models
@@ -83,6 +84,7 @@ namespace ContactHubSdkLibrary.Models
         }
 
         public EventBaseProperty properties { get; set; }
+        public EventBaseProperty contextInfo { get; set; }
         [JsonProperty("date")]
         public string _date { get; set; }
         [JsonProperty("_date")]

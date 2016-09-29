@@ -1,6 +1,5 @@
 ﻿using Microsoft.CSharp;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
             outputFileStr += "using ContactHubSdkLibrary.Events;\n";
             outputFileStr += "using ContactHubSdkLibrary;\n";
-            outputFileStr += "namespace ContactHubSdkLibrary {\n";
+            outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
 
             string contextJson = null;
             foreach (Context ev in root.embedded.contexts)
@@ -71,10 +70,10 @@ namespace generateBasePropertiesClass
                 {
                     propertiesTree = new BasePropertiesItem();
                 }
-                propertiesTree.name = "EventProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
+                propertiesTree.name = "EventContextProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
 
-//                    if (propertiesTree == null) return;
-                
+                //                    if (propertiesTree == null) return;
+
                 createClassFile(propertiesTree, ref outputFileStr);
                 outputFileStr += "\n";
             }
@@ -171,6 +170,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "using System.Collections.Generic;\n";
             outputFileStr += "using System.Globalization;\n";
             outputFileStr += "using Newtonsoft.Json;\n";
+            outputFileStr += "using Newtonsoft.Json.Linq;\n";
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
             outputFileStr += "public class EventBaseProperty {}\n";
@@ -178,7 +178,9 @@ namespace generateBasePropertiesClass
             foreach (Event ev in root.embedded.events)
             {
 
-                outputFileStr += "//event class '" + ev.id + "': " + ev.description;
+                outputFileStr += "/// <summary>\n";
+                outputFileStr += "/// Event class '" + ev.id + "': " + ev.description + "\n";
+                outputFileStr += "/// </summary>";
                 eventJson = ev.propertiesSchema.ToString();
                 propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(eventJson);
                 propertiesTree.name = "EventProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
@@ -189,7 +191,6 @@ namespace generateBasePropertiesClass
                 createClassFile(propertiesTree, ref outputFileStr);
                 outputFileStr += "\n";
             }
-            outputFileStr += "\n}\n";
 
             //genera l'enum con l'elenco delle classi generate di tipo evento
             List<String> classEnum = new List<string>();
@@ -202,6 +203,33 @@ namespace generateBasePropertiesClass
             dic.Key = "EventTypeEnum";
             dic.Value = classEnum.ToArray(); //converte a string[]
             createEnumFile(dic, ref outputFileStr);
+            //generate casting function for event properties
+            outputFileStr += @"
+                public static class EventPropertiesUtil
+                {
+                    /// <summary>
+                    /// Return events properties with right cast, event type based
+                    /// </summary>
+
+                  public static object GetEventProperties(JObject jo, JsonSerializer serializer)
+                    {
+                        var typeName = jo[""type""].ToString().ToLowerInvariant();
+                        switch (typeName)
+                        {
+                    ";
+            string className = "";
+            foreach (String s in generatedClass)
+            {
+                if (s.Contains(": EventBaseProperty"))
+                {
+                    className = s.Replace(": EventBaseProperty", "");
+                    outputFileStr += @" case """ + className.Replace(": EventBaseProperty", "").Replace("EventProperty", "").ToLowerInvariant() + @""": return jo[""properties""].ToObject<" + className + ">(serializer);break;\n\n";
+                }
+            }
+            outputFileStr += "}\n";
+            outputFileStr += " return null;\n}\n";
+            outputFileStr += "\n}\n}\n";
+
             File.WriteAllText("eventPropertiesClass.cs", outputFileStr);
         }
 
@@ -257,6 +285,7 @@ namespace generateBasePropertiesClass
                 }
                 if (p.description != null)
                     processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
+                if (p.format != null) processString += "    //format: " + p.format + "\n";
                 processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             }
             else if (dateTimeListField.Contains(name))//è un elenco di campi particolari che vanno renderizzati come datetime

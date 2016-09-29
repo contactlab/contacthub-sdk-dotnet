@@ -36,7 +36,6 @@ public static class Common
         {
             url = url.Replace("http://", "https://");
         }
-
     }
 
     /// <summary>

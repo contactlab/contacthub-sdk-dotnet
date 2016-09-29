@@ -209,8 +209,13 @@ namespace ContactHubSdkLibrary.SDKclasses
         {
             Customer returnValue = null;
             string jsonResponse = DoGetWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
-
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            //The function takes a customer from any node, using his unique id. To avoid reading a customer belonging to another node by his customer ID, 
+            //the system checks if the client nodeID returned corresponds to the current nodeID
+            if (returnValue != null && returnValue.nodeId != this.id)
+            {
+                returnValue = null;
+            }
             return returnValue;
         }
 

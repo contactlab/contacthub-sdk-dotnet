@@ -23,7 +23,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             string postData = JsonConvert.SerializeObject(event_, settings);
             string statusCode = null;
             string jsonResponse = DoPostWebRequest("/events", postData, ref statusCode);
-            //la json response dovrebbe contenere in questo caso solo la status code perchè l'inserimento è asyncrono (coda)
+            //the json response should contain only the status code because the insertion is async (queue)
             return statusCode;
         }
 
@@ -35,7 +35,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             EventTypeEnum? type, EventContextEnum? context, EventModeEnum? mode,
             DateTime? dateFrom, DateTime? dateTo)
         {
-            pagedEvent = null; //lo azzera prima della chiamata in modo da ottenere la pagina 0
+            pagedEvent = null; //resets before the call in order to get the page 0
             return GetEvents(ref pagedEvent, PageRefEnum.first, pageSize, 0, customerID, type, context, mode, dateFrom, dateTo);
         }
         /// <summary>
@@ -217,7 +217,6 @@ namespace ContactHubSdkLibrary.SDKclasses
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 JObject jo = JObject.Load(reader);
-
                 //verify the type
                 _Event castEvent = jo.ToObject<_Event>(serializer);
                 castEvent.properties = (EventBaseProperty)EventPropertiesUtil.GetEventProperties(jo, serializer);
@@ -241,10 +240,14 @@ namespace ContactHubSdkLibrary.SDKclasses
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse) : null);
             return returnValue;
         }
+
+        #endregion
+
+
         //public void DeleteEvent(string id)
         //{
         //    string jsonResponse = DoDeleteWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
         //}
-        #endregion
+
     }
 }

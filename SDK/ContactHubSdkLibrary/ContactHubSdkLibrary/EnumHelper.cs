@@ -1,36 +1,34 @@
-﻿using ContactHubSdkLibrary;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using Newtonsoft.Json.Linq;
 
 namespace ContactHubSdkLibrary
 {
     public static class EnumHelper<T>
     {
-        public static IList<T> GetValues(Enum value)
-        {
-            var enumValues = new List<T>();
+        //public static IList<T> GetValues(Enum value)
+        //{
+        //    var enumValues = new List<T>();
 
-            foreach (FieldInfo fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
-            {
-                enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, false));
-            }
-            return enumValues;
-        }
+        //    foreach (FieldInfo fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
+        //    {
+        //        enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, false));
+        //    }
+        //    return enumValues;
+        //}
+
+        //public static IList<string> GetNames(Enum value)
+        //{
+        //    return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+        //}
 
         public static T Parse(string value)
         {
             return (T)Enum.Parse(typeof(T), value, true);
         }
 
-        public static IList<string> GetNames(Enum value)
-        {
-            return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
-        }
-
+        /// <summary>
+        /// Get display value from enum item
+        /// </summary>
         public static string GetDisplayValue(T value)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
@@ -42,6 +40,9 @@ namespace ContactHubSdkLibrary
             return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
         }
 
+        /// <summary>
+        /// Get enum item from display name
+        /// </summary>
         public static T GetValueFromDisplayName(string x)
         {
             try

@@ -19,15 +19,15 @@ namespace ContactHubSdkLibrary.SDKclasses
     {
         #region Customers
         /// <summary>
-        /// Ottiene la prima pagina della lista customers, da effettuarsi quando si chiamano i customer la prima volta
+        /// Get the first page of customers list, to be made when you call the customer first
         /// <summary>
         public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageSize, string externalId, string query, string fields)
         {
-            pagedCustomer = null; //lo azzera prima della chiamata in modo da ottenere la pagina 0
+            pagedCustomer = null; //resets before the call in order to get the page 0
             return GetCustomers(ref pagedCustomer, PageRefEnum.first, pageSize, 0, externalId, query, fields);
         }
         /// <summary>
-        /// Ottiene le altre pagine customers, da effetuarsi quando si chiamano i customer successivamente alla prima pagina
+        /// Get other customers pages, to be made when you call the customer after the first page
         /// </summary>
         public bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page)
         {
@@ -37,7 +37,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 return GetCustomers(ref pagedCustomer, page, pagedCustomer.page.size, 0, null, null, null);
         }
         /// <summary>
-        /// Ottiene le altre pagine customers specificando il n. di pagina esatto
+        /// Get other customers pages specifying the  page number
         /// </summary>
         public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageNumber)
         {
@@ -59,7 +59,6 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (pagedCustomer == null && page == PageRefEnum.first)
             {
                 string querySTR = String.Format("/customers?nodeId={0}", _node);
-                /* crea la stringa */
                 if (!string.IsNullOrEmpty(externalId))
                 {
                     querySTR += String.Format("&externalId={0}", WebUtility.UrlEncode(externalId));
@@ -84,9 +83,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
                 return true;
             }
-            else if (page != PageRefEnum.none)  //pagine relative first|last|next|prev
+            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
             {
-                //in questi casi il link contiene anche i filtri applicati precedentemente 
+                //in these cases the link also contains the applied filters previously
                 string otherPageUrl = null;
                 switch (page)
                 {
@@ -103,7 +102,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                         }
                         else
                         {
-                            return false; //ritorna pagina non valida
+                            return false; //return invalid page
                         }
                         break;
                     case PageRefEnum.previous:
@@ -113,14 +112,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                         }
                         else
                         {
-                            return false; //ritorna pagina non valida
+                            return false; //return invalid page
                         }
                         break;
                     default:
                         otherPageUrl = pagedCustomer._links.first.href;
                         break;
                 }
-                //chiama il link che rappresenta l'altra pagina, così come restituito precedentemente dal contactlab
+                //calls the link that represents the other page, as previously returned by Contacthub
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
                 if (jsonResponse != null)
                 {
@@ -132,13 +131,13 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             else if (page == PageRefEnum.none)
             {
-                //è un page number specifico. Può ottenere il link semplicemente sostituendo il page number da link 'self'
+                //is a specific page number. You can get the link simply by replacing the page number from 'self' link
                 string currentUrl = pagedCustomer._links.self.href;
 
-                //se il page number non è valido, restituisce la pagecustomer corrente e un errore
+                //if the page number is invalid, the page returns an error and the current customer
                 if (pageNumber < 0 || pageNumber >= pagedCustomer.page.totalPages)
                 {
-                    return false; //ritorna pagina non valida
+                    return false; //return invalid page
                 }
 
                 Uri currentUri = new Uri(currentUrl);
@@ -164,9 +163,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
 
-                return true; //ritorna pagina valida
+                return true; //return valid page
             }
-            return false; //ritorna pagina non valida
+            return false; //return invalid page
         }
 
         public bool GetCustomers(ref PagedCustomer pagedCustomers, object next)
@@ -186,27 +185,12 @@ namespace ContactHubSdkLibrary.SDKclasses
 
             string postData = JsonConvert.SerializeObject(customer, settings);
 
-            //serializza le extendedProperties in modo dinamico 
-            //string extendedPropertiesData =  ExtendedPropertiesUtil.SerializeExtendedProperties(customer.extended,"extended",customer.GetType());
-            //if (!string.IsNullOrEmpty(extendedPropertiesData))
-            //{
-            //    //ottiene un JObject in modo da poterlo modificare aggiungendoci le extended properties
-            //    JObject o = JObject.Parse(postData);
-            //    JObject extendedProperties = JObject.Parse(extendedPropertiesData);
-            //    //crea il nodo da aggiungere
-            //    JToken jValue = null;
-            //    extendedProperties.TryGetValue("extended", out jValue);
-            //    o.AddFirst(new JProperty("extended", jValue));
-
-            //    //ottiene il json finale
-            //    postData = o.ToString();
-            //}
             string statusCode = null;
             string jsonResponse = DoPostWebRequest("/customers", postData, ref statusCode);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
 
-            //simula un inserimento fallito, per causa doppioni. Questa funzionalità andrà testata dopo il rilascio di hub di metà ottobre '16, utilizzando l'errore specifico
-            //in teoria ritorna l'id dell'customer esistente, che va quindi usato per l'update
+            //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
+            //in theory returns the id of existing customer, which shall therefore used for the update
             bool isError = (returnCustomer.id == null);
             if (isError && forceUpdate)
             {
@@ -239,7 +223,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         {
             Customer returnValue = null;
             PagedCustomer pagedCustomers = null;
-            //richiede i customers filtrati per externalID
+            //get customers filtered by external ID
             GetCustomers(ref pagedCustomers, 1, externalID, null, null);
 
             if (pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
@@ -267,12 +251,12 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = null;
             if (fullUpdate)
             {
-                //aggiorna tutto il customer intero
+                //update the entire customer
                 jsonResponse = DoPutWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
             }
             else
             {
-                //aggiorna solo i campi valorizzati del customer
+                //upgrade only those valued fields of customer
                 jsonResponse = DoPatchWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
             }
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));

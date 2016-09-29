@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace ConsoleSample
 {
@@ -608,7 +609,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add customer event with properties and contextInfo (with external ID)
-            if (true)
+            if (false)
             {
                 Customer myCustomer = currentNode.GetCustomerByID("5a0c7812-daa9-467a-b641-012d25b9cdd5"); //giorgio napolitano
                 EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
@@ -646,16 +647,17 @@ namespace ConsoleSample
             }
             #endregion
 
-            #region Example: add anonymous event (with external ID)
-            if (false)
+            #region Example: add anonymous event (with external ID) + customers reconciliation
+            if (true) 
             {
+                string extID = Guid.NewGuid().ToString();
                 PostEvent newEvent = new PostEvent()
                 {
                     bringBackProperties = new BringBackProperty()
                     {
                         nodeId = currentNode.id,
                         type = BringBackPropertyTypeEnum.EXTERNAL_ID,
-                        value = Guid.NewGuid().ToString()
+                        value = extID
                     },
                     type = EventTypeEnum.loggedIn,
                     context = EventContextEnum.WEB,
@@ -666,6 +668,39 @@ namespace ConsoleSample
                 if (result != "Accepted")
                 {
                     //insert error
+                }
+                else
+                {
+                    //create new customer with previous external ID
+                    PostCustomer newCustomer = new PostCustomer()
+                    {
+                        nodeId = currentNodeID,
+                        externalId = extID,
+                        @base = new BaseProperties()
+                        {
+                            firstName = "Diego",
+                            lastName = "Feltrin",
+                            contacts = new Contacts()
+                            {
+                                email = "diego@dimension.it"
+                            },
+                            timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                        }
+                    };
+                    //post new customer
+                    string customerID = null;
+                    if (currentNode.isValid)
+                    {
+                        Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+                        customerID = createdCustomer.id;
+                    }
+                    //wait queue elaboration
+                    Thread.Sleep(10000);
+
+                    //test reconciliation: get events 
+                    pagedEvents = null;
+                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null);
+
                 }
             }
             #endregion
@@ -704,7 +739,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events (with paging)
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 if (currentNode.isValid)

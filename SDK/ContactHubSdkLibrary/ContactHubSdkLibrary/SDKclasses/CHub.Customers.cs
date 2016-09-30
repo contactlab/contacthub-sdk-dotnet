@@ -15,7 +15,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         none
     }
 
-    public partial class CHubNode
+    public partial class Node
     {
         #region Customers
         /// <summary>

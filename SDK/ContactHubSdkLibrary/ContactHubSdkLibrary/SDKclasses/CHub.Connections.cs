@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ContactHubSdkLibrary.SDKclasses
 {
-    public partial class CHubNode
+    public partial class Node
     {
         #region Connections
         /// <summary>

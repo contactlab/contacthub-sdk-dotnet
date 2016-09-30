@@ -5,7 +5,7 @@ using System;
 
 namespace ContactHubSdkLibrary.SDKclasses
 {
-    public partial class CHubNode
+    public partial class Node
     {
         public bool isValid; //da implementare
         private string _workspaceID = null;
@@ -18,7 +18,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         public object HttpServerUtility { get; private set; }
 
         #region Node builder
-        public CHubNode(string workspaceID, string token, string nodeID)
+        public Node(string workspaceID, string token, string nodeID)
         {
             Init(workspaceID, token, nodeID);
             id = nodeID;

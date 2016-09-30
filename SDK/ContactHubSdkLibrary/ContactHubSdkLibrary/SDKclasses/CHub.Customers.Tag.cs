@@ -9,7 +9,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         Auto,
         Manual
     }
-    public partial class CHubNode
+    public partial class Node
     {
         #region customers tag
         /// <summary>

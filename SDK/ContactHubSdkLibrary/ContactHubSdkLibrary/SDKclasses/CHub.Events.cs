@@ -7,7 +7,7 @@ using System.Net;
 
 namespace ContactHubSdkLibrary.SDKclasses
 {
-    public partial class CHubNode
+    public partial class Node
     {
         #region Events
 

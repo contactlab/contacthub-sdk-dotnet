@@ -18,17 +18,17 @@ namespace ConsoleSample
             #region common variables
             PagedCustomer pagedCustomers = null;
             PagedEvent pagedEvents = null;
-            string currentNodeID = ConfigurationManager.AppSettings["node"].ToString();
             List<Customer> allCustomers = new List<Customer>();
             #endregion
 
-            #region Example: init contacthub node 
-            CHubNode currentNode = new CHubNode(
-                        ConfigurationManager.AppSettings["workspaceID"].ToString(),
-                        ConfigurationManager.AppSettings["token"].ToString(),
-                        currentNodeID
-                        );
+            #region Example: open workspace node
+            Workspace currentWorkspace = new Workspace(ConfigurationManager.AppSettings["workspaceID"].ToString(),
+                        ConfigurationManager.AppSettings["token"].ToString());
+            #endregion
 
+            #region Example: get specific contacthub node 
+            string currentNodeID = currentWorkspace.nodes.First();
+            Node currentNode = currentWorkspace.GetNode(currentNodeID);
             #endregion
 
             #region CUSTOMERS
@@ -647,7 +647,7 @@ namespace ConsoleSample
             }
             #endregion
 
-            #region Example: add anonymous event (with external ID) + customers reconciliation
+            #region Example: add anonymous event (with external ID) + customers reconciliation from EXTERNAL_ID
             if (true) 
             {
                 string extID = Guid.NewGuid().ToString();
@@ -671,32 +671,32 @@ namespace ConsoleSample
                 }
                 else
                 {
-                    //create new customer with previous external ID
-                    PostCustomer newCustomer = new PostCustomer()
-                    {
-                        nodeId = currentNodeID,
-                        externalId = extID,
-                        @base = new BaseProperties()
-                        {
-                            firstName = "Diego",
-                            lastName = "Feltrin",
-                            contacts = new Contacts()
-                            {
-                                email = "diego@dimension.it"
-                            },
-                            timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
-                        }
-                    };
-                    //post new customer
+                    Thread.Sleep(5000); //wait event and customer elaboration
+                    //update customer
                     string customerID = null;
                     if (currentNode.isValid)
                     {
-                        Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+                        //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
+                        Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
+                        customerID = extIdCustomer.id;
+                        PostCustomer postCustomer = new PostCustomer()
+                        {
+                            @base = new BaseProperties()
+                            {
+                                firstName = "Diego",
+                                lastName = "Feltrin",
+                                contacts = new Contacts()
+                                {
+                                    email = "diego@dimension.it"
+                                },
+                                timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                            }
+                        };
+                        Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
                         customerID = createdCustomer.id;
                     }
                     //wait queue elaboration
                     Thread.Sleep(10000);
-
                     //test reconciliation: get events 
                     pagedEvents = null;
                     bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null);

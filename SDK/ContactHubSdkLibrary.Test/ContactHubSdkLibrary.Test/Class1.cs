@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 namespace ContactHubSdkLibrary.Test
 {
     [TestFixture]
-    public class CHubNodeTest
+    public class NodeTest
     {
         [Test]
-        public void CHubNode_Init()
+        public void Node_Init()
         {
-            CHubNode node = new CHubNode("c", "xx", "xx");
+            Node node = new Node("c", "xx", "xx");
  
             Assert.That(node,! Is.Null);
         }

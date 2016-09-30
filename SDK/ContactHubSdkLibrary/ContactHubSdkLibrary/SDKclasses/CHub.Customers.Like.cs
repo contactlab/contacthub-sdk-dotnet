@@ -4,7 +4,7 @@ using System;
 
 namespace ContactHubSdkLibrary.SDKclasses
 {
-    public partial class CHubNode
+    public partial class Node
     {
         #region customers likes
         /// <summary>

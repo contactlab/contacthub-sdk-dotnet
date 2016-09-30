@@ -27,7 +27,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get specific contacthub node 
-            string currentNodeID = currentWorkspace.nodes.First();
+            string currentNodeID = ConfigurationManager.AppSettings["nodeID"].ToString();
             Node currentNode = currentWorkspace.GetNode(currentNodeID);
             #endregion
 
@@ -35,20 +35,17 @@ namespace ConsoleSample
             #region Example: get all customers
             if (false)
             {
-                if (currentNode.isValid)
+                int pageSize = 5;
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+                if (pageIsValid)
                 {
-                    int pageSize = 5;
-                    bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
-                    if (pageIsValid)
+                    allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+                    for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
                         allCustomers.AddRange(pagedCustomers._embedded.customers);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                        for (int i = 1; i < pagedCustomers.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
-                            allCustomers.AddRange(pagedCustomers._embedded.customers);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                        }
                     }
                 }
             }
@@ -57,21 +54,18 @@ namespace ConsoleSample
             #region Example: alternative method to get all customers pages
             if (false)
             {
-                if (currentNode.isValid)
+                allCustomers = new List<Customer>();
+                int pageSize = 5;
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+                if (pageIsValid)
                 {
-                    allCustomers = new List<Customer>();
-                    int pageSize = 5;
-                    bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
-                    if (pageIsValid)
+                    allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+                    while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next))
                     {
+
                         allCustomers.AddRange(pagedCustomers._embedded.customers);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                        while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next))
-                        {
-
-                            allCustomers.AddRange(pagedCustomers._embedded.customers);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                        }
                     }
                 }
             }
@@ -80,52 +74,37 @@ namespace ConsoleSample
             #region Example: get single page (pageCustomer value must not be null!!!)
             if (false)
             {
-                if (currentNode.isValid)
-                {
-                    bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
-                }
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
             }
             #endregion
 
             #region Example: invalid method to get single page (pageCustomer value must not be null!!!)
             if (false)
             {
-                if (currentNode.isValid)
-                {
-                    //this sample return invalid response
-                    pagedCustomers = null;
-                    bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1);
-                }
+                //this sample return invalid response
+                pagedCustomers = null;
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1);
             }
             #endregion
 
             #region Example: get invalid page
             if (false)
             {
-                if (currentNode.isValid)
-                {
-                    bool isValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
-                }
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
             }
             #endregion
 
             #region  Example: get customer by externalID (using GetCustomers() , returns single customers in array )
             if (false)
             {
-                if (currentNode.isValid)
-                {
-                    bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
-                }
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
             }
             #endregion
 
             #region  Example: get customer by externalID (using GetCustomer(), returns single customer)
             if (false)
             {
-                if (currentNode.isValid)
-                {
-                    Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
-                }
+                Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
             }
             #endregion
 
@@ -202,11 +181,8 @@ namespace ConsoleSample
                 };
                 //post new customer
                 string customerID = null;
-                if (currentNode.isValid)
-                {
                     Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
                     customerID = createdCustomer.id;
-                }
             }
             #endregion
 
@@ -218,10 +194,7 @@ namespace ConsoleSample
                 PostCustomer updateCustomer = pagedCustomers._embedded.customers.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
-                if (currentNode.isValid)
-                {
-                    Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  //force update
-                }
+                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  //force update
             }
             #endregion
 
@@ -233,10 +206,7 @@ namespace ConsoleSample
                 Customer updateCustomer = pagedCustomers._embedded.customers.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
-                if (currentNode.isValid)
-                {
-                    Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id, true);
-                }
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id, true);
             }
             #endregion
 
@@ -248,11 +218,8 @@ namespace ConsoleSample
                 PostCustomer partialData = new PostCustomer();
                 partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
 
-                if (currentNode.isValid)
-                {
-                    string customerID = c.id;
-                    Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
-                }
+                string customerID = c.id;
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
             }
             #endregion
 
@@ -348,17 +315,14 @@ namespace ConsoleSample
                 };
                 //post new customer
                 string customerID = null;
-                if (currentNode.isValid)
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+                if (createdCustomer != null)
                 {
-                    Customer createdCustomer = currentNode.AddCustomer(newCustomer);
-                    if (createdCustomer != null)
-                    {
-                        customerID = createdCustomer.id;
-                    }
-                    else
-                    {
-                        //add customer error
-                    }
+                    customerID = createdCustomer.id;
+                }
+                else
+                {
+                    //add customer error
                 }
             }
             #endregion
@@ -367,11 +331,8 @@ namespace ConsoleSample
             if (false)
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
-                if (currentNode.isValid)
-                {
-                    Customer customer = currentNode.GetCustomerByID(customerID);
-                    customerID = customer.id;
-                }
+                Customer customer = currentNode.GetCustomerByID(customerID);
+                customerID = customer.id;
             }
             #endregion
 
@@ -379,15 +340,12 @@ namespace ConsoleSample
             if (false)
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
-                if (currentNode.isValid)
+                currentNode.DeleteCustomer(customerID);
+                //verify if deleted customer exists
+                Customer customer = currentNode.GetCustomerByID(customerID);
+                if (customer == null)
                 {
-                    currentNode.DeleteCustomer(customerID);
-                    //verify if deleted customer exists
-                    Customer customer = currentNode.GetCustomerByID(customerID);
-                    if (customer == null)
-                    {
-                        //customer does not exists
-                    }
+                    //customer does not exists
                 }
             }
             #endregion
@@ -648,7 +606,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add anonymous event (with external ID) + customers reconciliation from EXTERNAL_ID
-            if (true) 
+            if (true)
             {
                 string extID = Guid.NewGuid().ToString();
                 PostEvent newEvent = new PostEvent()
@@ -674,27 +632,25 @@ namespace ConsoleSample
                     Thread.Sleep(5000); //wait event and customer elaboration
                     //update customer
                     string customerID = null;
-                    if (currentNode.isValid)
+                    //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
+                    Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
+                    customerID = extIdCustomer.id;
+                    PostCustomer postCustomer = new PostCustomer()
                     {
-                        //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
-                        Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
-                        customerID = extIdCustomer.id;
-                        PostCustomer postCustomer = new PostCustomer()
+                        @base = new BaseProperties()
                         {
-                            @base = new BaseProperties()
+                            firstName = "Diego",
+                            lastName = "Feltrin",
+                            contacts = new Contacts()
                             {
-                                firstName = "Diego",
-                                lastName = "Feltrin",
-                                contacts = new Contacts()
-                                {
-                                    email = "diego@dimension.it"
-                                },
-                                timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
-                            }
-                        };
-                        Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
-                        customerID = createdCustomer.id;
-                    }
+                                email = "diego@dimension.it"
+                            },
+                            timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                        }
+                    };
+                    Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
+                    customerID = createdCustomer.id;
+
                     //wait queue elaboration
                     Thread.Sleep(10000);
                     //test reconciliation: get events 
@@ -704,7 +660,6 @@ namespace ConsoleSample
                 }
             }
             #endregion
-
 
 
             #region Example: add anonymous event (with sessionID) + customers reconciliation  (DA FINIRE DI TESTARE, AL MOMENTO HUB NON RICONCILIA VIA SESSION_ID)
@@ -742,23 +697,21 @@ namespace ConsoleSample
             if (false)
             {
                 List<Event> allEvents = new List<Event>();
-                if (currentNode.isValid)
+                int pageSize = 10;
+                //filter by customer id (required)
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
+                if (pageIsValid)
                 {
-                    int pageSize = 10;
-                    //filter by customer id (required)
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
-                    if (pageIsValid)
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        for (int i = 1; i < pagedEvents.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
-                            allEvents.AddRange(pagedEvents._embedded.events);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        }
                     }
                 }
+
             }
             #endregion
 
@@ -766,24 +719,22 @@ namespace ConsoleSample
             if (false)
             {
                 List<Event> allEvents = new List<Event>();
-                if (currentNode.isValid)
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
+                if (pageIsValid)
                 {
-                    int pageSize = 3;
-                    allEvents.Clear();
-                    pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
-                    if (pageIsValid)
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        for (int i = 1; i < pagedEvents.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
-                            allEvents.AddRange(pagedEvents._embedded.events);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        }
                     }
                 }
+
             }
             #endregion
 
@@ -791,8 +742,6 @@ namespace ConsoleSample
             if (false)
             {
                 List<Event> allEvents = new List<Event>();
-                if (currentNode.isValid)
-                {
                     int pageSize = 3;
                     allEvents.Clear();
                     pagedEvents = null;
@@ -808,15 +757,13 @@ namespace ConsoleSample
                             Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                         }
                     }
-                }
+                
             }
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + mode
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     List<Event> allEvents = new List<Event>();
                     int pageSize = 3;
                     allEvents.Clear();
@@ -833,15 +780,13 @@ namespace ConsoleSample
                             Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                         }
                     }
-                }
+                
             }
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + date from|to  ( DA TESTARE, SEMBRA NON FUNZIONARE)
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     List<Event> allEvents = new List<Event>();
                     int pageSize = 3;
                     allEvents.Clear();
@@ -857,7 +802,7 @@ namespace ConsoleSample
                             allEvents.AddRange(pagedEvents._embedded.events);
                             Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                         }
-                    }
+                    
                 }
             }
             #endregion
@@ -865,10 +810,7 @@ namespace ConsoleSample
             #region Example: get event by id
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     Event ev = currentNode.GetEvent("a47c02d8-c8e0-4d8a-93c0-d35988eaa204");
-                }
             }
             #endregion
             #endregion
@@ -877,10 +819,7 @@ namespace ConsoleSample
             #region Example: get customer tags
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
-                }
             }
 
             #endregion
@@ -888,21 +827,15 @@ namespace ConsoleSample
             #region Example: add customers tag
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
                     currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
-                }
             }
             #endregion
 
             #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE) CONFERMATO BUG VA SU il 3/10
             if (false)
             {
-                if (currentNode.isValid)
-                {
                     Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
-                }
             }
             #endregion
             #endregion

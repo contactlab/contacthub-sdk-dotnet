@@ -231,7 +231,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             //get customers filtered by external ID
             GetCustomers(ref pagedCustomers, 1, externalID, null, null);
 
-            if (pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
+            if (pagedCustomers._embedded!=null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
             {
                 returnValue = pagedCustomers._embedded.customers.First();
             }
@@ -268,9 +268,20 @@ namespace ContactHubSdkLibrary.SDKclasses
             return returnCustomer;
         }
 
-        public void DeleteCustomer(string id)
+        /// <summary>
+        /// Delete Customer from node
+        /// </summary>
+        public bool DeleteCustomer(string id)
         {
             string jsonResponse = DoDeleteWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
+            if (string.IsNullOrEmpty(jsonResponse))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
     }

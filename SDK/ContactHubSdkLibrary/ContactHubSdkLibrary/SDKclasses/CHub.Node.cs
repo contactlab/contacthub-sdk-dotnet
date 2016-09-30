@@ -7,28 +7,31 @@ namespace ContactHubSdkLibrary.SDKclasses
 {
     public partial class Node
     {
-        public bool isValid; //da implementare
+        //private bool _isValid;
+        private string _node = null;
         private string _workspaceID = null;
         private string _token = null;
-        private string _node = null;
-        private const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
+        private const string _baseURL = Const.APIURL;
+        //public bool isValid { get { return _isValid; } }
+        public string node { get { return _node; } }
         public string id;
+        public string token { get { return _token; } }
 
         public object Util { get; private set; }
         public object HttpServerUtility { get; private set; }
 
         #region Node builder
-        public Node(string workspaceID, string token, string nodeID)
+        public Node(string workspaceID, string tokenID, string nodeID)
         {
-            Init(workspaceID, token, nodeID);
+            Init(workspaceID, tokenID, nodeID);
             id = nodeID;
         }
-        private void Init(string workspaceID, string token, string nodeID)
+        private void Init(string workspaceID, string tokenID, string nodeID)
         {
             _workspaceID = workspaceID;
-            _token = token;
+            _token = tokenID;
             _node = nodeID;
-            isValid = true;  //da implementare controllo
+            //_isValid = true;  //NEXT IMPLEMENTATION
         }
         #endregion
 
@@ -36,11 +39,17 @@ namespace ContactHubSdkLibrary.SDKclasses
 
         public string GetExtendedPropertiesConfiguration()
         {
-            //            /configuration/properties/extended
-            //var returnValue = null;
             string jsonResponse = DoGetWebRequest(String.Format("/configuration/properties/extended"));
-
             var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            return null;
+        }
+
+
+
+        public string GetMe()
+        {
+            string jsonResponse = DoGetWebRequest(Const.APIBASEURL + String.Format("/me"), false);
+            var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<UserInfo>(jsonResponse) : null);
             return null;
         }
 

@@ -192,6 +192,8 @@ namespace ContactHubSdkLibrary.SDKclasses
             //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
             //in theory returns the id of existing customer, which shall therefore used for the update
             bool isError = (returnCustomer.id == null);
+
+            //TO BE DONE!!!
             if (isError && forceUpdate)
             {
                 string existingID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
@@ -231,7 +233,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             //get customers filtered by external ID
             GetCustomers(ref pagedCustomers, 1, externalID, null, null);
 
-            if (pagedCustomers._embedded!=null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
+            if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
             {
                 returnValue = pagedCustomers._embedded.customers.First();
             }

@@ -36,7 +36,7 @@ namespace ContactHubSdkLibrary.Test
             //Loop through each properties inside class and get values for the property from both the objects and compare
             foreach (System.Reflection.PropertyInfo property in type.GetProperties())
             {
-                //if (property.Name != "ExtensionData")
+                if (property.Name != "_updatedAt" && property.Name!="updatedAt")
                 {
                     string Object1Value = string.Empty;
                     string Object2Value = string.Empty;

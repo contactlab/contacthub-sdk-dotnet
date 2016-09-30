@@ -13,7 +13,7 @@ namespace ContactHubSdkLibrary.Test
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
 
-        public void CustomerLifeCicle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void CustomerAddCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
@@ -46,11 +46,102 @@ namespace ContactHubSdkLibrary.Test
 
                     //compare results with posted Customer
                     PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
-                    bool test2Passed =  Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
+                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
 
                     //delete added customer
                     bool test3Passed = node.DeleteCustomer(newCustomer.id);
                     testPassed = test1Passed & test2Passed & test3Passed;
+                }
+            }
+            Assert.AreEqual(testPassed, tpResult);
+        }
+        /// <summary>
+        /// Test customer update (use .UpdateCustomer)
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Diego",
+                    lastName = "Feltrin",
+                    contacts = new Contacts()
+                    {
+                        email = "diego@dimension.it"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = AddTestCustomer(node, newPostCustomer);
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    //customer is created, then update id
+
+                    newCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                    Customer updatedCustomer = node.UpdateCustomer((PostCustomer)newCustomer, newCustomer.id, true);
+
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    //compare results
+                    bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+
+                    //delete added customer
+                    bool test2Passed = node.DeleteCustomer(newCustomer.id);
+                    testPassed = test1Passed && test2Passed;
+                }
+            }
+            Assert.AreEqual(testPassed, tpResult);
+        }
+
+        /// <summary>
+        /// Test customer update (use .AddCustomer with FORCE)
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerUpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Diego",
+                    lastName = "Feltrin",
+                    contacts = new Contacts()
+                    {
+                        email = "diego@dimension.it"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = AddTestCustomer(node, newPostCustomer);
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    //customer is created, then update id
+
+                    newCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                    Customer updatedCustomer = node.AddCustomer((PostCustomer)newCustomer, true);
+
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    //compare results
+                    bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+
+                    //delete added customer
+                    bool test2Passed = node.DeleteCustomer(newCustomer.id);
+                    testPassed = test1Passed && test2Passed;
                 }
             }
             Assert.AreEqual(testPassed, tpResult);
@@ -72,7 +163,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Add a new customer with random external ID
         /// </summary>
-        private Customer AddTestCustomer(Node currentNode,PostCustomer newCustomer)
+        private Customer AddTestCustomer(Node currentNode, PostCustomer newCustomer)
         {
             //post new customer
             string customerID = null;

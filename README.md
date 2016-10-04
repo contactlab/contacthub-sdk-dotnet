@@ -1,277 +1,392 @@
-# Facebook Ads API SDK for PHP
+## Contact Hub C# .NET SDK for Windows
 
-[![Packagist](https://img.shields.io/packagist/v/facebook/php-ads-sdk.svg?style=flat-square)](https://packagist.org/packages/facebook/php-ads-sdk)
-[![License](https://img.shields.io/badge/license-Facebook%20Platform-blue.svg?style=flat-square)](https://github.com/facebook/facebook-php-ads-sdk/blob/master/LICENSE)
-[![Travis](https://img.shields.io/travis/facebook/facebook-php-ads-sdk.svg?style=flat-square)](https://travis-ci.org/facebook/facebook-php-ads-sdk)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/facebook/facebook-php-ads-sdk.svg?style=flat-square)](https://scrutinizer-ci.com/g/facebook/facebook-php-ads-sdk)
-[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/facebook/facebook-php-ads-sdk.svg?style=flat-square)](https://scrutinizer-ci.com/g/facebook/facebook-php-ads-sdk)
+This SDK allows you to easily access to the REST API ContactHub, simplifying the authentication operations and data read/write on Contact Hub.
+The project is based on the Visual Studio 2015 IDE.
+The project can be compiled as a library (dll) and is accompanied by a sample project and unit test.
 
-This Ads API SDK is built to facilitate application development for [Facebook Ads API](https://developers.facebook.com/docs/ads-api).
+### Dependencies
 
-## Installation
+The only dependency is NewtonsoftJson library , a very popular high-performance Json framework for .NET [(read licence)](https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md)
 
-The Facebook Ads API SDK requires PHP 5.4 or greater.
+Newtonsoft Json is available as NuGet package and is already configured in the *packages.config* file.
 
-### Composer
+The project also uses two NuGet packages for unit testing (NUnit). If you don't use the unit test, these packages are not required for the integration of the library into your project.
 
-Facebook Ads API SDK uses composer to manage dependencies. You can follow this [document](https://getcomposer.org/download/) to install composer.
+## Getting Started 
 
-Add the following to your `composer.json` file:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
-```json
-{
-    "require": {
-        "facebook/php-ads-sdk": "2.5.*"
-    }
-}
-```
-then install it through composer:
+### 1. Create your client application
+
+Create a new Visual Studio solution with a new console application and add the project Contact Sdk Library in the references.
+If you do not need at this moment of the unit test (ContactHubSdkLibrary.Test)  don't include it in the solution. You can add it later if you need to.
+
+### 2. Download required packages
+
+You can compile this sdk library only if you get the packages listed in packages.config. <return>
+To get all required packages, open NuGet Package Manager Console and type:
 
 ```shell
-php composer.phar install --no-dev
+PM> update-package -reinstall
 ```
 
-This SDK and its dependencies will be installed under `./vendor`.
+Then clean and rebuild all solution.
 
-### Alternatives
+### 3. Include sdk library
 
-This repository is written following the [psr-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). Any psr-4 compatible autoloader can be used.
+Add references to sdk library in your application.
+```cs
+using ContactHubSdkLibrary;
+using ContactHubSdkLibrary.Events;
+using ContactHubSdkLibrary.Models;
+using ContactHubSdkLibrary.SDKclasses;
+```
+
+### 4. Configure credential
+
+Edit your app.config (or web.config) file and add this settings:
+```xml
+<appSettings>
+    <add key="workspaceID" value="123123123-123-1232-1232-23433333333"/>
+    <add key="token" value="12341234121234123412341234"/>
+    <add key="nodeID" value= "23423434-54544-4545-3434-34523453444"/>
+</appSettings>
+```
+
+Replace the sample values with real credentials provided by Contact Lab.
+
+You are not required to save them in this file, if you want you can save this data in any way and make them available in the code as they are needed to invoke the sdk functions calls.
+The following examples use the AppSettings because they are a convenient way to configure the credentials in the project.
+
+### 5. Istantiate the workspace and the node
+```cs
+    Workspace currentWorkspace = new Workspace(
+    					ConfigurationManager.AppSettings["workspaceID"].ToString(),
+                        ConfigurationManager.AppSettings["token"].ToString()
+                        );
+    Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
+```
+
+These instructions do not actually make the call to the remote system. They are used only to initialize the node to enable it to operate properly.
+
+### 6. Get all customers
+
+The most simple call you can do is take every customer. Obviously, if your workspace is empty you will not get results, but I confirm that the credentials you entered are correct.
+To get the customer must work with paging. For this you need a PagedCustomer object where to get the data.
+
+```cs
+            int pageSize = 5;
+            PagedCustomer pagedCustomers = null;
+            bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+            List<Customer> customers = pagedCustomers._embedded.customers;
+```
+
+For this first call is very important that the value returns in pageIsValid is *true* <return>
+
+### 7. Add customer
+
+To complete your first application, add a *customer* to contacthub node.
+```cs
+            PostCustomer newCustomer = new PostCustomer()
+            {
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GeorgiaTime
+                }
+            };
+            Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+```
+
+If everything went well you should get back a  *customer* object with the fields that you posted with more the *id* attribute valorized.
+This is the internal *id* you'll be using as an identifier for your customer.
+
 
 ## Usage
 
-### Api main class
+### Customer Class
 
-The `FacebookAds\Api` object is the foundation of the Ads SDK which encapsulates a `FacebookAds\Session` and is used to execute requests against the Graph API.
-
-To instantiate an Api object you will need a valid access token:
-```php
-use FacebookAds\Api;
-
-// Initialize a new Session and instanciate an Api object
-Api::init($app_id, $app_secret, $access_token);
-
-// The Api object is now available trough singleton
-$api = Api::instance();
-
+#### Add a customer
+To create a customer instantiate an object of type Customer and assigns the required attributes.
+@base field contains the main customer data.
+This code creates a customer with name, surname, email, timezone and an External ID.
+The External ID is a field in which the client application can write its own primary key and use in searches to get the customer.
+Sample:
+```cs
+ PostCustomer newCustomer = new PostCustomer()
+            {
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GeorgiaTime
+                }
+            };
 ```
 
-Once instantiated, the Api object will allow you to start making requests to the Ads API.
 
-### Fields names
+#### Add customer with forced update
 
-Due to the high number of field names in the Ads API existing objects, in order to facilitate your code maintainability, enum-like classes are provided.
-These files are stored under the `FacebookAds/Object/Fields` directory.
-You can access object properties in the same manner you would usually do in php:
-
-```php
-use FacebookAds\Object\AdAccount;
-
-$account = new AdAccount();
-$account->name = 'My account name';
-echo $account->name;
+You can put a customer forcing the update if already exists in the node. The remote system verifies the presence of the customer according to the rules defined in the contacthub configuration.
+To force the update if exists, use the *true* in forceUpdate parameter.
+Sample:
+```cs
+                PostCustomer updateCustomer = [...]
+                updateCustomer.extra = DateTime.Now.ToShortTimeString();
+                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  
 ```
 
-or using the enums:
+#### Update customer (full update)
 
-```php
-use FacebookAds\Object\AdAccount;
-use FacebookAds\Object\Fields\AdAccountFields;
+To update all customer fields, you create an PostCustomer object and call the updateCustomer  function with fullUpdate  parameter set to *true*.
+In this way the customer object will be completely replaced with the new data, including all fields set to null.
+Sample:
+```cs
+Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id,true);
+```
+You have to pass the customer id to  update, because the PostCustomer object does not have the id attribute, exactly as in the APIs that these SDK go to call.
+We recommend using partial update to avoid deleting fields already setted previously.
 
-$account = new AdAccount();
-$account->{AdAccountFields::NAME} = 'My account name';
-echo $account->{AdAccountFields::NAME};
+#### Update customer (partial update)
+If you need to update only certain fields of the customer, you can make an partial update. In this case only the not null fields will be used in the update.
+Sample:
+```cs
+         Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
 ```
 
-### Object classes
+#### Add or update customer with extended properties
 
-Facebook Ads entities are defined as classes under the `FacebookAds/Object` directory. 
+The extended properties have a dynamic structure that is defined in the server-side workspace configuration.
+You can not have on client an auto-builder that get a class already structured as extendend properties on server side. You must build your data structure exactly as it is structured on the server. Extended properties validator is not available in this sdk.
+For each extended property you must use the correct datatype.
+Available datatype are: 
+* ExtendedPropertyString: string
+* ExtendedPropertyStringArray: array of string
+* ExtendedPropertyNumber: number
+* ExtendedPropertyNumberArray: array of number
+* ExtendedPropertyBoolean: boolean
+* ExtendedPropertyObject: object 
+* ExtendedPropertyObjectArray: array of object
+* ExtendedPropertyDateTime: datetime
+* ExtendedPropertyDateTimeArray: array of datetime
 
-#### Read Objects
-
-```php
-use FacebookAds\Object\AdAccount;
-
-$account = new AdAccount($account_id);
-$account->read();
+Sample:
+```cs
+  PostCustomer newCustomer = new PostCustomer()
+                {
+                    nodeId = currentNodeID,
+                    externalId = Guid.NewGuid().ToString(),
+                    @base = new BaseProperties()
+                    {
+                        firstName = "Donald",
+                        lastName = "Duck",
+                        contacts = new Contacts()
+                        {
+                            email = "dduck@yourdomain.it"
+                        },
+                        timezone = BasePropertiesTimezoneEnum.GMT0100
+                    },
+                    extended = new List<ExtendedProperty>()
+                {
+                    new ExtendedPropertyNumber()
+                    {
+                        name="point",
+                        value=100
+                    },
+                    new ExtendedPropertyString()
+                    {
+                        name="Length",
+                        value="123"
+                    },
+            new ExtendedPropertyStringArray()
+            {
+                name="myStringArray",
+                value=new List<String>() { "123", "456" }
+            },
+            new ExtendedPropertyNumberArray()
+            {
+                name="myNumberArray",
+                value=new List<Double>() { 123.99, 456.99 }
+            },
+            new ExtendedPropertyBoolean()
+            {
+                name="myBoolean",
+                value=true
+            },
+            new ExtendedPropertyObjectArray()
+            {
+                name="myObjectArray",
+                value=new List<ExtendedProperty>()
+                {
+                       new ExtendedPropertyNumber()
+                                {
+                                    name="Height",
+                                    value=1000
+                                },
+                                new ExtendedPropertyNumber()
+                                {
+                                    name="Width",
+                                    value=1000
+                                }
+                }
+            },
+            new ExtendedPropertyDateTime()
+            {
+                name="myDateTime",
+                value=DateTime.Now
+            },
+            new ExtendedPropertyDateTimeArray()
+            {
+                name="myDateArray",
+                value=new List<DateTime>()
+                {
+                    DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
+                }
+            }
+                }
+                };
+                //post new customer
+                string customerID = null;
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+                if (createdCustomer != null)
+                {
+                    customerID = createdCustomer.id;
+                }
+                else
+                {
+                    //add customer error
+                }
 ```
 
-For some objects, the Ads API doesn't return all available fields by default. The first argument of the object's read method is an array of field names to be requested.
+#### Get paged customers
 
-```php
-use FacebookAds\Object\AdAccount;
-use FacebookAds\Object\Fields\AdAccountFields;
+To get a list of customer you have to go through a pager.
+Each page is returned as PageCustomers object that is passed by ref to the function.
+Customers array is in ._embedded.customers attribute
 
-$fields = array(
-  AdAccountFields::ID,
-  AdAccountFields::NAME,
-  AdAccountFields::DAILY_SPEND_LIMIT,
-);
-
-$account = new AdAccount($account_id);
-$account->read($fields);
-```
-Requesting an high number of fields may cause the response time to visibly increase, you should always request only the fields you really need.
-
-#### Create Objects
-
-```php
-use FacebookAds\Object\AdSet;
-use FacebookAds\Object\Fields\AdSetFields;
-
-$account_id = 'act_123123';
-$campaign_id = '123456';
-
-$set = new AdSet(null, $account_id);
-$set->setData(array(
-  AdSetFields::NAME => 'My Test AdSet',
-  AdSetFields::CAMPAIGN_ID => $campaign_id,
-  AdSetFields::DAILY_BUDGET => 150,
-  AdSetFields::START_TIME => (new \DateTime("+1 week"))->format(\DateTime::ISO8601),
-  AdSetFields::END_TIME => (new \DateTime("+2 week"))->format(\DateTime::ISO8601),
-));
-$set->create(array(
-  AdSet::STATUS_PARAM_NAME => AdSet::STATUS_PAUSED,
-));
-echo $set->id;
+```cs
+   PagedEvent pagedEvents = null;
+   int pageSize = 5;
+   bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
 ```
 
-#### Update Objects
-
-```php
-use FacebookAds\Object\AdSet;
-use FacebookAds\Object\Fields\AdSetFields;
-
-$ad_set_id = '123456';
-
-$set = new AdSet($ad_set_id);
-$set->{AdSetFields::NAME} = 'My new AdSet name';
-$set->update();
+After the first page you can easily cycle on next pages with
+```cs
+   pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
 ```
-
-#### Delete Objects
-
-```php
-use FacebookAds\Object\AdSet;
-
-$ad_set_id = '123456';
-
-$set = new AdSet($ad_set_id);
-$set->delete();
-```
-
-### Cursors
-
-Since the release of the Facebook Graph API 2.0, pagination is handled through [cursors](https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2#paging).
-Here cursors are defined as in `\FacebookAds\Cursor`. Cursors are generally returned from connection methods:
-
-```php
-use FacebookAds\Object\AdAccount;
-use FacebookAds\Object\Fields\CampaignFields;
-
-$account = new AdAccount('<ACT_ID>');
-$cursor = $account->getCampaigns();
-
-// Loop over objects
-foreach ($cursor as $campaign) {
-  echo $campaign->{CampaignFields::NAME}.PHP_EOL;
+Sample:
+```cs
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);  //first page
+if (pageIsValid)
+{
+ Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+ for (int i = 1; i < pagedCustomers.page.totalPages; i++)
+ {
+   pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next); //next page
+   Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+  }
 }
-
-// Access objects by index
-if ($cursor->count() > 0) {
-  echo "The first campaign in the cursor is: ".$cursor[0]->{CampaignFields::NAME}.PHP_EOL;
-}
-
-// Fetch the next page
-$cursor->fetchAfter();
-// New Objects will be appended to the cursor
 ```
 
-#### Implicit Fetching
-
-Whenever all object connected to a parent are required (carelessly from the number of HTTP requests) implicit fetching can help reducing the amount of code required.
-If cursor has Implicit Fetching enabled, while iterating (foreach, Cursor::next(), Cursor::prev()) the page end is reached, the SDK will automatically fetch and append a new page, untill cursor end.
-Implicit Fetching will make you lose controll of the number of HTTP request that will be sent and, for this reason, is disabled by default.
-Implicit Fetching can be enabled for a specific cursor:
-
-```php
-$cursor->setUseImplicitFetch(true);
+or in this way:
+```cs
+ bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+ if (pageIsValid)
+ {
+   Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+   while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next))
+   {
+    Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+   }
+ }
 ```
 
-Or globally:
+If you have already get the first page or one of the following, you can jump to a specific page. You can do if you pass a PagedCustomer object already valorized by a previous call. Make sure it is not null.
 
-```php
-use FacebookAds\Cursor;
-
-Cursor::setDefaultUseImplicitFetch(true);
+Sample: get third page
+```cs
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
 ```
 
-#### Reverse Iterations
+#### Get single customer
 
-Cursors are bi-directional, and can be iterated in reverse order:
+You can get a customer through  internal id or by the ExternalID
 
-```php
-use FacebookAds\Object\AbstractCrudObject;
-
-/** @var \FacebookAds\Cursor $cursor */
-$cursor->setUseImplicitFetch(true);
-
-$cursor->end();
-while ($cursor->valid()) {
-  echo $cursor->current()->{AbstractCrudObject::FIELD_ID}.PHP_EOL;
-  $cursor->prev();
-}
-
+Sample: get customer by ID (internal)
+```cs
+Customer customer = currentNode.GetCustomerByID(customerID);
 ```
 
-## Tests
-
-The 'test' folder contains the test cases. These are logically divided in unit and integration tests.
-Integration tests require an active Facebook Ad Account, a Facebook Application and a valid Access Token.
-
-Note: we are currently unable to securely and reliably run integration tests on a public CI system. Our integrations with Travis and Scrutinizer (including badges at the top of this file) include only unit tests.
-
-
-### Install dependencies
-
-From the root folder run:
-
-```shell
-php composer.phar install --dev
+Sample: get customer by external ID
+```cs
+Customer customerByExtID = currentNode.GetCustomerByExternalID(extID);
 ```
 
-### Execute unit tests only
-
-```shell
-./vendor/bin/phpunit -c test/phpunit-travis.xml
+You can get the customer through external ID also using GetCustomers().
+If the external id is unique in theory should always return a single result.
+Sample: get customer by external ID
+```cs
+bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, null);
 ```
 
-To run tests individually (be sure not to be pointing to an integration test file):
+#### Query on customers
 
-```shell
-./vendor/bin/phpunit -c test/phpunit-travis.xml path/to/class/file
+You can create a query to refine GetCustomers()
+You have two ways to specify a query. The simple mode allows you to easily build a query with AND or OR operator. If you want to build a complex quey can pass it directly in json format, according to the rest api specifications.
+
+Simple mode:
+this mode use a query builder to get query string.
+
+Sample: query on firstName and lastName (AND condition)
+```cs
+QueryBuilder qb = new QueryBuilder();
+qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
+qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
+currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
 ```
 
-
-### Execute all tests (unit + integration)
-
-Setup your integration config:
-
-1 - Copy the config file template.
-
-```shell
-cp test/config.php.dist test/config.php
+Advanced mode:
+ pass a query string in json format 
+```cs
+string querySTR = @"{
+ ""name"": """",
+ ""query"": {
+ ""are"": {
+ ""condition"": {
+    ""attribute"": ""base.firstName"",
+    ""operator"": ""EQUALS"",
+    ""type"": ""atomic"",
+    ""value"": ""Diego""
+   }
+  },
+  ""name"": ""No name"",
+  ""type"": ""simple""
+ }
+}";
+currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);                
 ```
 
-2 - Edit `test/config.php` with your informations.
+#### Select fields 
 
-Execute:
-
-```shell
-./vendor/bin/phpunit -c test/
+You can select the fields returned from the get customers
+```cs
+currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName");
 ```
 
-To run tests individually:
+#### Delete customer
 
-```shell
-./vendor/bin/phpunit -c test/ path/to/class/file
+You can delete a customer just by knowing its id
+```cs
+  currentNode.DeleteCustomer(c.id);
 ```

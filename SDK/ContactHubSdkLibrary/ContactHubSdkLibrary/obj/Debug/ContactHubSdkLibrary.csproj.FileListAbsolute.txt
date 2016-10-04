@@ -1,7 +1,0 @@
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Debug\ContactHubSdkLibrary.dll
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Debug\ContactHubSdkLibrary.pdb
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Debug\Newtonsoft.Json.dll
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Debug\Newtonsoft.Json.xml
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.dll
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.pdb
-C:\Projects\ContactLab\ContactHub\SDK\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.csprojResolveAssemblyReference.cache

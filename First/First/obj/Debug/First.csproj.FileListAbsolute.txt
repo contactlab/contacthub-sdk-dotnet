@@ -1,0 +1,10 @@
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\First.exe.config
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\First.exe
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\First.pdb
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\ContactHubSdkLibrary.dll
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\ContactHubSdkLibrary.pdb
+C:\Projects\ContactLab\ContactHub\First\First\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ContactLab\ContactHub\First\First\obj\Debug\First.csprojResolveAssemblyReference.cache
+C:\Projects\ContactLab\ContactHub\First\First\obj\Debug\First.exe
+C:\Projects\ContactLab\ContactHub\First\First\obj\Debug\First.pdb

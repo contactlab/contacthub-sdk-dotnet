@@ -60,11 +60,11 @@ The following examples use the AppSettings because they are a convenient way to 
 
 ### 5. Istantiate the workspace and the node
 ```cs
-    Workspace currentWorkspace = new Workspace(
-    					ConfigurationManager.AppSettings["workspaceID"].ToString(),
-                        ConfigurationManager.AppSettings["token"].ToString()
-                        );
-    Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
+Workspace currentWorkspace = new Workspace(
+  ConfigurationManager.AppSettings["workspaceID"].ToString(),
+  ConfigurationManager.AppSettings["token"].ToString()
+);
+Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
 ```
 
 These instructions do not actually make the call to the remote system. They are used only to initialize the node to enable it to operate properly.
@@ -75,10 +75,10 @@ The most simple call you can do is take every customer. Obviously, if your works
 To get the customer must work with paging. For this you need a PagedCustomer object where to get the data.
 
 ```cs
-            int pageSize = 5;
-            PagedCustomer pagedCustomers = null;
-            bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
-            List<Customer> customers = pagedCustomers._embedded.customers;
+int pageSize = 5;
+PagedCustomer pagedCustomers = null;
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+List<Customer> customers = pagedCustomers._embedded.customers;
 ```
 
 For this first call is very important that the value returns in pageIsValid is *true* <return>
@@ -87,21 +87,21 @@ For this first call is very important that the value returns in pageIsValid is *
 
 To complete your first application, add a *customer* to contacthub node.
 ```cs
-            PostCustomer newCustomer = new PostCustomer()
-            {
-                externalId = Guid.NewGuid().ToString(),
-                @base = new BaseProperties()
-                {
-                    firstName = "Donald",
-                    lastName = "Duck",
-                    contacts = new Contacts()
-                    {
-                        email = "dduck@yourdomain.com"
-                    },
-                    timezone = BasePropertiesTimezoneEnum.GeorgiaTime
-                }
-            };
-            Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+PostCustomer newCustomer = new PostCustomer()
+{
+  externalId = Guid.NewGuid().ToString(),
+  @base = new BaseProperties()
+  {
+   firstName = "Donald",
+   lastName = "Duck",
+   contacts = new Contacts()
+   {
+    email = "dduck@yourdomain.com"
+   },
+   timezone = BasePropertiesTimezoneEnum.GeorgiaTime
+  }
+};
+Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
 ```
 
 If everything went well you should get back a  *customer* object with the fields that you posted with more the *id* attribute valorized.
@@ -119,11 +119,11 @@ This code creates a customer with name, surname, email, timezone and an External
 The External ID is a field in which the client application can write its own primary key and use in searches to get the customer.
 Sample:
 ```cs
- PostCustomer newCustomer = new PostCustomer()
-            {
-                externalId = Guid.NewGuid().ToString(),
-                @base = new BaseProperties()
-                {
+PostCustomer newCustomer = new PostCustomer()
+{
+  externalId = Guid.NewGuid().ToString(),
+  @base = new BaseProperties()
+  {
                     firstName = "Donald",
                     lastName = "Duck",
                     contacts = new Contacts()
@@ -131,8 +131,8 @@ Sample:
                         email = "dduck@yourdomain.com"
                     },
                     timezone = BasePropertiesTimezoneEnum.GeorgiaTime
-                }
-            };
+  }
+};
 ```
 
 
@@ -142,9 +142,9 @@ You can put a customer forcing the update if already exists in the node. The rem
 To force the update if exists, use the *true* in forceUpdate parameter.
 Sample:
 ```cs
-                PostCustomer updateCustomer = [...]
-                updateCustomer.extra = DateTime.Now.ToShortTimeString();
-                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  
+PostCustomer updateCustomer = [...]
+updateCustomer.extra = DateTime.Now.ToShortTimeString();
+Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  
 ```
 
 #### Update customer (full update)
@@ -162,7 +162,7 @@ We recommend using partial update to avoid deleting fields already setted previo
 If you need to update only certain fields of the customer, you can make an partial update. In this case only the not null fields will be used in the update.
 Sample:
 ```cs
-         Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
+Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
 ```
 
 #### Add or update customer with extended properties
@@ -183,90 +183,91 @@ Available datatype are:
 
 Sample:
 ```cs
-  PostCustomer newCustomer = new PostCustomer()
-                {
-                    nodeId = currentNodeID,
-                    externalId = Guid.NewGuid().ToString(),
-                    @base = new BaseProperties()
-                    {
-                        firstName = "Donald",
-                        lastName = "Duck",
-                        contacts = new Contacts()
-                        {
-                            email = "dduck@yourdomain.it"
-                        },
-                        timezone = BasePropertiesTimezoneEnum.GMT0100
-                    },
-                    extended = new List<ExtendedProperty>()
-                {
-                    new ExtendedPropertyNumber()
-                    {
-                        name="point",
-                        value=100
-                    },
-                    new ExtendedPropertyString()
-                    {
-                        name="Length",
-                        value="123"
-                    },
-            new ExtendedPropertyStringArray()
+    PostCustomer newCustomer = new PostCustomer()
+    {
+        nodeId = currentNodeID,
+        externalId = Guid.NewGuid().ToString(),
+        @base = new BaseProperties()
+        {
+            firstName = "Donald",
+            lastName = "Duck",
+            contacts = new Contacts()
             {
-                name="myStringArray",
-                value=new List<String>() { "123", "456" }
+                email = "dduck@yourdomain.it"
             },
-            new ExtendedPropertyNumberArray()
-            {
-                name="myNumberArray",
-                value=new List<Double>() { 123.99, 456.99 }
-            },
-            new ExtendedPropertyBoolean()
-            {
-                name="myBoolean",
-                value=true
-            },
-            new ExtendedPropertyObjectArray()
-            {
-                name="myObjectArray",
-                value=new List<ExtendedProperty>()
-                {
-                       new ExtendedPropertyNumber()
-                                {
-                                    name="Height",
-                                    value=1000
-                                },
-                                new ExtendedPropertyNumber()
-                                {
-                                    name="Width",
-                                    value=1000
-                                }
-                }
-            },
-            new ExtendedPropertyDateTime()
-            {
-                name="myDateTime",
-                value=DateTime.Now
-            },
-            new ExtendedPropertyDateTimeArray()
-            {
-                name="myDateArray",
-                value=new List<DateTime>()
-                {
-                    DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
-                }
-            }
-                }
-                };
-                //post new customer
-                string customerID = null;
-                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
-                if (createdCustomer != null)
-                {
+            timezone = BasePropertiesTimezoneEnum.GMT0100
+        },
+        extended = new List<ExtendedProperty>()
+ {
+  new ExtendedPropertyNumber()
+  {
+   name="point",
+   value=100
+  },
+  new ExtendedPropertyString()
+  {
+   name="Length",
+   value="123"
+  },
+  new ExtendedPropertyStringArray()
+  {
+   name="myStringArray",
+   value=new List<String>() { "123", "456" }
+  },
+  new ExtendedPropertyNumberArray()
+  {
+   name="myNumberArray",
+   value=new List<Double>() { 123.99, 456.99 }
+  },
+  new ExtendedPropertyBoolean()
+  {
+   name="myBoolean",
+   value=true
+  },
+  new ExtendedPropertyObjectArray()
+  {
+   name="myObjectArray",
+   value=new List<ExtendedProperty>()
+   {
+  new ExtendedPropertyNumber()
+     {
+      name="Height",
+      value=1000
+     },
+  new ExtendedPropertyNumber()
+     {
+      name="Width",
+      value=1000
+     }
+    }
+    },
+  new ExtendedPropertyDateTime()
+    {
+     name="myDateTime",
+     value=DateTime.Now
+    },
+  new ExtendedPropertyDateTimeArray()
+  {
+     name="myDateArray",
+     value=new List<DateTime>()
+   {
+      DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
+   }
+  }
+ }
+    };
+    //post new customer
+    string customerID = null;
+    Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+  if (createdCustomer != null)
+  {
                     customerID = createdCustomer.id;
-                }
-                else
-                {
+  }
+  else
+  {
                     //add customer error
-                }
+  }
+
 ```
 
 #### Get paged customers
@@ -276,14 +277,14 @@ Each page is returned as PageCustomers object that is passed by ref to the funct
 Customers array is in ._embedded.customers attribute
 
 ```cs
-   PagedEvent pagedEvents = null;
-   int pageSize = 5;
-   bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+PagedEvent pagedEvents = null;
+int pageSize = 5;
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
 ```
 
 After the first page you can easily cycle on next pages with
 ```cs
-   pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
+pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
 ```
 Sample:
 ```cs
@@ -388,5 +389,5 @@ currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,bas
 
 You can delete a customer just by knowing its id
 ```cs
-  currentNode.DeleteCustomer(c.id);
+currentNode.DeleteCustomer(c.id);
 ```

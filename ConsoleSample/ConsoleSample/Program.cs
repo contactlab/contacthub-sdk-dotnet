@@ -693,7 +693,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events (with paging)
-            if (false)
+            if (true)
             {
                 List<Event> allEvents = new List<Event>();
                 int pageSize = 20;
@@ -807,7 +807,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get event by id
-            if (true)
+            if (false)
             {
                     Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8");
             }
@@ -816,7 +816,7 @@ namespace ConsoleSample
 
             #region TAGS
             #region Example: get customer tags
-            if (false)
+            if (true)
             {
                     Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             }
@@ -824,15 +824,15 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add customers tag
-            if (false)
+            if (true)
             {
                     Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
-                    currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
+                   // currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
             }
             #endregion
 
             #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE) CONFERMATO BUG VA SU il 3/10
-            if (false)
+            if (true)
             {
                     Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
             }

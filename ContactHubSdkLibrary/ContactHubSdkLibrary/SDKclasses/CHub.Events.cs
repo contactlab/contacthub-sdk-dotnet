@@ -203,6 +203,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return false; //return invalid page
         }
+
         /// <summary>
         /// Custom deserializer for events. ReadJson() detect right class for 'properties' attribute.
         /// The GetEventProperties method is self-generated from generateBasePropertiesClass projects.
@@ -220,9 +221,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 JObject jo = JObject.Load(reader);
                 //verify the type
                 _Event castEvent = jo.ToObject<_Event>(serializer);
-                //forza la deserializzazione delle properties perchè sono tipizzate a seconda del tipo evento
+                //force de-serialization of the properties for specific model, based on the event type
                 castEvent.properties = (EventBaseProperty)EventPropertiesUtil.GetEventProperties(jo, serializer);
-                //forza la deserializzazione delle contextInfo perchè sono tipizzate a seconda del context
+                //force de-serialization of the context properties for specific model, based on the context type
                 castEvent.contextInfo = (EventBaseProperty)EventPropertiesContextUtil.GetEventContext(jo, serializer);
                 return castEvent;
             }
@@ -245,7 +246,6 @@ namespace ContactHubSdkLibrary.SDKclasses
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
             return returnValue;
         }
-
         #endregion
 
 

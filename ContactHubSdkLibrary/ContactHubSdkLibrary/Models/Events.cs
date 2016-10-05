@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace ContactHubSdkLibrary.Models
 {
@@ -101,7 +102,7 @@ namespace ContactHubSdkLibrary.Models
                 }
                 else
                 {
-                    return Convert.ToDateTime(_date);
+                    return Convert.ToDateTime(_date,new CultureInfo("en-US"));
                 }
             }
             set { }

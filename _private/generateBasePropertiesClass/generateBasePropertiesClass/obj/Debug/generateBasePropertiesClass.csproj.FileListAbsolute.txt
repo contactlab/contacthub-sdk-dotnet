@@ -24,4 +24,3 @@ C:\Projects\ContactLab\ContactHub\_private\generateBasePropertiesClass\generateB
 C:\Projects\ContactLab\ContactHub\_private\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\generateBasePropertiesClass.pdb
 C:\Projects\ContactLab\ContactHub\_private\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\Newtonsoft.Json.dll
 C:\Projects\ContactLab\ContactHub\_private\generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\Newtonsoft.Json.xml
-C:\Projects\ContactLab\ContactHub\_private\generateBasePropertiesClass\generateBasePropertiesClass\obj\Debug\generateBasePropertiesClass.csprojResolveAssemblyReference.cache

@@ -158,6 +158,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 //calls the link that represents the other page, as previously returned by ContactLab
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
+
                 if (jsonResponse != null)
                 {
                     pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
@@ -219,7 +220,10 @@ namespace ContactHubSdkLibrary.SDKclasses
                 JObject jo = JObject.Load(reader);
                 //verify the type
                 _Event castEvent = jo.ToObject<_Event>(serializer);
+                //forza la deserializzazione delle properties perchè sono tipizzate a seconda del tipo evento
                 castEvent.properties = (EventBaseProperty)EventPropertiesUtil.GetEventProperties(jo, serializer);
+                //forza la deserializzazione delle contextInfo perchè sono tipizzate a seconda del context
+                castEvent.contextInfo = (EventBaseProperty)EventPropertiesContextUtil.GetEventContext(jo, serializer);
                 return castEvent;
             }
 
@@ -237,7 +241,8 @@ namespace ContactHubSdkLibrary.SDKclasses
         {
             Event returnValue = null;
             string jsonResponse = DoGetWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
-            returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse) : null);
+
+            returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
             return returnValue;
         }
 

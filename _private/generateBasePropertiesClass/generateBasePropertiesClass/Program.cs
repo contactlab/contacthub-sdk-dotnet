@@ -54,6 +54,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
             outputFileStr += "using ContactHubSdkLibrary.Events;\n";
             outputFileStr += "using ContactHubSdkLibrary;\n";
+            outputFileStr += "using Newtonsoft.Json.Linq;\n";
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
 
             string contextJson = null;
@@ -71,21 +72,42 @@ namespace generateBasePropertiesClass
                     propertiesTree = new BasePropertiesItem();
                 }
                 propertiesTree.name = "EventContextProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
-
-                //                    if (propertiesTree == null) return;
-
                 createClassFile(propertiesTree, ref outputFileStr);
                 outputFileStr += "\n";
             }
             outputFileStr += "\n}\n";
-
-
             //genera l'enum con l'elenco dei context
             DictionaryEntry dic = new DictionaryEntry();
             dic.Key = "EventContextEnum";
             dic.Value = enumList.ToArray(); //converte a string[]
             createEnumFile(dic, ref outputFileStr);
 
+            //generate casting function for context properties
+            outputFileStr += @"
+                public static class EventPropertiesContextUtil
+                {
+                    /// <summary>
+                    /// Return events context properties with right cast, event type based
+                    /// </summary>
+
+                  public static object GetEventContext(JObject jo, JsonSerializer serializer)
+                    {
+                        var typeName = jo[""context""].ToString().ToLowerInvariant();
+                        switch (typeName)
+                        {
+                    ";
+            string className = "";
+            foreach (String s in generatedClass)
+            {
+                if (s.Contains("EventContextProperty"))
+                {
+                    // className = s.Replace("EventContextProperty", "");
+                    outputFileStr += @" case """ + s.Replace(": EventBaseProperty", "").Replace("EventContextProperty", "").ToLowerInvariant() + @""": return jo[""contextInfo""].ToObject<" + s.Replace(": EventBaseProperty", "") + " > (serializer);break;\n\n";
+                }
+            }
+            outputFileStr += "}\n";
+            outputFileStr += " return null;\n}\n";
+            outputFileStr += "\n}\n";
             File.WriteAllText("eventContextClass.cs", outputFileStr);
         }
 

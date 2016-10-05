@@ -335,8 +335,6 @@ namespace ConsoleSample
             }
             #endregion
 
-
-
             #region Example: delete customers in node 
             if (false)
             {
@@ -575,7 +573,7 @@ namespace ConsoleSample
                 {
                     category = new List<String>() { "1" },
                     idTicket = "1",
-                    subject = "web form question",
+                    subject = "web form question " + DateTime.Now.ToString(),
                     text = "lorem ipsum"
                 };
 
@@ -607,7 +605,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add anonymous event (with external ID) + customers reconciliation from EXTERNAL_ID
-            if (true)
+            if (false)
             {
                 string extID = Guid.NewGuid().ToString();
                 PostEvent newEvent = new PostEvent()
@@ -698,7 +696,7 @@ namespace ConsoleSample
             if (false)
             {
                 List<Event> allEvents = new List<Event>();
-                int pageSize = 10;
+                int pageSize = 20;
                 //filter by customer id (required)
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
                 if (pageIsValid)
@@ -809,9 +807,9 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get event by id
-            if (false)
+            if (true)
             {
-                    Event ev = currentNode.GetEvent("a47c02d8-c8e0-4d8a-93c0-d35988eaa204");
+                    Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8");
             }
             #endregion
             #endregion

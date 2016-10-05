@@ -1195,7 +1195,7 @@ paths:
           description: The customer object
           required: true
           schema:
-            $ref: '#/definitions/Customer'
+            $ref: '#/definitions/PatchCustomer'
       security:
          - Bearer: []
       responses:
@@ -5311,6 +5311,39 @@ definitions:
       nodeId:
         type: string
         description: entry node `id`
+      base:
+        type: object
+        description: >-
+          properties predefined in contacthub in base to the model retrived in
+          /models/properties/base
+      extended:
+        type: object
+        description: custom data defined by workspace based on a declarated schema
+      extra:
+        type: string
+        description: custom data defined by workspace not based on a declarated schema
+      tags:
+        description: the default tags property of customers
+        type: object
+        properties:
+          auto:
+            type: array
+            items:
+              type: string
+          manual:
+            type: array
+            items:
+              type: string
+      enabled:
+        type: boolean
+        description: flag for soft delete
+    required: [ nodeId ]
+  PatchCustomer:
+    type: object
+    properties:
+      externalId:
+        type: string
+        description: the external id of customer
       base:
         type: object
         description: >-

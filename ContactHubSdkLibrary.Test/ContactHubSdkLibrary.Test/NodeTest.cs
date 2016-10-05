@@ -1,5 +1,6 @@
 ﻿using ContactHubSdkLibrary.SDKclasses;
 using NUnit.Framework;
+using System.Threading;
 
 namespace ContactHubSdkLibrary.Test
 {
@@ -24,6 +25,8 @@ namespace ContactHubSdkLibrary.Test
             currentNode = currentWorkspace.GetNode(nodeID);
             
             Assert.AreEqual(currentNode != null, tpIsValid);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+
         }
     }
 }

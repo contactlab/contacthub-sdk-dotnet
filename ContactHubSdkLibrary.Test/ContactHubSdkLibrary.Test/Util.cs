@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace ContactHubSdkLibrary.Test
 {
@@ -24,7 +25,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Generic objects compare
         /// </summary>
-        public static bool Compare<T>(T Object1, T object2)
+        public static bool Compare<T>(T Object1, T object2,List<String> exceptionFields=null)
         {
             //Get the type of the object
             Type type = typeof(T);
@@ -36,17 +37,22 @@ namespace ContactHubSdkLibrary.Test
             //Loop through each properties inside class and get values for the property from both the objects and compare
             foreach (System.Reflection.PropertyInfo property in type.GetProperties())
             {
-                if (property.Name != "_updatedAt" && property.Name!="updatedAt")
+                if (property.Name != "_updatedAt" && property.Name!="updatedAt" &&
+                    property.Name != "_registeredAt" && property.Name != "registeredAt")
                 {
-                    string Object1Value = string.Empty;
-                    string Object2Value = string.Empty;
-                    if (type.GetProperty(property.Name).GetValue(Object1, null) != null)
-                        Object1Value = type.GetProperty(property.Name).GetValue(Object1, null).ToString();
-                    if (type.GetProperty(property.Name).GetValue(object2, null) != null)
-                        Object2Value = type.GetProperty(property.Name).GetValue(object2, null).ToString();
-                    if (Object1Value.Trim() != Object2Value.Trim())
+                    if (exceptionFields == null || !exceptionFields.Contains(property.Name))
                     {
-                        return false;
+
+                        string Object1Value = string.Empty;
+                        string Object2Value = string.Empty;
+                        if (type.GetProperty(property.Name).GetValue(Object1, null) != null)
+                            Object1Value = type.GetProperty(property.Name).GetValue(Object1, null).ToString();
+                        if (type.GetProperty(property.Name).GetValue(object2, null) != null)
+                            Object2Value = type.GetProperty(property.Name).GetValue(object2, null).ToString();
+                        if (Object1Value.Trim() != Object2Value.Trim())
+                        {
+                            return false;
+                        }
                     }
                 }
             }

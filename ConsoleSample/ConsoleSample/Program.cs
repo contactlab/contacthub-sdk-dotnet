@@ -831,7 +831,7 @@ namespace ConsoleSample
             }
             #endregion
 
-            #region Example: remove customers tag (DA VERIFICA SEMBRA NON FUNZIONARE) CONFERMATO BUG VA SU il 3/10
+            #region Example: remove customers tag 
             if (true)
             {
                     Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);

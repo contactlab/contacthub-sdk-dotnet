@@ -189,8 +189,8 @@ namespace ConsoleSample
                 };
                 //post new customer
                 string customerID = null;
-                    Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
-                    customerID = createdCustomer.id;
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+                customerID = createdCustomer.id;
             }
             #endregion
 
@@ -661,7 +661,7 @@ namespace ConsoleSample
             #endregion
 
 
-            #region Example: add anonymous event (with sessionID) + customers reconciliation  (DA FINIRE DI TESTARE, AL MOMENTO HUB NON RICONCILIA VIA SESSION_ID)
+            #region Example: add anonymous event (with sessionID) + customers reconciliation from SESSION ID
             if (false)
             {
                 //create new session
@@ -680,20 +680,45 @@ namespace ConsoleSample
                 };
 
                 string result = currentNode.AddEvent(newEvent);
+                Thread.Sleep(1000);
                 if (result != "Accepted")
                 {
                     //insert error
                 }
                 else
                 {
-                    //reconciles the events on the customer through the session ID
-                    Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                    PostCustomer newPostCustomer = new PostCustomer()
+                    {
+                        nodeId = currentNode.id,
+                        externalId = DateTime.Now.Ticks.ToString(),
+                        @base = new BaseProperties()
+                        {
+                            firstName = "Donald",
+                            lastName = "Duck",
+                            contacts = new Contacts()
+                            {
+                                email = "dduck@yourdomain.it"
+                            },
+                            timezone = BasePropertiesTimezoneEnum.GMT0100
+                        }
+                    };
+                    Customer newCustomer = currentNode.AddCustomer(newPostCustomer);
+                    Thread.Sleep(1000);
+                    Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession);
+                    bool testPassed3 = (returnSession != null);
+                    Thread.Sleep(1000);
+                    //test reconciliation: get events
+                    pagedEvents = null;
+                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null);
+                    bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    //delete customer
+                    currentNode.DeleteCustomer(newCustomer.id);
                 }
             }
             #endregion
 
             #region Example: get customers events (with paging)
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 int pageSize = 20;
@@ -741,67 +766,67 @@ namespace ConsoleSample
             if (false)
             {
                 List<Event> allEvents = new List<Event>();
-                    int pageSize = 3;
-                    allEvents.Clear();
-                    pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
-                    if (pageIsValid)
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
+                if (pageIsValid)
+                {
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        for (int i = 1; i < pagedEvents.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
-                            allEvents.AddRange(pagedEvents._embedded.events);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        }
                     }
-                
+                }
+
             }
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + mode
             if (false)
             {
-                    List<Event> allEvents = new List<Event>();
-                    int pageSize = 3;
-                    allEvents.Clear();
-                    pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null);
-                    if (pageIsValid)
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null);
+                if (pageIsValid)
+                {
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        for (int i = 1; i < pagedEvents.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
-                            allEvents.AddRange(pagedEvents._embedded.events);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        }
                     }
-                
+                }
+
             }
             #endregion
 
-            #region Example: get customers events filtered  by customer id (required) + date from|to  ( DA TESTARE, SEMBRA NON FUNZIONARE)
-            if (false)
+            #region Example: get customers events filtered  by customer id (required) + date from|to  
+            if (true)
             {
-                    List<Event> allEvents = new List<Event>();
-                    int pageSize = 3;
-                    allEvents.Clear();
-                    pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
-                    if (pageIsValid)
+                List<Event> allEvents = new List<Event>();
+                int pageSize = 3;
+                allEvents.Clear();
+                pagedEvents = null;
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+                if (pageIsValid)
+                {
+                    allEvents.AddRange(pagedEvents._embedded.events);
+                    Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+                    for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        for (int i = 1; i < pagedEvents.page.totalPages; i++)
-                        {
-                            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
-                            allEvents.AddRange(pagedEvents._embedded.events);
-                            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
-                        }
-                    
+                    }
+
                 }
             }
             #endregion
@@ -809,7 +834,7 @@ namespace ConsoleSample
             #region Example: get event by id
             if (false)
             {
-                    Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8");
+                Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8");
             }
             #endregion
             #endregion
@@ -818,7 +843,7 @@ namespace ConsoleSample
             #region Example: get customer tags
             if (true)
             {
-                    Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             }
 
             #endregion
@@ -826,15 +851,15 @@ namespace ConsoleSample
             #region Example: add customers tag
             if (true)
             {
-                    Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
-                   // currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
+                Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+                // currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
             }
             #endregion
 
             #region Example: remove customers tag 
             if (true)
             {
-                    Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+                Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
             }
             #endregion
             #endregion

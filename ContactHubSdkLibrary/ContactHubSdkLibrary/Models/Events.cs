@@ -1,7 +1,6 @@
 ﻿using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -95,17 +94,24 @@ namespace ContactHubSdkLibrary.Models
             //format:  2016-09-15T08:41:20.224+0000
             get
             {
-                var currentValue = _date;
+                string currentValue = _date;
                 if (currentValue == null)
                 {
                     return DateTime.MinValue;
                 }
                 else
                 {
-                    return Convert.ToDateTime(_date,new CultureInfo("en-US"));
+                    return Convert.ToDateTime(_date,new CultureInfo("en-US")).ToUniversalTime();                    
                 }
             }
-            set { }
+            set
+            {
+                try
+                {
+                    _date = value.ToString("yyyy-MM-dd");
+                }
+                catch { _date = null; }
+            }
         }
     }
     public class PagedEvent
@@ -114,4 +120,6 @@ namespace ContactHubSdkLibrary.Models
         public PageLink _links { get; set; }
         public Page page { get; set; }
     }
+
+
 }

@@ -3,7 +3,6 @@ using ContactHubSdkLibrary.SDKclasses;
 using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -25,7 +24,7 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
-                externalId =DateTime.Now.Ticks.ToString(),
+                externalId = DateTime.Now.Ticks.ToString(),
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -60,7 +59,7 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed1 = compareLogic.Compare(myTestCustomer1, myTestCustomer2).AreEqual;
                     //compare results with posted Customer
                     PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
-//                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
+                    //                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
                     bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
                     //delete added customer
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id);
@@ -84,7 +83,7 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
-                externalId = Guid.NewGuid().ToString(),
+                externalId = DateTime.Now.Ticks.ToString(),
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -151,7 +150,7 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
-                externalId = Guid.NewGuid().ToString(),
+                externalId = DateTime.Now.Ticks.ToString(),
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -188,7 +187,7 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
 
-                    bool test2Passed =! compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
+                    bool test2Passed = !compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
 
                     compareLogic.Config.MembersToIgnore.Add("extra");
 
@@ -247,7 +246,7 @@ namespace ContactHubSdkLibrary.Test
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
-                 //   bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+                    //   bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
                     bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //compare source data
                     //                    bool test2Passed = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
@@ -286,6 +285,9 @@ namespace ContactHubSdkLibrary.Test
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 10, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 50, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 100, true)]
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 250, true)]
+        //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 500, true)]
+        //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 1000, true)]
 
         public void CustomerPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
@@ -576,12 +578,12 @@ namespace ContactHubSdkLibrary.Test
         }
 
         /// <summary>
-        /// Test customer liks
+        /// Test customer likes
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
         public void CustomerLikesLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
-            Common.WriteLog("Start CustomerLikes TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+            Common.WriteLog("Start CustomerLikesLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
@@ -624,13 +626,342 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed3 = !compareLogic.Compare(newLike, updatedLike).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("category"); //ignore category
                     bool testPassed4 = compareLogic.Compare(newLike, updatedLike).AreEqual;
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
+                    //TO BE DONE: delete like
+
+                    //delete data
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    //
+
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
                     Thread.Sleep(1000); //wait remote update
                 }
-                Common.WriteLog("End CustomerLikes test", "passed:" + testPassed + "\n\n");
+                Common.WriteLog("End CustomerLikesLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
                 Thread.Sleep(Const.TIMEEXIT); //wait
             }
+        }
+        /// <summary>
+        /// Test customer educations
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerEducationLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerEducationLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+                string eduID = "EDU" + DateTime.Now.Ticks.ToString();
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Educations newEdu = new Educations()
+                    {
+                        id = eduID,
+                        schoolConcentration = "123",
+                        schoolName = "abc",
+                        schoolType = EducationsSchoolTypeEnum.COLLEGE,
+
+                    };
+                    Educations addEdu = node.AddCustomerEducation(newCustomer.id, newEdu);
+                    CompareLogic compareLogic = new CompareLogic();
+                    bool testPassed1 = compareLogic.Compare(newEdu, addEdu).AreEqual;
+                    Thread.Sleep(1000); //wait remote update
+                    Educations getEdu = node.GetCustomerEducation(newCustomer.id, eduID);
+                    bool testPassed2 = compareLogic.Compare(newEdu, getEdu).AreEqual;
+                    getEdu.schoolName = "Marconi";
+                    Educations updatedEdu = node.UpdateCustomerEducation(newCustomer.id, getEdu);
+                    bool testPassed3 = !compareLogic.Compare(newEdu, updatedEdu).AreEqual;
+                    compareLogic.Config.MembersToIgnore.Add("schoolName"); //ignore schoolName
+                    bool testPassed4 = compareLogic.Compare(newEdu, updatedEdu).AreEqual;
+                    //delete data
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    //TO BE DONE: delete education
+
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    Thread.Sleep(1000); //wait remote update
+                }
+                Common.WriteLog("End CustomerEducationLifeCycle test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
+        /// <summary>
+        /// Test customer jobs
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerJobLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerJobLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+                string jobID = "JOB" + DateTime.Now.Ticks.ToString();
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Jobs newJob = new Jobs()
+                    {
+                        id = jobID,
+                        companyIndustry = "123",
+                        companyName = "123",
+                        jobTitle = "123",
+                        startDate = DateTime.Now,
+                        endDate = DateTime.Now.AddDays(1),
+                        isCurrent = true
+                    };
+
+                    Jobs addJob = node.AddCustomerJob(newCustomer.id, newJob);
+                    CompareLogic compareLogic = new CompareLogic();
+                    bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
+                    Thread.Sleep(1000); //wait remote update
+                    Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID);
+                    bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
+                    getJob.companyName = "Acme Inc.";
+                    Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob);
+                    bool testPassed3 = !compareLogic.Compare(newJob, updatedJob).AreEqual;
+                    compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
+                    bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
+                    //delete data
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    //TO BE DONE: delete education
+
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    Thread.Sleep(1000); //wait remote update
+                }
+                Common.WriteLog("End CustomerJobLifeCycle test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
+
+        /// <summary>
+        /// Test customer subscription
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerSubscriptionLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerSubscriptionLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+                string subID = "SUB" + DateTime.Now.Ticks.ToString();
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Subscriptions newSubscription = new Subscriptions()
+                    {
+                        id = subID,
+                        name = "test",
+                        type = "type",
+                        kind = SubscriptionsKindEnum.DIGITALMESSAGE,
+                        //enable = true,
+                        dateStart = DateTime.Now,
+                        dateEnd = DateTime.Now,
+                        subscriberId = "e3ab0e11-4310-4329-b70b-a8b0d0250f67",
+                        registeredAt = DateTime.Now,
+                        updatedAt = DateTime.Now,
+                        preferences = new List<Preferences>()
+                            {
+                                new Preferences()
+                                            {
+                                                key="key123", value="balue123"
+                                            }
+                                }
+                    };
+
+                    Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription);
+                    CompareLogic compareLogic = new CompareLogic();
+                    bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
+                    Thread.Sleep(1000); //wait remote update
+                    Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID);
+                    bool testPassed2 = compareLogic.Compare(newSubscription, getSub).AreEqual;
+                    getSub.type = "newTYPE";
+                    Subscriptions updatedSub = node.UpdateCustomerSubscription(newCustomer.id, getSub);
+                    bool testPassed3 = !compareLogic.Compare(newSubscription, updatedSub).AreEqual;
+                    compareLogic.Config.MembersToIgnore.Add("type"); //ignore schoolName
+                    bool testPassed4 = compareLogic.Compare(newSubscription, updatedSub).AreEqual;
+                    //delete data
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    //TO BE DONE: delete education
+
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    Thread.Sleep(1000); //wait remote update
+                }
+                Common.WriteLog("End CustomerSubscriptionLifeCycle test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
+
+        /// <summary>
+        /// Test add session to customer
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerAddSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerAddSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Session newSession = new Session();
+                    Session returnSession = node.AddCustomerSession(newCustomer.id, newSession);
+                    bool testPassed1 = returnSession != null && !string.IsNullOrEmpty(returnSession.id);
+
+                    ////delete data
+                    bool testPassed2 = node.DeleteCustomer(newCustomer.id);
+                    testPassed = testPassed1 && testPassed2;
+                    Thread.Sleep(1000); //wait remote update
+                }
+                Common.WriteLog("End CustomerAddSession test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
+
+
+        /// <summary>
+        /// Test add session to customer
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerTagsLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerTagsLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Tags customerTag = node.GetCustomerTags(newCustomer.id);
+                    bool testPassed1 = customerTag == null || customerTag.manual == null || customerTag.manual.Count == 0;
+                    //manual
+                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual);
+                    Tags addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Manual);
+                    bool testPassed2 = addCustomerTags.manual != null || addCustomerTags.manual.Count == 2;
+                    Tags removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual);
+                    bool testPassed3 = removeCustomerTags.manual != null || removeCustomerTags.manual.Count == 1;
+                    //auto
+                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto);
+                    addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Auto);
+                    bool testPassed4 = addCustomerTags.auto != null || addCustomerTags.auto.Count == 2;
+                    removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto);
+                    bool testPassed5 = removeCustomerTags.auto != null || removeCustomerTags.auto.Count == 1;
+
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                }
+                Common.WriteLog("End CustomerTagsLifeCycle test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
+
+        /// <summary>
+        /// Test reset session ID
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void ResetSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start ResetSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+            bool testPassed = false;
+            Session newSession = new Session();
+            string id1 = newSession.value;
+            newSession.ResetID();
+            string id2 = newSession.value;
+            //values must be different
+            testPassed = id1 != id2 && !string.IsNullOrEmpty(id1) && !string.IsNullOrEmpty(id2);
+            Common.WriteLog("End ResetSession test", "passed:" + testPassed + "\n\n");
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
         }
     }
 }

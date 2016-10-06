@@ -9,8 +9,6 @@ C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\Cons
 C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.exe
 C:\Projects\ContactLab\ContactHub\SDK\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.pdb
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.exe.config
-C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.exe
-C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.pdb
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.exe
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\ConsoleSample.pdb
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\ContactHubSdkLibrary.dll
@@ -18,3 +16,5 @@ C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\Newtonso
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\ContactHubSdkLibrary.pdb
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.csprojResolveAssemblyReference.cache
+C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.exe
+C:\Projects\ContactLab\ContactHub\ConsoleSample\ConsoleSample\obj\Debug\ConsoleSample.pdb

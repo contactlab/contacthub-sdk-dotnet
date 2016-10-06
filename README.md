@@ -10,11 +10,12 @@ The only dependency is NewtonsoftJson library , a very popular high-performance 
 
 Newtonsoft Json is available as NuGet package and is already configured in the *packages.config* file.
 
-The project also uses two NuGet packages for unit testing (NUnit). If you don't use the unit test, these packages are not required for the integration of the library into your project.
+The project also uses other NuGet packages for unit testing (NUnit,CompareNETObject). 
+If you don't use the units test, these packages are not required for the library integration into your project.
 
-## Getting Started 
+## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### 1. Create your client application
 
@@ -382,10 +383,10 @@ string querySTR = @"{
   ""type"": ""simple""
  }
 }";
-currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);                
+currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
 ```
 
-#### Select fields 
+#### Select fields
 
 You can select the fields returned from the get customers
 ```cs

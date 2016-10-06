@@ -20,3 +20,6 @@ C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary
 C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.csprojResolveAssemblyReference.cache
 C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.dll
 C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.pdb
+C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\ContactHubSdkLibrary.Test.dll.config
+C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\KellermanSoftware.Compare-NET-Objects.dll
+C:\Projects\ContactLab\ContactHub\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\KellermanSoftware.Compare-NET-Objects.xml

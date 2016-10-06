@@ -52,12 +52,12 @@ public static class Common
     public static void  WriteLog(string function, string data)
     {
         StreamWriter log;
-        bool enabled = (ConfigurationManager.AppSettings["enableLog"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["enableLog"]): false);
+        bool enabled = (ConfigurationManager.AppSettings["ContactHubSdkEnableLog"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ContactHubSdkEnableLog"]): false);
         if (enabled)
         {
             try
             {
-                string fileName = ConfigurationManager.AppSettings["pathLog"];
+                string fileName = ConfigurationManager.AppSettings["ContactHubSdkPathLog"];
 
                 if (!File.Exists(fileName))
                 {

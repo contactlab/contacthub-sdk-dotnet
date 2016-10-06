@@ -261,7 +261,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         }
 
         /// <summary>
-        /// Add a new customer (force update if exists)
+        /// Update customer 
         /// </summary>
         public Customer UpdateCustomer(PostCustomer customer, string customerID, bool fullUpdate = false)
         {

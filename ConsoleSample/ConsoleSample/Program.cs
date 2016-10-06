@@ -128,7 +128,7 @@ namespace ConsoleSample
                                                         ""attribute"": ""base.firstName"",
                                                         ""operator"": ""EQUALS"",
                                                         ""type"": ""atomic"",
-                                                        ""value"": ""Diego""
+                                                        ""value"": ""Donald""
                                                                     }
                                                          },
                                                 ""name"": ""No name"",
@@ -143,8 +143,8 @@ namespace ConsoleSample
             if (false)
             {
                 QueryBuilder qb = new QueryBuilder();
-                qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Diego" });
-                qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Feltrin" });
+                qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
+                qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
                 currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
             }
             #endregion
@@ -162,7 +162,7 @@ namespace ConsoleSample
             {
                 foreach (Customer c in allCustomers)
                 {
-                    if (c.@base.firstName == "Diego")
+                    if (c.@base.firstName == "Donald")
                     {
                         currentNode.DeleteCustomer(c.id);
                     }
@@ -178,11 +178,11 @@ namespace ConsoleSample
                     externalId = Guid.NewGuid().ToString(),
                     @base = new BaseProperties()
                     {
-                        firstName = "Diego",
-                        lastName = "Feltrin",
+                        firstName = "Donald",
+                        lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = "diego@dimension.it"
+                            email = "dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
                     }
@@ -242,11 +242,11 @@ namespace ConsoleSample
                     externalId = Guid.NewGuid().ToString(),
                     @base = new BaseProperties()
                     {
-                        firstName = "Diego",
-                        lastName = "Feltrin",
+                        firstName = "Donald",
+                        lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = "diego@dimension.it"
+                            email = "dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.GMT0100
                     },
@@ -638,11 +638,11 @@ namespace ConsoleSample
                     {
                         @base = new BaseProperties()
                         {
-                            firstName = "Diego",
-                            lastName = "Feltrin",
+                            firstName = "Donald",
+                            lastName = "Duck",
                             contacts = new Contacts()
                             {
-                                email = "diego@dimension.it"
+                                email = "dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
                         }

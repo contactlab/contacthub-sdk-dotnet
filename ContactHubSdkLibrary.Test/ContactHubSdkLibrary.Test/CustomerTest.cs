@@ -1,10 +1,12 @@
 ﻿using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
+using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Linq;
+using System.Threading;
 
 namespace ContactHubSdkLibrary.Test
 {
@@ -23,14 +25,14 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
-                externalId = Guid.NewGuid().ToString(),
+                externalId =DateTime.Now.Ticks.ToString(),
                 @base = new BaseProperties()
                 {
-                    firstName = "Diego",
-                    lastName = "Feltrin",
+                    firstName = "Donald",
+                    lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "diego@dimension.it"
+                        email = "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -48,15 +50,21 @@ namespace ContactHubSdkLibrary.Test
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
                     Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId);
                     //compare results
-                    bool test1Passed = Util.Compare<Customer>(myTestCustomer1, myTestCustomer2);
+                    CompareLogic compareLogic = new CompareLogic();
+                    //       bool test1Passed = Util.Compare<Customer>(myTestCustomer1, myTestCustomer2);
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
 
+                    bool testPassed1 = compareLogic.Compare(myTestCustomer1, myTestCustomer2).AreEqual;
                     //compare results with posted Customer
                     PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
-                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
-
+//                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
                     //delete added customer
-                    bool test3Passed = node.DeleteCustomer(newCustomer.id);
-                    testPassed = test1Passed & test2Passed & test3Passed;
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id);
+                    testPassed = testPassed1 & testPassed2 & testPassed3;
                 }
             }
             Common.WriteLog("End CustomerAddCustomer test", "passed:" + testPassed + "\n\n");
@@ -65,7 +73,7 @@ namespace ContactHubSdkLibrary.Test
         }
 
         /// <summary>
-        /// Test customer update (use .UpdateCustomer)
+        /// Test customer update (use .UpdateCustomer, full mode -> put)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
         public void CustomerUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
@@ -79,11 +87,11 @@ namespace ContactHubSdkLibrary.Test
                 externalId = Guid.NewGuid().ToString(),
                 @base = new BaseProperties()
                 {
-                    firstName = "Diego",
-                    lastName = "Feltrin",
+                    firstName = "Donald",
+                    lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "diego@dimension.it"
+                        email = "dduck@yourdomain.com"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -106,9 +114,20 @@ namespace ContactHubSdkLibrary.Test
                     //get customer by ID
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
                     //compare updated customer
-                    bool test1Passed = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("extra");
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+                    bool test1Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                     //compare updated customer
-                    bool test2Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+                    compareLogic.Config.MembersToIgnore.Clear();
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+                    bool test2Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //delete added customer
                     bool test3Passed = node.DeleteCustomer(newCustomer.id);
                     testPassed = test1Passed && test2Passed && test3Passed;
@@ -121,12 +140,12 @@ namespace ContactHubSdkLibrary.Test
         }
 
         /// <summary>
-        /// Test customer update (use .AddCustomer with FORCE)
+        /// Test customer update (use .UpdateCustomer, partial mode -> patch)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerUpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void CustomerPartialUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
-            Common.WriteLog("Start CustomerUpdateCustomerForced TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID );
+            Common.WriteLog("Start CustomerPartialUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
@@ -135,11 +154,78 @@ namespace ContactHubSdkLibrary.Test
                 externalId = Guid.NewGuid().ToString(),
                 @base = new BaseProperties()
                 {
-                    firstName = "Diego",
-                    lastName = "Feltrin",
+                    firstName = "Donald",
+                    lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "diego@dimension.it"
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+
+                Thread.Sleep(1000); //waiting for elastic update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    PostCustomer customer = new PostCustomer();
+
+                    //customer is created, then update any fields
+                    customer.extra = "test data";
+                    Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, false);
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    //compare updated customer
+                    bool test1Passed = myTestCustomer1.extra == "test data";
+                    //compare updated customer
+                    CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+
+                    bool test2Passed =! compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
+
+                    compareLogic.Config.MembersToIgnore.Add("extra");
+
+                    bool test4Passed = compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
+
+                    //delete added customer
+                    bool test3Passed = node.DeleteCustomer(newCustomer.id);
+                    testPassed = test1Passed && test2Passed && test3Passed && test4Passed;
+                }
+            }
+            Common.WriteLog("End CustomerPartialUpdateCustomer test", "passed:" + testPassed + "\n\n");
+
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+
+        /// <summary>
+        /// Test customer update (use .AddCustomer with FORCE)
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerUpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerUpdateCustomerForced TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -160,9 +246,13 @@ namespace ContactHubSdkLibrary.Test
                     //get customer by ID
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
                     //compare results
-                    bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+                    CompareLogic compareLogic = new CompareLogic();
+                 //   bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
+                    bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //compare source data
-                    bool test2Passed = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    //                    bool test2Passed = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    compareLogic.Config.MembersToIgnore.Add("extra");
+                    bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                     //delete added customer
                     bool test3Passed = node.DeleteCustomer(newCustomer.id);
                     testPassed = test1Passed && test2Passed;
@@ -199,7 +289,7 @@ namespace ContactHubSdkLibrary.Test
 
         public void CustomerPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
-            Common.WriteLog("Start CustomerPaging TEST", "workspace:"+ tpWorkspaceID + " token:"+  tpTokenID+ " node:" +  tpNodeID + " maxCustomer:" + maxCustomers);
+            Common.WriteLog("Start CustomerPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID + " maxCustomer:" + maxCustomers);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             bool testPassed = false;
@@ -227,11 +317,11 @@ namespace ContactHubSdkLibrary.Test
                         externalId = extID,
                         @base = new BaseProperties()
                         {
-                            firstName = "Diego" + Guid.NewGuid().ToString(),
-                            lastName = "Feltrin" + Guid.NewGuid().ToString(),
+                            firstName = "Donald" + Guid.NewGuid().ToString(),
+                            lastName = "Duck" + Guid.NewGuid().ToString(),
                             contacts = new Contacts()
                             {
-                                email = "diego@dimension.it" + Guid.NewGuid().ToString(),
+                                email = "dduck@yourdomain.it" + Guid.NewGuid().ToString(),
                             },
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }
@@ -314,11 +404,11 @@ namespace ContactHubSdkLibrary.Test
                 externalId = extID,
                 @base = new BaseProperties()
                 {
-                    firstName = "Diego",
-                    lastName = "Feltrin",
+                    firstName = "Donald",
+                    lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "diego@dimension.it"
+                        email = "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -333,7 +423,11 @@ namespace ContactHubSdkLibrary.Test
                 {
                     Customer myTestCustomer1 = node.GetCustomerByExternalID(extID);
                     //compare source data
-                    bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    //                   bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("extra");
+                    bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
+
                     //delete data
                     bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
                     //
@@ -388,7 +482,7 @@ namespace ContactHubSdkLibrary.Test
                                                         ""attribute"": ""id"",
                                                         ""operator"": ""EQUALS"",
                                                         ""type"": ""atomic"",
-                                                        ""value"": """+ newCustomer.id+@"""
+                                                        ""value"": """ + newCustomer.id + @"""
                                                                     }
                                                          },
                                                 ""name"": ""No name"",
@@ -401,7 +495,11 @@ namespace ContactHubSdkLibrary.Test
                     {
                         Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
                         //compare source data
-                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        //  bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        CompareLogic compareLogic = new CompareLogic();
+                        compareLogic.Config.MembersToIgnore.Add("extra");
+                        bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
+
                         //delete data
                         bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
                         //
@@ -449,28 +547,22 @@ namespace ContactHubSdkLibrary.Test
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     PagedCustomer pagedCustomers = null;
-                    string querySTR = @"{
-                                    ""name"": """",
-                                    ""query"": {
-                                                ""are"": {
-                                                    ""condition"": {
-                                                        ""attribute"": ""id"",
-                                                        ""operator"": ""EQUALS"",
-                                                        ""type"": ""atomic"",
-                                                        ""value"": """ + newCustomer.id + @"""
-                                                                    }
-                                                         },
-                                                ""name"": ""No name"",
-                                                ""type"": ""simple""
-                                                }
-                                        }";
-                    node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+
+                    QueryBuilder qb = new QueryBuilder();
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = newCustomer.id });
+                    node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
 
                     if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
                     {
                         Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
                         //compare source data
-                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        //                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        CompareLogic compareLogic = new CompareLogic();
+                        compareLogic.Config.MembersToIgnore.Add("extra");
+                        bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
+
                         //delete data
                         bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
                         //
@@ -479,10 +571,67 @@ namespace ContactHubSdkLibrary.Test
                 }
             }
             Common.WriteLog("End CustomerGetCustomerByQueryBuilder test", "passed:" + testPassed + "\n\n");
-
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }
 
+        /// <summary>
+        /// Test customer liks
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerLikesLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerLikes TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+                string likeID = "LIKE" + DateTime.Now.Ticks.ToString();
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Likes newLike = new Likes()
+                    {
+                        category = "sport",
+                        id = likeID,
+                        name = "tennis",
+                        createdTime = DateTime.Now
+                    };
+                    Likes addLike = node.AddCustomerLike(newCustomer.id, newLike);
+                    CompareLogic compareLogic = new CompareLogic();
+                    bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
+                    Thread.Sleep(1000); //wait remote update
+                    Likes getLike = node.GetCustomerLike(newCustomer.id, likeID);
+                    bool testPassed2 = compareLogic.Compare(newLike, getLike).AreEqual;
+                    getLike.category = "music";
+                    Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike);
+                    bool testPassed3 = !compareLogic.Compare(newLike, updatedLike).AreEqual;
+                    compareLogic.Config.MembersToIgnore.Add("category"); //ignore category
+                    bool testPassed4 = compareLogic.Compare(newLike, updatedLike).AreEqual;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
+                    Thread.Sleep(1000); //wait remote update
+                }
+                Common.WriteLog("End CustomerLikes test", "passed:" + testPassed + "\n\n");
+                Assert.AreEqual(testPassed, tpResult);
+                Thread.Sleep(Const.TIMEEXIT); //wait
+            }
+        }
     }
 }
+

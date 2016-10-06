@@ -55,6 +55,15 @@ namespace ContactHubSdkLibrary.Models
         }
         public Links _links { get; set; }
 
+        /// <summary>
+        /// Return PostCustomer subclass from Customer
+        /// </summary>
+        /// <returns></returns>
+        public PostCustomer ToPostCustomer()
+        {
+            return this.CreateObject<PostCustomer>();
+        }
+
         public virtual T CreateObject<T>()
         {
             if (typeof(T).IsSubclassOf(this.GetType()))

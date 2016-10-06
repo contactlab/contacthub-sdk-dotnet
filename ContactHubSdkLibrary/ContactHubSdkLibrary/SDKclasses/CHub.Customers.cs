@@ -76,6 +76,9 @@ namespace ContactHubSdkLibrary.SDKclasses
 
 
                 string jsonResponse = DoGetWebRequest(querySTR);
+                Common.WriteLog("-> GetCustomers() get data:", "querystring:" + querySTR);
+                Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
+
                 if (jsonResponse != null)
                 {
                     pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
@@ -121,6 +124,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 //calls the link that represents the other page, as previously returned by Contacthub
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
+                Common.WriteLog("->GetCustomers() get data:", "querystring:" + otherPageUrl);
+                Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
+
                 if (jsonResponse != null)
                 {
                     pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
@@ -191,6 +197,8 @@ namespace ContactHubSdkLibrary.SDKclasses
 
             string statusCode = null;
             string jsonResponse = DoPostWebRequest("/customers", postData, ref statusCode);
+            Common.WriteLog("-> Addcustomer() post data:", postData);
+            Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
 
             //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
@@ -214,7 +222,11 @@ namespace ContactHubSdkLibrary.SDKclasses
         public Customer GetCustomerByID(string id)
         {
             Customer returnValue = null;
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
+            string queryString = String.Format("/customers/{1}?nodeId={0}", _node, id);
+            string jsonResponse = DoGetWebRequest(queryString);
+            Common.WriteLog("-> GetCustomerByID() get data:", "querystring:"+queryString );
+            Common.WriteLog("<- GetCustomerByID() return data:", jsonResponse);
+
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
             //The function takes a customer from any node, using his unique id. To avoid reading a customer belonging to another node by his customer ID, 
             //the system checks if the client nodeID returned corresponds to the current nodeID
@@ -263,12 +275,19 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (fullUpdate)
             {
                 //update the entire customer
-                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
+                string queryString = String.Format("/customers/{0}", customerID);
+                jsonResponse = DoPutWebRequest(queryString, postData, ref statusCode);
+                Common.WriteLog("-> UpdateCustomer() put data:","querystring:" + queryString + " " + "data:" + postData);
+                Common.WriteLog("<- UpdateCustomer() return data:", jsonResponse);
+
             }
             else
             {
                 //upgrade only those valued fields of customer
-                jsonResponse = DoPatchWebRequest(String.Format("/customers/{0}", customerID), postData, ref statusCode);
+                string queryString = String.Format("/customers/{0}", customerID);
+                jsonResponse = DoPatchWebRequest(queryString, postData, ref statusCode);
+                Common.WriteLog("-> UpdateCustomer() patch data:", "querystring:" + queryString + " " + "data:" + postData);
+                Common.WriteLog("<- UpdateCustomer() return data:", jsonResponse);
             }
             Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
             return returnCustomer;
@@ -279,7 +298,10 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// </summary>
         public bool DeleteCustomer(string id)
         {
-            string jsonResponse = DoDeleteWebRequest(String.Format("/customers/{1}?nodeId={0}", _node, id));
+            string queryString = String.Format("/customers/{1}?nodeId={0}", _node, id);
+            string jsonResponse = DoDeleteWebRequest(queryString);
+            Common.WriteLog("-> DeleteCustomer() delete data:", "querystring:" + queryString + " ");
+
             if (string.IsNullOrEmpty(jsonResponse))
             {
                 return true;

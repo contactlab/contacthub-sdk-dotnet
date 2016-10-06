@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
-
+using ContactHubSdkLibrary;
+using System.Configuration;
 
 public static class Common
 {
@@ -44,6 +46,38 @@ public static class Common
     public static string ConvertToIso8601Date(DateTime d)
     {
         return d.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+    }
+
+
+    public static void  WriteLog(string function, string data)
+    {
+        StreamWriter log;
+        bool enabled = (ConfigurationManager.AppSettings["enableLog"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["enableLog"]): false);
+        if (enabled)
+        {
+            try
+            {
+                string fileName = ConfigurationManager.AppSettings["pathLog"];
+
+                if (!File.Exists(fileName))
+                {
+
+                    log = new StreamWriter(fileName);
+
+                }
+
+                else
+
+                {
+
+                    log = File.AppendText(fileName);
+
+                }
+                log.WriteLine(DateTime.Now.ToString("yyy-MM-dd HH:mm:ss:zzz") + " " + function + " " + data);
+                log.Close();
+            }
+            catch { };
+        }
     }
 }
 

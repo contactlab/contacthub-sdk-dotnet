@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
 namespace ContactHubSdkLibrary.Test
 {
@@ -14,9 +15,10 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer life cycle: create, query and delete
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-
         public void CustomerAddCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
+            Common.WriteLog("Start CustomerAddCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
             {
@@ -57,16 +59,19 @@ namespace ContactHubSdkLibrary.Test
                     testPassed = test1Passed & test2Passed & test3Passed;
                 }
             }
-
+            Common.WriteLog("End CustomerAddCustomer test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }
+
         /// <summary>
         /// Test customer update (use .UpdateCustomer)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
         public void CustomerUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
+            Common.WriteLog("Start CustomerUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
             {
@@ -93,10 +98,10 @@ namespace ContactHubSdkLibrary.Test
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //create clone on PostCustomer subclass
-                    PostCustomer customer = newCustomer.CreateObject<PostCustomer>();
+                    PostCustomer customer = newCustomer.ToPostCustomer();
 
                     //customer is created, then update any fields
-                    customer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                    customer.extra = "update data " + DateTime.Now.ToShortTimeString();
                     Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, true);
                     //get customer by ID
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
@@ -109,6 +114,7 @@ namespace ContactHubSdkLibrary.Test
                     testPassed = test1Passed && test2Passed && test3Passed;
                 }
             }
+            Common.WriteLog("End CustomerUpdateCustomer test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
@@ -120,6 +126,8 @@ namespace ContactHubSdkLibrary.Test
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
         public void CustomerUpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
+            Common.WriteLog("Start CustomerUpdateCustomerForced TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID );
+
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = new PostCustomer()
             {
@@ -142,7 +150,7 @@ namespace ContactHubSdkLibrary.Test
                 Customer newCustomer = node.AddCustomer(newPostCustomer);
                 Thread.Sleep(1000); //wait remote update
                 //create clone on PostCustomer subclass
-                PostCustomer customer = newCustomer.CreateObject<PostCustomer>();
+                PostCustomer customer = newCustomer.ToPostCustomer();
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -160,6 +168,7 @@ namespace ContactHubSdkLibrary.Test
                     testPassed = test1Passed && test2Passed;
                 }
             }
+            Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
@@ -178,7 +187,6 @@ namespace ContactHubSdkLibrary.Test
             return currentNode;
         }
 
-
         /// <summary>
         /// Test customer life cycle with paging
         /// </summary>
@@ -191,6 +199,8 @@ namespace ContactHubSdkLibrary.Test
 
         public void CustomerPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
+            Common.WriteLog("Start CustomerPaging TEST", "workspace:"+ tpWorkspaceID + " token:"+  tpTokenID+ " node:" +  tpNodeID + " maxCustomer:" + maxCustomers);
+
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             bool testPassed = false;
             //detect current customer number
@@ -281,6 +291,195 @@ namespace ContactHubSdkLibrary.Test
             {
 
             }
+
+            Common.WriteLog("End CustomerPaging test", "passed:" + testPassed + "\n\n");
+
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+        /// <summary>
+        /// Test get customer, by external ID
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerGetCustomerByExternaID(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerGetCustomerByExternaID TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            string extID = DateTime.Now.Ticks.ToString();
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = extID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Diego",
+                    lastName = "Feltrin",
+                    contacts = new Contacts()
+                    {
+                        email = "diego@dimension.it"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    Customer myTestCustomer1 = node.GetCustomerByExternalID(extID);
+                    //compare source data
+                    bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                    //delete data
+                    bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                    //
+                    testPassed = testPassed1 && testPassed2;
+                }
+            }
+            Common.WriteLog("End CustomerGetCustomerByExternaID test", "passed:" + testPassed + "\n\n");
+
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+        /// <summary>
+        /// Test get customer with custom query
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerGetCustomerByCustomQuery(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerGetCustomerByCustomQuery TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            string extID = DateTime.Now.Ticks.ToString();
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = extID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    PagedCustomer pagedCustomers = null;
+                    string querySTR = @"{
+                                    ""name"": """",
+                                    ""query"": {
+                                                ""are"": {
+                                                    ""condition"": {
+                                                        ""attribute"": ""id"",
+                                                        ""operator"": ""EQUALS"",
+                                                        ""type"": ""atomic"",
+                                                        ""value"": """+ newCustomer.id+@"""
+                                                                    }
+                                                         },
+                                                ""name"": ""No name"",
+                                                ""type"": ""simple""
+                                                }
+                                        }";
+                    node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+
+                    if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
+                    {
+                        Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
+                        //compare source data
+                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        //delete data
+                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                        //
+                        testPassed = testPassed1 && testPassed2;
+                    }
+                }
+            }
+            Common.WriteLog("End CustomerGetCustomerByCustomQuery test", "passed:" + testPassed + "\n\n");
+
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+        /// <summary>
+        /// Test get customer with QueryBuilder
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerGetCustomerByQueryBuilder(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerGetCustomerByQueryBuilder TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+            string extID = DateTime.Now.Ticks.ToString();
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = extID,
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.com"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Thread.Sleep(1000); //wait remote update
+
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    PagedCustomer pagedCustomers = null;
+                    string querySTR = @"{
+                                    ""name"": """",
+                                    ""query"": {
+                                                ""are"": {
+                                                    ""condition"": {
+                                                        ""attribute"": ""id"",
+                                                        ""operator"": ""EQUALS"",
+                                                        ""type"": ""atomic"",
+                                                        ""value"": """ + newCustomer.id + @"""
+                                                                    }
+                                                         },
+                                                ""name"": ""No name"",
+                                                ""type"": ""simple""
+                                                }
+                                        }";
+                    node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+
+                    if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
+                    {
+                        Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
+                        //compare source data
+                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
+                        //delete data
+                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                        //
+                        testPassed = testPassed1 && testPassed2;
+                    }
+                }
+            }
+            Common.WriteLog("End CustomerGetCustomerByQueryBuilder test", "passed:" + testPassed + "\n\n");
+
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }

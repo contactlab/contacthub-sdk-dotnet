@@ -158,6 +158,13 @@ Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, upd
 You have to pass the customer id to  update, because the PostCustomer object does not have the id attribute, exactly as in the APIs that these SDK go to call.
 We recommend using partial update to avoid deleting fields already setted previously.
 
+Important! If you need to update a customer remember to use always a PostCustomer object. 
+You can not cast Customer to PostCustomer, you must use .ToPostCustomer() method.
+```cs
+                Customer newCustomer = [...] //set customer
+                PostCustomer customer = newCustomer.ToPostCustomer();
+```
+
 #### Update customer (partial update)
 If you need to update only certain fields of the customer, you can make an partial update. In this case only the not null fields will be used in the update.
 Sample:
@@ -391,3 +398,22 @@ You can delete a customer just by knowing its id
 ```cs
 currentNode.DeleteCustomer(c.id);
 ```
+
+
+### Update times
+
+The writing of data on the remote platform has latency of approximately 1 second. For example, if  you add or delete a customer, it will take about 1 second before its GetCustomers return a consistent data.
+
+### Log 
+
+
+You can enable a detailed log of all calls to the rest of contacthub remote system.
+To enable logging you simply add in your app.config | web.config the following keys
+```xml
+    <add key="ContactHubSdkEnableLog" value= "true"/>
+    <add key="ContactHubSdkPathLog" value= "c:\temp\trace.log"/>
+```
+
+This can be useful for intercept the server-side errors, not visible on sdk client side.
+
+

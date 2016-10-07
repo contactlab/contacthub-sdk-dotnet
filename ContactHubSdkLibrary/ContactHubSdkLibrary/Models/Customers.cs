@@ -113,6 +113,13 @@ namespace ContactHubSdkLibrary.Models
 
     public class PostCustomer
     {
+        public void debug()
+        {
+            JObject jObj = JObject.FromObject(_extended);
+            List<ExtendedProperty> list = ExtendedPropertiesUtil.DeserializeExtendedProperties(jObj);
+            
+        }
+
         public string externalId { get; set; }
         public string nodeId { get; set; }
         public BaseProperties @base { get; set; }

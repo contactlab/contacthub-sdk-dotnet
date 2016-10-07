@@ -63,10 +63,163 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
                     //delete added customer
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id);
-                    testPassed = testPassed1 & testPassed2 & testPassed3;
+                    testPassed = testPassed1 && testPassed2 && testPassed3;
                 }
             }
             Common.WriteLog("End CustomerAddCustomer test", "passed:" + testPassed + "\n\n");
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+
+        /// <summary>
+        /// Test customer life cycle with extended properties
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerAddCustomerWithExtendedProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerAddCustomerWithExtendedProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = "dduck@yourdomain.it"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                },
+                extended = new List<ExtendedProperty>()
+                {
+                    new ExtendedPropertyNumber()
+                    {
+                        name="point",
+                        value=100
+                    },
+                    new ExtendedPropertyString()
+                    {
+                        name="Length",
+                        value="123"
+                    },
+                    new ExtendedPropertyObject()
+            {
+                name="testObject2",
+                value=new List<ExtendedProperty>()
+                {
+                       new ExtendedPropertyString()
+                                {
+                                    name="firstName",
+                                    value="A"
+                                },
+                                new ExtendedPropertyString()
+                                {
+                                    name="lastName",
+                                    value="B"
+                                }
+                }
+            },
+
+            //new ExtendedPropertyStringArray()
+            //{
+            //    name="myStringArray",
+            //    value=new List<String>() { "123", "456" }
+            //},
+            //new ExtendedPropertyNumberArray()
+            //{
+            //    name="myNumberArray",
+            //    value=new List<Double>() { 123.99, 456.99 }
+            //},
+            //new ExtendedPropertyBoolean()
+            //{
+            //    name="myBoolean",
+            //    value=true
+            //},
+            //new ExtendedPropertyObject()
+            //{
+            //    name="myObject",
+            //    value=new List<ExtendedProperty>()
+            //    {
+            //           new ExtendedPropertyNumber()
+            //                    {
+            //                        name="Height",
+            //                        value=1000
+            //                    }
+            //    }
+            //},
+            //new ExtendedPropertyObjectArray()
+            //{
+            //    name="myObjectArray",
+            //    value=new List<ExtendedProperty>()
+            //    {
+            //           new ExtendedPropertyNumber()
+            //                    {
+            //                        name="Height",
+            //                        value=1000
+            //                    },
+            //                    new ExtendedPropertyNumber()
+            //                    {
+            //                        name="Width",
+            //                        value=1000
+            //                    }
+            //    }
+            //},
+            //new ExtendedPropertyDateTime()
+            //{
+            //    name="myDateTime",
+            //    value=DateTime.Now
+            //},
+            //new ExtendedPropertyDateTimeArray()
+            //{
+            //    name="myDateArray",
+            //    value=new List<DateTime>()
+            //    {
+            //        DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
+            //    }
+            //}
+                }
+            };
+
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer, false);
+                //wait for elastic update
+                Thread.Sleep(1000);
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    //customer is created!
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    //compare results
+                    CompareLogic compareLogic = new CompareLogic();
+
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+
+                    //compare results with posted Customer
+                    PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
+                    List<ExtendedProperty> extended1 = newCustomer.extended;
+                    List<ExtendedProperty> extended2 = myPostTestCustomer1.extended;
+                    //compare extended properties
+                    bool testPassed1 = compareLogic.Compare(extended1, extended2).AreEqual;
+                    //compare without extended properties
+                    compareLogic.Config.MembersToIgnore.Add("_extended");
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
+                    //delete added customer
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id);
+                    testPassed = testPassed1 && testPassed2 && testPassed3;
+                }
+            }
+            Common.WriteLog("End CustomerAddCustomerWithExtendedProperties test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }

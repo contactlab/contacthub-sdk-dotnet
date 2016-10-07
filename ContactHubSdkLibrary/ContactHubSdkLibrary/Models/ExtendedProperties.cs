@@ -108,13 +108,8 @@ namespace ContactHubSdkLibrary.Models
         public static List<ExtendedProperty> DeserializeExtendedOject(JToken j)
         {
             List<ExtendedProperty> returnValue = new List<ExtendedProperty>();
-            foreach (JToken item in j.Children<JToken>())
-            {
-                if (item.Type == JTokenType.Property)
-                {
-                    returnValue.Add(getExtendedProperty(item));
-                }
-            }
+            returnValue.Add(getExtendedProperty(j));
+
             return returnValue;
         }
 
@@ -124,11 +119,12 @@ namespace ContactHubSdkLibrary.Models
         public static List<ExtendedProperty> DeserializeExtendedProperties(JObject jsonObj)
         {
 
-            JToken extended = jsonObj.First;
+            JToken extended = jsonObj;//.First;
 
             List<ExtendedProperty> ext = new List<ExtendedProperty>();
             foreach (JToken item in extended.Children<JToken>())
             {
+
                 ext.AddRange(DeserializeExtendedOject(item));
             }
 

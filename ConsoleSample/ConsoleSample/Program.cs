@@ -2,6 +2,8 @@
 using ContactHubSdkLibrary.Events;
 using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -809,7 +811,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events filtered  by customer id (required) + date from|to  
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 int pageSize = 3;
@@ -841,7 +843,7 @@ namespace ConsoleSample
 
             #region TAGS
             #region Example: get customer tags
-            if (true)
+            if (false)
             {
                 Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
             }
@@ -849,7 +851,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: add customers tag
-            if (true)
+            if (false)
             {
                 Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
                 // currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
@@ -857,13 +859,23 @@ namespace ConsoleSample
             #endregion
 
             #region Example: remove customers tag 
-            if (true)
+            if (false)
             {
                 Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
             }
             #endregion
             #endregion
 
+
+
+            #region debug
+            Customer cu=currentNode.GetCustomerByID("ef511e9c-b35d-4e64-b1e7-817ba14ba4db");
+            cu.debug();
+
+            //  Customer returnCustomer = JsonConvert.DeserializeObject<Customer>(json);
+
+
+            #endregion
         }
     }
 }

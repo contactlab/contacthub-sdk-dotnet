@@ -124,65 +124,9 @@ namespace ContactHubSdkLibrary.Test
                                     value="B"
                                 }
                 }
-            },
+            }
 
-            //new ExtendedPropertyStringArray()
-            //{
-            //    name="myStringArray",
-            //    value=new List<String>() { "123", "456" }
-            //},
-            //new ExtendedPropertyNumberArray()
-            //{
-            //    name="myNumberArray",
-            //    value=new List<Double>() { 123.99, 456.99 }
-            //},
-            //new ExtendedPropertyBoolean()
-            //{
-            //    name="myBoolean",
-            //    value=true
-            //},
-            //new ExtendedPropertyObject()
-            //{
-            //    name="myObject",
-            //    value=new List<ExtendedProperty>()
-            //    {
-            //           new ExtendedPropertyNumber()
-            //                    {
-            //                        name="Height",
-            //                        value=1000
-            //                    }
-            //    }
-            //},
-            //new ExtendedPropertyObjectArray()
-            //{
-            //    name="myObjectArray",
-            //    value=new List<ExtendedProperty>()
-            //    {
-            //           new ExtendedPropertyNumber()
-            //                    {
-            //                        name="Height",
-            //                        value=1000
-            //                    },
-            //                    new ExtendedPropertyNumber()
-            //                    {
-            //                        name="Width",
-            //                        value=1000
-            //                    }
-            //    }
-            //},
-            //new ExtendedPropertyDateTime()
-            //{
-            //    name="myDateTime",
-            //    value=DateTime.Now
-            //},
-            //new ExtendedPropertyDateTimeArray()
-            //{
-            //    name="myDateArray",
-            //    value=new List<DateTime>()
-            //    {
-            //        DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
-            //    }
-            //}
+
                 }
             };
 

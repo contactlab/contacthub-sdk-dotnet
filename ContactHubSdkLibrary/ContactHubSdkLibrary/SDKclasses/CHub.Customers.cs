@@ -124,7 +124,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 //calls the link that represents the other page, as previously returned by Contacthub
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
-                Common.WriteLog("->GetCustomers() get data:", "querystring:" + otherPageUrl);
+                Common.WriteLog("-> GetCustomers() get data:", "querystring:" + otherPageUrl);
                 Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
 
                 if (jsonResponse != null)
@@ -209,7 +209,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (isError && forceUpdate)
             {
                 string existingID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
-                jsonResponse = DoPutWebRequest(String.Format("/customers/{0}", existingID), postData, ref statusCode);
+                string url = String.Format("/customers/{0}", existingID);
+                jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
+                Common.WriteLog("-> Addcustomer() put data:", "querystring:" + url + " data:" + postData);
+                Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
+
             }
 
             return returnCustomer;
@@ -279,7 +283,6 @@ namespace ContactHubSdkLibrary.SDKclasses
                 jsonResponse = DoPutWebRequest(queryString, postData, ref statusCode);
                 Common.WriteLog("-> UpdateCustomer() put data:","querystring:" + queryString + " " + "data:" + postData);
                 Common.WriteLog("<- UpdateCustomer() return data:", jsonResponse);
-
             }
             else
             {

@@ -17,7 +17,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(session, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/sessions", customerID), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/sessions", customerID);
+            string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> AddCustomerSession() post data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- AddCustomerSession() return data:", jsonResponse);
+
             Session returnSession = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Session>(jsonResponse));
             return returnSession;
         }

@@ -16,7 +16,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{0}/jobs/{1}", customerID, jobID));
+            string url = String.Format("/customers/{0}/jobs/{1}", customerID, jobID);
+            string jsonResponse = DoGetWebRequest(url);
+            Common.WriteLog("-> GetCustomerJob() get data:", "querystring:" + url);
+            Common.WriteLog("<- GetCustomerJob() return data:", jsonResponse);
+
             Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }
@@ -31,7 +35,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(job, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/jobs", customerID), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/jobs", customerID);
+            string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> AddCustomerJob() post data:", "querystring:" + url + " data:" +postData);
+            Common.WriteLog("<- AddCustomerJob() return data:", jsonResponse);
+
             Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }
@@ -47,7 +55,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(job, settings);
             string statusCode = null;
-            string jsonResponse = DoPutWebRequest(String.Format("/customers/{0}/jobs/{1}", customerID,job.id), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/jobs/{1}", customerID, job.id);
+            string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> UpdateCustomerJob() put data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- UpdateCustomerJob() return data:", jsonResponse);
+
             Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }
@@ -66,6 +78,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             //string postData = JsonConvert.SerializeObject(job, settings);
             //string statusCode = null;
             //string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/jobs", customerID), postData, ref statusCode);
+            //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" + postData);
+            //Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+
             Jobs returnJobs = null; //(jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }

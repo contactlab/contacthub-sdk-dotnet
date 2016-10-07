@@ -39,7 +39,10 @@ namespace ContactHubSdkLibrary.SDKclasses
 
         public string GetExtendedPropertiesConfiguration()
         {
-            string jsonResponse = DoGetWebRequest(String.Format("/configuration/properties/extended"));
+            string url = String.Format("/configuration/properties/extended");
+            string jsonResponse = DoGetWebRequest(url);
+            Common.WriteLog("-> GetExtendedPropertiesConfiguration() get data:", "querystring:" + url);
+            Common.WriteLog("<- GetExtendedPropertiesConfiguration() return data:", jsonResponse);
             var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
             return null;
         }
@@ -48,7 +51,11 @@ namespace ContactHubSdkLibrary.SDKclasses
 
         public string GetMe()
         {
-            string jsonResponse = DoGetWebRequest(Const.APIBASEURL + String.Format("/me"), false);
+            string url = Const.APIBASEURL + String.Format("/me");
+            string jsonResponse = DoGetWebRequest(url, false);
+            Common.WriteLog("-> GetMe() get data:", "querystring:" + url);
+            Common.WriteLog("<- GetMe() return data:", jsonResponse);
+
             var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<UserInfo>(jsonResponse) : null);
             return null;
         }
@@ -69,6 +76,8 @@ namespace ContactHubSdkLibrary.SDKclasses
         //                   }
         //                }";
         //    string jsonResponse = DoPutWebRequest(String.Format("/configuration/properties/extended"),jsonData);
+        //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
+        //    Common.WriteLog("<- AddEvent() return data:", jsonResponse);
 
         //    var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
         //    return null;

@@ -14,7 +14,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{0}/subscriptions/{1}", customerID, subscriptionID));
+            string url = String.Format("/customers/{0}/subscriptions/{1}", customerID, subscriptionID);
+            string jsonResponse = DoGetWebRequest(url);
+            Common.WriteLog("-> GetCustomerSubscription() post data:", "querystring:" + url );
+            Common.WriteLog("<- GetCustomerSubscription() return data:", jsonResponse);
+
             Subscriptions returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
             return returnLike;
         }
@@ -27,7 +31,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(like, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/subscriptions", customerID), postData,ref statusCode);
+            string url = String.Format("/customers/{0}/subscriptions", customerID);
+            string jsonResponse = DoPostWebRequest(url, postData,ref statusCode);
+            Common.WriteLog("-> AddCustomerSubscription() post data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- AddCustomerSubscription() return data:", jsonResponse);
+
             Subscriptions returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
             return returnLike;
         }
@@ -35,7 +43,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customers subscription
         /// </summary>
-        public Subscriptions  UpdateCustomerSubscription(string customerID, Subscriptions subscription)
+        public Subscriptions UpdateCustomerSubscription(string customerID, Subscriptions subscription)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -43,7 +51,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(subscription, settings);
             string statusCode = null;
-            string jsonResponse = DoPutWebRequest(String.Format("/customers/{0}/subscriptions/{1}", customerID, subscription.id), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/subscriptions/{1}", customerID, subscription.id);
+            string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> UpdateCustomerSubscription() put data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- UpdateCustomerSubscription() return data:", jsonResponse);
+
             Subscriptions returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
             return returnSubscription;
         }

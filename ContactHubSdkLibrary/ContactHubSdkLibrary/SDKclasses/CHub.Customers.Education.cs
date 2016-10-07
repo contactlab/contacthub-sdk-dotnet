@@ -15,9 +15,14 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{0}/educations/{1}", customerID, eduID));
+            string url = String.Format("/customers/{0}/educations/{1}", customerID, eduID);
+            string jsonResponse = DoGetWebRequest( url);
+            Common.WriteLog("-> GetCustomerEducation() get data:", "querystring:" + url);
+            Common.WriteLog("<- GetCustomerEducation() return data:", jsonResponse);
+
             Educations returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
             return returnEdu;
+
         }
         /// <summary>
         /// Add customers Education
@@ -30,7 +35,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(edu, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/educations", customerID), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/educations", customerID);
+            string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> AddCustomerEducation() put data:", "querystring:" + url + " data:"+ postData);
+            Common.WriteLog("<- AddCustomerEducation() return data:", jsonResponse);
+
             Educations returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
             return returnEdu;
         }
@@ -45,7 +54,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(education, settings);
             string statusCode = null;
-            string jsonResponse = DoPutWebRequest(String.Format("/customers/{0}/educations/{1}", customerID, education.id), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/educations/{1}", customerID, education.id);
+            string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> UpdateCustomerEducation() put data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- UpdateCustomerEducation() return data:", jsonResponse);
+
             Educations returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
             return returnSubscription;
         }

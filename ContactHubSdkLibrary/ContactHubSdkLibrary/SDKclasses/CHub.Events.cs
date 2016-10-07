@@ -22,7 +22,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(event_, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest("/events", postData, ref statusCode);
+            string url = "/events";
+            string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
+            Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+
             //the json response should contain only the status code because the insertion is async (queue)
             return statusCode;
         }
@@ -113,6 +117,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 querySTR += String.Format("&page={0}", 0); //first page
 
                 string jsonResponse = DoGetWebRequest(querySTR);
+                Common.WriteLog("-> GetEvents() get data:", "querystring:" + querySTR);
+                Common.WriteLog("<- GetEvents() return data:", jsonResponse);
+
                 if (jsonResponse != null)
                 {
                     pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse, new EventPropertiesJsonConverter());
@@ -158,6 +165,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 //calls the link that represents the other page, as previously returned by ContactLab
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
+                Common.WriteLog("-> GetEvents() get data:", "querystring:" + otherPageUrl);
+                Common.WriteLog("<- GetEvents() return data:", jsonResponse);
+
 
                 if (jsonResponse != null)
                 {
@@ -241,7 +251,10 @@ namespace ContactHubSdkLibrary.SDKclasses
         public Event GetEvent(string id)
         {
             Event returnValue = null;
-            string jsonResponse = DoGetWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
+            string url = String.Format("/events/{1}?nodeId={0}", _node, id);
+            string jsonResponse = DoGetWebRequest(url);
+            Common.WriteLog("-> GetEvents() get data:", "querystring:" + url);
+            Common.WriteLog("<- GetEvents() return data:", jsonResponse);
 
             returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
             return returnValue;
@@ -252,6 +265,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         //public void DeleteEvent(string id)
         //{
         //    string jsonResponse = DoDeleteWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
+        //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
+        //    Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+
         //}
 
     }

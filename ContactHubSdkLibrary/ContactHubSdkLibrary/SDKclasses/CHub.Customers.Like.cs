@@ -16,7 +16,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            string jsonResponse = DoGetWebRequest(String.Format("/customers/{0}/likes/{1}", customerID, likeID));
+            string url = String.Format("/customers/{0}/likes/{1}", customerID, likeID);
+            string jsonResponse = DoGetWebRequest(url);
+            Common.WriteLog("-> GetCustomerLike() put data:", "querystring:" + url );
+            Common.WriteLog("<- GetCustomerLike() return data:", jsonResponse);
+
             Likes returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
             return returnLike;
         }
@@ -31,7 +35,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(like, settings);
             string statusCode = null;
-            string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/likes", customerID), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/likes", customerID);
+            string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> AddCustomerLike() post data:", "querystring:" + url + " data:" +postData);
+            Common.WriteLog("<- AddCustomerLike() return data:", jsonResponse);
+
             Likes returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
             return returnLike;
         }
@@ -46,7 +54,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             };
             string postData = JsonConvert.SerializeObject(like, settings);
             string statusCode = null;
-            string jsonResponse = DoPutWebRequest(String.Format("/customers/{0}/likes/{1}", customerID, like.id), postData, ref statusCode);
+            string url = String.Format("/customers/{0}/likes/{1}", customerID, like.id);
+            string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
+            Common.WriteLog("-> UpdateCustomerLike() put data:", "querystring:" + url + " data:" + postData);
+            Common.WriteLog("<- UpdateCustomerLike() return data:", jsonResponse);
+
             Likes returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
             return returnJobs;
         }

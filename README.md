@@ -18,55 +18,29 @@
   * [Customer Class](#customerClass)
     * [Add a customer](#addACustomer)
     * [Add customer with forced update](#Addcustomerwithforcedupdate)
-   * [Update customer (full update)](#updateCustomerFullUpdate)
-   * [Update customer (partial update)](#updateCustomerPartialUpdate)
-   * [Add or update customer with extended properties](#addOrUpdateWithExtProperties)
-   * [Get paged customers](#Getpagedcustomers)
-   * [Get single customer](#GetSingleCustomer)
-
-   * [Query on customers](#Queryoncustomers)
-
-   * [Select fields](#Selectfields)
-
-   * [Delete customer](#Deletecustomer)
-
-   * [Customer data shortcuts](#Customershortcuts)
-
-     * [Jobs](#Jobs)
-
-     * [Education](#Education)
-
-     * [Subscription](#Subscription)
-
-     * [Like](#Like)
-
-     * [Tag](#tag)
-
- * [Event Class](#EventClass)
-
-   * [Customer Events](#CustomerEvents)
-
-   * [Anonymous Events](#AnonymousEvents)
-
-   * [Get paged events](#Getevents)
-
-   * [Get single event](#Gesingletevents)
-
-   * [Session](#Session)
-
- * [Others](#Others)
-
-   * [System Update Time](#SystemUpdateTime)
-
-   * [Logs](#Logs)
-
-
-
-
-
-
-
-
+    * [Update customer (full update)](#updateCustomerFullUpdate)
+    * [Update customer (partial update)](#updateCustomerPartialUpdate)
+    * [Add or update customer with extended properties](#addOrUpdateWithExtProperties)
+    * [Get paged customers](#Getpagedcustomers)
+    * [Get single customer](#GetSingleCustomer)
+    * [Query on customers](#Queryoncustomers)
+    * [Select fields](#Selectfields)
+    * [Delete customer](#Deletecustomer)
+    * [Customer data shortcuts](#Customershortcuts)
+      * [Jobs](#Jobs)
+      * [Education](#Education)
+      * [Subscription](#Subscription)
+      * [Like](#Like)
+      * [Tag](#tag)
+  * [Event Class](#EventClass)
+    * [Customer Events](#CustomerEvents)
+    * [Anonymous Events](#AnonymousEvents)
+    * [Get paged events](#Getevents)
+    * [Get single event](#Gesingletevents)
+    * [Session](#Session)
+  * [Others](#Others)
+    * [System Update Time](#SystemUpdateTime)
+    * [Logs](#Logs)
 
 <a name="introduction">
 

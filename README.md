@@ -5,40 +5,23 @@
 ## Table of contents
 
 * [Introduction](#introduction)
-
 * [Dependencies](#Dependencies)
-
 * [Getting Started](#GettingStarted)
-
- * [1. Create your client application](#1Createyourclientapplication)
-
- * [2. Download required packages](#2Downloadrequiredpackages)
-
- * [3. Include sdk library](#3Includesdklibrary)
-
- * [4. Configure credential](#4Configurecredential)
-
- * [5. Instantiate the workspace and the node](#5Instantiatetheworkspaceandthenode)
-
- * [6. Getallcustomers](#6Getallcustomers)
-
- * [7. Add customer](#7Addcustomer)
-
+  * [1. Create your client application](#1Createyourclientapplication)
+  * [2. Download required packages](#2Downloadrequiredpackages)
+  * [3. Include sdk library](#3Includesdklibrary)
+  * [4. Configure credential](#4Configurecredential)
+  * [5. Instantiate the workspace and the node](#5Instantiatetheworkspaceandthenode)
+  * [6. Getallcustomers](#6Getallcustomers)
+  * [7. Add customer](#7Addcustomer)
 * [Usage](#usage)
-
- * [Customer Class](#customerClass)
-
-   * [Add a customer](#addACustomer)
-   * [Add customer with forced update](#Addcustomerwithforcedupdate)
-
+  * [Customer Class](#customerClass)
+    * [Add a customer](#addACustomer)
+    * [Add customer with forced update](#Addcustomerwithforcedupdate)
    * [Update customer (full update)](#updateCustomerFullUpdate)
-
    * [Update customer (partial update)](#updateCustomerPartialUpdate)
-
    * [Add or update customer with extended properties](#addOrUpdateWithExtProperties)
-
    * [Get paged customers](#Getpagedcustomers)
-
    * [Get single customer](#GetSingleCustomer)
 
    * [Query on customers](#Queryoncustomers)

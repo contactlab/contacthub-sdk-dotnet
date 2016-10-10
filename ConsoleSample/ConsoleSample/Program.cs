@@ -2,8 +2,6 @@
 using ContactHubSdkLibrary.Events;
 using ContactHubSdkLibrary.Models;
 using ContactHubSdkLibrary.SDKclasses;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -540,7 +538,7 @@ namespace ConsoleSample
                 Session newSession = new Session();
                 //[...] use the session, then reset it
                 newSession.ResetID();
-                var newID = newSession.id;
+                var newID = newSession.value;
             }
             #endregion
 
@@ -866,16 +864,6 @@ namespace ConsoleSample
             #endregion
             #endregion
 
-
-
-            #region debug
-            Customer cu=currentNode.GetCustomerByID("ef511e9c-b35d-4e64-b1e7-817ba14ba4db");
-            cu.debug();
-
-            //  Customer returnCustomer = JsonConvert.DeserializeObject<Customer>(json);
-
-
-            #endregion
         }
     }
 }

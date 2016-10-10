@@ -1,28 +1,40 @@
-## Contact Hub C# .NET SDK for Windows
+# Contact Hub C# .NET SDK for Windows
 
+## Table of contents
+* [Introduction](#introduction)
+* [Dependencies](#Dependencies)
+* [Getting Started](#GettingStarted)
+ * [1. Create your client application](#1Createyourclientapplication)
+ * [2. Download required packages](#2Downloadrequiredpackages)
+ * [3. Include sdk library](#3Includesdklibrary)
+ * to be done...
+
+
+
+## Introduction <a name="introduction">
 This SDK allows you to easily access to the REST API ContactHub, simplifying the authentication operations and data read/write on Contact Hub.
 The project is based on the Visual Studio 2015 IDE.
 The project can be compiled as a library (dll) and is accompanied by a sample project and unit test.
 
-### Dependencies
+## Dependencies <a name="Dependencies">
 
-The only dependency is NewtonsoftJson library , a very popular high-performance Json framework for .NET [(read licence)](https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md)
+The only dependency is NewtonsoftJson library, a very popular high-performance Json framework for .NET [(read license)](https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md).
 
 Newtonsoft Json is available as NuGet package and is already configured in the *packages.config* file.
 
-The project also uses other NuGet packages for unit testing (NUnit,CompareNETObject). 
+The project also uses other NuGet packages for unit testing (NUnit,CompareNETObject).
 If you don't use the units test, these packages are not required for the library integration into your project.
 
-## Getting Started
+## Getting Started <a name="Getting Started">
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### 1. Create your client application
+### 1. Create your client application <a name="1Createyourclientapplication">
 
 Create a new Visual Studio solution with a new console application and add the project Contact Sdk Library in the references.
-If you do not need at this moment of the unit test (ContactHubSdkLibrary.Test)  don't include it in the solution. You can add it later if you need to.
+So, if you do not need at this moment of the unit test (ContactHubSdkLibrary.Test), don't include it in the solution. You can add it later if you need to.
 
-### 2. Download required packages
+### 2. Download required packages <a name="2Downloadrequiredpackages">
 
 You can compile this sdk library only if you get the packages listed in packages.config. <return>
 To get all required packages, open NuGet Package Manager Console and type:
@@ -33,7 +45,7 @@ PM> update-package -reinstall
 
 Then clean and rebuild all solution.
 
-### 3. Include sdk library
+### 3. Include sdk library <a name="3Includesdklibrary">
 
 Add references to sdk library in your application.
 ```cs
@@ -45,7 +57,7 @@ using ContactHubSdkLibrary.SDKclasses;
 
 ### 4. Configure credential
 
-Edit your app.config (or web.config) file and add this settings:
+Edit your app.config (or web.config) file and add these settings:
 ```xml
 <appSettings>
     <add key="workspaceID" value="123123123-123-1232-1232-23433333333"/>
@@ -59,7 +71,7 @@ Replace the sample values with real credentials provided by Contact Lab.
 You are not required to save them in this file, if you want you can save this data in any way and make them available in the code as they are needed to invoke the sdk functions calls.
 The following examples use the AppSettings because they are a convenient way to configure the credentials in the project.
 
-### 5. Istantiate the workspace and the node
+### 5. Instantiate the workspace and the node
 ```cs
 Workspace currentWorkspace = new Workspace(
   ConfigurationManager.AppSettings["workspaceID"].ToString(),
@@ -68,7 +80,7 @@ Workspace currentWorkspace = new Workspace(
 Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
 ```
 
-These instructions do not actually make the call to the remote system. They are used only to initialize the node to enable it to operate properly.
+This code do not actually make the call to the remote system. They are used only to initialize the node to enable it to operate properly.
 
 ### 6. Get all customers
 
@@ -105,7 +117,7 @@ PostCustomer newCustomer = new PostCustomer()
 Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
 ```
 
-If everything went well you should get back a  *customer* object with the fields that you posted with more the *id* attribute valorized.
+If everything went well you should get back a  *customer* object with the fields that you posted with more the *id* attribute not null.
 This is the internal *id* you'll be using as an identifier for your customer.
 
 
@@ -145,7 +157,7 @@ Sample:
 ```cs
 PostCustomer updateCustomer = [...]
 updateCustomer.extra = DateTime.Now.ToShortTimeString();
-Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  
+Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);
 ```
 
 #### Update customer (full update)
@@ -159,7 +171,7 @@ Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, upd
 You have to pass the customer id to  update, because the PostCustomer object does not have the id attribute, exactly as in the APIs that these SDK go to call.
 We recommend using partial update to avoid deleting fields already setted previously.
 
-Important! If you need to update a customer remember to use always a PostCustomer object. 
+Important! If you need to update a customer remember to always use a PostCustomer object.
 You can not cast Customer to PostCustomer, you must use .ToPostCustomer() method.
 ```cs
                 Customer newCustomer = [...] //set customer
@@ -167,7 +179,7 @@ You can not cast Customer to PostCustomer, you must use .ToPostCustomer() method
 ```
 
 #### Update customer (partial update)
-If you need to update only certain fields of the customer, you can make an partial update. In this case only the not null fields will be used in the update.
+If you need to update only certain fields of the customer, you can make a partial update. In this case only the not null fields will be used in the update.
 Sample:
 ```cs
 Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
@@ -176,7 +188,7 @@ Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, custom
 #### Add or update customer with extended properties
 
 The extended properties have a dynamic structure that is defined in the server-side workspace configuration.
-You can not have on client an auto-builder that get a class already structured as extendend properties on server side. You must build your data structure exactly as it is structured on the server. Extended properties validator is not available in this sdk.
+You can not have on client an auto-builder that get a class already structured as extended properties on server side. You must build your data structure exactly as it is structured on the server. Extended properties validator is not available in this sdk.
 For each extended property you must use the correct datatype.
 Available datatype are: 
 * ExtendedPropertyString: string
@@ -191,89 +203,89 @@ Available datatype are:
 
 Sample:
 ```cs
-    PostCustomer newCustomer = new PostCustomer()
-    {
-        nodeId = currentNodeID,
-        externalId = Guid.NewGuid().ToString(),
-        @base = new BaseProperties()
-        {
-            firstName = "Donald",
-            lastName = "Duck",
-            contacts = new Contacts()
-            {
-                email = "dduck@yourdomain.it"
-            },
-            timezone = BasePropertiesTimezoneEnum.GMT0100
-        },
-        extended = new List<ExtendedProperty>()
- {
-  new ExtendedPropertyNumber()
+  PostCustomer newCustomer = new PostCustomer()
   {
-   name="point",
-   value=100
-  },
-  new ExtendedPropertyString()
-  {
-   name="Length",
-   value="123"
-  },
-  new ExtendedPropertyStringArray()
-  {
-   name="myStringArray",
-   value=new List<String>() { "123", "456" }
-  },
-  new ExtendedPropertyNumberArray()
-  {
-   name="myNumberArray",
-   value=new List<Double>() { 123.99, 456.99 }
-  },
-  new ExtendedPropertyBoolean()
-  {
-   name="myBoolean",
-   value=true
-  },
-  new ExtendedPropertyObjectArray()
-  {
-   name="myObjectArray",
-   value=new List<ExtendedProperty>()
+   nodeId = currentNodeID,
+   externalId = Guid.NewGuid().ToString(),
+   @base = new BaseProperties()
    {
-  new ExtendedPropertyNumber()
-     {
-      name="Height",
-      value=1000
-     },
-  new ExtendedPropertyNumber()
-     {
-      name="Width",
-      value=1000
-     }
-    }
+    firstName = "Donald",
+    lastName = "Duck",
+    contacts = new Contacts()
+    {
+     email = "dduck@yourdomain.it"
     },
-  new ExtendedPropertyDateTime()
+    timezone = BasePropertiesTimezoneEnum.GMT0100
+   },
+   extended = new List<ExtendedProperty>()
+   {
+    new ExtendedPropertyNumber()
+    {
+     name="point",
+     value=100
+    },
+    new ExtendedPropertyString()
+    {
+     name="Length",
+     value="123"
+    },
+    new ExtendedPropertyStringArray()
+    {
+     name="myStringArray",
+     value=new List<String>() { "123", "456" }
+    },
+    new ExtendedPropertyNumberArray()
+    {
+     name="myNumberArray",
+     value=new List<Double>() { 123.99, 456.99 }
+    },
+    new ExtendedPropertyBoolean()
+    {
+     name="myBoolean",
+     value=true
+    },
+    new ExtendedPropertyObjectArray()
+    {
+     name="myObjectArray",
+     value=new List<ExtendedProperty>()
+     {
+      new ExtendedPropertyNumber()
+      {
+       name="Height",
+       value=1000
+      },
+      new ExtendedPropertyNumber()
+      {
+       name="Width",
+       value=1000
+      }
+     }
+    },
+    new ExtendedPropertyDateTime()
     {
      name="myDateTime",
      value=DateTime.Now
     },
-  new ExtendedPropertyDateTimeArray()
-  {
+    new ExtendedPropertyDateTimeArray()
+    {
      name="myDateArray",
      value=new List<DateTime>()
-   {
+     {
       DateTime.Now.Date,DateTime.Now.Date.AddDays(1),DateTime.Now.Date.AddDays(2)
+     }
+    }
    }
-  }
- }
-    };
-    //post new customer
-    string customerID = null;
-    Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+  };
+  //post new customer
+  string customerID = null;
+  Customer createdCustomer = currentNode.AddCustomer(newCustomer);
   if (createdCustomer != null)
   {
-                    customerID = createdCustomer.id;
+     customerID = createdCustomer.id;
   }
   else
   {
-                    //add customer error
+     //add customer error
   }
 
 ```
@@ -290,7 +302,7 @@ int pageSize = 5;
 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
 ```
 
-After the first page you can easily cycle on next pages with
+After the first page, you can easily cycle on next pages with
 ```cs
 pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
 ```
@@ -321,7 +333,7 @@ or in this way:
  }
 ```
 
-If you have already get the first page or one of the following, you can jump to a specific page. You can do if you pass a PagedCustomer object already valorized by a previous call. Make sure it is not null.
+If you have already got the first page or one of the following, you can jump to a specific page. You can do if you pass a PagedCustomer object already valorized by a previous call. Make sure it is not null.
 
 Sample: get third page
 ```cs
@@ -343,7 +355,7 @@ Customer customerByExtID = currentNode.GetCustomerByExternalID(extID);
 ```
 
 You can get the customer through external ID also using GetCustomers().
-If the external id is unique in theory should always return a single result.
+If the external id is unique, in theory should always return a single result.
 Sample: get customer by external ID
 ```cs
 bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, null);
@@ -352,7 +364,7 @@ bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, nul
 #### Query on customers
 
 You can create a query to refine GetCustomers()
-You have two ways to specify a query. The simple mode allows you to easily build a query with AND or OR operator. If you want to build a complex quey can pass it directly in json format, according to the rest api specifications.
+You have two ways to specify a query. The simple mode allows you to easily build a query with AND or OR operator. If you want to build a complex query can pass it directly in json format, according to the rest api specifications.
 
 Simple mode:
 this mode use a query builder to get query string.
@@ -365,8 +377,8 @@ qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeO
 currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
 ```
 
-Advanced mode:
- pass a query string in json format 
+Advanced mode: 
+pass a query string in json format 
 ```cs
 string querySTR = @"{
  ""name"": """",
@@ -400,13 +412,421 @@ You can delete a customer just by knowing its id
 currentNode.DeleteCustomer(c.id);
 ```
 
+#### Customer shortcuts
+
+There are 5 entities over which you can access directly without updating the customer, despite being Customer  attributes.
+Subclasses Jobs, Education, Subscription and Like from Customer Class can be managed directly with specific add, update and delete method. In a similar way it is also possible to act on the Tag subclass.
+
+##### Jobs
+
+Add new job:
+```cs
+  Customer myCustomer = currentNode.GetCustomerByID("16917ed3-6789-48e0-9f8e-e5e8d3c92310");
+  Jobs newJob = new Jobs()
+    {
+        id = "d14ef5ad-675d-4bac-a8bb-c4feb4641050",
+        companyIndustry = "Aerospace",
+        companyName = "Acme inc",
+        jobTitle = "Director",
+        startDate = DateTime.Now,
+        endDate = DateTime.Now.AddDays(1),
+        isCurrent = true
+    };
+  Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+```
+
+Get and update a customer job:
+```cs
+        Jobs j = currentNode.GetCustomerJob(customerID, jobID);
+        j.startDate = DateTime.Now;
+        j.endDate = DateTime.Now.AddDays(10);
+        Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j);
+```
+
+Remove a customer job:  (TO BE DONE)
+```cs
+(TO BE DONE)
+```
+
+##### Education
+
+Add new education:
+```cs
+  Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+  Educations newEdu = new Educations()
+        {
+            id = "0eae64f3-12fb-49ad-abb9-82ee595037a2",
+            schoolConcentration = "123",
+            schoolName = "abc",
+            schoolType = EducationsSchoolTypeEnum.COLLEGE,
+
+        };
+
+  Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu);
+```
+
+Get and update a customer education:
+```cs
+  Educations edu = currentNode.GetCustomerEducation(customerID, educationID);
+  edu.startYear = 2010;
+  edu.endYear = 2016;
+  Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu);
+```
+
+Remove a customer education:  (TO BE DONE)
+```cs
+(TO BE DONE)
+```
+
+##### Subscription
+
+Add new subscription:
+```cs
+    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+    Subscriptions newSubscription = new Subscriptions()
+    {
+        id = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab",
+        name = "test subscription",
+        type = "testType",
+        kind = SubscriptionsKindEnum.DIGITALMESSAGE,
+        dateStart = DateTime.Now,
+        dateEnd = DateTime.Now,
+        subscriberId = "e3ab0e11-4310-4329-b70b-a8b0d0250f67",
+        registeredAt = DateTime.Now,
+        updatedAt = DateTime.Now,
+        preferences = new List<Preferences>()
+                {
+                    new Preferences()
+                                {
+                                    key="myKey", value="MyValue"
+                                }
+                    }
+    };
+
+    Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription);
+```
+
+Get and update a customer subscription:
+```cs
+    Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID);
+    s.dateStart = DateTime.Now;
+    s.dateEnd = DateTime.Now.AddDays(10);
+    Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s);
+```
+
+Remove a customer subscription:  (TO BE DONE)
+```cs
+(TO BE DONE)
+```
+
+
+##### Like
+
+Add new like:
+```cs
+	Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+    Likes newLike = new Likes()
+    {
+        category = "sport",
+        id = "eee8c9d6-e30a-4aa9-93f0-db949ba32841",
+        name = "tennis",
+        createdTime = DateTime.Now
+    };
+    Likes returnLike = currentNode.AddCustomerLike(myCustomer.id, newLike);
+```
+
+Get and update a customer like:
+```cs
+    Likes l = currentNode.GetCustomerLike(customerID, likeID);
+    l.category = "music";
+    Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l);
+```
+
+Remove a customer subscription:  (TO BE DONE)
+```cs
+(TO BE DONE)
+```
+
+##### Tag
+The tags consist of two arrays of strings called 'auto' and 'manual' (CustomerTagTypeEnum.Auto CustomerTagTypeEnum.Manual)
+
+Get customer tags:
+```cs
+    Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+```
+
+You can add and delete a single element using these shortcuts.
+
+Add customer tags:
+```cs
+   Tags currentTags = currentNode.AddCustomerTag(
+   							"9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+   							"sport",
+                            CustomerTagTypeEnum.Manual);
+```
+
+Remove customer tags:
+```cs
+	Tags currentTags = currentNode.RemoveCustomerTag(
+    						"9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+                            "sport",
+                            CustomerTagTypeEnum.Manual);
+```
+
+### Event Class
+
+The events are based on the template, choose the value for the 'type' field will then have to use therefore the right template for the field 'properties'.
+The same thing also applies to the 'context' field, which defines the template to be used for the field 'contextInfo'
+
+Type and Context are defined in eventPropertiesClass.cs and eventContextClass.cs files.
+The correspondence between the value of the enum and its class is very intuitive because you can derive the name of another.
+For example if you choose type=EventTypeEnum.openedTicket, the properties will be allocated through EventPropertyOpenedTicket class; if you choose context = EventContextEnum.WEB, the contextInfo will be allocated through a EventContextPropertyWEB class.
+
+#### Customer Event
+
+You can add an event directly to a customer if you know the id.
+
+```cs
+
+  Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                PostEvent newEvent = new PostEvent()
+                {
+                    customerId = myCustomer.id,
+                    type = EventTypeEnum.clickedLink,
+                    context = EventContextEnum.OTHER,
+                    properties = new EventBaseProperty()
+                };
+
+                string result = currentNode.AddEvent(newEvent);
+                if (result != "Accepted")
+                {
+                    //insert error
+                }
+```
+
+in this example are used both properties  and contextInfo data:
+
+```cs
+    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+    EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
+    {
+        category = new List<String>() { "MyCategory" },
+        idTicket = "MyTicketID",
+        subject = "Question",
+        text = "lorem ipsum"
+    };
+    EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
+    {
+        client = new Client()
+        {
+            ip = "192.168.1.1/16",
+            userAgent = "Mozilla"
+        }
+    };
+
+    PostEvent newEvent = new PostEvent()
+    {
+        customerId = myCustomer.id,
+        type = EventTypeEnum.repliedTicket,
+        context = EventContextEnum.WEB,
+        properties = typeProperties,
+        contextInfo = contextProperties,
+        date = DateTime.Now
+    };
+
+    string result = currentNode.AddEvent(newEvent);
+    if (result != "Accepted")
+    {
+        //insert error
+    }
+```
+
+#### Anonymous Events
+
+The event class allows you to add events to customer even they do not have immediate access to a customer.
+You can create an event and using BringBackProperties in two different ways: through a sessionID or through a ExternalID.
+If you use a sessionID, you must first create a session and then use it in any event. At the end when you create a customer, you will associate the customer session and reconcile to it all added events so far.
+If you create an event using in BringBackProperties with ExternalID, you will be created automatically an empty customer and all events will be associated with him.
+Eventually you will be able to update that customer through the ExternalID.
+
+In general the addition of events is not synchronous to which you can not obtain the newly generated id, as it is put in a processing queue.
+
+
+add an anonymous event with a externalID and then reconciles to the customer
+
+```cs
+    string extID = Guid.NewGuid().ToString();
+    PostEvent newEvent = new PostEvent()
+    {
+        bringBackProperties = new BringBackProperty()
+        {
+            nodeId = currentNode.id,
+            type = BringBackPropertyTypeEnum.EXTERNAL_ID,
+            value = extID
+        },
+        type = EventTypeEnum.loggedIn,
+        context = EventContextEnum.WEB,
+        properties = new EventBaseProperty()
+    };
+
+    string result = currentNode.AddEvent(newEvent);
+    if (result != "Accepted")
+    {
+         //insert error
+    }
+    else
+    {
+         Thread.Sleep(1000); //wait event and customer elaboration
+         //update customer
+         string customerID = null;
+         //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
+         Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
+         customerID = extIdCustomer.id;
+         PostCustomer postCustomer = new PostCustomer()
+         {
+            @base = new BaseProperties()
+            {
+                firstName = "Donald",
+                lastName = "Duck",
+                contacts = new Contacts()
+                {
+                    email = "dduck@yourdomain.it"
+                },
+                timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+            }
+         };
+         Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
+         customerID = createdCustomer.id;
+
+         //wait queue elaboration
+         Thread.Sleep(10000);
+         pagedEvents = null;
+         bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null);
+        }
+```
+
+Add an anonymous event with a Session and then reconciles to the customer.
+
+```cs
+    //create new session
+    Session currentSession = new Session();
+    PostEvent newEvent = new PostEvent()
+    {
+        bringBackProperties = new BringBackProperty()
+        {
+            nodeId = currentNode.id,
+            type = BringBackPropertyTypeEnum.SESSION_ID,
+            value = currentSession.value
+        },
+        type = EventTypeEnum.loggedIn,
+        context = EventContextEnum.WEB,
+        properties = new EventBaseProperty()
+    };
+
+    string result = currentNode.AddEvent(newEvent);
+    Thread.Sleep(1000);
+    if (result != "Accepted")
+    {
+        //insert error
+    }
+    else
+    {
+        PostCustomer newPostCustomer = new PostCustomer()
+        {
+            nodeId = currentNode.id,
+            externalId = DateTime.Now.Ticks.ToString(),
+            @base = new BaseProperties()
+            {
+                firstName = "Donald",
+                lastName = "Duck",
+                contacts = new Contacts()
+                {
+                    email = "dduck@yourdomain.it"
+                },
+                timezone = BasePropertiesTimezoneEnum.GMT0100
+            }
+        };
+        Customer newCustomer = currentNode.AddCustomer(newPostCustomer);
+        Thread.Sleep(1000);
+        Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession);
+        Thread.Sleep(1000);
+        pagedEvents = null;
+        bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null);
+    }
+```
+
+#### Get events
+
+This example allows you to get all the events filtered by customerID.
+Pagination follows the same rules as described above for paging customer.
+
+```cs
+   	List<Event> allEvents = new List<Event>();
+    int pageSize = 20;
+    //filter by customer id (required)
+    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
+    if (pageIsValid)
+    {
+        allEvents.AddRange(pagedEvents._embedded.events);
+        Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+        for (int i = 1; i < pagedEvents.page.totalPages; i++)
+        {
+            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+            allEvents.AddRange(pagedEvents._embedded.events);
+            Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
+        }
+    }
+```
+
+in addition to customer id you can filter by type:
+
+```cs
+	bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
+```
+
+...or filter by context:
+```cs
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
+```
+
+...or filter by active/passive event:
+```cs
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null);
+```
+
+...or filter by dates:
+```cs
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+
+```
+
+#### Get single event
+
+You can get a single event knowing its id.
+```cs
+ Tags customerTag = currentNode.GetCustomerTags("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+```
+
+### Session
+
+The session object allows you to have a session to connect with each other events and eventually reconcile them to a customer.
+The Session object is local in the client SDK, it does not create any type of object on Contact Hub server.
+The session ID is automatically generated in the attribute .value
+
+```cs
+ Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+ Session newSession = new Session();
+ Session returnSession = currentNode.AddCustomerSession(myCustomer.id, newSession);
+ //[...] use the session, then reset it
+ newSession.ResetID();
+ var newID = newSession.value;
+```
 
 ### Update times
 
 The writing of data on the remote platform has latency of approximately 1 second. For example, if  you add or delete a customer, it will take about 1 second before its GetCustomers return a consistent data.
 
-### Log 
-
+### Log
 
 You can enable a detailed log of all calls to the rest of contacthub remote system.
 To enable logging you simply add in your app.config | web.config the following keys

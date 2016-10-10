@@ -1,5 +1,5 @@
 # Contact Hub C# .NET SDK for Windows
----
+
 ## Table of contents
 * [Introduction](#introduction)
 * [Dependencies](#Dependencies)
@@ -38,7 +38,9 @@
  * [Others](#Others)
    * [System Update Time](#SystemUpdateTime)
    * [Logs](#Logs)
----
+
+
+
 
 <a name="introduction">
 ## Introduction

@@ -22,7 +22,6 @@ namespace generateBasePropertiesClass
             generateEventContext();    //genera le classi corrispondenti alle properties passabili nel campo 'contextInfo' degli eventi
         }
 
-
         static void generateEventContext()
         {
             BasePropertiesItem propertiesTree = null;
@@ -60,7 +59,6 @@ namespace generateBasePropertiesClass
             string contextJson = null;
             foreach (Context ev in root.embedded.contexts)
             {
-
                 outputFileStr += "//context class '" + ev.id + "': " + ev.description;
                 if (ev.propertiesSchema != null)
                 {
@@ -96,7 +94,6 @@ namespace generateBasePropertiesClass
                         switch (typeName)
                         {
                     ";
-            string className = "";
             foreach (String s in generatedClass)
             {
                 if (s.Contains("EventContextProperty"))
@@ -110,7 +107,6 @@ namespace generateBasePropertiesClass
             outputFileStr += "\n}\n";
             File.WriteAllText("eventContextClass.cs", outputFileStr);
         }
-
 
         static void generateBaseProperties()
         {

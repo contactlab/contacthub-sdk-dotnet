@@ -385,7 +385,6 @@ namespace ConsoleSample
                 Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l);
             }
             #endregion
-
             #endregion
 
             #region EDUCATION
@@ -541,7 +540,6 @@ namespace ConsoleSample
                 var newID = newSession.value;
             }
             #endregion
-
             #endregion
 
             #region EVENTS
@@ -659,7 +657,6 @@ namespace ConsoleSample
                 }
             }
             #endregion
-
 
             #region Example: add anonymous event (with sessionID) + customers reconciliation from SESSION ID
             if (false)
@@ -863,7 +860,6 @@ namespace ConsoleSample
             }
             #endregion
             #endregion
-
         }
     }
 }

@@ -52,7 +52,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             error = Common.ResponseIsError(jsonResponse);
             if (error == null)
             {
-                 returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
+                returnLike = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
             }
             else
             {
@@ -63,8 +63,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customers job
         /// </summary>
-        public Likes UpdateCustomerLike(string customerID, Likes like)
+        public Likes UpdateCustomerLike(string customerID, Likes like, ref Error error)
         {
+            Likes returnJobs = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -75,8 +76,15 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
             Common.WriteLog("-> UpdateCustomerLike() put data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- UpdateCustomerLike() return data:", jsonResponse);
-
-            Likes returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Likes>(jsonResponse));
+            }
+            else
+            {
+                returnJobs = null;
+            }
             return returnJobs;
         }
         #endregion

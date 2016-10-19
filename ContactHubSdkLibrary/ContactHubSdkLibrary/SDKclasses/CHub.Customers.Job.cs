@@ -37,7 +37,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Add a job object to customer
         /// </summary>
-        public Jobs AddCustomerJob(string customerID, Jobs job,ref Error error)
+        public Jobs AddCustomerJob(string customerID, Jobs job, ref Error error)
         {
             Jobs returnJobs = null;
             var settings = new JsonSerializerSettings()
@@ -65,8 +65,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customers job
         /// </summary>
-        public Jobs UpdateCustomerJob(string customerID, Jobs job)
+        public Jobs UpdateCustomerJob(string customerID, Jobs job, ref Error error)
         {
+            Jobs returnJobs = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -77,8 +78,15 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
             Common.WriteLog("-> UpdateCustomerJob() put data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- UpdateCustomerJob() return data:", jsonResponse);
-
-            Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            }
+            else
+            {
+                returnJobs = null;
+            }
             return returnJobs;
         }
 

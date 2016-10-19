@@ -455,7 +455,7 @@ namespace ContactHubSdkLibrary.Test
                     testPassed3 = true;
                     for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
-                        testPassed3 = testPassed3 || node.GetCustomers(ref pagedCustomers, PageRefEnum.next);
+                        testPassed3 = testPassed3 || node.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
                         totPage++;
                     }
                 }
@@ -722,7 +722,7 @@ namespace ContactHubSdkLibrary.Test
                     Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
                     bool testPassed2 = compareLogic.Compare(newLike, getLike).AreEqual;
                     getLike.category = "music";
-                    Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike);
+                    Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike, ref error);
                     bool testPassed3 = !compareLogic.Compare(newLike, updatedLike).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("category"); //ignore category
                     bool testPassed4 = compareLogic.Compare(newLike, updatedLike).AreEqual;
@@ -786,7 +786,7 @@ namespace ContactHubSdkLibrary.Test
                     Educations getEdu = node.GetCustomerEducation(newCustomer.id, eduID, ref error);
                     bool testPassed2 = compareLogic.Compare(newEdu, getEdu).AreEqual;
                     getEdu.schoolName = "Marconi";
-                    Educations updatedEdu = node.UpdateCustomerEducation(newCustomer.id, getEdu);
+                    Educations updatedEdu = node.UpdateCustomerEducation(newCustomer.id, getEdu, ref error);
                     bool testPassed3 = !compareLogic.Compare(newEdu, updatedEdu).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("schoolName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newEdu, updatedEdu).AreEqual;
@@ -851,7 +851,7 @@ namespace ContactHubSdkLibrary.Test
                     Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID, ref error);
                     bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
                     getJob.companyName = "Acme Inc.";
-                    Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob);
+                    Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob, ref error);
                     bool testPassed3 = !compareLogic.Compare(newJob, updatedJob).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
@@ -927,7 +927,7 @@ namespace ContactHubSdkLibrary.Test
                     Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);
                     bool testPassed2 = compareLogic.Compare(newSubscription, getSub).AreEqual;
                     getSub.type = "newTYPE";
-                    Subscriptions updatedSub = node.UpdateCustomerSubscription(newCustomer.id, getSub);
+                    Subscriptions updatedSub = node.UpdateCustomerSubscription(newCustomer.id, getSub, ref error);
                     bool testPassed3 = !compareLogic.Compare(newSubscription, updatedSub).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("type"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newSubscription, updatedSub).AreEqual;

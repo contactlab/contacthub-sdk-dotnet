@@ -10,6 +10,7 @@
   * [5. Instantiate the workspace and the node](#5Instantiatetheworkspaceandthenode)
   * [6. Getallcustomers](#6Getallcustomers)
   * [7. Add customer](#7Addcustomer)
+  * [8. Error handling](#8ErrorHandling)
 * [Usage](#usage)
   * [Customer Class](#customerClass)
     * [Add a customer](#addACustomer)
@@ -104,7 +105,8 @@ To get the customer must work with paging. For this you need a PagedCustomer obj
 ```cs
 int pageSize = 5;
 PagedCustomer pagedCustomers = null;
-bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+Error error=null;
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null,ref error);
 List<Customer> customers = pagedCustomers._embedded.customers;
 ```
 For this first call is very important that the value returns in pageIsValid is *true* <return>
@@ -126,10 +128,24 @@ PostCustomer newCustomer = new PostCustomer()
    timezone = BasePropertiesTimezoneEnum.GeorgiaTime
   }
 };
-Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+Error error=null;
+Customer createdCustomer = currentNode.AddCustomer(newCustomer,ref error, false);
 ```
 If everything went well you should get back a  *customer* object with the fields that you posted with more the *id* attribute not null.
 This is the internal *id* you'll be using as an identifier for your customer.
+
+<a name="8ErrorHandling">
+### 8. Error handling
+
+Each call requires an Error class parameter passed by ref, that allows you to get the server side server if you throw an exception.
+
+```cs
+ Error error=null;
+```
+
+The parameter must be passed void. All the function return a Error object with error description in the *message* attribute.
+If no error is always returned a null.
+
 <a name="usage">
 ## Usage
 <a name="customerClass">
@@ -165,7 +181,7 @@ Sample:
 ```cs
 PostCustomer updateCustomer = [...]
 updateCustomer.extra = DateTime.Now.ToShortTimeString();
-Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);
+Customer createdCustomer = currentNode.AddCustomer(updateCustomer,ref error, true);
 ```
 <a name="updateCustomerFullUpdate">
 #### Update customer (full update)
@@ -173,7 +189,7 @@ To update all customer fields, you create an PostCustomer object and call the up
 In this way the customer object will be completely replaced with the new data, including all fields set to null.
 Sample:
 ```cs
-Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id,true);
+Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id,ref error, true);
 ```
 You have to pass the customer id to  update, because the PostCustomer object does not have the id attribute, exactly as in the APIs that these SDK go to call.
 We recommend using partial update to avoid deleting fields already setted previously.
@@ -188,7 +204,7 @@ You can not cast Customer to PostCustomer, you must use .ToPostCustomer() method
 If you need to update only certain fields of the customer, you can make a partial update. In this case only the not null fields will be used in the update.
 Sample:
 ```cs
-Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
+Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID,ref error, false);
 ```
 <a name="addOrUpdateWithExtProperties">
 #### Add or update customer with extended properties
@@ -282,7 +298,7 @@ Sample:
   };
   //post new customer
   string customerID = null;
-  Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+  Customer createdCustomer = currentNode.AddCustomer(newCustomer, ref error);
   if (createdCustomer != null)
   {
      customerID = createdCustomer.id;
@@ -300,32 +316,33 @@ Customers array is in ._embedded.customers attribute
 ```cs
 PagedEvent pagedEvents = null;
 int pageSize = 5;
-bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
 ```
 After the first page, you can easily cycle on next pages with
 ```cs
-pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
+pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next,ref error);
 ```
 Sample:
 ```cs
-bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);  //first page
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null,ref error);  //first page
 if (pageIsValid)
 {
  Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
  for (int i = 1; i < pagedCustomers.page.totalPages; i++)
  {
-   pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next); //next page
+   pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next,ref error); //next page
    Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
   }
 }
 ```
 or in this way:
 ```cs
- bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+ bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize,
+ 										     null, null, null,ref error);
  if (pageIsValid)
  {
    Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-   while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next))
+   while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error))
    {
     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
    }
@@ -334,24 +351,24 @@ or in this way:
 If you have already got the first page or one of the following, you can jump to a specific page. You can do if you pass a PagedCustomer object already valorized by a previous call. Make sure it is not null.
 Sample: get third page
 ```cs
-bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
+bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3, ref error);
 ```
 <a name="GetSingleCustomer">
 #### Get single customer
 You can get a customer through  internal id or by the ExternalID
 Sample: get customer by ID (internal)
 ```cs
-Customer customer = currentNode.GetCustomerByID(customerID);
+Customer customer = currentNode.GetCustomerByID(customerID,ref error);
 ```
 Sample: get customer by external ID
 ```cs
-Customer customerByExtID = currentNode.GetCustomerByExternalID(extID);
+Customer customerByExtID = currentNode.GetCustomerByExternalID(extID, ref error);
 ```
 You can get the customer through external ID also using GetCustomers().
 If the external id is unique, in theory should always return a single result.
 Sample: get customer by external ID
 ```cs
-bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, null);
+bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, null, ref error);
 ```
 <a name="Queryoncustomers">
 #### Query on customers
@@ -362,9 +379,18 @@ this mode use a query builder to get query string.
 Sample: query on firstName and lastName (AND condition)
 ```cs
 QueryBuilder qb = new QueryBuilder();
-qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
-qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
-currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
+qb.AddQuery(new QueryBuilderItem() {
+			attributeName = "base.firstName",
+            attributeOperator = QueryBuilderOperatorEnum.EQUALS,
+            attributeValue = "Donald" });
+qb.AddQuery(new QueryBuilderItem() {
+			attributeName = "base.lastName",
+            attributeOperator = QueryBuilderOperatorEnum.EQUALS,
+            attributeValue = "Duck" });
+currentNode.GetCustomers(ref pagedCustomers, 10, null,
+							qb.GenerateQuery(QueryBuilderConjunctionEnum.AND),
+                            null,
+                            ref error);
 ```
 Advanced mode:
 pass a query string in json format
@@ -384,19 +410,19 @@ string querySTR = @"{
   ""type"": ""simple""
  }
 }";
-currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null,ref error);
 ```
 <a name="Selectfields">
 #### Select fields
 You can select the fields returned from the get customers
 ```cs
-currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName");
+currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName",ref error);
 ```
 <a name="Deletecustomer">
 #### Delete customer
 You can delete a customer just by knowing its id
 ```cs
-currentNode.DeleteCustomer(c.id);
+currentNode.DeleteCustomer(c.id,ref error);
 ```
 <a name="Customershortcuts">
 #### Customer data shortcuts
@@ -406,7 +432,7 @@ Subclasses Jobs, Education, Subscription and Like from Customer Class can be man
 ##### Jobs
 Add new job:
 ```cs
-  Customer myCustomer = currentNode.GetCustomerByID("16917ed3-6789-48e0-9f8e-e5e8d3c92310");
+  Customer myCustomer = currentNode.GetCustomerByID("16917ed3-6789-48e0-9f8e-e5e8d3c92310",ref error);
   Jobs newJob = new Jobs()
     {
         id = "d14ef5ad-675d-4bac-a8bb-c4feb4641050",
@@ -417,14 +443,14 @@ Add new job:
         endDate = DateTime.Now.AddDays(1),
         isCurrent = true
     };
-  Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+  Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob,ref error);
 ```
 Get and update a customer job:
 ```cs
-        Jobs j = currentNode.GetCustomerJob(customerID, jobID);
+        Jobs j = currentNode.GetCustomerJob(customerID, jobID,ref error);
         j.startDate = DateTime.Now;
         j.endDate = DateTime.Now.AddDays(10);
-        Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j);
+        Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j,ref error);
 ```
 Remove a customer job:  (TO BE DONE)
 ```cs
@@ -434,7 +460,7 @@ Remove a customer job:  (TO BE DONE)
 ##### Education
 Add new education:
 ```cs
-  Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+  Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
   Educations newEdu = new Educations()
         {
             id = "0eae64f3-12fb-49ad-abb9-82ee595037a2",
@@ -442,14 +468,14 @@ Add new education:
             schoolName = "abc",
             schoolType = EducationsSchoolTypeEnum.COLLEGE,
         };
-  Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu);
+  Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu,ref error);
 ```
 Get and update a customer education:
 ```cs
-  Educations edu = currentNode.GetCustomerEducation(customerID, educationID);
+  Educations edu = currentNode.GetCustomerEducation(customerID, educationID,ref error);
   edu.startYear = 2010;
   edu.endYear = 2016;
-  Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu);
+  Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu,ref error);
 ```
 Remove a customer education:  (TO BE DONE)
 ```cs
@@ -459,7 +485,7 @@ Remove a customer education:  (TO BE DONE)
 ##### Subscription
 Add new subscription:
 ```cs
-    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
     Subscriptions newSubscription = new Subscriptions()
     {
         id = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab",
@@ -479,14 +505,14 @@ Add new subscription:
                                 }
                     }
     };
-    Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription);
+    Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription,ref error);
 ```
 Get and update a customer subscription:
 ```cs
-    Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID);
+    Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID,ref error);
     s.dateStart = DateTime.Now;
     s.dateEnd = DateTime.Now.AddDays(10);
-    Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s);
+    Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s, ref error);
 ```
 Remove a customer subscription:  (TO BE DONE)
 ```cs
@@ -496,7 +522,7 @@ Remove a customer subscription:  (TO BE DONE)
 ##### Like
 Add new like:
 ```cs
-	Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+	Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
     Likes newLike = new Likes()
     {
         category = "sport",
@@ -504,13 +530,13 @@ Add new like:
         name = "tennis",
         createdTime = DateTime.Now
     };
-    Likes returnLike = currentNode.AddCustomerLike(myCustomer.id, newLike);
+    Likes returnLike = currentNode.AddCustomerLike(myCustomer.id, newLike,ref error);
 ```
 Get and update a customer like:
 ```cs
-    Likes l = currentNode.GetCustomerLike(customerID, likeID);
+    Likes l = currentNode.GetCustomerLike(customerID, likeID, ref error);
     l.category = "music";
-    Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l);
+    Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l, ref error);
 ```
 Remove a customer subscription:  (TO BE DONE)
 ```cs
@@ -521,7 +547,7 @@ Remove a customer subscription:  (TO BE DONE)
 The tags consist of two arrays of strings called 'auto' and 'manual' (CustomerTagTypeEnum.Auto CustomerTagTypeEnum.Manual)
 Get customer tags:
 ```cs
-    Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+    Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
 ```
 You can add and delete a single element using these shortcuts.
 Add customer tags:
@@ -529,14 +555,16 @@ Add customer tags:
    Tags currentTags = currentNode.AddCustomerTag(
    							"9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
    							"sport",
-                            CustomerTagTypeEnum.Manual);
+                            CustomerTagTypeEnum.Manual,
+                            ref error);
 ```
 Remove customer tags:
 ```cs
 	Tags currentTags = currentNode.RemoveCustomerTag(
     						"9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
                             "sport",
-                            CustomerTagTypeEnum.Manual);
+                            CustomerTagTypeEnum.Manual,
+                            ref error);
 ```
 <a name="EventClass">
 ### Event Class
@@ -549,7 +577,7 @@ For example if you choose type=EventTypeEnum.openedTicket, the properties will b
 #### Customer Events
 You can add an event directly to a customer if you know the id.
 ```cs
-  Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+  Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
                 PostEvent newEvent = new PostEvent()
                 {
                     customerId = myCustomer.id,
@@ -557,7 +585,7 @@ You can add an event directly to a customer if you know the id.
                     context = EventContextEnum.OTHER,
                     properties = new EventBaseProperty()
                 };
-                string result = currentNode.AddEvent(newEvent);
+                string result = currentNode.AddEvent(newEvent,ref error);
                 if (result != "Accepted")
                 {
                     //insert error
@@ -565,7 +593,7 @@ You can add an event directly to a customer if you know the id.
 ```
 in this example are used both properties  and contextInfo data:
 ```cs
-    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+    Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
     EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
     {
         category = new List<String>() { "MyCategory" },
@@ -590,7 +618,7 @@ in this example are used both properties  and contextInfo data:
         contextInfo = contextProperties,
         date = DateTime.Now
     };
-    string result = currentNode.AddEvent(newEvent);
+    string result = currentNode.AddEvent(newEvent,ref error);
     if (result != "Accepted")
     {
         //insert error
@@ -619,7 +647,7 @@ add an anonymous event with a externalID and then reconciles to the customer
         context = EventContextEnum.WEB,
         properties = new EventBaseProperty()
     };
-    string result = currentNode.AddEvent(newEvent);
+    string result = currentNode.AddEvent(newEvent,ref error);
     if (result != "Accepted")
     {
          //insert error
@@ -630,7 +658,7 @@ add an anonymous event with a externalID and then reconciles to the customer
          //update customer
          string customerID = null;
          //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
-         Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
+         Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID,ref error);
          customerID = extIdCustomer.id;
          PostCustomer postCustomer = new PostCustomer()
          {
@@ -645,12 +673,14 @@ add an anonymous event with a externalID and then reconciles to the customer
                 timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
             }
          };
-         Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
+         Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true,ref error);
          customerID = createdCustomer.id;
          //wait queue elaboration
          Thread.Sleep(10000);
          pagedEvents = null;
-         bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null);
+         bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID,
+                                                     null, null, null, null, null,
+                                                     ref error);
         }
 ```
 Add an anonymous event with a Session and then reconciles to the customer.
@@ -669,7 +699,7 @@ Add an anonymous event with a Session and then reconciles to the customer.
         context = EventContextEnum.WEB,
         properties = new EventBaseProperty()
     };
-    string result = currentNode.AddEvent(newEvent);
+    string result = currentNode.AddEvent(newEvent,ref error);
     Thread.Sleep(1000);
     if (result != "Accepted")
     {
@@ -692,12 +722,14 @@ Add an anonymous event with a Session and then reconciles to the customer.
                 timezone = BasePropertiesTimezoneEnum.GMT0100
             }
         };
-        Customer newCustomer = currentNode.AddCustomer(newPostCustomer);
+        Customer newCustomer = currentNode.AddCustomer(newPostCustomer,ref error);
         Thread.Sleep(1000);
-        Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession);
+        Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession,ref error);
         Thread.Sleep(1000);
         pagedEvents = null;
-        bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null);
+        bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id,
+        											null, null, null, null, null,
+                                                    ref error);
     }
 ```
 <a name="Getevents">
@@ -708,14 +740,16 @@ Pagination follows the same rules as described above for paging customer.
    	List<Event> allEvents = new List<Event>();
     int pageSize = 20;
     //filter by customer id (required)
-    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
+    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5",
+    									null, null, null, null, null,
+                                        ref error);
     if (pageIsValid)
     {
         allEvents.AddRange(pagedEvents._embedded.events);
         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
         for (int i = 1; i < pagedEvents.page.totalPages; i++)
         {
-            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+            pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next,ref error);
             allEvents.AddRange(pagedEvents._embedded.events);
             Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
         }
@@ -723,25 +757,34 @@ Pagination follows the same rules as described above for paging customer.
 ```
 in addition to customer id you can filter by type:
 ```cs
-	bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
+	bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+    											EventTypeEnum.clickedLink, null, null, null, null,
+                                                ref error);
 ```
 ...or filter by context:
 ```cs
- bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+ 												EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null,
+                                                ref error);
 ```
 ...or filter by active/passive event:
 ```cs
- bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null);
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+ 												null, null, EventModeEnum.ACTIVE, null, null,
+                                                ref error);
 ```
 ...or filter by dates:
 ```cs
- bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+ bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+ 												null, null, null, Convert.ToDateTime("2016-01-01"),
+                                                Convert.ToDateTime("2016-12-31"),
+                                                ref error);
 ```
 <a name="Gesingletevents">
 #### Get single event
 You can get a single event knowing its id.
 ```cs
- Tags customerTag = currentNode.GetCustomerTags("d14ef5ad-675d-4bac-a8bb-c4feb4641050");
+ Tags customerTag = currentNode.GetCustomerTags("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
 ```
 <a name="Session">
 #### Session
@@ -749,9 +792,9 @@ The session object allows you to have a session to connect with each other event
 The Session object is local in the client SDK, it does not create any type of object on Contact Hub server.
 The session ID is automatically generated in the attribute .value
 ```cs
- Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+ Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
  Session newSession = new Session();
- Session returnSession = currentNode.AddCustomerSession(myCustomer.id, newSession);
+ Session returnSession = currentNode.AddCustomerSession(myCustomer.id, newSession,ref error);
  //[...] use the session, then reset it
  newSession.ResetID();
  var newID = newSession.value;

@@ -14,7 +14,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Create a new event related to a customer or anonymous
         /// <summary>
-        public string AddEvent(PostEvent event_,ref Error error)
+        public string AddEvent(PostEvent event_, ref Error error)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -284,15 +284,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             error = Common.ResponseIsError(jsonResponse);
             if (error == null)
             {
-                error = Common.ResponseIsError(jsonResponse);
-                if (error == null)
-                {
-                    returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
-                }
-                else
-                {
-                    returnValue = null;
-                }
+                returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
             }
             else
             {

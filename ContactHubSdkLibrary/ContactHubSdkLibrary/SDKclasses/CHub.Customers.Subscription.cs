@@ -34,7 +34,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         //add like to customer
         public Subscriptions AddCustomerSubscription(string customerID, Subscriptions subscrition, ref Error error)
         {
-            Subscriptions returnSubscription= null;
+            Subscriptions returnSubscription = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -60,8 +60,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customers subscription
         /// </summary>
-        public Subscriptions UpdateCustomerSubscription(string customerID, Subscriptions subscription)
+        public Subscriptions UpdateCustomerSubscription(string customerID, Subscriptions subscription, ref Error error)
         {
+            Subscriptions returnSubscription = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -72,8 +73,15 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
             Common.WriteLog("-> UpdateCustomerSubscription() put data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- UpdateCustomerSubscription() return data:", jsonResponse);
-
-            Subscriptions returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Subscriptions>(jsonResponse));
+            }
+            else
+            {
+                returnSubscription = null;
+            }
             return returnSubscription;
         }
         #endregion

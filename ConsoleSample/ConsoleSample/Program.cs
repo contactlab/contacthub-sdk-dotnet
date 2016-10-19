@@ -44,7 +44,7 @@ namespace ConsoleSample
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
+                        pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
                         allCustomers.AddRange(pagedCustomers._embedded.customers);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     }
@@ -62,7 +62,7 @@ namespace ConsoleSample
                 {
                     allCustomers.AddRange(pagedCustomers._embedded.customers);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                    while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next))
+                    while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error))
                     {
 
                         allCustomers.AddRange(pagedCustomers._embedded.customers);
@@ -75,7 +75,7 @@ namespace ConsoleSample
             #region Example: get single page (pageCustomer value must not be null!!!)
             if (false)
             {
-                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3);
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3, ref error);
             }
             #endregion
 
@@ -84,14 +84,14 @@ namespace ConsoleSample
             {
                 //this sample return invalid response
                 pagedCustomers = null;
-                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1);
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1, ref error);
             }
             #endregion
 
             #region Example: get invalid page
             if (false)
             {
-                bool isValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next);
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
             }
             #endregion
 
@@ -423,7 +423,7 @@ namespace ConsoleSample
                 Educations edu = currentNode.GetCustomerEducation(customerID, educationID, ref error);
                 edu.startYear = 2010;
                 edu.endYear = 2016;
-                Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu);
+                Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu, ref error);
             }
             #endregion
             #endregion

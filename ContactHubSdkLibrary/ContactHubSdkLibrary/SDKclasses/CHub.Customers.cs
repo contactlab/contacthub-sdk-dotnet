@@ -189,10 +189,10 @@ namespace ContactHubSdkLibrary.SDKclasses
             return false; //return invalid page
         }
 
-        public bool GetCustomers(ref PagedCustomer pagedCustomers, object next)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool GetCustomers(ref PagedCustomer pagedCustomers, object next)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         /// <summary>
         /// Add a new customer (force update if exists)
@@ -226,7 +226,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
             //in theory returns the id of existing customer, which shall therefore used for the update
-            bool isError = (returnCustomer==null || returnCustomer.id == null);
+            bool isError = (returnCustomer == null || returnCustomer.id == null);
 
             //TO BE DONE!!!
             if (isError && forceUpdate)

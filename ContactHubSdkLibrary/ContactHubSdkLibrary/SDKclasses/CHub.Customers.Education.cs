@@ -63,8 +63,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customers Education
         /// </summary>
-        public Educations UpdateCustomerEducation(string customerID, Educations education)
+        public Educations UpdateCustomerEducation(string customerID, Educations education,ref Error error)
         {
+            Educations returnSubscription = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -75,8 +76,15 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
             Common.WriteLog("-> UpdateCustomerEducation() put data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- UpdateCustomerEducation() return data:", jsonResponse);
-
-            Educations returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                 returnSubscription = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            }
+            else
+            {
+                returnSubscription = null;
+            }
             return returnSubscription;
         }
         #endregion

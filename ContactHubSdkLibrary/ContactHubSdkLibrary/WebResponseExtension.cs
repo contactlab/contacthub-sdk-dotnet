@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ContactHubSdkLibrary
 {
+
     public static class WebRequestExtensions
     {
         public static WebResponse GetResponseWithoutException(this WebRequest request)
@@ -18,6 +19,7 @@ namespace ContactHubSdkLibrary
 
             try
             {
+                
                 return request.GetResponse();
             }
             catch (WebException e)
@@ -27,6 +29,7 @@ namespace ContactHubSdkLibrary
                     throw;
                 }
 
+                e.Response.Headers["Status"] = e.Message.ToString();
                 return e.Response;
             }
         }

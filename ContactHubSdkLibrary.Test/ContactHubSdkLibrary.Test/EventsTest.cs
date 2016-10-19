@@ -373,7 +373,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString()+
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }

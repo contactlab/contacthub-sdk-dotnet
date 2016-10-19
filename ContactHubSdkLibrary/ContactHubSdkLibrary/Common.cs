@@ -101,27 +101,33 @@ public static class Common
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static TOut GetShallowCopyByReflection<TOut>(this Object objIn)
+    public static TOut CreateObject<TOut>(this Object objIn)
     {
-        Type inputType = objIn.GetType();
-        Type outputType = typeof(TOut);
-        if (!outputType.Equals(inputType) && !outputType.IsSubclassOf(inputType)) throw new ArgumentException(String.Format("{0} is not a sublcass of {1}", outputType, inputType));
-        PropertyInfo[] properties = inputType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
-        FieldInfo[] fields = inputType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
-        TOut objOut = (TOut)Activator.CreateInstance(typeof(TOut));
-        foreach (PropertyInfo property in properties)
+        //if (typeof(TOut).IsSubclassOf(objIn.GetType())  )
+        //{
+        //    throw new InvalidCastException(objIn.GetType().ToString() + " does not inherit from " + typeof(TOut).ToString());
+        //}
+
+        TOut ret = System.Activator.CreateInstance<TOut>();
+
+        PropertyInfo[] propTo = ret.GetType().GetProperties();
+        PropertyInfo[] propFrom = objIn.GetType().GetProperties();
+
+        // for each property check whether this data item has an equivalent property
+        // and copy over the property values as neccesary.
+        foreach (PropertyInfo propT in propTo)
         {
-            try
+            foreach (PropertyInfo propF in propFrom)
             {
-                property.SetValue(objIn, property.GetValue(objIn, null), null);
+                if (propT.Name == propF.Name)
+                {
+                    propF.SetValue(ret, propF.GetValue(objIn));
+                    break;
+                }
             }
-            catch (ArgumentException) { } // For Get-only-properties
         }
-        foreach (FieldInfo field in fields)
-        {
-            field.SetValue(objOut, field.GetValue(objIn));
-        }
-        return objOut;
+
+        return ret;
     }
 
 

@@ -35,7 +35,7 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = DateTime.Now.Ticks.ToString() + "@yourdomain.it" //+                        "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString() + "@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -343,14 +343,18 @@ namespace ContactHubSdkLibrary.Test
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 //create clone on PostCustomer subclass
-                if (error != null)
+                if (error == null)
                 {
                     PostCustomer customer = newCustomer.ToPostCustomer();
 
                     if (newCustomer != null && newCustomer.id != null)
                     {
+                        string testField= "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+
                         //customer is created, then update id
-                        customer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                        customer.extra = testField;
+                        //change external id, try to test duplicate check on email
+                        customer.externalId = DateTime.Now.Ticks.ToString();
                         Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
                         //get customer by ID
                         Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
@@ -360,9 +364,12 @@ namespace ContactHubSdkLibrary.Test
                         //compare source data
                         compareLogic.Config.MembersToIgnore.Add("extra");
                         bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
+                        compareLogic.Config.MembersToIgnore.Clear();
+                        newCustomer.extra = testField;
+                        bool test3Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                         //delete added customer
-                        bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
-                        testPassed = test1Passed && test2Passed;
+                        bool test4passed = node.DeleteCustomer(newCustomer.id, ref error);
+                        testPassed = test1Passed && test2Passed && test3Passed && test4passed;
                     }
                 }
             }
@@ -433,7 +440,7 @@ namespace ContactHubSdkLibrary.Test
                             contacts = new Contacts()
                             {
                                 email = DateTime.Now.Ticks.ToString() +
-                        "dduck@yourdomain.it"
+                                       "dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }

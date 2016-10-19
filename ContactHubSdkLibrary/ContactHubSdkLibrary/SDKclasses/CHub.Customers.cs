@@ -226,9 +226,14 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             bool isError = (returnCustomer == null || returnCustomer.id == null);
             //if add failed due conflict (duplication), try to update the customer
-            if (isError && statusCode.ToLowerInvariant() == "conflict" && forceUpdate)
+            if (isError && statusCode.ToLowerInvariant().Contains("(409)") && forceUpdate)
             {
-                string existingID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
+                //trasforma postcustomer in customer
+                string existingID = error.message.Replace("Conflicting with customer id ", "");
+                Customer c = Common.CreateObject<Customer>(customer);
+                c.id = existingID;
+                postData = JsonConvert.SerializeObject(c, settings);
+
                 string url = String.Format("/customers/{0}", existingID);
                 jsonResponse = DoPutWebRequest(url, postData, ref statusCode);
                 Common.WriteLog("-> Addcustomer() put data:", "querystring:" + url + " data:" + postData);
@@ -318,7 +323,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             else //full
             {
                 //if full update, post model is different, require ID
-                Customer c = Common.GetShallowCopyByReflection<Customer>(customer);
+                Customer c = Common.CreateObject<Customer>(customer);
                 c.id = customerID;
                 postData = JsonConvert.SerializeObject(c, settings);
             }

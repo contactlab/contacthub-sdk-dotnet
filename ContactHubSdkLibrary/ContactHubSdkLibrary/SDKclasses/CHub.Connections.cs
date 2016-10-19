@@ -112,11 +112,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = response.StatusCode.ToString();
+                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
                 //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
                 if (string.IsNullOrEmpty(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
+                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
                 }
             }
 
@@ -164,11 +164,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = response.StatusCode.ToString();
+                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
                 //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
                 if (string.IsNullOrEmpty(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
+                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
                 }
             }
 
@@ -210,11 +210,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = response.StatusCode.ToString();
+                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
                 //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
                 if (string.IsNullOrEmpty(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + response.StatusCode + "\"}";
+                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
                 }
             }
             catch (Exception ex)

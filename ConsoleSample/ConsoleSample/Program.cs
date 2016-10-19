@@ -176,14 +176,14 @@ namespace ConsoleSample
             {
                 PostCustomer newCustomer = new PostCustomer()
                 {
-                    externalId = Guid.NewGuid().ToString(),
+                    externalId = DateTime.Now.Ticks.ToString(),
                     @base = new BaseProperties()
                     {
                         firstName = "Donald",
                         lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = "dduck@yourdomain.it"
+                            email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
                     }
@@ -240,14 +240,14 @@ namespace ConsoleSample
                 PostCustomer newCustomer = new PostCustomer()
                 {
                     nodeId = currentNodeID,
-                    externalId = Guid.NewGuid().ToString(),
+                    externalId = DateTime.Now.Ticks.ToString(),
                     @base = new BaseProperties()
                     {
                         firstName = "Donald",
                         lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = "dduck@yourdomain.it"
+                            email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.GMT0100
                     },
@@ -641,7 +641,7 @@ namespace ConsoleSample
                             lastName = "Duck",
                             contacts = new Contacts()
                             {
-                                email = "dduck@yourdomain.it"
+                                email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
                         }
@@ -697,7 +697,7 @@ namespace ConsoleSample
                             lastName = "Duck",
                             contacts = new Contacts()
                             {
-                                email = "dduck@yourdomain.it"
+                                email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }

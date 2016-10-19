@@ -81,7 +81,7 @@ namespace ContactHubSdkLibrary.Test
                     EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
                     {
                         category = new List<String>() { "1" },
-                        idTicket = "1",
+                        ticketId = "1",
                         subject = "web form question " + DateTime.Now.ToString(),
                         text = "lorem ipsum"
                     };

@@ -383,7 +383,7 @@ namespace ConsoleSample
                 string likeID = "eee8c9d6-e30a-4aa9-93f0-db949ba32840";
                 Likes l = currentNode.GetCustomerLike(customerID, likeID, ref error);
                 l.category = "music";
-                Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l,ref error);
+                Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l, ref error);
             }
             #endregion
             #endregion
@@ -475,7 +475,7 @@ namespace ConsoleSample
                 Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID, ref error);
                 s.dateStart = DateTime.Now;
                 s.dateEnd = DateTime.Now.AddDays(10);
-                Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s,ref error);
+                Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s, ref error);
             }
             #endregion
             #endregion
@@ -517,7 +517,7 @@ namespace ConsoleSample
                 Jobs j = currentNode.GetCustomerJob(customerID, jobID, ref error);
                 j.startDate = DateTime.Now;
                 j.endDate = DateTime.Now.AddDays(10);
-                Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j,ref error);
+                Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j, ref error);
             }
             #endregion
             #endregion
@@ -571,7 +571,7 @@ namespace ConsoleSample
                 EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
                 {
                     category = new List<String>() { "1" },
-                    idTicket = "1",
+                    ticketId = "1",
                     subject = "web form question " + DateTime.Now.ToString(),
                     text = "lorem ipsum"
                 };

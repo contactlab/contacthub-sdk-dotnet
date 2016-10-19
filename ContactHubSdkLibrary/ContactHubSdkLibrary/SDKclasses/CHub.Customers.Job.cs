@@ -93,21 +93,28 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Delete  job from customer
         /// </summary>
-        public Jobs RemoveCustomerJob(string customerID, string jobID)
+        public Jobs RemoveCustomerJob(string customerID, string jobID,ref Error error)
         {
             /* DA FINIRE IMPLEMENTAZIONE, MANCANO I METODI DELETE IN HUB*/
 
-            //var settings = new JsonSerializerSettings()
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore
-            //};
-            //string postData = JsonConvert.SerializeObject(job, settings);
-            //string statusCode = null;
-            //string jsonResponse = DoPostWebRequest(String.Format("/customers/{0}/jobs", customerID), postData, ref statusCode);
-            //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" + postData);
-            //Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            string url = String.Format("/customers/{0}/jobs/{1}", customerID, jobID);
+            string jsonResponse = DoDeleteWebRequest(url);
+            Common.WriteLog("-> RemoveCustomerJob() delete data:", "querystring:" + url );
+            Common.WriteLog("<- AddEvent() return data:", jsonResponse);
 
-            Jobs returnJobs = null; //(jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+            }
+            else
+            {
+
+            }
+                Jobs returnJobs = null; //(jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
             return returnJobs;
         }
         #endregion

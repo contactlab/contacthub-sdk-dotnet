@@ -224,12 +224,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 returnCustomer = null;
             }
-            //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
-            //in theory returns the id of existing customer, which shall therefore used for the update
             bool isError = (returnCustomer == null || returnCustomer.id == null);
-
-            //TO BE DONE!!!
-            if (isError && forceUpdate)
+            //if add failed due conflict (duplication), try to update the customer
+            if (isError && statusCode.ToLowerInvariant()=="conflict" && forceUpdate)
             {
                 string existingID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string url = String.Format("/customers/{0}", existingID);

@@ -35,7 +35,7 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString() + "@yourdomain.it" //+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -43,6 +43,8 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
+                var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
+
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
                 Thread.Sleep(1000);
@@ -93,7 +95,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 },
@@ -192,7 +195,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -259,7 +263,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -326,7 +331,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -337,24 +343,27 @@ namespace ContactHubSdkLibrary.Test
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 //create clone on PostCustomer subclass
-                PostCustomer customer = newCustomer.ToPostCustomer();
-
-                if (newCustomer != null && newCustomer.id != null)
+                if (error != null)
                 {
-                    //customer is created, then update id
-                    customer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
-                    Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
-                    //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
-                    //compare results
-                    CompareLogic compareLogic = new CompareLogic();
-                    bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
-                    //compare source data
-                    compareLogic.Config.MembersToIgnore.Add("extra");
-                    bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
-                    //delete added customer
-                    bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
-                    testPassed = test1Passed && test2Passed;
+                    PostCustomer customer = newCustomer.ToPostCustomer();
+
+                    if (newCustomer != null && newCustomer.id != null)
+                    {
+                        //customer is created, then update id
+                        customer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                        Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
+                        //get customer by ID
+                        Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
+                        //compare results
+                        CompareLogic compareLogic = new CompareLogic();
+                        bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
+                        //compare source data
+                        compareLogic.Config.MembersToIgnore.Add("extra");
+                        bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
+                        //delete added customer
+                        bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
+                        testPassed = test1Passed && test2Passed;
+                    }
                 }
             }
             Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
@@ -423,7 +432,8 @@ namespace ContactHubSdkLibrary.Test
                             lastName = "Duck" + Guid.NewGuid().ToString(),
                             contacts = new Contacts()
                             {
-                                email = "dduck@yourdomain.it" + Guid.NewGuid().ToString(),
+                                email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }
@@ -510,7 +520,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.it"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -562,7 +573,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -635,7 +647,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -695,7 +708,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -726,13 +740,12 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed3 = !compareLogic.Compare(newLike, updatedLike).AreEqual;
                     compareLogic.Config.MembersToIgnore.Add("category"); //ignore category
                     bool testPassed4 = compareLogic.Compare(newLike, updatedLike).AreEqual;
-                    //TO BE DONE: delete like
 
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
-                    //
+                    bool testPassed5 = node.DeleteCustomerLike(newCustomer.id, updatedLike.id, ref error);
+                    bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
                     Thread.Sleep(1000); //wait remote update
                 }
                 Common.WriteLog("End CustomerLikesLifeCycle test", "passed:" + testPassed + "\n\n");
@@ -758,7 +771,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -791,10 +805,10 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("schoolName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newEdu, updatedEdu).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
-                    //TO BE DONE: delete education
+                    bool testPassed5 = node.DeleteCustomerEducation(newCustomer.id, updatedEdu.id, ref error);
+                    bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 & testPassed6;
                     Thread.Sleep(1000); //wait remote update
                 }
                 Common.WriteLog("End CustomerEducationLifeCycle test", "passed:" + testPassed + "\n\n");
@@ -820,7 +834,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -843,7 +858,6 @@ namespace ContactHubSdkLibrary.Test
                         endDate = DateTime.Now.AddDays(1),
                         isCurrent = true
                     };
-
                     Jobs addJob = node.AddCustomerJob(newCustomer.id, newJob, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
@@ -856,10 +870,10 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
-                    //TO BE DONE: delete education
+                    bool testPassed5 = node.DeleteCustomerJob(newCustomer.id, updatedJob.id, ref error);
+                    bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
                     Thread.Sleep(1000); //wait remote update
                 }
                 Common.WriteLog("End CustomerJobLifeCycle test", "passed:" + testPassed + "\n\n");
@@ -886,7 +900,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -932,10 +947,11 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("type"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newSubscription, updatedSub).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
+                    bool testPassed5 = node.DeleteCustomerSubscription(newCustomer.id, updatedSub.id, ref error);
+                    bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
                     //TO BE DONE: delete education
 
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
                     Thread.Sleep(1000); //wait remote update
                 }
                 Common.WriteLog("End CustomerSubscriptionLifeCycle test", "passed:" + testPassed + "\n\n");
@@ -962,7 +978,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }
@@ -1009,7 +1026,8 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = "dduck@yourdomain.com"
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.GMT0100
                 }

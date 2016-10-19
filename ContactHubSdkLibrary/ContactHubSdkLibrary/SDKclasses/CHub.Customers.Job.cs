@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ContactHubSdkLibrary.Models;
+using Newtonsoft.Json;
 using System;
 
 
@@ -10,7 +11,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Get the details of customer jobs
         /// </summary>
-        public Jobs GetCustomerJob(string customerID, string jobID)
+        public Jobs GetCustomerJob(string customerID, string jobID, ref Error error)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -20,15 +21,25 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoGetWebRequest(url);
             Common.WriteLog("-> GetCustomerJob() get data:", "querystring:" + url);
             Common.WriteLog("<- GetCustomerJob() return data:", jsonResponse);
+            Jobs returnJobs = null;
 
-            Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            }
+            else
+            {
+                returnJobs = null;
+            }
             return returnJobs;
         }
         /// <summary>
         /// Add a job object to customer
         /// </summary>
-        public Jobs AddCustomerJob(string customerID, Jobs job)
+        public Jobs AddCustomerJob(string customerID, Jobs job,ref Error error)
         {
+            Jobs returnJobs = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -37,10 +48,17 @@ namespace ContactHubSdkLibrary.SDKclasses
             string statusCode = null;
             string url = String.Format("/customers/{0}/jobs", customerID);
             string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
-            Common.WriteLog("-> AddCustomerJob() post data:", "querystring:" + url + " data:" +postData);
+            Common.WriteLog("-> AddCustomerJob() post data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- AddCustomerJob() return data:", jsonResponse);
-
-            Jobs returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnJobs = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
+            }
+            else
+            {
+                returnJobs = null;
+            }
             return returnJobs;
         }
 

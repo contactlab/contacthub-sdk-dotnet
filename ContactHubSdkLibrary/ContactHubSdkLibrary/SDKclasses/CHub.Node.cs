@@ -37,27 +37,30 @@ namespace ContactHubSdkLibrary.SDKclasses
 
         #region extendedProperties
 
-        public string GetExtendedPropertiesConfiguration()
+        public void GetExtendedPropertiesConfiguration(ref Error error)
         {
             string url = String.Format("/configuration/properties/extended");
             string jsonResponse = DoGetWebRequest(url);
             Common.WriteLog("-> GetExtendedPropertiesConfiguration() get data:", "querystring:" + url);
             Common.WriteLog("<- GetExtendedPropertiesConfiguration() return data:", jsonResponse);
-            var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
-            return null;
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            }
         }
 
-
-
-        public string GetMe()
+        public void GetMe(ref Error error)
         {
             string url = Const.APIBASEURL + String.Format("/me");
             string jsonResponse = DoGetWebRequest(url, false);
             Common.WriteLog("-> GetMe() get data:", "querystring:" + url);
             Common.WriteLog("<- GetMe() return data:", jsonResponse);
-
-            var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<UserInfo>(jsonResponse) : null);
-            return null;
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<UserInfo>(jsonResponse) : null);
+            }
         }
 
         //public string SetExtendedPropertiesConfiguration()

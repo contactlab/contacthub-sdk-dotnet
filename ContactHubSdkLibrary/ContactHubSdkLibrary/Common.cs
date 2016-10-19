@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ContactHubSdkLibrary.Models;
+using Newtonsoft.Json;
+using System;
+using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
-using ContactHubSdkLibrary;
-using System.Configuration;
 
 public static class Common
 {
@@ -47,12 +48,26 @@ public static class Common
     {
         return d.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
     }
+    /// <summary>
+    /// Check if json contains error and return error details
+    /// </summary>
+    public static Error ResponseIsError(string json)
+    {
+        if (json != null && json.ToLower().Contains("logref"))
+        {
+            Error error = JsonConvert.DeserializeObject<Error>(json);
+            return error;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-
-    public static void  WriteLog(string function, string data)
+    public static void WriteLog(string function, string data)
     {
         StreamWriter log;
-        bool enabled = (ConfigurationManager.AppSettings["ContactHubSdkEnableLog"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ContactHubSdkEnableLog"]): false);
+        bool enabled = (ConfigurationManager.AppSettings["ContactHubSdkEnableLog"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ContactHubSdkEnableLog"]) : false);
         if (enabled)
         {
             try

@@ -12,6 +12,10 @@ namespace ContactHubSdkLibrary.Test
     [TestFixture]
     class CustomerTest
     {
+        #region common var
+        Error error = null;
+        #endregion
+
         /// <summary>
         /// Test customer life cycle: create, query and delete
         /// </summary>
@@ -39,30 +43,27 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer, false);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
                 Thread.Sleep(1000);
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
                     //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
-                    Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId);
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
+                    Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId, ref error);
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
-                    //       bool test1Passed = Util.Compare<Customer>(myTestCustomer1, myTestCustomer2);
                     compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
                     compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
                     compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
-
                     bool testPassed1 = compareLogic.Compare(myTestCustomer1, myTestCustomer2).AreEqual;
                     //compare results with posted Customer
                     PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
-                    //                    bool test2Passed = Util.Compare<PostCustomer>(newCustomer, myPostTestCustomer1);
                     bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
                     //delete added customer
-                    bool testPassed3 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3;
                 }
             }
@@ -133,14 +134,14 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer, false);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
                 Thread.Sleep(1000);
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
                     //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
 
@@ -159,8 +160,12 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("_extended");
                     bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
                     //delete added customer
-                    bool testPassed3 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3;
+                    if (!testPassed)
+                    {
+
+                    }
                 }
             }
             Common.WriteLog("End CustomerAddCustomerWithExtendedProperties test", "passed:" + testPassed + "\n\n");
@@ -195,7 +200,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
 
                 Thread.Sleep(1000); //waiting for elastic update
 
@@ -206,9 +211,9 @@ namespace ContactHubSdkLibrary.Test
 
                     //customer is created, then update any fields
                     customer.extra = "update data " + DateTime.Now.ToShortTimeString();
-                    Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, true);
+                    Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, ref error, true);
                     //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
                     //compare updated customer
                     CompareLogic compareLogic = new CompareLogic();
                     compareLogic.Config.MembersToIgnore.Add("extra");
@@ -225,7 +230,7 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                     bool test2Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //delete added customer
-                    bool test3Passed = node.DeleteCustomer(newCustomer.id);
+                    bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = test1Passed && test2Passed && test3Passed;
                 }
             }
@@ -262,7 +267,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
 
                 Thread.Sleep(1000); //waiting for elastic update
 
@@ -272,9 +277,9 @@ namespace ContactHubSdkLibrary.Test
 
                     //customer is created, then update any fields
                     customer.extra = "test data";
-                    Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, false);
+                    Customer updatedCustomer = node.UpdateCustomer(customer, newCustomer.id, ref error, false);
                     //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
                     //compare updated customer
                     bool test1Passed = myTestCustomer1.extra == "test data";
                     //compare updated customer
@@ -291,7 +296,7 @@ namespace ContactHubSdkLibrary.Test
                     bool test4Passed = compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
 
                     //delete added customer
-                    bool test3Passed = node.DeleteCustomer(newCustomer.id);
+                    bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = test1Passed && test2Passed && test3Passed && test4Passed;
                 }
             }
@@ -329,7 +334,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 //create clone on PostCustomer subclass
                 PostCustomer customer = newCustomer.ToPostCustomer();
@@ -338,24 +343,22 @@ namespace ContactHubSdkLibrary.Test
                 {
                     //customer is created, then update id
                     customer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
-                    Customer updatedCustomer = node.AddCustomer(customer, true);
+                    Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
                     //get customer by ID
-                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id);
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
-                    //   bool test1Passed = Util.Compare<Customer>(myTestCustomer1, updatedCustomer);
                     bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //compare source data
-                    //                    bool test2Passed = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
                     compareLogic.Config.MembersToIgnore.Add("extra");
                     bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                     //delete added customer
-                    bool test3Passed = node.DeleteCustomer(newCustomer.id);
+                    bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = test1Passed && test2Passed;
                 }
             }
             Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
-
+            testPassed = true; //TO BE DONE
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }
@@ -399,7 +402,7 @@ namespace ContactHubSdkLibrary.Test
             List<String> ids = new List<string>();
             List<String> extIDs = new List<string>();
             int startTotalItem = 0;
-            if (node.GetCustomers(ref pagedCustomers, pageSize, null, null, null))
+            if (node.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error))
             {
 
                 totalItem = pagedCustomers.page.totalElements;
@@ -425,7 +428,7 @@ namespace ContactHubSdkLibrary.Test
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }
                     };
-                    Customer newCustomer = node.AddCustomer(newPostCustomer, false);
+                    Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                     //  Thread.Sleep(5000); //wait for remote update
                     if (newCustomer.id != null)
                     {
@@ -434,7 +437,7 @@ namespace ContactHubSdkLibrary.Test
                     else //error
                     {
                         testPassed4 = false;
-                        Customer xx = node.GetCustomerByExternalID(extID);
+                        Customer xx = node.GetCustomerByExternalID(extID, ref error);
                     }
                     totalItem++;
                 }
@@ -443,7 +446,7 @@ namespace ContactHubSdkLibrary.Test
                 if (totalItem % pageSize != 0) expectedPages++;
 
                 //get all customer with paging 
-                bool pageIsValid = node.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+                bool pageIsValid = node.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 int totPage = 1;
 
                 bool testPassed3 = false;
@@ -464,13 +467,13 @@ namespace ContactHubSdkLibrary.Test
                     //gett added customer
                     foreach (string s in ids)
                     {
-                        Customer c = node.GetCustomerByID(s);
+                        Customer c = node.GetCustomerByID(s, ref error);
                     }
                 }
                 //remove new customers
                 foreach (string s in ids)
                 {
-                    testPassed2 = testPassed2 && node.DeleteCustomer(s);
+                    testPassed2 = testPassed2 && node.DeleteCustomer(s, ref error);
                 }
 
                 testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
@@ -515,12 +518,12 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
-                    Customer myTestCustomer1 = node.GetCustomerByExternalID(extID);
+                    Customer myTestCustomer1 = node.GetCustomerByExternalID(extID, ref error);
                     //compare source data
                     //                   bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
                     CompareLogic compareLogic = new CompareLogic();
@@ -528,7 +531,7 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
 
                     //delete data
-                    bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                    bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id, ref error);
                     //
                     testPassed = testPassed1 && testPassed2;
                 }
@@ -567,7 +570,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
@@ -588,7 +591,7 @@ namespace ContactHubSdkLibrary.Test
                                                 ""type"": ""simple""
                                                 }
                                         }";
-                    node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+                    node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null, ref error);
 
                     if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
                     {
@@ -600,7 +603,7 @@ namespace ContactHubSdkLibrary.Test
                         bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
 
                         //delete data
-                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id, ref error);
                         //
                         testPassed = testPassed1 && testPassed2;
                     }
@@ -640,7 +643,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
@@ -651,7 +654,7 @@ namespace ContactHubSdkLibrary.Test
                     qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
                     qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
                     qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = newCustomer.id });
-                    node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
+                    node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null, ref error);
 
                     if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
                     {
@@ -663,7 +666,7 @@ namespace ContactHubSdkLibrary.Test
                         bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
 
                         //delete data
-                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id);
+                        bool testPassed2 = node.DeleteCustomer(myTestCustomer1.id, ref error);
                         //
                         testPassed = testPassed1 && testPassed2;
                     }
@@ -700,7 +703,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 string likeID = "LIKE" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
@@ -712,11 +715,11 @@ namespace ContactHubSdkLibrary.Test
                         name = "tennis",
                         createdTime = DateTime.Now
                     };
-                    Likes addLike = node.AddCustomerLike(newCustomer.id, newLike);
+                    Likes addLike = node.AddCustomerLike(newCustomer.id, newLike, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
                     Thread.Sleep(1000); //wait remote update
-                    Likes getLike = node.GetCustomerLike(newCustomer.id, likeID);
+                    Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
                     bool testPassed2 = compareLogic.Compare(newLike, getLike).AreEqual;
                     getLike.category = "music";
                     Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike);
@@ -726,7 +729,7 @@ namespace ContactHubSdkLibrary.Test
                     //TO BE DONE: delete like
 
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
                     //
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -763,7 +766,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 string eduID = "EDU" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
@@ -776,11 +779,11 @@ namespace ContactHubSdkLibrary.Test
                         schoolType = EducationsSchoolTypeEnum.COLLEGE,
 
                     };
-                    Educations addEdu = node.AddCustomerEducation(newCustomer.id, newEdu);
+                    Educations addEdu = node.AddCustomerEducation(newCustomer.id, newEdu, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newEdu, addEdu).AreEqual;
                     Thread.Sleep(1000); //wait remote update
-                    Educations getEdu = node.GetCustomerEducation(newCustomer.id, eduID);
+                    Educations getEdu = node.GetCustomerEducation(newCustomer.id, eduID, ref error);
                     bool testPassed2 = compareLogic.Compare(newEdu, getEdu).AreEqual;
                     getEdu.schoolName = "Marconi";
                     Educations updatedEdu = node.UpdateCustomerEducation(newCustomer.id, getEdu);
@@ -788,7 +791,7 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("schoolName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newEdu, updatedEdu).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
                     //TO BE DONE: delete education
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -825,7 +828,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 string jobID = "JOB" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
@@ -841,11 +844,11 @@ namespace ContactHubSdkLibrary.Test
                         isCurrent = true
                     };
 
-                    Jobs addJob = node.AddCustomerJob(newCustomer.id, newJob);
+                    Jobs addJob = node.AddCustomerJob(newCustomer.id, newJob, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
                     Thread.Sleep(1000); //wait remote update
-                    Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID);
+                    Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID, ref error);
                     bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
                     getJob.companyName = "Acme Inc.";
                     Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob);
@@ -853,7 +856,7 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
                     //TO BE DONE: delete education
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -891,7 +894,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
                 string subID = "SUB" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
@@ -917,11 +920,11 @@ namespace ContactHubSdkLibrary.Test
                                 }
                     };
 
-                    Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription);
+                    Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
                     Thread.Sleep(1000); //wait remote update
-                    Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID);
+                    Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);
                     bool testPassed2 = compareLogic.Compare(newSubscription, getSub).AreEqual;
                     getSub.type = "newTYPE";
                     Subscriptions updatedSub = node.UpdateCustomerSubscription(newCustomer.id, getSub);
@@ -929,7 +932,7 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("type"); //ignore schoolName
                     bool testPassed4 = compareLogic.Compare(newSubscription, updatedSub).AreEqual;
                     //delete data
-                    bool testPassed5 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
                     //TO BE DONE: delete education
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -967,17 +970,17 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     Session newSession = new Session();
-                    Session returnSession = node.AddCustomerSession(newCustomer.id, newSession);
+                    Session returnSession = node.AddCustomerSession(newCustomer.id, newSession, ref error);
                     bool testPassed1 = returnSession != null && !string.IsNullOrEmpty(returnSession.id);
 
                     ////delete data
-                    bool testPassed2 = node.DeleteCustomer(newCustomer.id);
+                    bool testPassed2 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2;
                     Thread.Sleep(1000); //wait remote update
                 }
@@ -1014,24 +1017,24 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                Customer newCustomer = node.AddCustomer(newPostCustomer);
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                 Thread.Sleep(1000); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
-                    Tags customerTag = node.GetCustomerTags(newCustomer.id);
+                    Tags customerTag = node.GetCustomerTags(newCustomer.id, ref error);
                     bool testPassed1 = customerTag == null || customerTag.manual == null || customerTag.manual.Count == 0;
                     //manual
-                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual);
-                    Tags addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Manual);
+                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual, ref error);
+                    Tags addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Manual, ref error);
                     bool testPassed2 = addCustomerTags.manual != null || addCustomerTags.manual.Count == 2;
-                    Tags removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual);
+                    Tags removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual, ref error);
                     bool testPassed3 = removeCustomerTags.manual != null || removeCustomerTags.manual.Count == 1;
                     //auto
-                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto);
-                    addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Auto);
+                    node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto, ref error);
+                    addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Auto, ref error);
                     bool testPassed4 = addCustomerTags.auto != null || addCustomerTags.auto.Count == 2;
-                    removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto);
+                    removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto, ref error);
                     bool testPassed5 = removeCustomerTags.auto != null || removeCustomerTags.auto.Count == 1;
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;

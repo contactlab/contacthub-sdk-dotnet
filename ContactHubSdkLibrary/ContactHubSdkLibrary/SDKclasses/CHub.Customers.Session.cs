@@ -9,8 +9,9 @@ namespace ContactHubSdkLibrary.SDKclasses
     {
         #region customers session
 
-        public Session AddCustomerSession(string customerID, Session session)
+        public Session AddCustomerSession(string customerID, Session session, ref Error error)
         {
+            Session returnSession = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -21,8 +22,15 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
             Common.WriteLog("-> AddCustomerSession() post data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- AddCustomerSession() return data:", jsonResponse);
-
-            Session returnSession = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Session>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                 returnSession = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Session>(jsonResponse));
+            }
+            else
+            {
+                returnSession = null;
+            }
             return returnSession;
         }
       

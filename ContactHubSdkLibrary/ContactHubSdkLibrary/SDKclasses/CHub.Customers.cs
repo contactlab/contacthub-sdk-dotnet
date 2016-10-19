@@ -21,33 +21,33 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Get the first page of customers list, to be made when you call the customer first
         /// <summary>
-        public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageSize, string externalId, string query, string fields)
+        public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageSize, string externalId, string query, string fields, ref Error error)
         {
             pagedCustomer = null; //resets before the call in order to get the page 0
-            return GetCustomers(ref pagedCustomer, PageRefEnum.first, pageSize, 0, externalId, query, fields);
+            return GetCustomers(ref pagedCustomer, PageRefEnum.first, pageSize, 0, externalId, query, fields, ref error);
         }
         /// <summary>
         /// Get other customers pages, to be made when you call the customer after the first page
         /// </summary>
-        public bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page)
+        public bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page, ref Error error)
         {
             if (pagedCustomer == null)
                 return false;
             else
-                return GetCustomers(ref pagedCustomer, page, pagedCustomer.page.size, 0, null, null, null);
+                return GetCustomers(ref pagedCustomer, page, pagedCustomer.page.size, 0, null, null, null, ref error);
         }
         /// <summary>
         /// Get other customers pages specifying the  page number
         /// </summary>
-        public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageNumber)
+        public bool GetCustomers(ref PagedCustomer pagedCustomer, int pageNumber, ref Error error)
         {
             if (pagedCustomer == null)
                 return false;
             else
-                return GetCustomers(ref pagedCustomer, PageRefEnum.none, pagedCustomer.page.size, pageNumber, null, null, null);
+                return GetCustomers(ref pagedCustomer, PageRefEnum.none, pagedCustomer.page.size, pageNumber, null, null, null, ref error);
         }
 
-        private bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page, int pageSize, int pageNumber, string externalId, string query, string fields)
+        private bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page, int pageSize, int pageNumber, string externalId, string query, string fields, ref Error error)
         {
             /* parameters:            
              * nodeId: Identifier of the node where you want to do the search  Required:Yes   (
@@ -73,17 +73,24 @@ namespace ContactHubSdkLibrary.SDKclasses
                 }
                 querySTR += String.Format("&size={0}", pageSize);
                 querySTR += String.Format("&page={0}", 0); //first page
-
-
                 string jsonResponse = DoGetWebRequest(querySTR);
                 Common.WriteLog("-> GetCustomers() get data:", "querystring:" + querySTR);
                 Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
-
                 if (jsonResponse != null)
                 {
-                    pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
+                    error = Common.ResponseIsError(jsonResponse);
+                    if (error == null)
+                    {
+                        pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
+                    }
+                    else
+                    {
+                        pagedCustomer = null;
+                        return false;
+                    }
                 }
                 if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
+
                 return true;
             }
             else if (page != PageRefEnum.none)  //relative page first|last|next|prev
@@ -126,10 +133,18 @@ namespace ContactHubSdkLibrary.SDKclasses
                 string jsonResponse = DoGetWebRequest(otherPageUrl, false);
                 Common.WriteLog("-> GetCustomers() get data:", "querystring:" + otherPageUrl);
                 Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
-
                 if (jsonResponse != null)
                 {
-                    pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
+                    error = Common.ResponseIsError(jsonResponse);
+                    if (error == null)
+                    {
+                        pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
+                    }
+                    else
+                    {
+                        pagedCustomer = null;
+                        return false;
+                    }
                 }
                 if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
 
@@ -182,7 +197,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Add a new customer (force update if exists)
         /// </summary>
-        public Customer AddCustomer(PostCustomer customer, bool forceUpdate = false)
+        public Customer AddCustomer(PostCustomer customer, ref Error error, bool forceUpdate = false)
         {
             if (string.IsNullOrEmpty(customer.nodeId))
             {
@@ -199,11 +214,19 @@ namespace ContactHubSdkLibrary.SDKclasses
             string jsonResponse = DoPostWebRequest("/customers", postData, ref statusCode);
             Common.WriteLog("-> Addcustomer() post data:", postData);
             Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
-            Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
-
+            Customer returnCustomer = null;
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+            }
+            else
+            {
+                returnCustomer = null;
+            }
             //It simulates an insertion failed, due to duplication. This functionality will be tested after the release of mid-October '16 hub, using specific error
             //in theory returns the id of existing customer, which shall therefore used for the update
-            bool isError = (returnCustomer.id == null);
+            bool isError = (returnCustomer==null || returnCustomer.id == null);
 
             //TO BE DONE!!!
             if (isError && forceUpdate)
@@ -214,6 +237,13 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Common.WriteLog("-> Addcustomer() put data:", "querystring:" + url + " data:" + postData);
                 Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
 
+                error = Common.ResponseIsError(jsonResponse);
+                if (error == null)
+                {
+                }
+
+
+
             }
 
             return returnCustomer;
@@ -223,15 +253,22 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Customer GetCustomerByID(string id)
+        public Customer GetCustomerByID(string id, ref Error error)
         {
             Customer returnValue = null;
             string queryString = String.Format("/customers/{1}?nodeId={0}", _node, id);
             string jsonResponse = DoGetWebRequest(queryString);
-            Common.WriteLog("-> GetCustomerByID() get data:", "querystring:"+queryString );
+            Common.WriteLog("-> GetCustomerByID() get data:", "querystring:" + queryString);
             Common.WriteLog("<- GetCustomerByID() return data:", jsonResponse);
-
-            returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
+            }
+            else
+            {
+                return null;
+            }
             //The function takes a customer from any node, using his unique id. To avoid reading a customer belonging to another node by his customer ID, 
             //the system checks if the client nodeID returned corresponds to the current nodeID
             if (returnValue != null && returnValue.nodeId != this.id)
@@ -246,12 +283,12 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// </summary>
         /// <param name="externalID"></param>
         /// <returns></returns>
-        public Customer GetCustomerByExternalID(string externalID)
+        public Customer GetCustomerByExternalID(string externalID, ref Error error)
         {
             Customer returnValue = null;
             PagedCustomer pagedCustomers = null;
             //get customers filtered by external ID
-            GetCustomers(ref pagedCustomers, 1, externalID, null, null);
+            GetCustomers(ref pagedCustomers, 1, externalID, null, null, ref error);
 
             if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
             {
@@ -267,8 +304,9 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Update customer 
         /// </summary>
-        public Customer UpdateCustomer(PostCustomer customer, string customerID, bool fullUpdate = false)
+        public Customer UpdateCustomer(PostCustomer customer, string customerID, ref Error error, bool fullUpdate = false)
         {
+            Customer returnCustomer = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -281,7 +319,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 //update the entire customer
                 string queryString = String.Format("/customers/{0}", customerID);
                 jsonResponse = DoPutWebRequest(queryString, postData, ref statusCode);
-                Common.WriteLog("-> UpdateCustomer() put data:","querystring:" + queryString + " " + "data:" + postData);
+                Common.WriteLog("-> UpdateCustomer() put data:", "querystring:" + queryString + " " + "data:" + postData);
                 Common.WriteLog("<- UpdateCustomer() return data:", jsonResponse);
             }
             else
@@ -292,22 +330,39 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Common.WriteLog("-> UpdateCustomer() patch data:", "querystring:" + queryString + " " + "data:" + postData);
                 Common.WriteLog("<- UpdateCustomer() return data:", jsonResponse);
             }
-            Customer returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+            }
+            else
+            {
+                returnCustomer = null;
+            }
             return returnCustomer;
         }
 
         /// <summary>
         /// Delete Customer from node
         /// </summary>
-        public bool DeleteCustomer(string id)
+        public bool DeleteCustomer(string id, ref Error error)
         {
             string queryString = String.Format("/customers/{1}?nodeId={0}", _node, id);
             string jsonResponse = DoDeleteWebRequest(queryString);
             Common.WriteLog("-> DeleteCustomer() delete data:", "querystring:" + queryString + " ");
 
-            if (string.IsNullOrEmpty(jsonResponse))
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
             {
-                return true;
+                if (string.IsNullOrEmpty(jsonResponse))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

@@ -19,6 +19,7 @@ namespace ConsoleSample
             PagedCustomer pagedCustomers = null;
             PagedEvent pagedEvents = null;
             List<Customer> allCustomers = new List<Customer>();
+            Error error = null;
             #endregion
 
             #region Example: open workspace node
@@ -36,7 +37,7 @@ namespace ConsoleSample
             if (false)
             {
                 int pageSize = 5;
-                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
                     allCustomers.AddRange(pagedCustomers._embedded.customers);
@@ -56,7 +57,7 @@ namespace ConsoleSample
             {
                 allCustomers = new List<Customer>();
                 int pageSize = 5;
-                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null);
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
                     allCustomers.AddRange(pagedCustomers._embedded.customers);
@@ -98,7 +99,7 @@ namespace ConsoleSample
             if (false)
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
-                Customer customer = currentNode.GetCustomerByID(customerID);
+                Customer customer = currentNode.GetCustomerByID(customerID, ref error);
                 customerID = customer.id;
             }
             #endregion
@@ -106,14 +107,14 @@ namespace ConsoleSample
             #region  Example: get customer by externalID (using GetCustomers() , returns single customers in array )
             if (false)
             {
-                bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+                bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
             }
             #endregion
 
             #region  Example: get customer by externalID (using GetCustomer(), returns single customer)
             if (false)
             {
-                Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
+                Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
             }
             #endregion
 
@@ -135,7 +136,7 @@ namespace ConsoleSample
                                                 ""type"": ""simple""
                                                 }
                                         }";
-                currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null);
+                currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null, ref error);
             }
             #endregion
 
@@ -145,7 +146,7 @@ namespace ConsoleSample
                 QueryBuilder qb = new QueryBuilder();
                 qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
                 qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
-                currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null);
+                currentNode.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null, ref error);
             }
             #endregion
 
@@ -153,7 +154,7 @@ namespace ConsoleSample
             //return customer with only values in selected fields.
             if (false)
             {
-                currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName");
+                currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName", ref error);
             }
             #endregion
 
@@ -164,7 +165,7 @@ namespace ConsoleSample
                 {
                     if (c.@base.firstName == "Donald")
                     {
-                        currentNode.DeleteCustomer(c.id);
+                        currentNode.DeleteCustomer(c.id, ref error);
                     }
                 }
             }
@@ -189,7 +190,7 @@ namespace ConsoleSample
                 };
                 //post new customer
                 string customerID = null;
-                Customer createdCustomer = currentNode.AddCustomer(newCustomer, false);
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer, ref error, false);
                 customerID = createdCustomer.id;
             }
             #endregion
@@ -197,37 +198,37 @@ namespace ConsoleSample
             #region Example: force update on existing customer on addCustomer
             if (false)
             {
-                currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+                currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
 
                 PostCustomer updateCustomer = pagedCustomers._embedded.customers.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
-                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, true);  //force update
+                Customer createdCustomer = currentNode.AddCustomer(updateCustomer, ref error, true);  //force update
             }
             #endregion
 
             #region Example: update customer (full update)
             if (false)
             {
-                currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null);
+                currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
 
                 Customer updateCustomer = pagedCustomers._embedded.customers.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
-                Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id, true);
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id, ref error, true);
             }
             #endregion
 
             #region Example: update customer (partial update)
             if (false)
             {
-                Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0");
+                Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
 
                 PostCustomer partialData = new PostCustomer();
                 partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
 
                 string customerID = c.id;
-                Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, false);
+                Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID, ref error, false);
             }
             #endregion
 
@@ -323,7 +324,7 @@ namespace ConsoleSample
                 };
                 //post new customer
                 string customerID = null;
-                Customer createdCustomer = currentNode.AddCustomer(newCustomer);
+                Customer createdCustomer = currentNode.AddCustomer(newCustomer, ref error);
                 if (createdCustomer != null)
                 {
                     customerID = createdCustomer.id;
@@ -339,9 +340,9 @@ namespace ConsoleSample
             if (false)
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
-                currentNode.DeleteCustomer(customerID);
+                currentNode.DeleteCustomer(customerID, ref error);
                 //verify if deleted customer exists
-                Customer customer = currentNode.GetCustomerByID(customerID);
+                Customer customer = currentNode.GetCustomerByID(customerID, ref error);
                 if (customer == null)
                 {
                     //customer does not exists
@@ -354,7 +355,7 @@ namespace ConsoleSample
             #region Example: add like to customer
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 Likes newLike = new Likes()
                 {
                     category = "sport",
@@ -362,7 +363,7 @@ namespace ConsoleSample
                     name = "tennis",
                     createdTime = DateTime.Now
                 };
-                Likes returnLike = currentNode.AddCustomerLike(myCustomer.id, newLike);
+                Likes returnLike = currentNode.AddCustomerLike(myCustomer.id, newLike, ref error);
             }
             #endregion
 
@@ -371,7 +372,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string likeID = "eee8c9d6-e30a-4aa9-93f0-db949ba32840";
-                Likes returnLike = currentNode.GetCustomerLike(customerID, likeID);
+                Likes returnLike = currentNode.GetCustomerLike(customerID, likeID, ref error);
             }
             #endregion
 
@@ -380,7 +381,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string likeID = "eee8c9d6-e30a-4aa9-93f0-db949ba32840";
-                Likes l = currentNode.GetCustomerLike(customerID, likeID);
+                Likes l = currentNode.GetCustomerLike(customerID, likeID, ref error);
                 l.category = "music";
                 Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l);
             }
@@ -391,7 +392,7 @@ namespace ConsoleSample
             #region Example: add education to customer
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 Educations newEdu = new Educations()
                 {
                     id = "0eae64f3-12fb-49ad-abb9-82ee595037a2",
@@ -401,7 +402,7 @@ namespace ConsoleSample
 
                 };
 
-                Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu);
+                Educations returnEdu = currentNode.AddCustomerEducation(myCustomer.id, newEdu, ref error);
             }
             #endregion
 
@@ -410,7 +411,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string educationID = "0eae64f3-12fb-49ad-abb9-82ee595037a2";
-                Educations returnEdu = currentNode.GetCustomerEducation(customerID, educationID);
+                Educations returnEdu = currentNode.GetCustomerEducation(customerID, educationID, ref error);
             }
             #endregion
 
@@ -419,7 +420,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string educationID = "0eae64f3-12fb-49ad-abb9-82ee595037a2";
-                Educations edu = currentNode.GetCustomerEducation(customerID, educationID);
+                Educations edu = currentNode.GetCustomerEducation(customerID, educationID, ref error);
                 edu.startYear = 2010;
                 edu.endYear = 2016;
                 Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu);
@@ -431,7 +432,7 @@ namespace ConsoleSample
             #region Example: add subscription 
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 Subscriptions newSubscription = new Subscriptions()
                 {
                     id = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab",
@@ -453,7 +454,7 @@ namespace ConsoleSample
                                 }
                 };
 
-                Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription);
+                Subscriptions returnSub = currentNode.AddCustomerSubscription(myCustomer.id, newSubscription, ref error);
             }
             #endregion
 
@@ -462,7 +463,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string subscriptionID = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab";
-                Subscriptions returnSub = currentNode.GetCustomerSubscription(customerID, subscriptionID);
+                Subscriptions returnSub = currentNode.GetCustomerSubscription(customerID, subscriptionID, ref error);
             }
             #endregion
 
@@ -471,7 +472,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string subscriptionID = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab";
-                Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID);
+                Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID, ref error);
                 s.dateStart = DateTime.Now;
                 s.dateEnd = DateTime.Now.AddDays(10);
                 Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s);
@@ -483,7 +484,7 @@ namespace ConsoleSample
             #region Example: add job to customer
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 Jobs newJob = new Jobs()
                 {
                     id = "9cb52d39-233b-4739-9830-bcf02186930e",
@@ -495,7 +496,7 @@ namespace ConsoleSample
                     isCurrent = true
                 };
 
-                Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob);
+                Jobs returnJob = currentNode.AddCustomerJob(myCustomer.id, newJob, ref error);
             }
             #endregion
 
@@ -504,7 +505,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string jobID = "9cb52d39-233b-4739-9830-bcf02186930e";
-                Jobs returnSub = currentNode.GetCustomerJob(customerID, jobID);
+                Jobs returnSub = currentNode.GetCustomerJob(customerID, jobID, ref error);
             }
             #endregion
 
@@ -513,7 +514,7 @@ namespace ConsoleSample
             {
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string jobID = "9cb52d39-233b-4739-9830-bcf02186930e";
-                Jobs j = currentNode.GetCustomerJob(customerID, jobID);
+                Jobs j = currentNode.GetCustomerJob(customerID, jobID, ref error);
                 j.startDate = DateTime.Now;
                 j.endDate = DateTime.Now.AddDays(10);
                 Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j);
@@ -525,9 +526,9 @@ namespace ConsoleSample
             #region Example: create a new session ad assign to customer
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 Session newSession = new Session();
-                Session returnSession = currentNode.AddCustomerSession(myCustomer.id, newSession);
+                Session returnSession = currentNode.AddCustomerSession(myCustomer.id, newSession, ref error);
             }
             #endregion
 
@@ -546,7 +547,7 @@ namespace ConsoleSample
             #region Example: add event to customer
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
                 PostEvent newEvent = new PostEvent()
                 {
                     customerId = myCustomer.id,
@@ -555,7 +556,7 @@ namespace ConsoleSample
                     properties = new EventBaseProperty()
                 };
 
-                string result = currentNode.AddEvent(newEvent);
+                string result = currentNode.AddEvent(newEvent, ref error);
                 if (result != "Accepted")
                 {
                     //insert error
@@ -566,7 +567,7 @@ namespace ConsoleSample
             #region Example: add customer event with properties and contextInfo (with external ID)
             if (false)
             {
-                Customer myCustomer = currentNode.GetCustomerByID("5a0c7812-daa9-467a-b641-012d25b9cdd5"); //giorgio napolitano
+                Customer myCustomer = currentNode.GetCustomerByID("5a0c7812-daa9-467a-b641-012d25b9cdd5", ref error); //giorgio napolitano
                 EventPropertyRepliedTicket typeProperties = new EventPropertyRepliedTicket()
                 {
                     category = new List<String>() { "1" },
@@ -594,7 +595,7 @@ namespace ConsoleSample
                     date = DateTime.Now
                 };
 
-                string result = currentNode.AddEvent(newEvent);
+                string result = currentNode.AddEvent(newEvent, ref error);
                 if (result != "Accepted")
                 {
                     //insert error
@@ -619,7 +620,7 @@ namespace ConsoleSample
                     properties = new EventBaseProperty()
                 };
 
-                string result = currentNode.AddEvent(newEvent);
+                string result = currentNode.AddEvent(newEvent, ref error);
                 if (result != "Accepted")
                 {
                     //insert error
@@ -630,7 +631,7 @@ namespace ConsoleSample
                     //update customer
                     string customerID = null;
                     //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
-                    Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID);
+                    Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID, ref error);
                     customerID = extIdCustomer.id;
                     PostCustomer postCustomer = new PostCustomer()
                     {
@@ -645,14 +646,16 @@ namespace ConsoleSample
                             timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
                         }
                     };
-                    Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, true);
+                    Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, ref error, true);
                     customerID = createdCustomer.id;
 
                     //wait queue elaboration
                     Thread.Sleep(10000);
                     //test reconciliation: get events 
                     pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null);
+                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, customerID,
+                        null, null, null, null, null,
+                        ref error);
 
                 }
             }
@@ -676,7 +679,7 @@ namespace ConsoleSample
                     properties = new EventBaseProperty()
                 };
 
-                string result = currentNode.AddEvent(newEvent);
+                string result = currentNode.AddEvent(newEvent, ref error);
                 Thread.Sleep(1000);
                 if (result != "Accepted")
                 {
@@ -699,17 +702,19 @@ namespace ConsoleSample
                             timezone = BasePropertiesTimezoneEnum.GMT0100
                         }
                     };
-                    Customer newCustomer = currentNode.AddCustomer(newPostCustomer);
+                    Customer newCustomer = currentNode.AddCustomer(newPostCustomer, ref error);
                     Thread.Sleep(1000);
-                    Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession);
+                    Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession, ref error);
                     bool testPassed3 = (returnSession != null);
                     Thread.Sleep(1000);
                     //test reconciliation: get events
                     pagedEvents = null;
-                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null);
+                    bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id,
+                        null, null, null, null, null,
+                        ref error);
                     bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
                     //delete customer
-                    currentNode.DeleteCustomer(newCustomer.id);
+                    currentNode.DeleteCustomer(newCustomer.id, ref error);
                 }
             }
             #endregion
@@ -720,14 +725,14 @@ namespace ConsoleSample
                 List<Event> allEvents = new List<Event>();
                 int pageSize = 20;
                 //filter by customer id (required)
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null);
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null, ref error);
                 if (pageIsValid)
                 {
                     allEvents.AddRange(pagedEvents._embedded.events);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
@@ -743,14 +748,14 @@ namespace ConsoleSample
                 int pageSize = 3;
                 allEvents.Clear();
                 pagedEvents = null;
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null);
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null, ref error);
                 if (pageIsValid)
                 {
                     allEvents.AddRange(pagedEvents._embedded.events);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
@@ -766,14 +771,14 @@ namespace ConsoleSample
                 int pageSize = 3;
                 allEvents.Clear();
                 pagedEvents = null;
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null);
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null, ref error);
                 if (pageIsValid)
                 {
                     allEvents.AddRange(pagedEvents._embedded.events);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
@@ -789,14 +794,14 @@ namespace ConsoleSample
                 int pageSize = 3;
                 allEvents.Clear();
                 pagedEvents = null;
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null);
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null, ref error);
                 if (pageIsValid)
                 {
                     allEvents.AddRange(pagedEvents._embedded.events);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
@@ -812,14 +817,18 @@ namespace ConsoleSample
                 int pageSize = 3;
                 allEvents.Clear();
                 pagedEvents = null;
-                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, null, Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"));
+                bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
+                    null, null, null,
+                    Convert.ToDateTime("2016-01-01"), Convert.ToDateTime("2016-12-31"),
+                    ref error
+                    );
                 if (pageIsValid)
                 {
                     allEvents.AddRange(pagedEvents._embedded.events);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
-                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next);
+                        pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                         allEvents.AddRange(pagedEvents._embedded.events);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
@@ -831,7 +840,7 @@ namespace ConsoleSample
             #region Example: get event by id
             if (false)
             {
-                Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8");
+                Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8", ref error);
             }
             #endregion
             #endregion
@@ -840,7 +849,7 @@ namespace ConsoleSample
             #region Example: get customer tags
             if (false)
             {
-                Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f");
+                Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
             }
 
             #endregion
@@ -848,7 +857,7 @@ namespace ConsoleSample
             #region Example: add customers tag
             if (false)
             {
-                Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+                Tags currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual, ref error);
                 // currentTags = currentNode.AddCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "music", CustomerTagTypeEnum.Manual);
             }
             #endregion
@@ -856,7 +865,7 @@ namespace ConsoleSample
             #region Example: remove customers tag 
             if (false)
             {
-                Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual);
+                Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual, ref error);
             }
             #endregion
             #endregion

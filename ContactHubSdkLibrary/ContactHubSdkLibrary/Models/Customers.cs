@@ -117,7 +117,7 @@ namespace ContactHubSdkLibrary.Models
         {
             JObject jObj = JObject.FromObject(_extended);
             List<ExtendedProperty> list = ExtendedPropertiesUtil.DeserializeExtendedProperties(jObj);
-            
+
         }
 
         public string externalId { get; set; }
@@ -172,6 +172,13 @@ namespace ContactHubSdkLibrary.Models
         public EmbeddedCustomers _embedded { get; set; }
         public PageLink _links { get; set; }
         public Page page { get; set; }
+    }
+
+    public class Error
+    {
+        public string logref { get; set; }
+        public string message { get; set; }
+        public string[] links { get; set; }
     }
 
     public class Session

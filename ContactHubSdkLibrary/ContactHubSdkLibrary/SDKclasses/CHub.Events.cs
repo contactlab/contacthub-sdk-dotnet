@@ -14,7 +14,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Create a new event related to a customer or anonymous
         /// <summary>
-        public string AddEvent(PostEvent event_)
+        public string AddEvent(PostEvent event_,ref Error error)
         {
             var settings = new JsonSerializerSettings()
             {
@@ -24,11 +24,18 @@ namespace ContactHubSdkLibrary.SDKclasses
             string statusCode = null;
             string url = "/events";
             string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
-            Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
+            Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- AddEvent() return data:", jsonResponse);
-
-            //the json response should contain only the status code because the insertion is async (queue)
-            return statusCode;
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                //the json response should contain only the status code because the insertion is async (queue)
+                return statusCode;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -37,30 +44,31 @@ namespace ContactHubSdkLibrary.SDKclasses
         public bool GetEvents(ref PagedEvent pagedEvent, int pageSize,
             string customerID,
             EventTypeEnum? type, EventContextEnum? context, EventModeEnum? mode,
-            DateTime? dateFrom, DateTime? dateTo)
+            DateTime? dateFrom, DateTime? dateTo,
+            ref Error error)
         {
             pagedEvent = null; //resets before the call in order to get the page 0
-            return GetEvents(ref pagedEvent, PageRefEnum.first, pageSize, 0, customerID, type, context, mode, dateFrom, dateTo);
+            return GetEvents(ref pagedEvent, PageRefEnum.first, pageSize, 0, customerID, type, context, mode, dateFrom, dateTo, ref error);
         }
         /// <summary>
         /// Get other events pages, to be carried out when calling the events subsequent to the first page
         /// </summary>
-        public bool GetEvents(ref PagedEvent pagedEvent, PageRefEnum page)
+        public bool GetEvents(ref PagedEvent pagedEvent, PageRefEnum page, ref Error error)
         {
             if (pagedEvent == null)
                 return false;
             else
-                return GetEvents(ref pagedEvent, page, pagedEvent.page.size, 0, null, null, null, null, null, null);
+                return GetEvents(ref pagedEvent, page, pagedEvent.page.size, 0, null, null, null, null, null, null, ref error);
         }
         /// <summary>
         /// Get other customers pages specifying the page number
         /// </summary>
-        public bool GetEvents(ref PagedEvent pagedEvent, int pageNumber)
+        public bool GetEvents(ref PagedEvent pagedEvent, int pageNumber, ref Error error)
         {
             if (pagedEvent == null)
                 return false;
             else
-                return GetEvents(ref pagedEvent, PageRefEnum.none, pagedEvent.page.size, pageNumber, null, null, null, null, null, null);
+                return GetEvents(ref pagedEvent, PageRefEnum.none, pagedEvent.page.size, pageNumber, null, null, null, null, null, null, ref error);
         }
 
         private bool GetEvents(ref PagedEvent pagedEvent, PageRefEnum page,
@@ -68,7 +76,8 @@ namespace ContactHubSdkLibrary.SDKclasses
             int pageNumber,
             string customerID,
             EventTypeEnum? type, EventContextEnum? context, EventModeEnum? mode,
-            DateTime? dateFrom, DateTime? dateTo
+            DateTime? dateFrom, DateTime? dateTo,
+            ref Error error
             )
         {
             /* parameters:        
@@ -122,7 +131,16 @@ namespace ContactHubSdkLibrary.SDKclasses
 
                 if (jsonResponse != null)
                 {
-                    pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse, new EventPropertiesJsonConverter());
+                    error = Common.ResponseIsError(jsonResponse);
+                    if (error == null)
+                    {
+                        pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse, new EventPropertiesJsonConverter());
+                    }
+                    else
+                    {
+                        pagedEvent = null;
+                        return false;
+                    }
                 }
                 if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
                 return true;
@@ -168,10 +186,18 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Common.WriteLog("-> GetEvents() get data:", "querystring:" + otherPageUrl);
                 Common.WriteLog("<- GetEvents() return data:", jsonResponse);
 
-
                 if (jsonResponse != null)
                 {
-                    pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
+                    error = Common.ResponseIsError(jsonResponse);
+                    if (error == null)
+                    {
+                        pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
+                    }
+                    else
+                    {
+                        pagedEvent = null;
+                        return false;
+                    }
                 }
                 if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
                 return true;
@@ -248,15 +274,30 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Get single event by id
         /// </summary>
-        public Event GetEvent(string id)
+        public Event GetEvent(string id, ref Error error)
         {
             Event returnValue = null;
             string url = String.Format("/events/{1}?nodeId={0}", _node, id);
             string jsonResponse = DoGetWebRequest(url);
             Common.WriteLog("-> GetEvents() get data:", "querystring:" + url);
             Common.WriteLog("<- GetEvents() return data:", jsonResponse);
-
-            returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                error = Common.ResponseIsError(jsonResponse);
+                if (error == null)
+                {
+                    returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Event>(jsonResponse, new EventPropertiesJsonConverter()) : null);
+                }
+                else
+                {
+                    returnValue = null;
+                }
+            }
+            else
+            {
+                returnValue = null;
+            }
             return returnValue;
         }
         #endregion

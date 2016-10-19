@@ -15,13 +15,13 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Get customers tags
         /// </summary>
-        public Tags GetCustomerTags(string customerID)
+        public Tags GetCustomerTags(string customerID, ref Error error)
         {
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            Customer c = GetCustomerByID(customerID);
+            Customer c = GetCustomerByID(customerID, ref error);
             if (c != null)
             {
                 return c.tags;
@@ -34,17 +34,17 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Add new tag to customer
         /// </summary>
-        public Tags AddCustomerTag(string customerID, string tag, CustomerTagTypeEnum type)
+        public Tags AddCustomerTag(string customerID, string tag, CustomerTagTypeEnum type, ref Error error)
         {
             string fixedTag = tag.Trim();
-            Tags currentTags = GetCustomerTags(customerID);
+            Tags currentTags = GetCustomerTags(customerID, ref error);
             bool exists = false;
             //discrimina tra auto e manual
             switch (type)
             {
                 case CustomerTagTypeEnum.Auto:
                     //verifica se già presente
-                    exists = (currentTags != null && currentTags.auto!=null && currentTags.auto.Contains(fixedTag));
+                    exists = (currentTags != null && currentTags.auto != null && currentTags.auto.Contains(fixedTag));
                     if (!exists)
                     {
                         if (currentTags == null) currentTags = new Tags();
@@ -54,7 +54,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                     break;
                 case CustomerTagTypeEnum.Manual:
                     //verifica se già presente
-                    exists = (currentTags!=null && currentTags.manual != null && currentTags.manual.Contains(fixedTag));
+                    exists = (currentTags != null && currentTags.manual != null && currentTags.manual.Contains(fixedTag));
                     if (!exists)
                     {
                         if (currentTags == null) currentTags = new Tags();
@@ -68,17 +68,17 @@ namespace ContactHubSdkLibrary.SDKclasses
                 //manda in patch la modifica al customer
                 PostCustomer patchCustomer = new PostCustomer();
                 patchCustomer.tags = currentTags;
-                UpdateCustomer(patchCustomer, customerID, false);
+                UpdateCustomer(patchCustomer, customerID, ref error, false);
             }
             return currentTags;
         }
         /// <summary>
         /// Remove tag from customer
         /// </summary>
-        public Tags RemoveCustomerTag(string customerID, string tag, CustomerTagTypeEnum type)
+        public Tags RemoveCustomerTag(string customerID, string tag, CustomerTagTypeEnum type, ref Error error)
         {
             string fixedTag = tag.Trim();
-            Tags currentTags = GetCustomerTags(customerID);
+            Tags currentTags = GetCustomerTags(customerID, ref error);
 
             //verifica se è già presente
             bool exists = false;
@@ -105,7 +105,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             {
                 PostCustomer patchCustomer = new PostCustomer();
                 patchCustomer.tags = currentTags;
-                UpdateCustomer(patchCustomer, customerID, false);
+                UpdateCustomer(patchCustomer, customerID, ref error, false);
             }
             return currentTags;
         }

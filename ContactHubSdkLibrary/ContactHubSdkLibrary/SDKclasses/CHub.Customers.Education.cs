@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ContactHubSdkLibrary.Models;
+using Newtonsoft.Json;
 using System;
 
 namespace ContactHubSdkLibrary.SDKclasses
@@ -9,26 +10,35 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Get education detail
         /// </summary>
-        public Educations GetCustomerEducation(string customerID, string eduID)
+        public Educations GetCustomerEducation(string customerID, string eduID, ref Error error)
         {
+            Educations returnEdu = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
             string url = String.Format("/customers/{0}/educations/{1}", customerID, eduID);
-            string jsonResponse = DoGetWebRequest( url);
+            string jsonResponse = DoGetWebRequest(url);
             Common.WriteLog("-> GetCustomerEducation() get data:", "querystring:" + url);
             Common.WriteLog("<- GetCustomerEducation() return data:", jsonResponse);
-
-            Educations returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            }
+            else
+            {
+                returnEdu = null;
+            }
             return returnEdu;
 
         }
         /// <summary>
         /// Add customers Education
         /// </summary>
-        public Educations AddCustomerEducation(string customerID, Educations edu)
+        public Educations AddCustomerEducation(string customerID, Educations edu,ref Error error)
         {
+            Educations returnEdu = null;
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -37,10 +47,17 @@ namespace ContactHubSdkLibrary.SDKclasses
             string statusCode = null;
             string url = String.Format("/customers/{0}/educations", customerID);
             string jsonResponse = DoPostWebRequest(url, postData, ref statusCode);
-            Common.WriteLog("-> AddCustomerEducation() put data:", "querystring:" + url + " data:"+ postData);
+            Common.WriteLog("-> AddCustomerEducation() put data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- AddCustomerEducation() return data:", jsonResponse);
-
-            Educations returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                 returnEdu = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Educations>(jsonResponse));
+            }
+            else
+            {
+                returnEdu = null;
+            }
             return returnEdu;
         }
         /// <summary>

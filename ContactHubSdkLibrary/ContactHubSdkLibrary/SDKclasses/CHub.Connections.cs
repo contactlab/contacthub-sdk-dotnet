@@ -44,7 +44,6 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Execute DELETE request on hub
         /// </summary>
-
         private string DoDeleteWebRequest(string functionPath)
         {
             string jsonResponse = null;
@@ -60,7 +59,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                     webRequest.Timeout = 30000;
                     webRequest.ContentType = "application/json";
                     webRequest.Headers.Add("Authorization", "Bearer " + _token);
-                    using (System.IO.Stream s = webRequest.GetResponse().GetResponseStream())
+                    using (System.IO.Stream s = webRequest.GetResponseWithoutException().GetResponseStream())
                     {
                         using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
                         {
@@ -91,7 +90,7 @@ namespace ContactHubSdkLibrary.SDKclasses
 
                 Encoding encoding = new UTF8Encoding();
 
-                string postData = jsonData ;
+                string postData = jsonData;
 
                 byte[] data = encoding.GetBytes(postData);
 
@@ -104,7 +103,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 stream.Write(data, 0, data.Length);
                 stream.Close();
                 HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
-                
+
                 string s = response.ToString();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
 
@@ -131,7 +130,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Execute POST request on hub
         /// </summary>
-        private string DoPostWebRequest(string functionPath, string jsonData,ref string statusCode)
+        private string DoPostWebRequest(string functionPath, string jsonData, ref string statusCode)
         {
             string jsonResponse = null;
             try

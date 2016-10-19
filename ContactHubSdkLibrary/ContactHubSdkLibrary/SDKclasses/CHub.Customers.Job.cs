@@ -93,29 +93,23 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Delete  job from customer
         /// </summary>
-        public Jobs RemoveCustomerJob(string customerID, string jobID,ref Error error)
+        public bool DeleteCustomerJob(string customerID, string jobID,ref Error error)
         {
-            /* DA FINIRE IMPLEMENTAZIONE, MANCANO I METODI DELETE IN HUB*/
-
             var settings = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
             string url = String.Format("/customers/{0}/jobs/{1}", customerID, jobID);
             string jsonResponse = DoDeleteWebRequest(url);
-            Common.WriteLog("-> RemoveCustomerJob() delete data:", "querystring:" + url );
-            Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+            Common.WriteLog("-> DeleteCustomerJob() delete data:", "querystring:" + url );
+            Common.WriteLog("<- DeleteCustomerJob() return data:", jsonResponse);
 
             error = Common.ResponseIsError(jsonResponse);
             if (error == null)
             {
+                return true;
             }
-            else
-            {
-
-            }
-                Jobs returnJobs = null; //(jsonResponse == null ? null : JsonConvert.DeserializeObject<Jobs>(jsonResponse));
-            return returnJobs;
+            return false;
         }
         #endregion
     }

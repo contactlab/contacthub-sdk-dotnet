@@ -87,6 +87,28 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
             return returnSubscription;
         }
+
+        /// <summary>
+        /// Delete education from customer
+        /// </summary>
+        public bool DeleteCustomerEducation(string customerID, string eduID, ref Error error)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            string url = String.Format("/customers/{0}/educations/{1}", customerID, eduID);
+            string jsonResponse = DoDeleteWebRequest(url);
+            Common.WriteLog("-> DeleteCustomerEducation() delete data:", "querystring:" + url);
+            Common.WriteLog("<- DeleteCustomerEducation() return data:", jsonResponse);
+
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
     }
 }

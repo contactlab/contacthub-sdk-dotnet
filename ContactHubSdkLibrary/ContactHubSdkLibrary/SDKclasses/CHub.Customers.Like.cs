@@ -61,7 +61,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             return returnLike;
         }
         /// <summary>
-        /// Update customers job
+        /// Update customers like
         /// </summary>
         public Likes UpdateCustomerLike(string customerID, Likes like, ref Error error)
         {
@@ -86,6 +86,28 @@ namespace ContactHubSdkLibrary.SDKclasses
                 returnJobs = null;
             }
             return returnJobs;
+        }
+
+        /// <summary>
+        /// Delete like from customer
+        /// </summary>
+        public bool DeleteCustomerLike(string customerID, string likeID, ref Error error)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            string url = String.Format("/customers/{0}/likes/{1}", customerID, likeID);
+            string jsonResponse = DoDeleteWebRequest(url);
+            Common.WriteLog("-> DeleteCustomerLike() delete data:", "querystring:" + url);
+            Common.WriteLog("<- DeleteCustomerLike() return data:", jsonResponse);
+
+            error = Common.ResponseIsError(jsonResponse);
+            if (error == null)
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
     }

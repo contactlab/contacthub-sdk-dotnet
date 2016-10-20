@@ -19,8 +19,9 @@ namespace ContactHubSdkLibrary
 
             try
             {
-                
-                return request.GetResponse();
+                HttpWebResponse re =(HttpWebResponse) request.GetResponse();
+                re.Headers["Status"] = re.StatusCode.ToString();
+                return re;
             }
             catch (WebException e)
             {

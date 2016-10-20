@@ -225,11 +225,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                 returnCustomer = null;
             }
             bool isError = (returnCustomer == null || returnCustomer.id == null);
+
+
             //if add failed due conflict (duplication), try to update the customer
-            if (isError && statusCode.ToLowerInvariant().Contains("(409)") && forceUpdate)
+            if (isError && forceUpdate && statusCode != null && statusCode.ToLowerInvariant().Contains("(409)"))
             {
                 //trasforma postcustomer in customer
-                string existingID = error.message.Replace("Conflicting with customer id ", "");
+                string[] links = error._links.customer.href.Split('/');
+                string existingID = links[links.Length - 1];
                 Customer c = Common.CreateObject<Customer>(customer);
                 c.id = existingID;
                 postData = JsonConvert.SerializeObject(c, settings);
@@ -240,11 +243,9 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
 
                 error = Common.ResponseIsError(jsonResponse);
-                if (error == null)
-                {
-                }
-
-
+                //if (error == null)
+                //{
+                //}
 
             }
 

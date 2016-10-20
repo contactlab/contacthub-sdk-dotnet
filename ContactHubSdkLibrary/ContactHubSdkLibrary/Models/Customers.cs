@@ -179,7 +179,7 @@ namespace ContactHubSdkLibrary.Models
     {
         public string logref { get; set; }
         public string message { get; set; }
-        public string[] links { get; set; }
+        public CustomerPageLink _links { get; set; }
     }
 
     public class Session
@@ -263,7 +263,12 @@ namespace ContactHubSdkLibrary.Models
         }
     }
 
-    public class EventPageLink
+public class CustomerPageLink
+{
+    public Link customer { get; set; }
+}
+
+public class EventPageLink
     {
         public Link customer { get; set; }
         public Link events { get; set; }

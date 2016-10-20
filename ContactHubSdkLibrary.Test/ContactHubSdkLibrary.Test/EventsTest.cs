@@ -41,7 +41,8 @@ namespace ContactHubSdkLibrary.Test
                         customerId = newCustomer.id,
                         type = EventTypeEnum.clickedLink,
                         context = EventContextEnum.OTHER,
-                        properties = new EventBaseProperty()
+                        properties = new EventPropertyClickedLink(),
+                        date = DateTime.Now
                     };
 
                     string result = node.AddEvent(newEvent, ref error);
@@ -50,8 +51,21 @@ namespace ContactHubSdkLibrary.Test
                         testPassed1 = true;
                     }
                     Thread.Sleep(1000);
-                    bool testPassed2 = node.DeleteCustomer(newCustomer.id, ref error);
-                    testPassed = testPassed1 && testPassed2;
+
+                    //verify if customer has added event
+                    PagedEvent events=null;
+                    bool tmp = node.GetEvents(ref events, 1, newCustomer.id, null, null, null, null, null, ref error);
+                    bool testPassed2 = false;
+                    if (events._embedded.events.Count==1)
+                    {
+                        Event firstEvent = events._embedded.events.First();
+                        PostEvent firstPostEvent = firstEvent.ToPostEvent();
+                        CompareLogic compareLogic = new CompareLogic();
+                        ComparisonResult compare = compareLogic.Compare(firstPostEvent, newEvent);
+                        testPassed2 = compare.AreEqual;
+                    }
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
+                    testPassed = testPassed1 && testPassed2 && testPassed3;
                 }
             }
             Common.WriteLog("End CustomerAddEvent test", "passed:" + testPassed + "\n\n");
@@ -162,9 +176,16 @@ namespace ContactHubSdkLibrary.Test
                     {
                         testPassed1 = true;
                     }
-                    Thread.Sleep(1000);
                     // creation of the event also triggers the user creation with only externalID
-                    Customer extIdCustomer = node.GetCustomerByExternalID(extID, ref error);
+                    Customer extIdCustomer = null;
+                    int maxCount = 600;
+                    while (extIdCustomer == null && maxCount>0)
+                    {
+                        extIdCustomer=node.GetCustomerByExternalID(extID, ref error);
+                        Thread.Sleep(1000);  //wait remote processing
+                        maxCount--;
+                    }
+
                     bool testPassed2 = extIdCustomer != null && !string.IsNullOrEmpty(extIdCustomer.id);
 
                     string customerID = extIdCustomer.id;

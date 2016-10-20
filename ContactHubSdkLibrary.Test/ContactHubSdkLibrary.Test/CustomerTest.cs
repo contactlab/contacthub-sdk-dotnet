@@ -354,7 +354,7 @@ namespace ContactHubSdkLibrary.Test
                         //customer is created, then update id
                         customer.extra = testField;
                         //change external id, try to test duplicate check on email
-                        customer.externalId = DateTime.Now.Ticks.ToString();
+                        //customer.externalId = DateTime.Now.Ticks.ToString();  //TO BE DONE
                         Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
                         //get customer by ID
                         Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);

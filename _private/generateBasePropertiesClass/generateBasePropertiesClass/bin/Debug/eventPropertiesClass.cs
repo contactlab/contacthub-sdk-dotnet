@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 19/10/2016 17:13:05 */
+/* selfgenerated from version 0.0.0.1 20/10/2016 11:34:20 */
 
 using System;
 using System.Collections.Generic;
@@ -349,6 +349,323 @@ public class EventPropertyCampaignOpened: EventBaseProperty
 }
 
 
+/// <summary>
+/// Event class 'campaignLinkClicked': campaign link clicked
+/// </summary>
+public class EventPropertyCampaignLinkClicked: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string campaignSubject {get;set;}
+    public string campaignId {get;set;}
+    public string campaignName {get;set;}
+    public List<String> campaignTags {get;set;}
+    public string channel {get;set;}
+    public string linkId {get;set;}
+    public string linkUrl {get;set;}
+    public List<String> linkTags {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'campaignMarkedSpam': campaign marked spam
+/// </summary>
+public class EventPropertyCampaignMarkedSpam: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string campaignSubject {get;set;}
+    public string campaignId {get;set;}
+    public string campaignName {get;set;}
+    public List<String> campaignTags {get;set;}
+    public string channel {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'campaignBounced': campaign bounced
+/// </summary>
+public class EventPropertyCampaignBounced: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string campaignSubject {get;set;}
+    public string campaignId {get;set;}
+    public string campaignName {get;set;}
+    public List<String> campaignTags {get;set;}
+    public string channel {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'campaignUnsubscribed': campaign unsubscribed
+/// </summary>
+public class EventPropertyCampaignUnsubscribed: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string campaignSubject {get;set;}
+    public string campaignId {get;set;}
+    public string campaignName {get;set;}
+    public List<String> campaignTags {get;set;}
+    public string channel {get;set;}
+    public string listId {get;set;}
+    public string listName {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'campaignSubscribed': campaign subscribed
+/// </summary>
+public class EventPropertyCampaignSubscribed: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string listId {get;set;}
+    public string listName {get;set;}
+    public string channel {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'eventInvited': event invited
+/// </summary>
+public class EventPropertyEventInvited: EventBaseProperty
+{
+    public string eventId {get;set;}
+    public string eventName {get;set;}
+    //format: date-time
+    public string eventDate {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'eventParticipated': event participated
+/// </summary>
+public class EventPropertyEventParticipated: EventBaseProperty
+{
+    public string eventId {get;set;}
+    public string eventName {get;set;}
+    //format: date-time
+    public string eventDate {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'searched': searched
+/// </summary>
+public class EventPropertySearched: EventBaseProperty
+{
+    public string keyword {get;set;}
+    public decimal resultCount {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'changedSetting': changed setting
+/// </summary>
+public class EventPropertyChangedSetting: EventBaseProperty
+{
+    public string setting {get;set;}
+    public string oldValue {get;set;}
+    public string newValue {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'genericActiveEvent': generic active event
+/// </summary>
+public class EventPropertyGenericActiveEvent: EventBaseProperty
+{
+    public string name {get;set;}
+    public dynamic data {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'genericPassiveEvent': generic passive event
+/// </summary>
+public class EventPropertyGenericPassiveEvent: EventBaseProperty
+{
+    public string name {get;set;}
+    public dynamic data {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'serviceUnsubscribed': service unsubscribed
+/// </summary>
+public class EventPropertyServiceUnsubscribed: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string serviceId {get;set;}
+    public string serviceName {get;set;}
+    public string serviceType {get;set;}
+    [JsonProperty("dateStart")]
+    public string _dateStart {get;set;}
+    [JsonProperty("_dateStart")]
+    [JsonIgnore]
+ 
+                 public DateTime dateStart
+        {
+            get
+            {
+                if (_dateStart != null)
+                {
+                    return
+                         DateTime.ParseExact(_dateStart,
+                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _dateStart = null; }
+            }
+        }
+                [JsonProperty("dateEnd")]
+    public string _dateEnd {get;set;}
+    [JsonProperty("_dateEnd")]
+    [JsonIgnore]
+ 
+                 public DateTime dateEnd
+        {
+            get
+            {
+                if (_dateEnd != null)
+                {
+                    return
+                         DateTime.ParseExact(_dateEnd,
+                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _dateEnd = null; }
+            }
+        }
+                public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'serviceSubscribed': service subscribed
+/// </summary>
+public class EventPropertyServiceSubscribed: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string serviceId {get;set;}
+    public string serviceName {get;set;}
+    public string serviceType {get;set;}
+    [JsonProperty("dateStart")]
+    public string _dateStart {get;set;}
+    [JsonProperty("_dateStart")]
+    [JsonIgnore]
+ 
+                 public DateTime dateStart
+        {
+            get
+            {
+                if (_dateStart != null)
+                {
+                    return
+                         DateTime.ParseExact(_dateStart,
+                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _dateStart = null; }
+            }
+        }
+                [JsonProperty("dateEnd")]
+    public string _dateEnd {get;set;}
+    [JsonProperty("_dateEnd")]
+    [JsonIgnore]
+ 
+                 public DateTime dateEnd
+        {
+            get
+            {
+                if (_dateEnd != null)
+                {
+                    return
+                         DateTime.ParseExact(_dateEnd,
+                                       "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                       CultureInfo.InvariantCulture,
+                                       DateTimeStyles.AssumeUniversal |
+                                       DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _dateEnd = null; }
+            }
+        }
+                public dynamic extraProperties {get;set;}
+}
+
+
+/// <summary>
+/// Event class 'abandonedCart': abandoned cart
+/// </summary>
+public class EventPropertyAbandonedCart: EventBaseProperty
+{
+    public string orderId {get;set;}
+    public string abandonedCartUrl {get;set;}
+    public string storeCode {get;set;}
+    public Amount amount {get;set;}
+    public Products products {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+
 public enum EventTypeEnum {
 	NoValue,
 	[Display(Name="openedTicket")]
@@ -390,7 +707,35 @@ public enum EventTypeEnum {
 	[Display(Name="campaignSent")]
 	campaignSent,
 	[Display(Name="campaignOpened")]
-	campaignOpened
+	campaignOpened,
+	[Display(Name="campaignLinkClicked")]
+	campaignLinkClicked,
+	[Display(Name="campaignMarkedSpam")]
+	campaignMarkedSpam,
+	[Display(Name="campaignBounced")]
+	campaignBounced,
+	[Display(Name="campaignUnsubscribed")]
+	campaignUnsubscribed,
+	[Display(Name="campaignSubscribed")]
+	campaignSubscribed,
+	[Display(Name="eventInvited")]
+	eventInvited,
+	[Display(Name="eventParticipated")]
+	eventParticipated,
+	[Display(Name="searched")]
+	searched,
+	[Display(Name="changedSetting")]
+	changedSetting,
+	[Display(Name="genericActiveEvent")]
+	genericActiveEvent,
+	[Display(Name="genericPassiveEvent")]
+	genericPassiveEvent,
+	[Display(Name="serviceUnsubscribed")]
+	serviceUnsubscribed,
+	[Display(Name="serviceSubscribed")]
+	serviceSubscribed,
+	[Display(Name="abandonedCart")]
+	abandonedCart
 }
                 public static class EventPropertiesUtil
                 {
@@ -442,6 +787,34 @@ public enum EventTypeEnum {
  case "campaignsent": return jo["properties"].ToObject<EventPropertyCampaignSent>(serializer);break;
 
  case "campaignopened": return jo["properties"].ToObject<EventPropertyCampaignOpened>(serializer);break;
+
+ case "campaignlinkclicked": return jo["properties"].ToObject<EventPropertyCampaignLinkClicked>(serializer);break;
+
+ case "campaignmarkedspam": return jo["properties"].ToObject<EventPropertyCampaignMarkedSpam>(serializer);break;
+
+ case "campaignbounced": return jo["properties"].ToObject<EventPropertyCampaignBounced>(serializer);break;
+
+ case "campaignunsubscribed": return jo["properties"].ToObject<EventPropertyCampaignUnsubscribed>(serializer);break;
+
+ case "campaignsubscribed": return jo["properties"].ToObject<EventPropertyCampaignSubscribed>(serializer);break;
+
+ case "eventinvited": return jo["properties"].ToObject<EventPropertyEventInvited>(serializer);break;
+
+ case "eventparticipated": return jo["properties"].ToObject<EventPropertyEventParticipated>(serializer);break;
+
+ case "searched": return jo["properties"].ToObject<EventPropertySearched>(serializer);break;
+
+ case "changedsetting": return jo["properties"].ToObject<EventPropertyChangedSetting>(serializer);break;
+
+ case "genericactiveevent": return jo["properties"].ToObject<EventPropertyGenericActiveEvent>(serializer);break;
+
+ case "genericpassiveevent": return jo["properties"].ToObject<EventPropertyGenericPassiveEvent>(serializer);break;
+
+ case "serviceunsubscribed": return jo["properties"].ToObject<EventPropertyServiceUnsubscribed>(serializer);break;
+
+ case "servicesubscribed": return jo["properties"].ToObject<EventPropertyServiceSubscribed>(serializer);break;
+
+ case "abandonedcart": return jo["properties"].ToObject<EventPropertyAbandonedCart>(serializer);break;
 
 }
  return null;

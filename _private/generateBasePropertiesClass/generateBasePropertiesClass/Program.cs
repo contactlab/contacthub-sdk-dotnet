@@ -35,7 +35,7 @@ namespace generateBasePropertiesClass
             BasePropertiesItem propertiesTree = null;
             //creates an enum with the types of context. It 'definitely a temporary procedure because it will likely go even generated its based on the format classes
             //to be done post 17/10
-            string jsonString = Connection.DoGetWebRequest("/models/contexts");
+            string jsonString = Connection.DoGetWebRequest("/models/contexts?page=0&size=200");
             if (string.IsNullOrEmpty(jsonString))
             {
                 Console.WriteLine("Error: not valid token");
@@ -159,7 +159,7 @@ namespace generateBasePropertiesClass
             BasePropertiesItem propertiesTree = null;
 
             //download dynamically updated based properties 
-            string jsonString = Connection.DoGetWebRequest("/configuration/events");
+            string jsonString = Connection.DoGetWebRequest("/configuration/events?page=0&size=200");
 
             //obtained a list of the types of events
 

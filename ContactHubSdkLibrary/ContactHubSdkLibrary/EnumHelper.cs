@@ -5,21 +5,6 @@ namespace ContactHubSdkLibrary
 {
     public static class EnumHelper<T>
     {
-        //public static IList<T> GetValues(Enum value)
-        //{
-        //    var enumValues = new List<T>();
-
-        //    foreach (FieldInfo fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
-        //    {
-        //        enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, false));
-        //    }
-        //    return enumValues;
-        //}
-
-        //public static IList<string> GetNames(Enum value)
-        //{
-        //    return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
-        //}
 
         public static T Parse(string value)
         {

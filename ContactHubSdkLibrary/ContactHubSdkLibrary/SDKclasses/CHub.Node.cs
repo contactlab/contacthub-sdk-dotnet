@@ -7,12 +7,10 @@ namespace ContactHubSdkLibrary.SDKclasses
 {
     public partial class Node
     {
-        //private bool _isValid;
         private string _node = null;
         private string _workspaceID = null;
         private string _token = null;
         private const string _baseURL = Const.APIURL;
-        //public bool isValid { get { return _isValid; } }
         public string node { get { return _node; } }
         public string id;
         public string token { get { return _token; } }
@@ -31,7 +29,6 @@ namespace ContactHubSdkLibrary.SDKclasses
             _workspaceID = workspaceID;
             _token = tokenID;
             _node = nodeID;
-            //_isValid = true;  //NEXT IMPLEMENTATION
         }
         #endregion
 
@@ -63,34 +60,7 @@ namespace ContactHubSdkLibrary.SDKclasses
             }
         }
 
-        //public string SetExtendedPropertiesConfiguration()
-        //{
-        //    //            /configuration/properties/extended
-        //    //var returnValue = null;
-        //    string jsonData = @"{
-        //                ""membership_card_nr"": {
-        //                    ""description"": ""il numero della membership card"",
-        //                    ""type"": ""number"",
-        //                    ""contactlabProperties"":{
-        //                                  ""label"": ""Membership Card"",
-        //                                  ""mergePolicy"": ""OBJ_PRIORITY"",
-        //                                  ""enabled"": true
-        //                         }
-        //                   }
-        //                }";
-        //    string jsonResponse = DoPutWebRequest(String.Format("/configuration/properties/extended"),jsonData);
-        //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
-        //    Common.WriteLog("<- AddEvent() return data:", jsonResponse);
-
-        //    var returnValue = (jsonResponse != null ? JsonConvert.DeserializeObject<Customer>(jsonResponse) : null);
-        //    return null;
-        //}
-
-
-
         #endregion
-
-
     }
 }
 

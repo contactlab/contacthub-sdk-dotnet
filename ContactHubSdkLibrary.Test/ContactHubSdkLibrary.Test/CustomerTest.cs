@@ -237,11 +237,11 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
 
-
                     //compare results with posted Customer
                     bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
 
                     //compare results with original data
+                    compareLogic.Config.MembersToIgnore.Add("enabled");
                     PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
                     bool testPassed1 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
 

@@ -103,10 +103,6 @@ public static class Common
     /// <returns></returns>
     public static TOut CreateObject<TOut>(this Object objIn)
     {
-        //if (typeof(TOut).IsSubclassOf(objIn.GetType())  )
-        //{
-        //    throw new InvalidCastException(objIn.GetType().ToString() + " does not inherit from " + typeof(TOut).ToString());
-        //}
 
         TOut ret = System.Activator.CreateInstance<TOut>();
 

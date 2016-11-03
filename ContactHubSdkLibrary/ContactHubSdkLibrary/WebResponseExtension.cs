@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactHubSdkLibrary
 {
 
     public static class WebRequestExtensions
     {
+        /// <summary>
+        /// WebResponse custom with error handling
+        /// </summary>
         public static WebResponse GetResponseWithoutException(this WebRequest request)
         {
             if (request == null)
@@ -19,7 +18,7 @@ namespace ContactHubSdkLibrary
 
             try
             {
-                HttpWebResponse re =(HttpWebResponse) request.GetResponse();
+                HttpWebResponse re = (HttpWebResponse)request.GetResponse();
                 re.Headers["Status"] = re.StatusCode.ToString();
                 return re;
             }

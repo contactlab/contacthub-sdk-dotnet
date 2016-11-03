@@ -73,7 +73,6 @@
     <Compile Include="CustomerTest.cs" />
     <Compile Include="EventsTest.cs" />
     <Compile Include="NodeTest.cs" />
-    <Compile Include="Util.cs" />
     <Compile Include="WorkSpaceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

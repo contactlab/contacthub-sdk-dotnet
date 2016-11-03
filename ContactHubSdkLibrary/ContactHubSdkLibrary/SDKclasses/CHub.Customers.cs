@@ -189,10 +189,6 @@ namespace ContactHubSdkLibrary.SDKclasses
             return false; //return invalid page
         }
 
-        //public bool GetCustomers(ref PagedCustomer pagedCustomers, object next)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         /// <summary>
         /// Add a new customer (force update if exists)

@@ -154,24 +154,107 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
 
                     //compare results with posted Customer
-                    PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
+                    PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer(); 
                     List<ExtendedProperty> extended1 = newCustomer.extended;
                     List<ExtendedProperty> extended2 = myPostTestCustomer1.extended;
                     //compare extended properties
                     bool testPassed1 = compareLogic.Compare(extended1, extended2).AreEqual;
                     //compare without extended properties
                     compareLogic.Config.MembersToIgnore.Add("_extended");
-                    bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
+
+
+                    //compare results with original data
+                    compareLogic.Config.MembersToIgnore.Clear();
+                    compareLogic.Config.MembersToIgnore.Add("_extended");
+                    compareLogic.Config.MembersToIgnore.Add("enabled");
+                    bool testPassed4 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
+
                     //delete added customer
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
-                    testPassed = testPassed1 && testPassed2 && testPassed3;
-                    if (!testPassed)
-                    {
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
 
-                    }
                 }
             }
             Common.WriteLog("End CustomerAddCustomerWithExtendedProperties test", "passed:" + testPassed + "\n\n");
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+
+        /// <summary>
+        /// Test customer life cycle with extended properties
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void CustomerAddCustomerWithComplexContacts(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start CustomerAddCustomerWithComplexContacts TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it",
+                        mobileDevices = new List<MobileDevices>()
+                        {
+                            new MobileDevices()
+                            {
+                                name="mio",
+                                type=MobileDevicesTypeEnum.IOS,
+                                identifier=Guid.NewGuid().ToString()
+                            }
+                        }
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                }
+            };
+
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
+                //wait for elastic update
+                Thread.Sleep(1000);
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    //customer is created!
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
+                    //compare results
+                    CompareLogic compareLogic = new CompareLogic();
+
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+
+
+                    //compare results with posted Customer
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
+
+                    //compare results with original data
+                    PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
+                    bool testPassed1 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
+
+                    //delete added customer
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
+
+
+                    testPassed =  testPassed1 && testPassed2 && testPassed3;
+
+
+                }
+            }
+            Common.WriteLog("End CustomerAddCustomerWithComplexContacts test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }

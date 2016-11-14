@@ -53,7 +53,7 @@ namespace ContactHubSdkLibrary.Test
                     //customer is created!
                     //get customer by ID
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
-                    Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId, ref error);
+                    Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId, ref error).FirstOrDefault();
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
                     compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
@@ -537,7 +537,7 @@ namespace ContactHubSdkLibrary.Test
                     else //error
                     {
                         testPassed4 = false;
-                        Customer xx = node.GetCustomerByExternalID(extID, ref error);
+                        Customer xx = node.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
                     }
                     totalItem++;
                 }
@@ -624,7 +624,7 @@ namespace ContactHubSdkLibrary.Test
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
-                    Customer myTestCustomer1 = node.GetCustomerByExternalID(extID, ref error);
+                    Customer myTestCustomer1 = node.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
                     //compare source data
                     //                   bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
                     CompareLogic compareLogic = new CompareLogic();

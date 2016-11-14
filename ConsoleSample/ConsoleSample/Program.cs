@@ -114,7 +114,11 @@ namespace ConsoleSample
             #region  Example: get customer by externalID (using GetCustomer(), returns single customer)
             if (false)
             {
-                Customer customerByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
+                List<Customer> customersByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
+                if (customersByExtID!=null)
+                {
+                    Customer customerByExtID= customersByExtID.First();
+                }
             }
             #endregion
 
@@ -222,7 +226,8 @@ namespace ConsoleSample
             #region Example: update customer (partial update)
             if (false)
             {
-                Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
+
+                Customer c = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error).FirstOrDefault();
 
                 PostCustomer partialData = new PostCustomer();
                 partialData.extra = "CAMPO AGGIORNATO IN PATCH " + DateTime.Now.ToShortTimeString();
@@ -631,7 +636,7 @@ namespace ConsoleSample
                     //update customer
                     string customerID = null;
                     //the customer was made by filling the event with the ExternalID. You must retrieve the customer from externaID and update it
-                    Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID, ref error);
+                    Customer extIdCustomer = currentNode.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
                     customerID = extIdCustomer.id;
                     PostCustomer postCustomer = new PostCustomer()
                     {

@@ -1,6 +1,7 @@
 ﻿using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -282,16 +283,16 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// </summary>
         /// <param name="externalID"></param>
         /// <returns></returns>
-        public Customer GetCustomerByExternalID(string externalID, ref Error error)
+        public List<Customer> GetCustomerByExternalID(string externalID, ref Error error)
         {
-            Customer returnValue = null;
+            List<Customer> returnValue = null;
             PagedCustomer pagedCustomers = null;
             //get customers filtered by external ID
             GetCustomers(ref pagedCustomers, 1, externalID, null, null, ref error);
 
             if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
             {
-                returnValue = pagedCustomers._embedded.customers.First();
+                returnValue = pagedCustomers._embedded.customers;
             }
             else
             {

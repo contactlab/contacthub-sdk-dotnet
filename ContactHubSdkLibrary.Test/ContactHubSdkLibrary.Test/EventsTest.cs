@@ -56,7 +56,7 @@ namespace ContactHubSdkLibrary.Test
                     PagedEvent events=null;
                     bool tmp = node.GetEvents(ref events, 1, newCustomer.id, null, null, null, null, null, ref error);
                     bool testPassed2 = false;
-                    if (events._embedded.events.Count==1)
+                    if (events._embedded!=null && events._embedded.events.Count==1)
                     {
                         Event firstEvent = events._embedded.events.First();
                         PostEvent firstPostEvent = firstEvent.ToPostEvent();
@@ -181,7 +181,13 @@ namespace ContactHubSdkLibrary.Test
                     int maxCount = 600;
                     while (extIdCustomer == null && maxCount>0)
                     {
-                        extIdCustomer=node.GetCustomerByExternalID(extID, ref error);
+                        try
+                        {
+                            extIdCustomer = node.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
+                        }
+                        catch (Exception ex) {
+                        }
+
                         Thread.Sleep(1000);  //wait remote processing
                         maxCount--;
                     }

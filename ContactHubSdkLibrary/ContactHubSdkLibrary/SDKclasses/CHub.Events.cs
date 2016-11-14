@@ -27,15 +27,8 @@ namespace ContactHubSdkLibrary.SDKclasses
             Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" + postData);
             Common.WriteLog("<- AddEvent() return data:", jsonResponse);
             error = Common.ResponseIsError(jsonResponse);
-            if (error == null)
-            {
-                //the json response should contain only the status code because the insertion is async (queue)
-                return statusCode;
-            }
-            else
-            {
-                return null;
-            }
+            //the json response should contain only the status code because the insertion is async (queue)
+            return statusCode;
         }
 
         /// <summary>

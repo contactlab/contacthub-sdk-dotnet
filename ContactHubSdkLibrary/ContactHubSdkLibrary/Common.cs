@@ -142,5 +142,15 @@ public static class Common
         return (str.Contains("{") && str.Contains("}"));
     }
 
+    /// <summary>
+    /// Verify is status code is critical (50x)
+    /// </summary>
+    public static bool isCriticalError(String str)
+    {
+
+        if (string.IsNullOrEmpty(str)) return false;
+        if (str.StartsWith("50")) return true;
+        return false;
+    }
 }
 

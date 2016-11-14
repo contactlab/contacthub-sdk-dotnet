@@ -43,7 +43,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
+               // var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
 
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
@@ -62,8 +62,8 @@ namespace ContactHubSdkLibrary.Test
                     compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                     bool testPassed1 = compareLogic.Compare(myTestCustomer1, myTestCustomer2).AreEqual;
                     //compare results with posted Customer
-                    PostCustomer myPostTestCustomer1 = (PostCustomer)myTestCustomer1;
-                    bool testPassed2 = compareLogic.Compare(newCustomer, myPostTestCustomer1).AreEqual;
+                    //PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
                     //delete added customer
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3;

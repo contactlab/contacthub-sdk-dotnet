@@ -46,7 +46,7 @@ namespace ContactHubSdkLibrary.Test
                     };
 
                     string result = node.AddEvent(newEvent, ref error);
-                    if (result == "Accepted")
+                    if (result == "202")
                     {
                         testPassed1 = true;
                     }
@@ -120,7 +120,7 @@ namespace ContactHubSdkLibrary.Test
                     };
 
                     string result = node.AddEvent(newEvent, ref error);
-                    if (result == "Accepted")
+                    if (result == "202")
                     {
                         testPassed1 = true;
                     }
@@ -172,7 +172,7 @@ namespace ContactHubSdkLibrary.Test
                     };
 
                     string result = node.AddEvent(newEvent, ref error);
-                    if (result == "Accepted")
+                    if (result == "202")
                     {
                         testPassed1 = true;
                     }
@@ -251,7 +251,7 @@ namespace ContactHubSdkLibrary.Test
                     };
 
                     string result = node.AddEvent(newEvent, ref error);
-                    if (result == "Accepted")
+                    if (result == "202")
                     {
                         testPassed1 = true;
                     }
@@ -316,7 +316,7 @@ namespace ContactHubSdkLibrary.Test
                             date = DateTime.Now
                         };
                         string result = node.AddEvent(newEvent, ref error);
-                        if (result == "Accepted")
+                        if (result == "202")
                         {
                             testPassed1 = testPassed1 && true;
                             totalItem++;

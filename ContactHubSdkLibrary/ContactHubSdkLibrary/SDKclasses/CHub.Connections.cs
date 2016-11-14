@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -33,11 +35,18 @@ namespace ContactHubSdkLibrary.SDKclasses
                             jsonResponse = sr.ReadToEnd();
                         }
                     }
+                    string statusCode = (webRequest.Headers["StatusCode"] != null ? webRequest.Headers["StatusCode"].ToString() : null);
+                    string status = (webRequest.Headers["Status"] != null ? webRequest.Headers["Status"].ToString() : null);
+                    if (string.IsNullOrEmpty(jsonResponse) || !Common.isJson(jsonResponse))
+                    {
+                        jsonResponse = "{\"status\":\"" + statusCode + "\",\"message\":\"" + status + "\"}";
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                jsonResponse = "{\"error\":\"" + ex.Message + "\"}";
             }
             return jsonResponse;
         }
@@ -112,11 +121,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
-                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
-                if (string.IsNullOrEmpty(jsonResponse))
+                statusCode = (response.Headers["StatusCode"] != null ? response.Headers["StatusCode"].ToString() : null);
+                string status = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
+                if (string.IsNullOrEmpty(jsonResponse) || !Common.isJson(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
+                    jsonResponse = "{\"status\":\"" + statusCode + "\",\"message\":\"" + status + "\"}";
                 }
             }
 
@@ -138,13 +147,10 @@ namespace ContactHubSdkLibrary.SDKclasses
                 string url = GetUrl(functionPath);
                 Common.FixApiUrl(ref url);
 
-
+                //                url = "http://httpstat.us/503";  //simulate 503
                 HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(url);
-
                 Encoding encoding = new UTF8Encoding();
-
                 string postData = jsonData;
-
                 byte[] data = encoding.GetBytes(postData);
 
                 httpWReq.Method = "POST";
@@ -155,6 +161,7 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Stream stream = httpWReq.GetRequestStream();
                 stream.Write(data, 0, data.Length);
                 stream.Close();
+
                 HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponseWithoutException();
                 string s = response.ToString();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
@@ -164,11 +171,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
-                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
-                if (string.IsNullOrEmpty(jsonResponse))
+                statusCode = (response.Headers["StatusCode"] != null ? response.Headers["StatusCode"].ToString() : null);
+                string status= (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
+                if (string.IsNullOrEmpty(jsonResponse) || !Common.isJson(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
+                    jsonResponse = "{\"status\":\"" + statusCode + "\",\"message\":\"" + status + "\"}";
                 }
             }
 
@@ -210,11 +217,11 @@ namespace ContactHubSdkLibrary.SDKclasses
                 {
                     jsonResponse += temp;
                 }
-                statusCode = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
-                //Se il json è vuoto come nel caso del post di eventi che vengono accodati in modo asyncrono, restituisce lo status code, ad esempio post eventi è ok se restituisce 202
-                if (string.IsNullOrEmpty(jsonResponse))
+                statusCode = (response.Headers["StatusCode"] != null ? response.Headers["StatusCode"].ToString() : null);
+                string status = (response.Headers["Status"] != null ? response.Headers["Status"].ToString() : null);
+                if (string.IsNullOrEmpty(jsonResponse) || !Common.isJson(jsonResponse))
                 {
-                    jsonResponse += "{\"statusCode\":\"" + statusCode + "\"}";
+                    jsonResponse = "{\"status\":\"" + statusCode + "\",\"message\":\"" + status + "\"}";
                 }
             }
             catch (Exception ex)

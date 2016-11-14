@@ -562,7 +562,7 @@ namespace ConsoleSample
                 };
 
                 string result = currentNode.AddEvent(newEvent, ref error);
-                if (result != "Accepted")
+                if (result != "202")
                 {
                     //insert error
                 }
@@ -601,7 +601,7 @@ namespace ConsoleSample
                 };
 
                 string result = currentNode.AddEvent(newEvent, ref error);
-                if (result != "Accepted")
+                if (result != "202")
                 {
                     //insert error
                 }
@@ -626,7 +626,7 @@ namespace ConsoleSample
                 };
 
                 string result = currentNode.AddEvent(newEvent, ref error);
-                if (result != "Accepted")
+                if (result != "202")
                 {
                     //insert error
                 }
@@ -686,7 +686,7 @@ namespace ConsoleSample
 
                 string result = currentNode.AddEvent(newEvent, ref error);
                 Thread.Sleep(1000);
-                if (result != "Accepted")
+                if (result != "202")
                 {
                     //insert error
                 }

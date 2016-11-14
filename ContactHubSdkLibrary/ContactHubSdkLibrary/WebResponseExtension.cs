@@ -18,9 +18,11 @@ namespace ContactHubSdkLibrary
 
             try
             {
-                HttpWebResponse re = (HttpWebResponse)request.GetResponse();
-                re.Headers["Status"] = re.StatusCode.ToString();
-                return re;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                int sc = (int)response.StatusCode;
+                response.Headers["StatusCode"] = sc.ToString();
+                response.Headers["Status"] = response.StatusCode.ToString();
+                return response;
             }
             catch (WebException e)
             {
@@ -29,7 +31,16 @@ namespace ContactHubSdkLibrary
                     throw;
                 }
 
-                e.Response.Headers["Status"] = e.Message.ToString();
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse response = (HttpWebResponse)e.Response;
+                    int sc = (int)response.StatusCode;
+                    e.Response.Headers["StatusCode"] = sc.ToString();
+                    e.Response.Headers["Status"] = response.StatusCode.ToString();
+
+                }
+
+                //                e.Response.Headers["Status"] = e.Message.ToString();
                 return e.Response;
             }
         }

@@ -225,9 +225,9 @@ namespace ContactHubSdkLibrary.SDKclasses
 
 
             //if add failed due conflict (duplication), try to update the customer
-            if (isError && forceUpdate && statusCode != null && statusCode.ToLowerInvariant().Contains("(409)"))
+            if (isError && forceUpdate && statusCode != null && statusCode.Trim()=="409")
             {
-                //trasforma postcustomer in customer
+                //convert postcustomer in customer
                 string[] links = error._links.customer.href.Split('/');
                 string existingID = links[links.Length - 1];
                 Customer c = Common.CreateObject<Customer>(customer);
@@ -240,10 +240,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                 Common.WriteLog("<- Addcustomer() return data:", jsonResponse);
 
                 error = Common.ResponseIsError(jsonResponse);
-                //if (error == null)
-                //{
-                //}
-
+                if (error == null)
+                {
+                    returnCustomer = (jsonResponse == null ? null : JsonConvert.DeserializeObject<Customer>(jsonResponse));
+                }
+                else
+                {
+                    returnCustomer = null;
+                }
             }
 
             return returnCustomer;

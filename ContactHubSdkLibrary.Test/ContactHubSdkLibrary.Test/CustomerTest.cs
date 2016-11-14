@@ -437,7 +437,6 @@ namespace ContactHubSdkLibrary.Test
                         //customer is created, then update id
                         customer.extra = testField;
                         //change external id, try to test duplicate check on email
-                        //customer.externalId = DateTime.Now.Ticks.ToString();  //TO BE DONE
                         Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
                         //get customer by ID
                         Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
@@ -446,8 +445,17 @@ namespace ContactHubSdkLibrary.Test
                         bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                         //compare source data
                         compareLogic.Config.MembersToIgnore.Add("extra");
+                        compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+
                         bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                         compareLogic.Config.MembersToIgnore.Clear();
+                        compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                         newCustomer.extra = testField;
                         bool test3Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                         //delete added customer
@@ -457,7 +465,7 @@ namespace ContactHubSdkLibrary.Test
                 }
             }
             Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
-            testPassed = true; //TO BE DONE
+        //    testPassed = true; //TO BE DONE
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }
@@ -906,6 +914,7 @@ namespace ContactHubSdkLibrary.Test
                 Thread.Sleep(Const.TIMEEXIT); //wait
             }
         }
+
         /// <summary>
         /// Test customer jobs
         /// </summary>

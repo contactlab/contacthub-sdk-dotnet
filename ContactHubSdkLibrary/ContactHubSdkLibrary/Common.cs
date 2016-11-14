@@ -54,10 +54,17 @@ public static class Common
     /// </summary>
     public static Error ResponseIsError(string json)
     {
-        if (json != null && json.ToLower().Contains("logref"))
+        if (json != null  && (json.ToLower().Contains("logref") || json.ToLower().Contains("error")))
         {
-            Error error = JsonConvert.DeserializeObject<Error>(json);
-            return error;
+            try
+            {
+                Error error = JsonConvert.DeserializeObject<Error>(json);
+                return error;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
         else
         {
@@ -126,6 +133,14 @@ public static class Common
         return ret;
     }
 
+    /// <summary>
+    /// Verify if string is json (simple check)
+    /// </summary>
+    public static bool isJson(string str)
+    {
+        if (string.IsNullOrEmpty(str)) return false;
+        return (str.Contains("{") && str.Contains("}"));
+    }
 
 }
 

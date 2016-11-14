@@ -151,6 +151,8 @@ namespace ContactHubSdkLibrary.Models
     {
         public string logref { get; set; }
         public string message { get; set; }
+        public string error { get; set; }
+        public string status { get; set; }
         public CustomerPageLink _links { get; set; }
     }
 

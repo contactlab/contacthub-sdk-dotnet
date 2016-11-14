@@ -586,7 +586,7 @@ You can add an event directly to a customer if you know the id.
                     properties = new EventBaseProperty()
                 };
                 string result = currentNode.AddEvent(newEvent,ref error);
-                if (result != "Accepted")
+                if (result != "202")
                 {
                     //insert error
                 }
@@ -619,7 +619,7 @@ in this example are used both properties  and contextInfo data:
         date = DateTime.Now
     };
     string result = currentNode.AddEvent(newEvent,ref error);
-    if (result != "Accepted")
+    if (result != "202")
     {
         //insert error
     }
@@ -648,7 +648,7 @@ add an anonymous event with a externalID and then reconciles to the customer
         properties = new EventBaseProperty()
     };
     string result = currentNode.AddEvent(newEvent,ref error);
-    if (result != "Accepted")
+    if (result != "202")
     {
          //insert error
     }
@@ -701,7 +701,7 @@ Add an anonymous event with a Session and then reconciles to the customer.
     };
     string result = currentNode.AddEvent(newEvent,ref error);
     Thread.Sleep(1000);
-    if (result != "Accepted")
+    if (result != "202")
     {
         //insert error
     }

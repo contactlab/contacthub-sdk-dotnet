@@ -43,7 +43,7 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-               // var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
+                // var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
 
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
@@ -56,10 +56,6 @@ namespace ContactHubSdkLibrary.Test
                     Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId, ref error).FirstOrDefault();
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                     bool testPassed1 = compareLogic.Compare(myTestCustomer1, myTestCustomer2).AreEqual;
                     //compare results with posted Customer
                     //PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
@@ -148,13 +144,8 @@ namespace ContactHubSdkLibrary.Test
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
 
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
-
                     //compare results with posted Customer
-                    PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer(); 
+                    PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
                     List<ExtendedProperty> extended1 = newCustomer.extended;
                     List<ExtendedProperty> extended2 = myPostTestCustomer1.extended;
                     //compare extended properties
@@ -232,11 +223,6 @@ namespace ContactHubSdkLibrary.Test
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();
 
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
-
                     //compare results with posted Customer
                     bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
 
@@ -249,7 +235,7 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
 
 
-                    testPassed =  testPassed1 && testPassed2 && testPassed3;
+                    testPassed = testPassed1 && testPassed2 && testPassed3;
 
 
                 }
@@ -304,17 +290,11 @@ namespace ContactHubSdkLibrary.Test
                     //compare updated customer
                     CompareLogic compareLogic = new CompareLogic();
                     compareLogic.Config.MembersToIgnore.Add("extra");
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");
                     bool test1Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                     //compare updated customer
                     compareLogic.Config.MembersToIgnore.Clear();
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                     bool test2Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                     //delete added customer
                     bool test3Passed = node.DeleteCustomer(newCustomer.id, ref error);
@@ -372,10 +352,8 @@ namespace ContactHubSdkLibrary.Test
                     bool test1Passed = myTestCustomer1.extra == "test data";
                     //compare updated customer
                     CompareLogic compareLogic = new CompareLogic();
-                    compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                    compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+                    compareLogic.Config.MembersToIgnore.Add("updatedAt");
 
                     bool test2Passed = !compareLogic.Compare(newCustomer, updatedCustomer).AreEqual;
 
@@ -432,7 +410,7 @@ namespace ContactHubSdkLibrary.Test
 
                     if (newCustomer != null && newCustomer.id != null)
                     {
-                        string testField= "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
+                        string testField = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
                         //customer is created, then update id
                         customer.extra = testField;
@@ -445,18 +423,14 @@ namespace ContactHubSdkLibrary.Test
                         bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
                         //compare source data
                         compareLogic.Config.MembersToIgnore.Add("extra");
-                        compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
+                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+                        compareLogic.Config.MembersToIgnore.Add("updatedAt");
 
                         bool test2Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                         compareLogic.Config.MembersToIgnore.Clear();
-                        compareLogic.Config.MembersToIgnore.Add("_registeredAt"); //TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");//TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("registeredAt"); //TO BE DONE: remote IT
-                        compareLogic.Config.MembersToIgnore.Add("updatedAt");//TO BE DONE: remote IT
                         newCustomer.extra = testField;
+                        compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+                        compareLogic.Config.MembersToIgnore.Add("updatedAt");
                         bool test3Passed = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;
                         //delete added customer
                         bool test4passed = node.DeleteCustomer(newCustomer.id, ref error);
@@ -465,7 +439,6 @@ namespace ContactHubSdkLibrary.Test
                 }
             }
             Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
-        //    testPassed = true; //TO BE DONE
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }

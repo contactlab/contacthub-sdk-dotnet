@@ -35,9 +35,6 @@ namespace ContactHubSdkLibrary.SDKclasses
         }
         public Node GetNode(string nodeID)
         {
-            /* TO BE DONE: verify if nodeID is in node list */
-            //if (!_nodes.Contains(nodeID)) return null;
-
             Node returnValue = new Node(_id, _token, nodeID);
             return returnValue;
         }

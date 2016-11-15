@@ -20,7 +20,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer life cycle: create, query and delete
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_AddCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -75,7 +75,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer life cycle with extended properties
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddCustomerWithExtendedProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_AddCustomerWithExtendedProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddCustomerWithExtendedProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -177,7 +177,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer life cycle with extended properties
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddCustomerWithComplexContacts(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_AddCustomerWithComplexContacts(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddCustomerWithComplexContacts TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -249,7 +249,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer update (use .UpdateCustomer, full mode -> put)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_UpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -311,7 +311,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer update (use .UpdateCustomer, partial mode -> patch)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerPartialUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_PartialUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerPartialUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -377,7 +377,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer update (use .AddCustomer with FORCE)
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerUpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_UpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerUpdateCustomerForced TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -469,7 +469,7 @@ namespace ContactHubSdkLibrary.Test
         //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 500, true)]
         //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 1000, true)]
 
-        public void CustomerPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
+        public void C_Paging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
             Common.WriteLog("Start CustomerPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID + " maxCustomer:" + maxCustomers);
 
@@ -575,7 +575,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test get customer, by external ID
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerGetCustomerByExternaID(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_GetCustomerByExternaID(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerGetCustomerByExternaID TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -628,7 +628,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test get customer with custom query
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerGetCustomerByCustomQuery(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_GetCustomerByCustomQuery(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerGetCustomerByCustomQuery TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -702,7 +702,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test get customer with QueryBuilder
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerGetCustomerByQueryBuilder(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_GetCustomerByQueryBuilder(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerGetCustomerByQueryBuilder TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -765,7 +765,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer likes
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerLikesLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_LikesLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerLikesLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -828,7 +828,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer educations
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerEducationLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_EducationLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerEducationLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -892,7 +892,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer jobs
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerJobLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_JobLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerJobLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -958,7 +958,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test customer subscription
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerSubscriptionLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_SubscriptionLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerSubscriptionLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -1036,7 +1036,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add session to customer
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_AddSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -1084,7 +1084,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add session to customer
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerTagsLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void C_TagsLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerTagsLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -1139,7 +1139,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test reset session ID
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void ResetSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void S_ResetSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start ResetSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
             bool testPassed = false;

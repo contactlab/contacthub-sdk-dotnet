@@ -21,7 +21,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add event to customer
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddEvent(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void E_AddEvent(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEvent TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -77,7 +77,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add complex event to customer
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddEventWithComplexProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void E_AddEventWithComplexProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithComplexProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -147,7 +147,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add event + externalID reconciliation
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddEventWithExtIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void E_AddEventWithExtIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithExtIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -222,7 +222,7 @@ namespace ContactHubSdkLibrary.Test
         /// Test add event + session ID reconciliation
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
-        public void CustomerAddEventWithSessionIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        public void E_AddEventWithSessionIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithSessionIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
@@ -288,7 +288,7 @@ namespace ContactHubSdkLibrary.Test
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 50, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 100, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 250, true)]
-        public void EventPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxEvents, bool tpResult)
+        public void E_EventPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxEvents, bool tpResult)
         {
             Common.WriteLog("Start EventPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 

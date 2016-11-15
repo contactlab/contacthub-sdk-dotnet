@@ -174,6 +174,170 @@ namespace ContactHubSdkLibrary.Test
 
 
         /// <summary>
+        /// Test customer life cycle with extended properties. This test use all property data types.
+        /// </summary>
+        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        public void C_AddCustomerWithExtendedPropertiesFull(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        {
+            Common.WriteLog("Start C_AddCustomerWithExtendedPropertiesFull TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+
+            Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
+
+            PostCustomer newPostCustomer = new PostCustomer()
+            {
+                nodeId = tpNodeID,
+                externalId = Guid.NewGuid().ToString(),
+                @base = new BaseProperties()
+                {
+                    firstName = "Donald",
+                    lastName = "Duck",
+                    contacts = new Contacts()
+                    {
+                        email = DateTime.Now.Ticks.ToString() +
+                        "dduck@yourdomain.it"
+                    },
+                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                },
+                extended = new List<ExtendedProperty>()
+                {
+                    new ExtendedPropertyObject()
+                                {
+                                    name="AllTestsProperties",
+                                    value=new List<ExtendedProperty>()
+                                    {
+                                           new ExtendedPropertyBoolean() //!
+                                            {
+                                                name="BoolProperty",
+                                                value=true
+                                            },
+                                           new ExtendedPropertyString() //2
+                                            {
+                                                name="StringProperty",
+                                                value="lorem ipsum"
+                                            },
+                                           new ExtendedPropertyStringArray() //3
+                                            {
+                                                name="StringsArrayProperty",
+                                                value=new List<String>() { "lorem","ipsum" }
+                                            },
+                                           new ExtendedPropertyNumber() //4
+                                            {
+                                                name="NumberProperty",
+                                                value=1234.5
+                                            },
+                                           new ExtendedPropertyNumberArray() //5
+                                            {
+                                                name="NumbersArrayProperty",
+                                                value=new List<Double>() { 1.1, 2.2, 3.3, 4, -5, 0 }
+                                            },
+                                           new ExtendedPropertyDateTime() //6
+                                            {
+                                               name="DateTimeProperty",
+                                               value=DateTime.Now
+                                            },
+                                           new ExtendedPropertyDateTimeArray() //7
+                                            {
+                                               name="DateArrayProperty",
+                                               value=new List<DateTime>() {  DateTime.Now, DateTime.Now.AddHours(1), DateTime.Now.AddYears(-1) }
+                                            },
+                                            new ExtendedPropertyEmail() //8
+                                            {
+                                                name="EmailProperty",
+                                                value="name@mydomain.com"
+                                            },
+                                            new ExtendedPropertyEmailArray() //9
+                                            {
+                                                name="EmailsArrayProperty",
+                                                value=new List<String>() { "name@mydomain.com","name@yourdomain.com" }
+                                            },
+                                            new ExtendedPropertyHostname() //10
+                                            {
+                                                name="HostnameProperty",
+                                                value="www.mydomain.com"
+                                            },
+                                            new ExtendedPropertyHostnameArray() //11
+                                            {
+                                                name="HostnamesArrayProperty",
+                                                value=new List<String>() { "www.mydomain.com","www.yourdomain.com" }
+                                            },
+                                             new ExtendedPropertyURI() //12
+                                            {
+                                                name="URIProperty",
+                                                value="http://www.mydomain.com"
+                                            },
+                                            new ExtendedPropertyURIArray() //13
+                                            {
+                                                name="URIsArrayProperty",
+                                                value=new List<String>() { "http://www.mydomain.com","http://www.yourdomain.com" }
+                                            },
+                                            new ExtendedPropertyIPv4() //14
+                                            {
+                                                name="IPv4Property",
+                                                value="192.168.0.1/16"
+                                            },
+                                            new ExtendedPropertyIPv4Array() //15
+                                            {
+                                                name="IPv4sArrayProperty",
+                                                value=new List<String>() { "192.168.0.1/16", "192.168.0.2/16" }
+                                            },
+                                            new ExtendedPropertyIPv6() //16
+                                            {
+                                                name="IPv6Property",
+                                                value="ffff:ffff:ffff:ffff:0208:dbff:feef:3433"
+                                            },
+                                            new ExtendedPropertyIPv6Array() //17
+                                            {
+                                                name="IPv6sArrayProperty",
+                                                value=new List<String>() { "ffff:ffff:ffff:ffff:0208:dbff:feef:3433", "ffff:ffff:ffff:ffff:0208:dbff:feef:3434" }
+                                            }
+                                    }
+                                }
+                }
+            };
+
+            bool testPassed = false;
+            if (node != null)
+            {
+                Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
+                //wait for elastic update
+                Thread.Sleep(1000);
+                if (newCustomer != null && newCustomer.id != null)
+                {
+                    //customer is created!
+                    //get customer by ID
+                    Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
+                    //compare results
+                    CompareLogic compareLogic = new CompareLogic();
+
+                    //compare results with posted Customer
+                    PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
+                    List<ExtendedProperty> extended1 = newCustomer.extended;
+                    List<ExtendedProperty> extended2 = myPostTestCustomer1.extended;
+                    //compare extended properties
+                    bool testPassed1 = compareLogic.Compare(extended1, extended2).AreEqual;
+                    //compare without extended properties
+                    compareLogic.Config.MembersToIgnore.Add("_extended");
+                    bool testPassed2 = compareLogic.Compare(newCustomer, myTestCustomer1).AreEqual;
+
+
+                    //compare results with original data
+                    compareLogic.Config.MembersToIgnore.Clear();
+                    compareLogic.Config.MembersToIgnore.Add("_extended");
+                    compareLogic.Config.MembersToIgnore.Add("enabled");
+                    bool testPassed4 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
+
+                    //delete added customer
+                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
+
+                }
+            }
+            Common.WriteLog("End C_AddCustomerWithExtendedPropertiesFull test", "passed:" + testPassed + "\n\n");
+            Assert.AreEqual(testPassed, tpResult);
+            Thread.Sleep(Const.TIMEEXIT); //wait
+        }
+
+        /// <summary>
         /// Test customer life cycle with extended properties
         /// </summary>
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]

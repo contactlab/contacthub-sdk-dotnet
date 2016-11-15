@@ -30,6 +30,43 @@ namespace ContactHubSdkLibrary.Models
         public string value { get; set; }
     }
 
+    #region subtype of ExtendedPropertyString
+    /// <summary>
+    /// Email (derived from String)
+    /// </summary>
+    public class ExtendedPropertyEmail : ExtendedPropertyString
+    {
+    }
+
+    /// <summary>
+    /// IPv4 (derived from String)
+    /// </summary>
+    public class ExtendedPropertyIPv4 : ExtendedPropertyString
+    {
+    }
+
+    /// <summary>
+    /// IPv6 (derived from String)
+    /// </summary>
+    public class ExtendedPropertyIPv6 : ExtendedPropertyString
+    {
+    }
+
+    /// <summary>
+    /// URI (derived from String)
+    /// </summary>
+    public class ExtendedPropertyURI : ExtendedPropertyString
+    {
+    }
+
+    /// <summary>
+    /// Hostname (derived from String)
+    /// </summary>
+    public class ExtendedPropertyHostname : ExtendedPropertyString
+    {
+    }
+    #endregion
+
     /// <summary>
     /// Type List of Strings
     /// </summary>
@@ -37,6 +74,43 @@ namespace ContactHubSdkLibrary.Models
     {
         public List<string> value { get; set; }
     }
+
+    #region subtype of ExtendedPropertyStringArray
+    /// <summary>
+    /// Type List of Email (derived from Array of Strings)
+    /// </summary>
+    public class ExtendedPropertyEmailArray : ExtendedPropertyStringArray
+    {
+    }
+
+    /// <summary>
+    /// Type List of Hostname (derived from Array of Strings)
+    /// </summary>
+    public class ExtendedPropertyHostnameArray : ExtendedPropertyStringArray
+    {
+    }
+
+    /// <summary>
+    /// Type List of IPv4 (derived from Array of Strings)
+    /// </summary>
+    public class ExtendedPropertyIPv4Array : ExtendedPropertyStringArray
+    {
+    }
+
+    /// <summary>
+    /// Type List of IPv6 (derived from Array of Strings)
+    /// </summary>
+    public class ExtendedPropertyIPv6Array : ExtendedPropertyStringArray
+    {
+    }
+
+    /// <summary>
+    /// Type List of URI (derived from Array of Strings)
+    /// </summary>
+    public class ExtendedPropertyURIArray : ExtendedPropertyStringArray
+    {
+    }
+    #endregion
 
     /// <summary>
     /// Type Number
@@ -141,6 +215,7 @@ namespace ContactHubSdkLibrary.Models
             switch (prop.Value.Type)
             {
                 case JTokenType.Integer:
+                case JTokenType.Float:
                     returnValue = new ExtendedPropertyNumber()
                     {
                         name = prop.Name,
@@ -237,7 +312,7 @@ namespace ContactHubSdkLibrary.Models
         }
 
         /// <summary>
-        /// Custom serialization from List<ExtendedProperty> to json string
+        /// Custom SERIALIZATION from List<ExtendedProperty> to json string
         /// </summary>
         public static string SerializeExtendedProperties(List<ExtendedProperty> extendendProperties, string propertyName, Type parentType, bool first = true)
         {
@@ -262,11 +337,21 @@ namespace ContactHubSdkLibrary.Models
                 {
                     //String
                     case "ExtendedPropertyString":
+                    case "ExtendedPropertyEmail":
+                    case "ExtendedPropertyHostname":
+                    case "ExtendedPropertyURI":
+                    case "ExtendedPropertyIPv4":
+                    case "ExtendedPropertyIPv6":
                         {
                             returnValue += String.Format("\"{0}\":\"{1}\"", ex.name, ((ExtendedPropertyString)ex).value);
                         }
                         break;
                     case "ExtendedPropertyStringArray":
+                    case "ExtendedPropertyEmailArray":
+                    case "ExtendedPropertyHostnameArray":
+                    case "ExtendedPropertyURIArray":
+                    case "ExtendedPropertyIPv4Array":
+                    case "ExtendedPropertyIPv6Array":
                         {
                             returnValue += String.Format("\"{0}\":", ex.name);
                             returnValue += "[";
@@ -282,16 +367,16 @@ namespace ContactHubSdkLibrary.Models
                     //Number
                     case "ExtendedPropertyNumber":
                         {
-                            returnValue += String.Format("\"{0}\":{1}", ex.name, ((ExtendedPropertyNumber)ex).value, new CultureInfo("en-US"));
+                            returnValue += String.Format("\"{0}\":{1}", ex.name,  ((ExtendedPropertyNumber)ex).value.ToString(new CultureInfo("en-US")));
                         }
                         break;
                     case "ExtendedPropertyNumberArray":
                         {
                             returnValue += String.Format("\"{0}\":", ex.name);
                             returnValue += "[";
-                            foreach (Double s in ((ExtendedPropertyNumberArray)ex).value)
+                            foreach (Double s in  ((ExtendedPropertyNumberArray)ex).value )
                             {
-                                returnValue += String.Format("{0}", s);
+                                returnValue += String.Format("{0}", s.ToString(new CultureInfo("en-US")));
                                 returnValue += ",";
                             }
                             Common.CleanComma(ref returnValue);

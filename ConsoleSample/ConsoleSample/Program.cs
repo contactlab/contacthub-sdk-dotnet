@@ -189,7 +189,7 @@ namespace ConsoleSample
                         {
                             email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                         },
-                        timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                        timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                     }
                 };
                 //post new customer
@@ -254,7 +254,7 @@ namespace ConsoleSample
                         {
                             email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                         },
-                        timezone = BasePropertiesTimezoneEnum.GMT0100
+                        timezone = BasePropertiesTimezoneEnum.AmericaArgentinaRioGallegos
                     },
                     extended = new List<ExtendedProperty>()
                 {
@@ -445,8 +445,8 @@ namespace ConsoleSample
                     type = "miotipo",
                     kind = SubscriptionsKindEnum.DIGITALMESSAGE,
                     //enable = true,
-                    dateStart = DateTime.Now,
-                    dateEnd = DateTime.Now,
+                    startDate = DateTime.Now,
+                    endDate = DateTime.Now,
                     subscriberId = "e3ab0e11-4310-4329-b70b-a8b0d0250f67",
                     registeredAt = DateTime.Now,
                     updatedAt = DateTime.Now,
@@ -478,8 +478,8 @@ namespace ConsoleSample
                 string customerID = "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f";
                 string subscriptionID = "b33c4b9e-4bbe-418f-a70b-6fb7384fc4ab";
                 Subscriptions s = currentNode.GetCustomerSubscription(customerID, subscriptionID, ref error);
-                s.dateStart = DateTime.Now;
-                s.dateEnd = DateTime.Now.AddDays(10);
+                s.startDate = DateTime.Now;
+                s.endDate = DateTime.Now.AddDays(10);
                 Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s, ref error);
             }
             #endregion
@@ -648,7 +648,7 @@ namespace ConsoleSample
                             {
                                 email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                             },
-                            timezone = BasePropertiesTimezoneEnum.YekaterinburgTime
+                            timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                         }
                     };
                     Customer createdCustomer = currentNode.UpdateCustomer(postCustomer, customerID, ref error, true);
@@ -704,7 +704,7 @@ namespace ConsoleSample
                             {
                                 email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
                             },
-                            timezone = BasePropertiesTimezoneEnum.GMT0100
+                            timezone = BasePropertiesTimezoneEnum.AmericaArgentinaRioGallegos
                         }
                     };
                     Customer newCustomer = currentNode.AddCustomer(newPostCustomer, ref error);

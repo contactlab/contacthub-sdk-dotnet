@@ -37,7 +37,7 @@ namespace ContactHubSdkLibrary.Test
                     {
                         email = DateTime.Now.Ticks.ToString() + "@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -94,7 +94,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 },
                 extended = new List<ExtendedProperty>()
                 {
@@ -196,7 +196,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 },
                 extended = new List<ExtendedProperty>()
                 {
@@ -369,7 +369,7 @@ namespace ContactHubSdkLibrary.Test
                             }
                         }
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 }
             };
 
@@ -431,7 +431,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -493,7 +493,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 }
             };
             bool testPassed = false;
@@ -559,7 +559,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -670,7 +670,7 @@ namespace ContactHubSdkLibrary.Test
                                 email = DateTime.Now.Ticks.ToString() +
                                        "dduck@yourdomain.it"
                             },
-                            timezone = BasePropertiesTimezoneEnum.GMT0100
+                            timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                         }
                     };
                     Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
@@ -758,7 +758,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -811,7 +811,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -885,7 +885,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -946,7 +946,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -1009,7 +1009,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -1073,7 +1073,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -1139,7 +1139,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -1157,8 +1157,8 @@ namespace ContactHubSdkLibrary.Test
                         type = "type",
                         kind = SubscriptionsKindEnum.DIGITALMESSAGE,
                         //enable = true,
-                        dateStart = DateTime.Now,
-                        dateEnd = DateTime.Now,
+                        startDate = DateTime.Now,
+                        endDate = DateTime.Now,
                         subscriberId = "e3ab0e11-4310-4329-b70b-a8b0d0250f67",
                         registeredAt = DateTime.Now,
                         updatedAt = DateTime.Now,
@@ -1217,7 +1217,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;
@@ -1265,7 +1265,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
             bool testPassed = false;

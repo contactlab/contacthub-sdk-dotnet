@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 14/11/2016 17:19:47 */
+/* selfgenerated from version 0.0.0.1 16/11/2016 12:30:53 */
 
 using System;
 using System.Collections.Generic;
@@ -169,7 +169,7 @@ public class Geo
 	[Display(Name="latitude")]
     public decimal lat {get;set;}
 	[Display(Name="longitude")]
-    public decimal lng {get;set;}
+    public decimal lon {get;set;}
 }
 
 
@@ -372,19 +372,19 @@ public class Subscriptions
                 }
             }
                 public Boolean subscribed {get;set;}
-    [JsonProperty("dateStart")]
-    public string _dateStart {get;set;}
-    [JsonProperty("_dateStart")]
+    [JsonProperty("startDate")]
+    public string _startDate {get;set;}
+    [JsonProperty("_startDate")]
     [JsonIgnore]
  
-                 public DateTime dateStart
+                 public DateTime startDate
         {
             get
             {
-                if (_dateStart != null)
+                if (_startDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateStart,
+                         DateTime.ParseExact(_startDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -399,24 +399,24 @@ public class Subscriptions
             {
                 try
                 {
-                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _startDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateStart = null; }
+                catch { _startDate = null; }
             }
         }
-                [JsonProperty("dateEnd")]
-    public string _dateEnd {get;set;}
-    [JsonProperty("_dateEnd")]
+                [JsonProperty("endDate")]
+    public string _endDate {get;set;}
+    [JsonProperty("_endDate")]
     [JsonIgnore]
  
-                 public DateTime dateEnd
+                 public DateTime endDate
         {
             get
             {
-                if (_dateEnd != null)
+                if (_endDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateEnd,
+                         DateTime.ParseExact(_endDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -431,9 +431,9 @@ public class Subscriptions
             {
                 try
                 {
-                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _endDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateEnd = null; }
+                catch { _endDate = null; }
             }
         }
                 public string subscriberId {get;set;}
@@ -521,373 +521,689 @@ public enum SubscriptionsKindEnum {
 	OTHER
 }public enum BasePropertiesTimezoneEnum {
 	NoValue,
-	[Display(Name="Acre Time")]
-	AcreTime,
-	[Display(Name="Afghanistan Time")]
-	AfghanistanTime,
-	[Display(Name="Alaska Standard Time")]
-	AlaskaStandardTime,
-	[Display(Name="Alma-Ata Time")]
-	AlmaMinusAtaTime,
-	[Display(Name="Amazon Time")]
-	AmazonTime,
-	[Display(Name="Anadyr Time")]
-	AnadyrTime,
-	[Display(Name="Aqtau Time")]
-	AqtauTime,
-	[Display(Name="Aqtobe Time")]
-	AqtobeTime,
-	[Display(Name="Arabia Standard Time")]
-	ArabiaStandardTime,
-	[Display(Name="Argentine Time")]
-	ArgentineTime,
-	[Display(Name="Armenia Time")]
-	ArmeniaTime,
-	[Display(Name="Atlantic Standard Time")]
-	AtlanticStandardTime,
-	[Display(Name="Australian Central Standard Time (Northern Territory)")]
-	AustralianCentralStandardTimeNorthernTerritory,
-	[Display(Name="Australian Central Standard Time (South Australia)")]
-	AustralianCentralStandardTimeSouthAustralia,
-	[Display(Name="Australian Central Standard Time (South Australia/New South Wales)")]
-	AustralianCentralStandardTimeSouthAustraliaNewSouthWales,
-	[Display(Name="Australian Central Western Standard Time")]
-	AustralianCentralWesternStandardTime,
-	[Display(Name="Australian Eastern Standard Time (New South Wales)")]
-	AustralianEasternStandardTimeNewSouthWales,
-	[Display(Name="Australian Eastern Standard Time (Queensland)")]
-	AustralianEasternStandardTimeQueensland,
-	[Display(Name="Australian Eastern Standard Time (Tasmania)")]
-	AustralianEasternStandardTimeTasmania,
-	[Display(Name="Australian Eastern Standard Time (Victoria)")]
-	AustralianEasternStandardTimeVictoria,
-	[Display(Name="Australian Western Standard Time")]
-	AustralianWesternStandardTime,
-	[Display(Name="Azerbaijan Time")]
-	AzerbaijanTime,
-	[Display(Name="Azores Time")]
-	AzoresTime,
-	[Display(Name="Bangladesh Time")]
-	BangladeshTime,
-	[Display(Name="Bhutan Time")]
-	BhutanTime,
-	[Display(Name="Bolivia Time")]
-	BoliviaTime,
-	[Display(Name="Bougainville Standard Time")]
-	BougainvilleStandardTime,
-	[Display(Name="Brasilia Time")]
-	BrasiliaTime,
-	[Display(Name="Brunei Time")]
-	BruneiTime,
-	[Display(Name="Cape Verde Time")]
-	CapeVerdeTime,
-	[Display(Name="Central African Time")]
-	CentralAfricanTime,
-	[Display(Name="Central European Time")]
-	CentralEuropeanTime,
-	[Display(Name="Central Indonesia Time")]
-	CentralIndonesiaTime,
-	[Display(Name="Central Standard Time")]
-	CentralStandardTime,
-	[Display(Name="Chamorro Standard Time")]
-	ChamorroStandardTime,
-	[Display(Name="Chatham Standard Time")]
-	ChathamStandardTime,
-	[Display(Name="Chile Time")]
-	ChileTime,
-	[Display(Name="China Standard Time")]
-	ChinaStandardTime,
-	[Display(Name="Choibalsan Time")]
-	ChoibalsanTime,
-	[Display(Name="Christmas Island Time")]
-	ChristmasIslandTime,
-	[Display(Name="Chuuk Time")]
-	ChuukTime,
-	[Display(Name="Cocos Islands Time")]
-	CocosIslandsTime,
-	[Display(Name="Colombia Time")]
-	ColombiaTime,
-	[Display(Name="Cook Is. Time")]
-	CookIsTime,
-	[Display(Name="Coordinated Universal Time")]
-	CoordinatedUniversalTime,
-	[Display(Name="Cuba Standard Time")]
-	CubaStandardTime,
-	[Display(Name="Davis Time")]
-	DavisTime,
-	[Display(Name="Dumont-d'Urville Time")]
-	DumontMinusdUrvilleTime,
-	[Display(Name="East Indonesia Time")]
-	EastIndonesiaTime,
-	[Display(Name="Easter Is. Time")]
-	EasterIsTime,
-	[Display(Name="Eastern African Time")]
-	EasternAfricanTime,
-	[Display(Name="Eastern European Time")]
-	EasternEuropeanTime,
-	[Display(Name="Eastern Greenland Time")]
-	EasternGreenlandTime,
-	[Display(Name="Eastern Standard Time")]
-	EasternStandardTime,
-	[Display(Name="Ecuador Time")]
-	EcuadorTime,
-	[Display(Name="Falkland Is. Time")]
-	FalklandIsTime,
-	[Display(Name="Fernando de Noronha Time")]
-	FernandodeNoronhaTime,
-	[Display(Name="Fiji Time")]
-	FijiTime,
-	[Display(Name="French Guiana Time")]
-	FrenchGuianaTime,
-	[Display(Name="French Southern & Antarctic Lands Time")]
-	FrenchSouthernAntarcticLandsTime,
-	[Display(Name="GMT+01:00")]
-	GMT0100,
-	[Display(Name="GMT+02:00")]
-	GMT0200,
-	[Display(Name="GMT+03:00")]
-	GMT0300,
-	[Display(Name="GMT+04:00")]
-	GMT0400,
-	[Display(Name="GMT+05:00")]
-	GMT0500,
-	[Display(Name="GMT+06:00")]
-	GMT0600,
-	[Display(Name="GMT+07:00")]
-	GMT0700,
-	[Display(Name="GMT+08:00")]
-	GMT0800,
-	[Display(Name="GMT+09:00")]
-	GMT0900,
-	[Display(Name="GMT+10:00")]
-	GMT1000,
-	[Display(Name="GMT+11:00")]
-	GMT1100,
-	[Display(Name="GMT+12:00")]
-	GMT1200,
-	[Display(Name="GMT+13:00")]
-	GMT1300,
-	[Display(Name="GMT+14:00")]
-	GMT1400,
-	[Display(Name="GMT-01:00")]
-	GMTMinus0100,
-	[Display(Name="GMT-02:00")]
-	GMTMinus0200,
-	[Display(Name="GMT-03:00")]
-	GMTMinus0300,
-	[Display(Name="GMT-04:00")]
-	GMTMinus0400,
-	[Display(Name="GMT-05:00")]
-	GMTMinus0500,
-	[Display(Name="GMT-06:00")]
-	GMTMinus0600,
-	[Display(Name="GMT-07:00")]
-	GMTMinus0700,
-	[Display(Name="GMT-08:00")]
-	GMTMinus0800,
-	[Display(Name="GMT-09:00")]
-	GMTMinus0900,
-	[Display(Name="GMT-10:00")]
-	GMTMinus1000,
-	[Display(Name="GMT-11:00")]
-	GMTMinus1100,
-	[Display(Name="GMT-12:00")]
-	GMTMinus1200,
-	[Display(Name="Galapagos Time")]
-	GalapagosTime,
-	[Display(Name="Gambier Time")]
-	GambierTime,
-	[Display(Name="Georgia Time")]
-	GeorgiaTime,
-	[Display(Name="Ghana Mean Time")]
-	GhanaMeanTime,
-	[Display(Name="Gilbert Is. Time")]
-	GilbertIsTime,
-	[Display(Name="Greenwich Mean Time")]
-	GreenwichMeanTime,
-	[Display(Name="Gulf Standard Time")]
-	GulfStandardTime,
-	[Display(Name="Guyana Time")]
-	GuyanaTime,
-	[Display(Name="Hawaii Standard Time")]
-	HawaiiStandardTime,
-	[Display(Name="Hong Kong Time")]
-	HongKongTime,
-	[Display(Name="Hovd Time")]
-	HovdTime,
-	[Display(Name="India Standard Time")]
-	IndiaStandardTime,
-	[Display(Name="Indian Ocean Territory Time")]
-	IndianOceanTerritoryTime,
-	[Display(Name="Indochina Time")]
-	IndochinaTime,
-	[Display(Name="Iran Standard Time")]
-	IranStandardTime,
-	[Display(Name="Irkutsk Time")]
-	IrkutskTime,
-	[Display(Name="Israel Standard Time")]
-	IsraelStandardTime,
-	[Display(Name="Japan Standard Time")]
-	JapanStandardTime,
-	[Display(Name="Khandyga Time")]
-	KhandygaTime,
-	[Display(Name="Kirgizstan Time")]
-	KirgizstanTime,
-	[Display(Name="Korea Standard Time")]
-	KoreaStandardTime,
-	[Display(Name="Kosrae Time")]
-	KosraeTime,
-	[Display(Name="Krasnoyarsk Time")]
-	KrasnoyarskTime,
-	[Display(Name="Line Is. Time")]
-	LineIsTime,
-	[Display(Name="Lord Howe Standard Time")]
-	LordHoweStandardTime,
-	[Display(Name="Macquarie Island Standard Time")]
-	MacquarieIslandStandardTime,
-	[Display(Name="Magadan Time")]
-	MagadanTime,
-	[Display(Name="Malaysia Time")]
-	MalaysiaTime,
-	[Display(Name="Maldives Time")]
-	MaldivesTime,
-	[Display(Name="Marquesas Time")]
-	MarquesasTime,
-	[Display(Name="Marshall Islands Time")]
-	MarshallIslandsTime,
-	[Display(Name="Mauritius Time")]
-	MauritiusTime,
-	[Display(Name="Mawson Time")]
-	MawsonTime,
-	[Display(Name="Middle Europe Time")]
-	MiddleEuropeTime,
-	[Display(Name="Moscow Standard Time")]
-	MoscowStandardTime,
-	[Display(Name="Mountain Standard Time")]
-	MountainStandardTime,
-	[Display(Name="Myanmar Time")]
-	MyanmarTime,
-	[Display(Name="Nauru Time")]
-	NauruTime,
-	[Display(Name="Nepal Time")]
-	NepalTime,
-	[Display(Name="New Caledonia Time")]
-	NewCaledoniaTime,
-	[Display(Name="New Zealand Standard Time")]
-	NewZealandStandardTime,
-	[Display(Name="Newfoundland Standard Time")]
-	NewfoundlandStandardTime,
-	[Display(Name="Niue Time")]
-	NiueTime,
-	[Display(Name="Norfolk Time")]
-	NorfolkTime,
-	[Display(Name="Novosibirsk Time")]
-	NovosibirskTime,
-	[Display(Name="Omsk Time")]
-	OmskTime,
-	[Display(Name="Oral Time")]
-	OralTime,
-	[Display(Name="Pacific Standard Time")]
-	PacificStandardTime,
-	[Display(Name="Pakistan Time")]
-	PakistanTime,
-	[Display(Name="Palau Time")]
-	PalauTime,
-	[Display(Name="Papua New Guinea Time")]
-	PapuaNewGuineaTime,
-	[Display(Name="Paraguay Time")]
-	ParaguayTime,
-	[Display(Name="Peru Time")]
-	PeruTime,
-	[Display(Name="Petropavlovsk-Kamchatski Time")]
-	PetropavlovskMinusKamchatskiTime,
-	[Display(Name="Philippines Time")]
-	PhilippinesTime,
-	[Display(Name="Phoenix Is. Time")]
-	PhoenixIsTime,
-	[Display(Name="Pierre & Miquelon Standard Time")]
-	PierreMiquelonStandardTime,
-	[Display(Name="Pitcairn Standard Time")]
-	PitcairnStandardTime,
-	[Display(Name="Pohnpei Time")]
-	PohnpeiTime,
-	[Display(Name="Qyzylorda Time")]
-	QyzylordaTime,
-	[Display(Name="Reunion Time")]
-	ReunionTime,
-	[Display(Name="Rothera Time")]
-	RotheraTime,
-	[Display(Name="Sakhalin Time")]
-	SakhalinTime,
-	[Display(Name="Samara Time")]
-	SamaraTime,
-	[Display(Name="Samoa Standard Time")]
-	SamoaStandardTime,
-	[Display(Name="Seychelles Time")]
-	SeychellesTime,
-	[Display(Name="Singapore Time")]
-	SingaporeTime,
-	[Display(Name="Solomon Is. Time")]
-	SolomonIsTime,
-	[Display(Name="South Africa Standard Time")]
-	SouthAfricaStandardTime,
-	[Display(Name="South Georgia Standard Time")]
-	SouthGeorgiaStandardTime,
-	[Display(Name="Srednekolymsk Time")]
-	SrednekolymskTime,
-	[Display(Name="Suriname Time")]
-	SurinameTime,
-	[Display(Name="Syowa Time")]
-	SyowaTime,
-	[Display(Name="Tahiti Time")]
-	TahitiTime,
-	[Display(Name="Tajikistan Time")]
-	TajikistanTime,
-	[Display(Name="Timor-Leste Time")]
-	TimorMinusLesteTime,
-	[Display(Name="Tokelau Time")]
-	TokelauTime,
-	[Display(Name="Tonga Time")]
-	TongaTime,
-	[Display(Name="Turkmenistan Time")]
-	TurkmenistanTime,
-	[Display(Name="Tuvalu Time")]
-	TuvaluTime,
-	[Display(Name="Ulaanbaatar Time")]
-	UlaanbaatarTime,
-	[Display(Name="Uruguay Time")]
-	UruguayTime,
-	[Display(Name="Ust-Nera Time")]
-	UstMinusNeraTime,
-	[Display(Name="Uzbekistan Time")]
-	UzbekistanTime,
-	[Display(Name="Vanuatu Time")]
-	VanuatuTime,
-	[Display(Name="Venezuela Time")]
-	VenezuelaTime,
-	[Display(Name="Vladivostok Time")]
-	VladivostokTime,
-	[Display(Name="Vostok Time")]
-	VostokTime,
-	[Display(Name="Wake Time")]
-	WakeTime,
-	[Display(Name="Wallis & Futuna Time")]
-	WallisFutunaTime,
-	[Display(Name="West Indonesia Time")]
-	WestIndonesiaTime,
-	[Display(Name="West Samoa Standard Time")]
-	WestSamoaStandardTime,
-	[Display(Name="Western African Time")]
-	WesternAfricanTime,
-	[Display(Name="Western European Time")]
-	WesternEuropeanTime,
-	[Display(Name="Western Greenland Time")]
-	WesternGreenlandTime,
-	[Display(Name="Xinjiang Standard Time")]
-	XinjiangStandardTime,
-	[Display(Name="Yakutsk Time")]
-	YakutskTime,
-	[Display(Name="Yekaterinburg Time")]
-	YekaterinburgTime
+	[Display(Name="Africa/Abidjan")]
+	AfricaAbidjan,
+	[Display(Name="Africa/Accra")]
+	AfricaAccra,
+	[Display(Name="Africa/Algiers")]
+	AfricaAlgiers,
+	[Display(Name="Africa/Bissau")]
+	AfricaBissau,
+	[Display(Name="Africa/Cairo")]
+	AfricaCairo,
+	[Display(Name="Africa/Casablanca")]
+	AfricaCasablanca,
+	[Display(Name="Africa/Ceuta")]
+	AfricaCeuta,
+	[Display(Name="Africa/El_Aaiun")]
+	AfricaElAaiun,
+	[Display(Name="Africa/Johannesburg")]
+	AfricaJohannesburg,
+	[Display(Name="Africa/Khartoum")]
+	AfricaKhartoum,
+	[Display(Name="Africa/Lagos")]
+	AfricaLagos,
+	[Display(Name="Africa/Maputo")]
+	AfricaMaputo,
+	[Display(Name="Africa/Monrovia")]
+	AfricaMonrovia,
+	[Display(Name="Africa/Nairobi")]
+	AfricaNairobi,
+	[Display(Name="Africa/Ndjamena")]
+	AfricaNdjamena,
+	[Display(Name="Africa/Tripoli")]
+	AfricaTripoli,
+	[Display(Name="Africa/Tunis")]
+	AfricaTunis,
+	[Display(Name="Africa/Windhoek")]
+	AfricaWindhoek,
+	[Display(Name="America/Adak")]
+	AmericaAdak,
+	[Display(Name="America/Anchorage")]
+	AmericaAnchorage,
+	[Display(Name="America/Araguaina")]
+	AmericaAraguaina,
+	[Display(Name="America/Argentina/Buenos_Aires")]
+	AmericaArgentinaBuenosAires,
+	[Display(Name="America/Argentina/Catamarca")]
+	AmericaArgentinaCatamarca,
+	[Display(Name="America/Argentina/Cordoba")]
+	AmericaArgentinaCordoba,
+	[Display(Name="America/Argentina/Jujuy")]
+	AmericaArgentinaJujuy,
+	[Display(Name="America/Argentina/La_Rioja")]
+	AmericaArgentinaLaRioja,
+	[Display(Name="America/Argentina/Mendoza")]
+	AmericaArgentinaMendoza,
+	[Display(Name="America/Argentina/Rio_Gallegos")]
+	AmericaArgentinaRioGallegos,
+	[Display(Name="America/Argentina/Salta")]
+	AmericaArgentinaSalta,
+	[Display(Name="America/Argentina/San_Juan")]
+	AmericaArgentinaSanJuan,
+	[Display(Name="America/Argentina/San_Luis")]
+	AmericaArgentinaSanLuis,
+	[Display(Name="America/Argentina/Tucuman")]
+	AmericaArgentinaTucuman,
+	[Display(Name="America/Argentina/Ushuaia")]
+	AmericaArgentinaUshuaia,
+	[Display(Name="America/Asuncion")]
+	AmericaAsuncion,
+	[Display(Name="America/Atikokan")]
+	AmericaAtikokan,
+	[Display(Name="America/Bahia")]
+	AmericaBahia,
+	[Display(Name="America/Bahia_Banderas")]
+	AmericaBahiaBanderas,
+	[Display(Name="America/Barbados")]
+	AmericaBarbados,
+	[Display(Name="America/Belem")]
+	AmericaBelem,
+	[Display(Name="America/Belize")]
+	AmericaBelize,
+	[Display(Name="America/Blanc-Sablon")]
+	AmericaBlancMinusSablon,
+	[Display(Name="America/Boa_Vista")]
+	AmericaBoaVista,
+	[Display(Name="America/Bogota")]
+	AmericaBogota,
+	[Display(Name="America/Boise")]
+	AmericaBoise,
+	[Display(Name="America/Cambridge_Bay")]
+	AmericaCambridgeBay,
+	[Display(Name="America/Campo_Grande")]
+	AmericaCampoGrande,
+	[Display(Name="America/Cancun")]
+	AmericaCancun,
+	[Display(Name="America/Caracas")]
+	AmericaCaracas,
+	[Display(Name="America/Cayenne")]
+	AmericaCayenne,
+	[Display(Name="America/Chicago")]
+	AmericaChicago,
+	[Display(Name="America/Chihuahua")]
+	AmericaChihuahua,
+	[Display(Name="America/Costa_Rica")]
+	AmericaCostaRica,
+	[Display(Name="America/Creston")]
+	AmericaCreston,
+	[Display(Name="America/Cuiaba")]
+	AmericaCuiaba,
+	[Display(Name="America/Curacao")]
+	AmericaCuracao,
+	[Display(Name="America/Danmarkshavn")]
+	AmericaDanmarkshavn,
+	[Display(Name="America/Dawson")]
+	AmericaDawson,
+	[Display(Name="America/Dawson_Creek")]
+	AmericaDawsonCreek,
+	[Display(Name="America/Denver")]
+	AmericaDenver,
+	[Display(Name="America/Detroit")]
+	AmericaDetroit,
+	[Display(Name="America/Edmonton")]
+	AmericaEdmonton,
+	[Display(Name="America/Eirunepe")]
+	AmericaEirunepe,
+	[Display(Name="America/El_Salvador")]
+	AmericaElSalvador,
+	[Display(Name="America/Fortaleza")]
+	AmericaFortaleza,
+	[Display(Name="America/Fort_Nelson")]
+	AmericaFortNelson,
+	[Display(Name="America/Glace_Bay")]
+	AmericaGlaceBay,
+	[Display(Name="America/Godthab")]
+	AmericaGodthab,
+	[Display(Name="America/Goose_Bay")]
+	AmericaGooseBay,
+	[Display(Name="America/Grand_Turk")]
+	AmericaGrandTurk,
+	[Display(Name="America/Guatemala")]
+	AmericaGuatemala,
+	[Display(Name="America/Guayaquil")]
+	AmericaGuayaquil,
+	[Display(Name="America/Guyana")]
+	AmericaGuyana,
+	[Display(Name="America/Halifax")]
+	AmericaHalifax,
+	[Display(Name="America/Havana")]
+	AmericaHavana,
+	[Display(Name="America/Hermosillo")]
+	AmericaHermosillo,
+	[Display(Name="America/Indiana/Indianapolis")]
+	AmericaIndianaIndianapolis,
+	[Display(Name="America/Indiana/Knox")]
+	AmericaIndianaKnox,
+	[Display(Name="America/Indiana/Marengo")]
+	AmericaIndianaMarengo,
+	[Display(Name="America/Indiana/Petersburg")]
+	AmericaIndianaPetersburg,
+	[Display(Name="America/Indiana/Tell_City")]
+	AmericaIndianaTellCity,
+	[Display(Name="America/Indiana/Vevay")]
+	AmericaIndianaVevay,
+	[Display(Name="America/Indiana/Vincennes")]
+	AmericaIndianaVincennes,
+	[Display(Name="America/Indiana/Winamac")]
+	AmericaIndianaWinamac,
+	[Display(Name="America/Inuvik")]
+	AmericaInuvik,
+	[Display(Name="America/Iqaluit")]
+	AmericaIqaluit,
+	[Display(Name="America/Jamaica")]
+	AmericaJamaica,
+	[Display(Name="America/Juneau")]
+	AmericaJuneau,
+	[Display(Name="America/Kentucky/Louisville")]
+	AmericaKentuckyLouisville,
+	[Display(Name="America/Kentucky/Monticello")]
+	AmericaKentuckyMonticello,
+	[Display(Name="America/La_Paz")]
+	AmericaLaPaz,
+	[Display(Name="America/Lima")]
+	AmericaLima,
+	[Display(Name="America/Los_Angeles")]
+	AmericaLosAngeles,
+	[Display(Name="America/Maceio")]
+	AmericaMaceio,
+	[Display(Name="America/Managua")]
+	AmericaManagua,
+	[Display(Name="America/Manaus")]
+	AmericaManaus,
+	[Display(Name="America/Martinique")]
+	AmericaMartinique,
+	[Display(Name="America/Matamoros")]
+	AmericaMatamoros,
+	[Display(Name="America/Mazatlan")]
+	AmericaMazatlan,
+	[Display(Name="America/Menominee")]
+	AmericaMenominee,
+	[Display(Name="America/Merida")]
+	AmericaMerida,
+	[Display(Name="America/Metlakatla")]
+	AmericaMetlakatla,
+	[Display(Name="America/Mexico_City")]
+	AmericaMexicoCity,
+	[Display(Name="America/Miquelon")]
+	AmericaMiquelon,
+	[Display(Name="America/Moncton")]
+	AmericaMoncton,
+	[Display(Name="America/Monterrey")]
+	AmericaMonterrey,
+	[Display(Name="America/Montevideo")]
+	AmericaMontevideo,
+	[Display(Name="America/Nassau")]
+	AmericaNassau,
+	[Display(Name="America/New_York")]
+	AmericaNewYork,
+	[Display(Name="America/Nipigon")]
+	AmericaNipigon,
+	[Display(Name="America/Nome")]
+	AmericaNome,
+	[Display(Name="America/Noronha")]
+	AmericaNoronha,
+	[Display(Name="America/North_Dakota/Beulah")]
+	AmericaNorthDakotaBeulah,
+	[Display(Name="America/North_Dakota/Center")]
+	AmericaNorthDakotaCenter,
+	[Display(Name="America/North_Dakota/New_Salem")]
+	AmericaNorthDakotaNewSalem,
+	[Display(Name="America/Ojinaga")]
+	AmericaOjinaga,
+	[Display(Name="America/Panama")]
+	AmericaPanama,
+	[Display(Name="America/Pangnirtung")]
+	AmericaPangnirtung,
+	[Display(Name="America/Paramaribo")]
+	AmericaParamaribo,
+	[Display(Name="America/Phoenix")]
+	AmericaPhoenix,
+	[Display(Name="America/Port-au-Prince")]
+	AmericaPortMinusauMinusPrince,
+	[Display(Name="America/Port_of_Spain")]
+	AmericaPortofSpain,
+	[Display(Name="America/Porto_Velho")]
+	AmericaPortoVelho,
+	[Display(Name="America/Puerto_Rico")]
+	AmericaPuertoRico,
+	[Display(Name="America/Rainy_River")]
+	AmericaRainyRiver,
+	[Display(Name="America/Rankin_Inlet")]
+	AmericaRankinInlet,
+	[Display(Name="America/Recife")]
+	AmericaRecife,
+	[Display(Name="America/Regina")]
+	AmericaRegina,
+	[Display(Name="America/Resolute")]
+	AmericaResolute,
+	[Display(Name="America/Rio_Branco")]
+	AmericaRioBranco,
+	[Display(Name="America/Santarem")]
+	AmericaSantarem,
+	[Display(Name="America/Santiago")]
+	AmericaSantiago,
+	[Display(Name="America/Santo_Domingo")]
+	AmericaSantoDomingo,
+	[Display(Name="America/Sao_Paulo")]
+	AmericaSaoPaulo,
+	[Display(Name="America/Scoresbysund")]
+	AmericaScoresbysund,
+	[Display(Name="America/Sitka")]
+	AmericaSitka,
+	[Display(Name="America/St_Johns")]
+	AmericaStJohns,
+	[Display(Name="America/Swift_Current")]
+	AmericaSwiftCurrent,
+	[Display(Name="America/Tegucigalpa")]
+	AmericaTegucigalpa,
+	[Display(Name="America/Thule")]
+	AmericaThule,
+	[Display(Name="America/Thunder_Bay")]
+	AmericaThunderBay,
+	[Display(Name="America/Tijuana")]
+	AmericaTijuana,
+	[Display(Name="America/Toronto")]
+	AmericaToronto,
+	[Display(Name="America/Vancouver")]
+	AmericaVancouver,
+	[Display(Name="America/Whitehorse")]
+	AmericaWhitehorse,
+	[Display(Name="America/Winnipeg")]
+	AmericaWinnipeg,
+	[Display(Name="America/Yakutat")]
+	AmericaYakutat,
+	[Display(Name="America/Yellowknife")]
+	AmericaYellowknife,
+	[Display(Name="Antarctica/Casey")]
+	AntarcticaCasey,
+	[Display(Name="Antarctica/Davis")]
+	AntarcticaDavis,
+	[Display(Name="Antarctica/DumontDUrville")]
+	AntarcticaDumontDUrville,
+	[Display(Name="Antarctica/Macquarie")]
+	AntarcticaMacquarie,
+	[Display(Name="Antarctica/Mawson")]
+	AntarcticaMawson,
+	[Display(Name="Antarctica/Palmer")]
+	AntarcticaPalmer,
+	[Display(Name="Antarctica/Rothera")]
+	AntarcticaRothera,
+	[Display(Name="Antarctica/Syowa")]
+	AntarcticaSyowa,
+	[Display(Name="Antarctica/Troll")]
+	AntarcticaTroll,
+	[Display(Name="Antarctica/Vostok")]
+	AntarcticaVostok,
+	[Display(Name="Asia/Almaty")]
+	AsiaAlmaty,
+	[Display(Name="Asia/Amman")]
+	AsiaAmman,
+	[Display(Name="Asia/Anadyr")]
+	AsiaAnadyr,
+	[Display(Name="Asia/Aqtau")]
+	AsiaAqtau,
+	[Display(Name="Asia/Aqtobe")]
+	AsiaAqtobe,
+	[Display(Name="Asia/Ashgabat")]
+	AsiaAshgabat,
+	[Display(Name="Asia/Baghdad")]
+	AsiaBaghdad,
+	[Display(Name="Asia/Baku")]
+	AsiaBaku,
+	[Display(Name="Asia/Bangkok")]
+	AsiaBangkok,
+	[Display(Name="Asia/Barnaul")]
+	AsiaBarnaul,
+	[Display(Name="Asia/Beirut")]
+	AsiaBeirut,
+	[Display(Name="Asia/Bishkek")]
+	AsiaBishkek,
+	[Display(Name="Asia/Brunei")]
+	AsiaBrunei,
+	[Display(Name="Asia/Chita")]
+	AsiaChita,
+	[Display(Name="Asia/Choibalsan")]
+	AsiaChoibalsan,
+	[Display(Name="Asia/Colombo")]
+	AsiaColombo,
+	[Display(Name="Asia/Damascus")]
+	AsiaDamascus,
+	[Display(Name="Asia/Dhaka")]
+	AsiaDhaka,
+	[Display(Name="Asia/Dili")]
+	AsiaDili,
+	[Display(Name="Asia/Dubai")]
+	AsiaDubai,
+	[Display(Name="Asia/Dushanbe")]
+	AsiaDushanbe,
+	[Display(Name="Asia/Famagusta")]
+	AsiaFamagusta,
+	[Display(Name="Asia/Gaza")]
+	AsiaGaza,
+	[Display(Name="Asia/Hebron")]
+	AsiaHebron,
+	[Display(Name="Asia/Ho_Chi_Minh")]
+	AsiaHoChiMinh,
+	[Display(Name="Asia/Hong_Kong")]
+	AsiaHongKong,
+	[Display(Name="Asia/Hovd")]
+	AsiaHovd,
+	[Display(Name="Asia/Irkutsk")]
+	AsiaIrkutsk,
+	[Display(Name="Asia/Jakarta")]
+	AsiaJakarta,
+	[Display(Name="Asia/Jayapura")]
+	AsiaJayapura,
+	[Display(Name="Asia/Jerusalem")]
+	AsiaJerusalem,
+	[Display(Name="Asia/Kabul")]
+	AsiaKabul,
+	[Display(Name="Asia/Kamchatka")]
+	AsiaKamchatka,
+	[Display(Name="Asia/Karachi")]
+	AsiaKarachi,
+	[Display(Name="Asia/Kathmandu")]
+	AsiaKathmandu,
+	[Display(Name="Asia/Khandyga")]
+	AsiaKhandyga,
+	[Display(Name="Asia/Kolkata")]
+	AsiaKolkata,
+	[Display(Name="Asia/Krasnoyarsk")]
+	AsiaKrasnoyarsk,
+	[Display(Name="Asia/Kuala_Lumpur")]
+	AsiaKualaLumpur,
+	[Display(Name="Asia/Kuching")]
+	AsiaKuching,
+	[Display(Name="Asia/Macau")]
+	AsiaMacau,
+	[Display(Name="Asia/Magadan")]
+	AsiaMagadan,
+	[Display(Name="Asia/Makassar")]
+	AsiaMakassar,
+	[Display(Name="Asia/Manila")]
+	AsiaManila,
+	[Display(Name="Asia/Nicosia")]
+	AsiaNicosia,
+	[Display(Name="Asia/Novokuznetsk")]
+	AsiaNovokuznetsk,
+	[Display(Name="Asia/Novosibirsk")]
+	AsiaNovosibirsk,
+	[Display(Name="Asia/Omsk")]
+	AsiaOmsk,
+	[Display(Name="Asia/Oral")]
+	AsiaOral,
+	[Display(Name="Asia/Pontianak")]
+	AsiaPontianak,
+	[Display(Name="Asia/Pyongyang")]
+	AsiaPyongyang,
+	[Display(Name="Asia/Qatar")]
+	AsiaQatar,
+	[Display(Name="Asia/Qyzylorda")]
+	AsiaQyzylorda,
+	[Display(Name="Asia/Riyadh")]
+	AsiaRiyadh,
+	[Display(Name="Asia/Sakhalin")]
+	AsiaSakhalin,
+	[Display(Name="Asia/Samarkand")]
+	AsiaSamarkand,
+	[Display(Name="Asia/Seoul")]
+	AsiaSeoul,
+	[Display(Name="Asia/Shanghai")]
+	AsiaShanghai,
+	[Display(Name="Asia/Singapore")]
+	AsiaSingapore,
+	[Display(Name="Asia/Srednekolymsk")]
+	AsiaSrednekolymsk,
+	[Display(Name="Asia/Taipei")]
+	AsiaTaipei,
+	[Display(Name="Asia/Tashkent")]
+	AsiaTashkent,
+	[Display(Name="Asia/Tbilisi")]
+	AsiaTbilisi,
+	[Display(Name="Asia/Tehran")]
+	AsiaTehran,
+	[Display(Name="Asia/Thimphu")]
+	AsiaThimphu,
+	[Display(Name="Asia/Tokyo")]
+	AsiaTokyo,
+	[Display(Name="Asia/Tomsk")]
+	AsiaTomsk,
+	[Display(Name="Asia/Ulaanbaatar")]
+	AsiaUlaanbaatar,
+	[Display(Name="Asia/Urumqi")]
+	AsiaUrumqi,
+	[Display(Name="Asia/Ust-Nera")]
+	AsiaUstMinusNera,
+	[Display(Name="Asia/Vladivostok")]
+	AsiaVladivostok,
+	[Display(Name="Asia/Yakutsk")]
+	AsiaYakutsk,
+	[Display(Name="Asia/Yangon")]
+	AsiaYangon,
+	[Display(Name="Asia/Yekaterinburg")]
+	AsiaYekaterinburg,
+	[Display(Name="Asia/Yerevan")]
+	AsiaYerevan,
+	[Display(Name="Atlantic/Azores")]
+	AtlanticAzores,
+	[Display(Name="Atlantic/Bermuda")]
+	AtlanticBermuda,
+	[Display(Name="Atlantic/Canary")]
+	AtlanticCanary,
+	[Display(Name="Atlantic/Cape_Verde")]
+	AtlanticCapeVerde,
+	[Display(Name="Atlantic/Faroe")]
+	AtlanticFaroe,
+	[Display(Name="Atlantic/Madeira")]
+	AtlanticMadeira,
+	[Display(Name="Atlantic/Reykjavik")]
+	AtlanticReykjavik,
+	[Display(Name="Atlantic/South_Georgia")]
+	AtlanticSouthGeorgia,
+	[Display(Name="Atlantic/Stanley")]
+	AtlanticStanley,
+	[Display(Name="Australia/Adelaide")]
+	AustraliaAdelaide,
+	[Display(Name="Australia/Brisbane")]
+	AustraliaBrisbane,
+	[Display(Name="Australia/Broken_Hill")]
+	AustraliaBrokenHill,
+	[Display(Name="Australia/Currie")]
+	AustraliaCurrie,
+	[Display(Name="Australia/Darwin")]
+	AustraliaDarwin,
+	[Display(Name="Australia/Eucla")]
+	AustraliaEucla,
+	[Display(Name="Australia/Hobart")]
+	AustraliaHobart,
+	[Display(Name="Australia/Lindeman")]
+	AustraliaLindeman,
+	[Display(Name="Australia/Lord_Howe")]
+	AustraliaLordHowe,
+	[Display(Name="Australia/Melbourne")]
+	AustraliaMelbourne,
+	[Display(Name="Australia/Perth")]
+	AustraliaPerth,
+	[Display(Name="Australia/Sydney")]
+	AustraliaSydney,
+	[Display(Name="Europe/Amsterdam")]
+	EuropeAmsterdam,
+	[Display(Name="Europe/Andorra")]
+	EuropeAndorra,
+	[Display(Name="Europe/Astrakhan")]
+	EuropeAstrakhan,
+	[Display(Name="Europe/Athens")]
+	EuropeAthens,
+	[Display(Name="Europe/Belgrade")]
+	EuropeBelgrade,
+	[Display(Name="Europe/Berlin")]
+	EuropeBerlin,
+	[Display(Name="Europe/Brussels")]
+	EuropeBrussels,
+	[Display(Name="Europe/Bucharest")]
+	EuropeBucharest,
+	[Display(Name="Europe/Budapest")]
+	EuropeBudapest,
+	[Display(Name="Europe/Chisinau")]
+	EuropeChisinau,
+	[Display(Name="Europe/Copenhagen")]
+	EuropeCopenhagen,
+	[Display(Name="Europe/Dublin")]
+	EuropeDublin,
+	[Display(Name="Europe/Gibraltar")]
+	EuropeGibraltar,
+	[Display(Name="Europe/Helsinki")]
+	EuropeHelsinki,
+	[Display(Name="Europe/Istanbul")]
+	EuropeIstanbul,
+	[Display(Name="Europe/Kaliningrad")]
+	EuropeKaliningrad,
+	[Display(Name="Europe/Kiev")]
+	EuropeKiev,
+	[Display(Name="Europe/Kirov")]
+	EuropeKirov,
+	[Display(Name="Europe/Lisbon")]
+	EuropeLisbon,
+	[Display(Name="Europe/London")]
+	EuropeLondon,
+	[Display(Name="Europe/Luxembourg")]
+	EuropeLuxembourg,
+	[Display(Name="Europe/Madrid")]
+	EuropeMadrid,
+	[Display(Name="Europe/Malta")]
+	EuropeMalta,
+	[Display(Name="Europe/Minsk")]
+	EuropeMinsk,
+	[Display(Name="Europe/Monaco")]
+	EuropeMonaco,
+	[Display(Name="Europe/Moscow")]
+	EuropeMoscow,
+	[Display(Name="Europe/Oslo")]
+	EuropeOslo,
+	[Display(Name="Europe/Paris")]
+	EuropeParis,
+	[Display(Name="Europe/Prague")]
+	EuropePrague,
+	[Display(Name="Europe/Riga")]
+	EuropeRiga,
+	[Display(Name="Europe/Rome")]
+	EuropeRome,
+	[Display(Name="Europe/Samara")]
+	EuropeSamara,
+	[Display(Name="Europe/Simferopol")]
+	EuropeSimferopol,
+	[Display(Name="Europe/Sofia")]
+	EuropeSofia,
+	[Display(Name="Europe/Stockholm")]
+	EuropeStockholm,
+	[Display(Name="Europe/Tallinn")]
+	EuropeTallinn,
+	[Display(Name="Europe/Tirane")]
+	EuropeTirane,
+	[Display(Name="Europe/Ulyanovsk")]
+	EuropeUlyanovsk,
+	[Display(Name="Europe/Uzhgorod")]
+	EuropeUzhgorod,
+	[Display(Name="Europe/Vienna")]
+	EuropeVienna,
+	[Display(Name="Europe/Vilnius")]
+	EuropeVilnius,
+	[Display(Name="Europe/Volgograd")]
+	EuropeVolgograd,
+	[Display(Name="Europe/Warsaw")]
+	EuropeWarsaw,
+	[Display(Name="Europe/Zaporozhye")]
+	EuropeZaporozhye,
+	[Display(Name="Europe/Zurich")]
+	EuropeZurich,
+	[Display(Name="Indian/Chagos")]
+	IndianChagos,
+	[Display(Name="Indian/Christmas")]
+	IndianChristmas,
+	[Display(Name="Indian/Cocos")]
+	IndianCocos,
+	[Display(Name="Indian/Kerguelen")]
+	IndianKerguelen,
+	[Display(Name="Indian/Mahe")]
+	IndianMahe,
+	[Display(Name="Indian/Maldives")]
+	IndianMaldives,
+	[Display(Name="Indian/Mauritius")]
+	IndianMauritius,
+	[Display(Name="Indian/Reunion")]
+	IndianReunion,
+	[Display(Name="Pacific/Apia")]
+	PacificApia,
+	[Display(Name="Pacific/Auckland")]
+	PacificAuckland,
+	[Display(Name="Pacific/Bougainville")]
+	PacificBougainville,
+	[Display(Name="Pacific/Chatham")]
+	PacificChatham,
+	[Display(Name="Pacific/Chuuk")]
+	PacificChuuk,
+	[Display(Name="Pacific/Easter")]
+	PacificEaster,
+	[Display(Name="Pacific/Efate")]
+	PacificEfate,
+	[Display(Name="Pacific/Enderbury")]
+	PacificEnderbury,
+	[Display(Name="Pacific/Fakaofo")]
+	PacificFakaofo,
+	[Display(Name="Pacific/Fiji")]
+	PacificFiji,
+	[Display(Name="Pacific/Funafuti")]
+	PacificFunafuti,
+	[Display(Name="Pacific/Galapagos")]
+	PacificGalapagos,
+	[Display(Name="Pacific/Gambier")]
+	PacificGambier,
+	[Display(Name="Pacific/Guadalcanal")]
+	PacificGuadalcanal,
+	[Display(Name="Pacific/Guam")]
+	PacificGuam,
+	[Display(Name="Pacific/Honolulu")]
+	PacificHonolulu,
+	[Display(Name="Pacific/Kiritimati")]
+	PacificKiritimati,
+	[Display(Name="Pacific/Kosrae")]
+	PacificKosrae,
+	[Display(Name="Pacific/Kwajalein")]
+	PacificKwajalein,
+	[Display(Name="Pacific/Majuro")]
+	PacificMajuro,
+	[Display(Name="Pacific/Marquesas")]
+	PacificMarquesas,
+	[Display(Name="Pacific/Nauru")]
+	PacificNauru,
+	[Display(Name="Pacific/Niue")]
+	PacificNiue,
+	[Display(Name="Pacific/Norfolk")]
+	PacificNorfolk,
+	[Display(Name="Pacific/Noumea")]
+	PacificNoumea,
+	[Display(Name="Pacific/Pago_Pago")]
+	PacificPagoPago,
+	[Display(Name="Pacific/Palau")]
+	PacificPalau,
+	[Display(Name="Pacific/Pitcairn")]
+	PacificPitcairn,
+	[Display(Name="Pacific/Pohnpei")]
+	PacificPohnpei,
+	[Display(Name="Pacific/Port_Moresby")]
+	PacificPortMoresby,
+	[Display(Name="Pacific/Rarotonga")]
+	PacificRarotonga,
+	[Display(Name="Pacific/Tahiti")]
+	PacificTahiti,
+	[Display(Name="Pacific/Tarawa")]
+	PacificTarawa,
+	[Display(Name="Pacific/Tongatapu")]
+	PacificTongatapu,
+	[Display(Name="Pacific/Wake")]
+	PacificWake,
+	[Display(Name="Pacific/Wallis")]
+	PacificWallis
 }
 }

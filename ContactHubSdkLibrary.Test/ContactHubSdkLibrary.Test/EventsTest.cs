@@ -403,7 +403,7 @@ namespace ContactHubSdkLibrary.Test
                         email = DateTime.Now.Ticks.ToString()+
                         "dduck@yourdomain.it"
                     },
-                    timezone = BasePropertiesTimezoneEnum.GMT0100
+                    timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                 }
             };
         }

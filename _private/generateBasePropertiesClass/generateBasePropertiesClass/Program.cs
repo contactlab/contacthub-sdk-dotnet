@@ -272,8 +272,16 @@ namespace generateBasePropertiesClass
         }
         private static string processString(BasePropertiesItem p)
         {
-            List<String> dateTimeListField = new List<String> { "createdTime", "dateStart", "dateEnd", "updatedAt", "registeredAt" };
-            List<String> dateListField = new List<String> { "startDate", "endDate" };
+            string DATEPATTERN = "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+            List<String> dateTimeListField = new List<String> {
+                "createdTime",
+                "updatedAt", "registeredAt",
+                "startDate", "endDate"
+            };
+            List<String> dateListField = new List<String>
+            {
+                "startDate", "endDate" 
+            };
 
             string name = p.name;
             if (!cs.IsValidIdentifier(name))
@@ -293,9 +301,8 @@ namespace generateBasePropertiesClass
                 if (p.format != null) processString += "    //format: " + p.format + "\n";
                 processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             }
-            else if (dateTimeListField.Contains(name))//is a list of specific fields ranging rendered as datetime
+            else if (dateTimeListField.Contains(name) && p.pattern!= DATEPATTERN)//is a list of specific fields ranging rendered as datetime
             {
-
                 processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);
                 processString += String.Format("    public string _{0} {{get;set;}}\n", JsonUtil.fixName(name));
                 processString += String.Format("    [JsonProperty(\"_{0}\")]\n", name);
@@ -532,10 +539,16 @@ namespace generateBasePropertiesClass
                                         {
                                             if (p.@enum == null) //normal string
                                             {
+                                                
                                                 outputFileStr += processString(p);
                                             }
                                             else  //It is a string base enum
                                             {
+                                                //if  class name contains inheritance, remove parent class
+                                                if (outputProperties.name.Contains(":"))
+                                                {
+                                                    outputProperties.name = outputProperties.name.Split(':')[0];
+                                                }
                                                 outputFileStr += processEnum(outputProperties, p);
                                                 //creates an enum that has the name of the father, to avoid multiple definitions of different objects with the same name
                                                 enumToGenerate.Add(uppercaseFirst(outputProperties.name) + uppercaseFirst(JsonUtil.fixName(p.name) + "Enum"), p.@enum);
@@ -600,6 +613,7 @@ namespace generateBasePropertiesClass
             }
             outputFileStr += String.Format("public enum {0} {{\n", key);
             outputFileStr += String.Format("\t{0},\n", Common.NO_VALUE);
+            string str = "";
             foreach (string enumItem in (string[])enumObj.Value)
             {
                 outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);

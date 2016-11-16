@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 14/11/2016 17:19:47 */
+/* selfgenerated from version 0.0.0.1 16/11/2016 12:30:53 */
 
 using System;
 using System.Collections.Generic;
@@ -74,7 +74,9 @@ public class EventPropertyReviewedProduct: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -110,7 +112,9 @@ public class EventPropertyViewedProduct: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -129,7 +133,9 @@ public class EventPropertyAddedProduct: EventBaseProperty
     public string name {get;set;}
     public decimal price {get;set;}
     public decimal quantity {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -148,7 +154,9 @@ public class EventPropertyRemovedProduct: EventBaseProperty
     public string name {get;set;}
     public decimal price {get;set;}
     public decimal quantity {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -166,7 +174,9 @@ public class EventPropertyAddedWishlist: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -184,7 +194,9 @@ public class EventPropertyRemovedWishlist: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -202,7 +214,9 @@ public class EventPropertyAddedCompare: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -220,7 +234,9 @@ public class EventPropertyRemovedCompare: EventBaseProperty
     public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
@@ -235,10 +251,38 @@ public class EventPropertyRemovedCompare: EventBaseProperty
 public class EventPropertyCompletedOrder: EventBaseProperty
 {
     public string orderId {get;set;}
-    public string type {get;set;}
-    public string storeCode {get;set;}
-    public string paymentMethod {get;set;}
-    public Amount amount {get;set;}
+[JsonProperty("type")]public string _type {get;set;}
+[JsonProperty("hidden_type")][JsonIgnore]
+                    public EventPropertyCompletedOrderTypeEnum type 
+            {
+                get
+                {
+                        EventPropertyCompletedOrderTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCompletedOrderTypeEnum>.GetValueFromDisplayName(_type);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCompletedOrderTypeEnum>.GetDisplayValue(value);
+                        _type = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string storeCode {get;set;}
+[JsonProperty("paymentMethod")]public string _paymentMethod {get;set;}
+[JsonProperty("hidden_paymentMethod")][JsonIgnore]
+                    public EventPropertyCompletedOrderPaymentMethodEnum paymentMethod 
+            {
+                get
+                {
+                        EventPropertyCompletedOrderPaymentMethodEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCompletedOrderPaymentMethodEnum>.GetValueFromDisplayName(_paymentMethod);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCompletedOrderPaymentMethodEnum>.GetDisplayValue(value);
+                        _paymentMethod = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public Amount amount {get;set;}
     public List<Products> products {get;set;}
     public dynamic extraProperties {get;set;}
 }
@@ -252,7 +296,7 @@ public class Amount
     public decimal tax {get;set;}
     public decimal discount {get;set;}
     public string currency {get;set;}
-    public string currency_local {get;set;}
+    public string localCurrency {get;set;}
     public decimal exchangeRate {get;set;}
 }
 
@@ -260,22 +304,64 @@ public class Amount
 public class Products
 {
     public string id {get;set;}
-    public string type {get;set;}
-    public string sku {get;set;}
+[JsonProperty("type")]public string _type {get;set;}
+[JsonProperty("hidden_type")][JsonIgnore]
+                    public ProductsTypeEnum type 
+            {
+                get
+                {
+                        ProductsTypeEnum enumValue =ContactHubSdkLibrary.EnumHelper<ProductsTypeEnum>.GetValueFromDisplayName(_type);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<ProductsTypeEnum>.GetDisplayValue(value);
+                        _type = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
     public decimal quantity {get;set;}
     public decimal discount {get;set;}
     public decimal tax {get;set;}
     public string coupon {get;set;}
+    //format: uri
     public string imageUrl {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public string shortDescription {get;set;}
     public List<String> category {get;set;}
     public List<Classifications> classifications {get;set;}
 }
 
-
+public enum ProductsTypeEnum {
+	NoValue,
+	[Display(Name="sale")]
+	sale,
+	[Display(Name="return")]
+	@return
+}public enum EventPropertyCompletedOrderPaymentMethodEnum {
+	NoValue,
+	[Display(Name="cash")]
+	cash,
+	[Display(Name="creditcard")]
+	creditcard,
+	[Display(Name="debitcard")]
+	debitcard,
+	[Display(Name="paypal")]
+	paypal,
+	[Display(Name="other")]
+	other
+}public enum EventPropertyCompletedOrderTypeEnum {
+	NoValue,
+	[Display(Name="sale")]
+	sale,
+	[Display(Name="return")]
+	@return,
+	[Display(Name="sale-return")]
+	saleMinusreturn
+}
 /// <summary>
 /// Event class 'viewedPage': viewed page
 /// </summary>
@@ -285,6 +371,7 @@ public class EventPropertyViewedPage: EventBaseProperty
     public string referer {get;set;}
     public string search {get;set;}
     public string title {get;set;}
+    //format: uri
     public string url {get;set;}
     public List<String> pageCategories {get;set;}
     public List<String> pageTags {get;set;}
@@ -301,6 +388,7 @@ public class EventPropertyClickedLink: EventBaseProperty
     public string referer {get;set;}
     public string search {get;set;}
     public string title {get;set;}
+    //format: uri
     public string url {get;set;}
     public List<String> linkTags {get;set;}
     public dynamic extraProperties {get;set;}
@@ -329,11 +417,35 @@ public class EventPropertyCampaignSent: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public dynamic extraProperties {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignSentChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignSentChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignSentChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignSentChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignSentChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignOpened': campaign opened
 /// </summary>
@@ -344,11 +456,35 @@ public class EventPropertyCampaignOpened: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public dynamic extraProperties {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignOpenedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignOpenedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOpenedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOpenedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignOpenedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignLinkClicked': campaign link clicked
 /// </summary>
@@ -359,14 +495,39 @@ public class EventPropertyCampaignLinkClicked: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public string linkId {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignLinkClickedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignLinkClickedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignLinkClickedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignLinkClickedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string linkId {get;set;}
+    //format: uri
     public string linkUrl {get;set;}
     public List<String> linkTags {get;set;}
     public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignLinkClickedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignMarkedSpam': campaign marked spam
 /// </summary>
@@ -377,11 +538,35 @@ public class EventPropertyCampaignMarkedSpam: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public dynamic extraProperties {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignMarkedSpamChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignMarkedSpamChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignMarkedSpamChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignMarkedSpamChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignMarkedSpamChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignBounced': campaign bounced
 /// </summary>
@@ -392,11 +577,35 @@ public class EventPropertyCampaignBounced: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public dynamic extraProperties {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignBouncedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignBouncedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignBouncedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignBouncedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignBouncedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignUnsubscribed': campaign unsubscribed
 /// </summary>
@@ -407,13 +616,37 @@ public class EventPropertyCampaignUnsubscribed: EventBaseProperty
     public string campaignId {get;set;}
     public string campaignName {get;set;}
     public List<String> campaignTags {get;set;}
-    public string channel {get;set;}
-    public string listId {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignUnsubscribedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignUnsubscribedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignUnsubscribedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignUnsubscribedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string listId {get;set;}
     public string listName {get;set;}
     public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignUnsubscribedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'campaignSubscribed': campaign subscribed
 /// </summary>
@@ -422,11 +655,35 @@ public class EventPropertyCampaignSubscribed: EventBaseProperty
     public string subscriberId {get;set;}
     public string listId {get;set;}
     public string listName {get;set;}
-    public string channel {get;set;}
-    public dynamic extraProperties {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignSubscribedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignSubscribedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignSubscribedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignSubscribedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyCampaignSubscribedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
 /// <summary>
 /// Event class 'eventInvited': event invited
 /// </summary>
@@ -469,20 +726,49 @@ public class EventPropertySearched: EventBaseProperty
 /// </summary>
 public class EventPropertyChangedSetting: EventBaseProperty
 {
-    public string setting {get;set;}
-    public string oldValue {get;set;}
+[JsonProperty("setting")]public string _setting {get;set;}
+[JsonProperty("hidden_setting")][JsonIgnore]
+                    public EventPropertyChangedSettingSettingEnum setting 
+            {
+                get
+                {
+                        EventPropertyChangedSettingSettingEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyChangedSettingSettingEnum>.GetValueFromDisplayName(_setting);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyChangedSettingSettingEnum>.GetDisplayValue(value);
+                        _setting = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string oldValue {get;set;}
     public string newValue {get;set;}
     public dynamic extraProperties {get;set;}
 }
 
-
+public enum EventPropertyChangedSettingSettingEnum {
+	NoValue,
+	[Display(Name="LANGUAGE")]
+	LANGUAGE,
+	[Display(Name="TIMEZONE")]
+	TIMEZONE,
+	[Display(Name="CURRENCY")]
+	CURRENCY,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PASSWORD")]
+	PASSWORD,
+	[Display(Name="USERNAME")]
+	USERNAME,
+	[Display(Name="OTHER")]
+	OTHER
+}
 /// <summary>
 /// Event class 'genericActiveEvent': generic active event
 /// </summary>
 public class EventPropertyGenericActiveEvent: EventBaseProperty
 {
     public string name {get;set;}
-    public dynamic data {get;set;}
     public dynamic extraProperties {get;set;}
 }
 
@@ -493,7 +779,6 @@ public class EventPropertyGenericActiveEvent: EventBaseProperty
 public class EventPropertyGenericPassiveEvent: EventBaseProperty
 {
     public string name {get;set;}
-    public dynamic data {get;set;}
     public dynamic extraProperties {get;set;}
 }
 
@@ -507,19 +792,19 @@ public class EventPropertyServiceUnsubscribed: EventBaseProperty
     public string serviceId {get;set;}
     public string serviceName {get;set;}
     public string serviceType {get;set;}
-    [JsonProperty("dateStart")]
-    public string _dateStart {get;set;}
-    [JsonProperty("_dateStart")]
+    [JsonProperty("startDate")]
+    public string _startDate {get;set;}
+    [JsonProperty("_startDate")]
     [JsonIgnore]
  
-                 public DateTime dateStart
+                 public DateTime startDate
         {
             get
             {
-                if (_dateStart != null)
+                if (_startDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateStart,
+                         DateTime.ParseExact(_startDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -534,24 +819,24 @@ public class EventPropertyServiceUnsubscribed: EventBaseProperty
             {
                 try
                 {
-                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _startDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateStart = null; }
+                catch { _startDate = null; }
             }
         }
-                [JsonProperty("dateEnd")]
-    public string _dateEnd {get;set;}
-    [JsonProperty("_dateEnd")]
+                [JsonProperty("endDate")]
+    public string _endDate {get;set;}
+    [JsonProperty("_endDate")]
     [JsonIgnore]
  
-                 public DateTime dateEnd
+                 public DateTime endDate
         {
             get
             {
-                if (_dateEnd != null)
+                if (_endDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateEnd,
+                         DateTime.ParseExact(_endDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -566,9 +851,9 @@ public class EventPropertyServiceUnsubscribed: EventBaseProperty
             {
                 try
                 {
-                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _endDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateEnd = null; }
+                catch { _endDate = null; }
             }
         }
                 public dynamic extraProperties {get;set;}
@@ -584,19 +869,19 @@ public class EventPropertyServiceSubscribed: EventBaseProperty
     public string serviceId {get;set;}
     public string serviceName {get;set;}
     public string serviceType {get;set;}
-    [JsonProperty("dateStart")]
-    public string _dateStart {get;set;}
-    [JsonProperty("_dateStart")]
+    [JsonProperty("startDate")]
+    public string _startDate {get;set;}
+    [JsonProperty("_startDate")]
     [JsonIgnore]
  
-                 public DateTime dateStart
+                 public DateTime startDate
         {
             get
             {
-                if (_dateStart != null)
+                if (_startDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateStart,
+                         DateTime.ParseExact(_startDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -611,24 +896,24 @@ public class EventPropertyServiceSubscribed: EventBaseProperty
             {
                 try
                 {
-                    _dateStart = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _startDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateStart = null; }
+                catch { _startDate = null; }
             }
         }
-                [JsonProperty("dateEnd")]
-    public string _dateEnd {get;set;}
-    [JsonProperty("_dateEnd")]
+                [JsonProperty("endDate")]
+    public string _endDate {get;set;}
+    [JsonProperty("_endDate")]
     [JsonIgnore]
  
-                 public DateTime dateEnd
+                 public DateTime endDate
         {
             get
             {
-                if (_dateEnd != null)
+                if (_endDate != null)
                 {
                     return
-                         DateTime.ParseExact(_dateEnd,
+                         DateTime.ParseExact(_endDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
@@ -643,9 +928,9 @@ public class EventPropertyServiceSubscribed: EventBaseProperty
             {
                 try
                 {
-                    _dateEnd = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                    _endDate = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
-                catch { _dateEnd = null; }
+                catch { _endDate = null; }
             }
         }
                 public dynamic extraProperties {get;set;}
@@ -658,10 +943,11 @@ public class EventPropertyServiceSubscribed: EventBaseProperty
 public class EventPropertyAbandonedCart: EventBaseProperty
 {
     public string orderId {get;set;}
+    //format: uri
     public string abandonedCartUrl {get;set;}
     public string storeCode {get;set;}
     public Amount amount {get;set;}
-    public Products products {get;set;}
+    public List<Products> products {get;set;}
     public dynamic extraProperties {get;set;}
 }
 

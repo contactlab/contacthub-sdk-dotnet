@@ -630,8 +630,6 @@ namespace ContactHubSdkLibrary.Test
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 50, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 100, true)]
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 250, true)]
-        //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 500, true)]
-        //[TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 1000, true)]
 
         public void C_Paging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
@@ -1188,7 +1186,6 @@ namespace ContactHubSdkLibrary.Test
                     //delete data
                     bool testPassed5 = node.DeleteCustomerSubscription(newCustomer.id, updatedSub.id, ref error);
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
-                    //TO BE DONE: delete education
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
                     Thread.Sleep(1000); //wait remote update

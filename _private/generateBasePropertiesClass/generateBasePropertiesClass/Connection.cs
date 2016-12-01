@@ -1,26 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace generateBasePropertiesClass
 {
     public static class Connection
     {
 
-        private  const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
+        private const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
         private static string _workspaceID = ConfigurationManager.AppSettings["workspaceID"].ToString();
         private static string token = ConfigurationManager.AppSettings["token"].ToString();
-
 
         private static string GetUrl(string functionPath)
         {
             return GetBaseUrl() + functionPath;
         }
 
-        private static  string GetBaseUrl()
+        private static string GetBaseUrl()
         {
             string returnValue = null;
             if (string.IsNullOrEmpty(_baseURL))

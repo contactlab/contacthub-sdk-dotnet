@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 16/11/2016 12:30:53 */
+/* selfgenerated from version 0.0.0.1 01/12/2016 09:37:48 */
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ public class EventContextPropertyWEB: EventBaseProperty
 public class Client
 {
     public string userAgent {get;set;}
-    //format: ipv4-cidr
+    //format: ipv4
     public string ip {get;set;}
 }
 

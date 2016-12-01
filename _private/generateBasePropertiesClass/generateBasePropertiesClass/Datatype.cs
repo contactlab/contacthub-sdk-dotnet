@@ -58,6 +58,15 @@ namespace generateBasePropertiesClass
     {
         [JsonProperty("_embedded")]
         public EventPropertySchema embedded { get; set; }
+        public Page page { get; set; }
+    }
+
+    public class Page
+    {
+        public int size { get; set; }
+        public int totalElements { get; set; }
+        public int totalPages { get; set; }
+        public int number { get; set; }
     }
 
     public class EventPropertySchema
@@ -83,6 +92,7 @@ namespace generateBasePropertiesClass
     {
         [JsonProperty("_embedded")]
         public EventContextPropertySchema embedded { get; set; }
+        public Page page { get; set; }
     }
 
     public class EventContextPropertySchema

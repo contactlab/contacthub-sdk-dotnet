@@ -42,6 +42,14 @@ namespace ContactHubSdkLibrary.Test
                         type = EventTypeEnum.clickedLink,
                         context = EventContextEnum.OTHER,
                         properties = new EventPropertyClickedLink(),
+                        contextInfo=new EventContextPropertyOTHER
+                        {
+                            client=new Client()
+                            {
+                                ip="8.8.8.8",
+                                userAgent= "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
+                            }
+                        },
                         date = DateTime.Now
                     };
 
@@ -104,7 +112,7 @@ namespace ContactHubSdkLibrary.Test
                     {
                         client = new Client()
                         {
-                            ip = "192.168.1.1/16",
+                            ip = "192.168.1.1",
                             userAgent = "Mozilla"
                         }
                     };

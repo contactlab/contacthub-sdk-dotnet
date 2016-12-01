@@ -13,44 +13,45 @@ namespace generateBasePropertiesClass
         static CSharpCodeProvider cs = new CSharpCodeProvider();
         public static List<String> generatedClass = new List<string>();
 
-
         //generate classes for properties based on the basic dynamic definition obtained from / models / properties / base
         static void Main(string[] args)
         {
-            //getMandatoryFields();  //get mandatory files for workspace
             generateBaseProperties();  //generate the classes corresponding to the properties of the customer base
             generateEventProperties(); //generate the classes corresponding to properties of events
             generateEventContext();    //generate the classes corresponding to properties  in the events contextInfo field
-
+            Console.WriteLine("press key...");
+            Console.ReadKey();
         }
-
-
-        //static void getMandatoryFields()
-        //{
-        //    string jsonString = Connection.DoGetWebRequest("/configuration/nodes/entries");
-
-        //}
+      
         static void generateEventContext()
         {
             BasePropertiesItem propertiesTree = null;
-            //creates an enum with the types of context. It 'definitely a temporary procedure because it will likely go even generated its based on the format classes
-            //to be done post 17/10
-            string jsonString = Connection.DoGetWebRequest("/models/contexts?page=0&size=200");
-            if (string.IsNullOrEmpty(jsonString))
-            {
-                Console.WriteLine("Error: not valid token");
-                Console.ReadKey();
-            }
-            //get the list of contexts
-            EventContextPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventContextPropertiesSchemaRoot>(jsonString);
+            //creates an enum with the types of context. 
 
             List<String> enumList = new List<string>();
-            foreach (Context c in root.embedded.contexts)
+            List<Context> contextList = new List<Context>();
+            int currentPage = 0;
+            int totalPages = 9999;
+            while (currentPage < totalPages)
             {
-                var item = c.id;
-
-                enumList.Add(item);
+                string jsonString = Connection.DoGetWebRequest("/models/contexts?page="+currentPage);
+                if (string.IsNullOrEmpty(jsonString))
+                {
+                    Console.WriteLine("Error: not valid token");
+                    Console.ReadKey();
+                }
+                //get the list of contexts
+                EventContextPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventContextPropertiesSchemaRoot>(jsonString);
+                totalPages = root.page.totalPages;
+                foreach (Context c in root.embedded.contexts)
+                {
+                    var item = c.id;
+                    enumList.Add(item);
+                    contextList.Add(c);
+                }
+                currentPage++;
             }
+
             string outputFileStr = "";
 
             outputFileStr += "/* selfgenerated from version 0.0.0.1 " + DateTime.Now.ToString() + " */\n\n";
@@ -65,7 +66,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
 
             string contextJson = null;
-            foreach (Context ev in root.embedded.contexts)
+            foreach (Context ev in contextList) //root.embedded.contexts
             {
                 outputFileStr += "//context class '" + ev.id + "': " + ev.description;
                 if (ev.propertiesSchema != null)
@@ -157,16 +158,30 @@ namespace generateBasePropertiesClass
         static void generateEventProperties()
         {
             BasePropertiesItem propertiesTree = null;
+            Boolean go = true;
+            List<Event> list = new List<Event>();
+            int currentPage = 0;
+            int totalPages = 9999;
+            while (currentPage<totalPages)
+            {
+                //download dynamically updated based properties 
+                string jsonString = Connection.DoGetWebRequest("/configuration/events?page="+currentPage);
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    EventPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventPropertiesSchemaRoot>(jsonString);
+                    list.AddRange(root.embedded.events);
+                    totalPages = root.page.totalPages;
+                }
+                else
+                {
+                    totalPages = 0;
+                }
+                currentPage++;
+            }
 
-            //download dynamically updated based properties 
-            string jsonString = Connection.DoGetWebRequest("/configuration/events?page=0&size=200");
-
-            //obtained a list of the types of events
-
-            EventPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventPropertiesSchemaRoot>(jsonString);
             string eventJson = "";
             //scroll through the events and generates the corresponding classes
-
+            
             //generate file baseProperties.cs 
             string outputFileStr = String.Empty;
 
@@ -180,7 +195,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
             outputFileStr += "public class EventBaseProperty {}\n";
 
-            foreach (Event ev in root.embedded.events)
+            foreach (Event ev in list)
             {
 
                 outputFileStr += "/// <summary>\n";
@@ -290,6 +305,10 @@ namespace generateBasePropertiesClass
             }
             string processString = "";
 
+            if (name== "startDate")
+            {
+
+            }
             if (!dateTimeListField.Contains(name) && !dateListField.Contains(name))
             {
                 if (p.pattern != null)
@@ -301,7 +320,7 @@ namespace generateBasePropertiesClass
                 if (p.format != null) processString += "    //format: " + p.format + "\n";
                 processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             }
-            else if (dateTimeListField.Contains(name) && p.pattern!= DATEPATTERN)//is a list of specific fields ranging rendered as datetime
+            else if (dateTimeListField.Contains(name) && p.format.ToLowerInvariant().Trim()=="date-time" )//is a list of specific fields ranging rendered as datetime
             {
                 processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);
                 processString += String.Format("    public string _{0} {{get;set;}}\n", JsonUtil.fixName(name));
@@ -337,7 +356,7 @@ namespace generateBasePropertiesClass
         }
             ";
             }
-            else if (dateListField.Contains(name))//is a list of special fields that are to be rendered as dates
+            else if (dateListField.Contains(name) && p.format.ToLowerInvariant().Trim()=="date")//is a list of special fields that are to be rendered as dates
             {
 
                 processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);

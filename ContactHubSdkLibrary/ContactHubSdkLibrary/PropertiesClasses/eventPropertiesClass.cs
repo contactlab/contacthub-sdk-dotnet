@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 16/11/2016 12:30:53 */
+/* selfgenerated from version 0.0.0.1 01/12/2016 09:37:48 */
 
 using System;
 using System.Collections.Generic;
@@ -295,8 +295,13 @@ public class Amount
     public decimal shipping {get;set;}
     public decimal tax {get;set;}
     public decimal discount {get;set;}
+    public Local local {get;set;}
+}
+
+
+public class Local
+{
     public string currency {get;set;}
-    public string localCurrency {get;set;}
     public decimal exchangeRate {get;set;}
 }
 
@@ -322,6 +327,7 @@ public class Products
                 public string sku {get;set;}
     public string name {get;set;}
     public decimal price {get;set;}
+    public decimal subtotal {get;set;}
     public decimal quantity {get;set;}
     public decimal discount {get;set;}
     public decimal tax {get;set;}
@@ -637,6 +643,47 @@ public class EventPropertyCampaignUnsubscribed: EventBaseProperty
 }
 
 public enum EventPropertyCampaignUnsubscribedChannelEnum {
+	NoValue,
+	[Display(Name="SMS")]
+	SMS,
+	[Display(Name="EMAIL")]
+	EMAIL,
+	[Display(Name="PUSH")]
+	PUSH,
+	[Display(Name="FAX")]
+	FAX
+}
+/// <summary>
+/// Event class 'campaignBlacklisted': campaign blacklisted
+/// </summary>
+public class EventPropertyCampaignBlacklisted: EventBaseProperty
+{
+    public string subscriberId {get;set;}
+    public string campaignSubject {get;set;}
+    public string campaignId {get;set;}
+    public string campaignName {get;set;}
+    public List<String> campaignTags {get;set;}
+[JsonProperty("channel")]public string _channel {get;set;}
+[JsonProperty("hidden_channel")][JsonIgnore]
+                    public EventPropertyCampaignBlacklistedChannelEnum channel 
+            {
+                get
+                {
+                        EventPropertyCampaignBlacklistedChannelEnum enumValue =ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignBlacklistedChannelEnum>.GetValueFromDisplayName(_channel);
+                        return enumValue;
+                }
+                set
+                {
+                        var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignBlacklistedChannelEnum>.GetDisplayValue(value);
+                        _channel = (displayValue=="NoValue"? null : displayValue);
+                }
+            }
+                public string listId {get;set;}
+    public string listName {get;set;}
+    public dynamic extraProperties {get;set;}
+}
+
+public enum EventPropertyCampaignBlacklistedChannelEnum {
 	NoValue,
 	[Display(Name="SMS")]
 	SMS,
@@ -1002,6 +1049,8 @@ public enum EventTypeEnum {
 	campaignBounced,
 	[Display(Name="campaignUnsubscribed")]
 	campaignUnsubscribed,
+	[Display(Name="campaignBlacklisted")]
+	campaignBlacklisted,
 	[Display(Name="campaignSubscribed")]
 	campaignSubscribed,
 	[Display(Name="eventInvited")]
@@ -1081,6 +1130,8 @@ public enum EventTypeEnum {
  case "campaignbounced": return jo["properties"].ToObject<EventPropertyCampaignBounced>(serializer);break;
 
  case "campaignunsubscribed": return jo["properties"].ToObject<EventPropertyCampaignUnsubscribed>(serializer);break;
+
+ case "campaignblacklisted": return jo["properties"].ToObject<EventPropertyCampaignBlacklisted>(serializer);break;
 
  case "campaignsubscribed": return jo["properties"].ToObject<EventPropertyCampaignSubscribed>(serializer);break;
 

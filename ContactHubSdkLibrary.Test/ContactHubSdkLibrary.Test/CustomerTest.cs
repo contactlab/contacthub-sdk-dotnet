@@ -1095,21 +1095,24 @@ namespace ContactHubSdkLibrary.Test
                         isCurrent = true
                     };
                     Jobs addJob = node.AddCustomerJob(newCustomer.id, newJob, ref error);
-                    CompareLogic compareLogic = new CompareLogic();
-                    bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
-                    Thread.Sleep(1000); //wait remote update
-                    Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID, ref error);
-                    bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
-                    getJob.companyName = "Acme Inc.";
-                    Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob, ref error);
-                    bool testPassed3 = !compareLogic.Compare(newJob, updatedJob).AreEqual;
-                    compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
-                    bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
-                    //delete data
-                    bool testPassed5 = node.DeleteCustomerJob(newCustomer.id, updatedJob.id, ref error);
-                    bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
+                    if (error == null)
+                    {
+                        CompareLogic compareLogic = new CompareLogic();
+                        bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
+                        Thread.Sleep(1000); //wait remote update
+                        Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID, ref error);
+                        bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
+                        getJob.companyName = "Acme Inc.";
+                        Jobs updatedJob = node.UpdateCustomerJob(newCustomer.id, getJob, ref error);
+                        bool testPassed3 = !compareLogic.Compare(newJob, updatedJob).AreEqual;
+                        compareLogic.Config.MembersToIgnore.Add("companyName"); //ignore schoolName
+                        bool testPassed4 = compareLogic.Compare(newJob, updatedJob).AreEqual;
+                        //delete data
+                        bool testPassed5 = node.DeleteCustomerJob(newCustomer.id, updatedJob.id, ref error);
+                        bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
+                        testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
+                    }
                     Thread.Sleep(1000); //wait remote update
                 }
                 Common.WriteLog("End CustomerJobLifeCycle test", "passed:" + testPassed + "\n\n");

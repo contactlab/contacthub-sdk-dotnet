@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 16/11/2016 12:30:53 */
+/* selfgenerated from version 0.0.0.1 01/12/2016 09:37:31 */
 
 using System;
 using System.Collections.Generic;
@@ -29,8 +29,8 @@ public class BaseProperties
     public string middleName {get;set;}
 	[Display(Name="gender")]
     public string gender {get;set;}
-	[ValidatePattern(@"^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")]
 	[Display(Name="date of birth")]
+    //format: date
     public string dob {get;set;}
 	[ValidatePattern(@"^[a-z]{2}(_([a-zA-Z]{2}){1,2})?_[A-Z]{2}$")]
 	[Display(Name="the locale")]

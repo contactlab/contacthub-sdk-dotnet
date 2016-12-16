@@ -36,16 +36,18 @@ namespace ConsoleSample
             #region Example: get all customers
             if (false)
             {
-                int pageSize = 5;
+                int pageSize = 50;
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    //allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    allCustomers.AddRange(pagedCustomers.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
-                        allCustomers.AddRange(pagedCustomers._embedded.customers);
+                        //allCustomers.AddRange(pagedCustomers._embedded.customers);
+                        allCustomers.AddRange(pagedCustomers.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     }
                 }
@@ -56,16 +58,19 @@ namespace ConsoleSample
             if (false)
             {
                 allCustomers = new List<Customer>();
-                int pageSize = 5;
+                int pageSize = 50;
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    //allCustomers.AddRange(pagedCustomers._embedded.customers);
+                    allCustomers.AddRange(pagedCustomers.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+                  
                     while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error))
                     {
 
-                        allCustomers.AddRange(pagedCustomers._embedded.customers);
+                        //allCustomers.AddRange(pagedCustomers._embedded.customers);
+                        allCustomers.AddRange(pagedCustomers.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
                     }
                 }
@@ -75,7 +80,8 @@ namespace ConsoleSample
             #region Example: get single page (pageCustomer value must not be null!!!)
             if (false)
             {
-                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3, ref error);
+                bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 5, null, null, null, ref error);
+                pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 1999, ref error);
             }
             #endregion
 
@@ -204,7 +210,8 @@ namespace ConsoleSample
             {
                 currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
 
-                PostCustomer updateCustomer = pagedCustomers._embedded.customers.First();
+                //PostCustomer updateCustomer = pagedCustomers._embedded.customers.First();
+                PostCustomer updateCustomer = pagedCustomers.elements.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
                 Customer createdCustomer = currentNode.AddCustomer(updateCustomer, ref error, true);  //force update
@@ -216,7 +223,8 @@ namespace ConsoleSample
             {
                 currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
 
-                Customer updateCustomer = pagedCustomers._embedded.customers.First();
+//                Customer updateCustomer = pagedCustomers._embedded.customers.First();
+                Customer updateCustomer = pagedCustomers.elements.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
                 Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id, ref error, true);
@@ -717,7 +725,8 @@ namespace ConsoleSample
                     bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id,
                         null, null, null, null, null,
                         ref error);
-                    bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+//                    bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    bool testPassed = (pagedEvents != null && pagedEvents.elements != null &&  pagedEvents.elements.Count == 1);
                     //delete customer
                     currentNode.DeleteCustomer(newCustomer.id, ref error);
                 }
@@ -725,20 +734,22 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events (with paging)
-            if (false)
+            if (true)
             {
                 List<Event> allEvents = new List<Event>();
-                int pageSize = 20;
+                int pageSize = 3;
                 //filter by customer id (required)
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "5a0c7812-daa9-467a-b641-012d25b9cdd5", null, null, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allEvents.AddRange(pagedEvents._embedded.events);
+                    //allEvents.AddRange(pagedEvents._embedded.events);
+                    allEvents.AddRange(pagedEvents.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
-                        allEvents.AddRange(pagedEvents._embedded.events);
+                        //allEvents.AddRange(pagedEvents._embedded.events);
+                        allEvents.AddRange(pagedEvents.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
                 }
@@ -756,12 +767,14 @@ namespace ConsoleSample
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, null, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allEvents.AddRange(pagedEvents._embedded.events);
+                    //allEvents.AddRange(pagedEvents._embedded.events);
+                    allEvents.AddRange(pagedEvents.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
-                        allEvents.AddRange(pagedEvents._embedded.events);
+                        //allEvents.AddRange(pagedEvents._embedded.events);
+                        allEvents.AddRange(pagedEvents.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
                 }
@@ -779,12 +792,14 @@ namespace ConsoleSample
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", EventTypeEnum.clickedLink, EventContextEnum.OTHER, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allEvents.AddRange(pagedEvents._embedded.events);
+                    //allEvents.AddRange(pagedEvents._embedded.events);
+                    allEvents.AddRange(pagedEvents.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
-                        allEvents.AddRange(pagedEvents._embedded.events);
+                        //allEvents.AddRange(pagedEvents._embedded.events);
+                        allEvents.AddRange(pagedEvents.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
                 }
@@ -802,12 +817,14 @@ namespace ConsoleSample
                 bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", null, null, EventModeEnum.ACTIVE, null, null, ref error);
                 if (pageIsValid)
                 {
-                    allEvents.AddRange(pagedEvents._embedded.events);
+                    //allEvents.AddRange(pagedEvents._embedded.events);
+                    allEvents.AddRange(pagedEvents.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
-                        allEvents.AddRange(pagedEvents._embedded.events);
+                        //allEvents.AddRange(pagedEvents._embedded.events);
+                        allEvents.AddRange(pagedEvents.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
                 }
@@ -829,12 +846,14 @@ namespace ConsoleSample
                     );
                 if (pageIsValid)
                 {
-                    allEvents.AddRange(pagedEvents._embedded.events);
+                    //allEvents.AddRange(pagedEvents._embedded.events);
+                    allEvents.AddRange(pagedEvents.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     for (int i = 1; i < pagedEvents.page.totalPages; i++)
                     {
                         pageIsValid = currentNode.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
-                        allEvents.AddRange(pagedEvents._embedded.events);
+                        //allEvents.AddRange(pagedEvents._embedded.events);
+                        allEvents.AddRange(pagedEvents.elements);
                         Debug.Print(String.Format("Current page {0}/{1}", pagedEvents.page.number + 1, pagedEvents.page.totalPages));
                     }
 

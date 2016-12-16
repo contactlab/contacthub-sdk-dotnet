@@ -53,7 +53,7 @@ namespace ContactHubSdkLibrary.Models
             }
             set { }
         }
-        public Links _links { get; set; }
+      //  public Links _links { get; set; }
 
         /// <summary>
         /// Return PostCustomer subclass from Customer
@@ -142,9 +142,21 @@ namespace ContactHubSdkLibrary.Models
     }
     public class PagedCustomer
     {
-        public EmbeddedCustomers _embedded { get; set; }
-        public PageLink _links { get; set; }
+        //        public EmbeddedCustomers _embedded { get; set; }
+        public List<Customer> elements;
+        // public PageLink _links { get; set; }
         public Page page { get; set; }
+        [JsonIgnore]
+        public  PagedCustomerFilter filter {get;set;}  //query string for relative paging
+    }
+
+    public class PagedCustomerFilter
+    {
+        public int pageSize { get; set; }
+        public int pageNumber { get; set; }
+        public string externalId { get; set; }
+        public string query { get; set; }
+        public string fields { get; set; }
     }
 
     public class Error
@@ -153,7 +165,19 @@ namespace ContactHubSdkLibrary.Models
         public string message { get; set; }
         public string error { get; set; }
         public string status { get; set; }
-        public CustomerPageLink _links { get; set; }
+      //  public CustomerPageLink _links { get; set; }
+        public CustomerDataError data { get; set; }
+    }
+
+    public class CustomerDataError
+    {
+        public CustomerDataErrorDetail customer { get; set; }
+    }
+
+    public class CustomerDataErrorDetail
+    {
+        public string id { get; set; }
+        public string href { get; set; }
     }
 
     public class Session
@@ -170,22 +194,22 @@ namespace ContactHubSdkLibrary.Models
 
         public string id { get; set; }
         public string value { get; set; }
-        public SessionPageLink _links { get; set; }
+      //  public SessionPageLink _links { get; set; }
     }
 
-    public class EmbeddedCustomers
-    {
-        public List<Customer> customers;
-    }
-    public class EmbeddedSessions
-    {
-        public List<Session> sources;
-    }
+    //public class EmbeddedCustomers
+    //{
+    //    public List<Customer> customers;
+    //}
+    //public class EmbeddedSessions
+    //{
+    //    public List<Session> sources;
+    //}
 
-    public class EmbeddedEvents
-    {
-        public List<Event> events;
-    }
+    //public class EmbeddedEvents
+    //{
+    //    public List<Event> events;
+    //}
 
     public class _Event : Event
     {
@@ -194,7 +218,7 @@ namespace ContactHubSdkLibrary.Models
 
     public class Event : PostEvent
     {
-        public EventPageLink _links { get; set; }
+      //  public EventPageLink _links { get; set; }
         public string id { get; set; }
 
         /// <summary>

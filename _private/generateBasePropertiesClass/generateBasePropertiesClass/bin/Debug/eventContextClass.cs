@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 01/12/2016 09:37:48 */
+/* selfgenerated from version 0.0.0.1 15/12/2016 16:24:13 */
 
 using System;
 using System.Collections.Generic;
@@ -134,6 +134,13 @@ public class EventContextPropertyCONTACT_CENTER: EventBaseProperty
 }
 
 
+//context class 'IOT': Internet of Things
+public class EventContextPropertyIOT: EventBaseProperty
+{
+    public Client client {get;set;}
+}
+
+
 //context class 'OTHER': Events made in other context
 public class EventContextPropertyOTHER: EventBaseProperty
 {
@@ -159,6 +166,8 @@ public enum EventContextEnum {
 	DIGITALCAMPAIGN,
 	[Display(Name="CONTACT_CENTER")]
 	CONTACTCENTER,
+	[Display(Name="IOT")]
+	IOT,
 	[Display(Name="OTHER")]
 	OTHER
 }
@@ -186,6 +195,8 @@ public enum EventContextEnum {
  case "digital_campaign": return jo["contextInfo"].ToObject<EventContextPropertyDIGITAL_CAMPAIGN > (serializer);break;
 
  case "contact_center": return jo["contextInfo"].ToObject<EventContextPropertyCONTACT_CENTER > (serializer);break;
+
+ case "iot": return jo["contextInfo"].ToObject<EventContextPropertyIOT > (serializer);break;
 
  case "other": return jo["contextInfo"].ToObject<EventContextPropertyOTHER > (serializer);break;
 

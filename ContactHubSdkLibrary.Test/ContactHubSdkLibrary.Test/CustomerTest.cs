@@ -633,7 +633,7 @@ namespace ContactHubSdkLibrary.Test
 
         public void C_Paging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
         {
-            Common.WriteLog("Start CustomerPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID + " maxCustomer:" + maxCustomers);
+            Common.WriteLog("Start C_Paging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID + " maxCustomer:" + maxCustomers);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             bool testPassed = false;
@@ -684,7 +684,7 @@ namespace ContactHubSdkLibrary.Test
                     }
                     totalItem++;
                 }
-                Thread.Sleep(1000); //wait for remote db update
+                Thread.Sleep(2000); //wait for remote db update
                 int expectedPages = totalItem / pageSize;
                 if (totalItem % pageSize != 0) expectedPages++;
 
@@ -698,12 +698,30 @@ namespace ContactHubSdkLibrary.Test
                     testPassed3 = true;
                     for (int i = 1; i < pagedCustomers.page.totalPages; i++)
                     {
-                        testPassed3 = testPassed3 || node.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
+                        testPassed3 = testPassed3 && node.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
                         totPage++;
                     }
                 }
                 //test total pages
                 bool testPassed1 = (totPage == expectedPages);
+
+
+                //reverse paging
+                bool testPassed5 = false;
+                pageIsValid = node.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
+                pageIsValid = node.GetCustomers(ref pagedCustomers, PageRefEnum.last, ref error);
+                if (pageIsValid)
+                {
+                    totPage = pagedCustomers.page.totalPages;
+                    testPassed5 = true;
+                    for (int i = pagedCustomers.page.totalPages -1;i>0 ; i--)
+                    {
+                        testPassed5 = testPassed5 && node.GetCustomers(ref pagedCustomers, PageRefEnum.previous, ref error);
+                        totPage--;
+                    }
+                }
+                bool testPassed6 = (totPage == 1);
+                Common.WriteLog("pageSize|totalItem|totPage|expectedPageg:",pageSize +  "|"  + totalItem + "|"+ totPage + "|" + expectedPages+ "\n\n");
                 bool testPassed2 = true;
                 if (!testPassed1)
                 {
@@ -719,15 +737,15 @@ namespace ContactHubSdkLibrary.Test
                     testPassed2 = testPassed2 && node.DeleteCustomer(s, ref error);
                 }
 
-                testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
-
+                testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 & testPassed6;
+                Common.WriteLog("result:", testPassed1+ "," + testPassed2 + "," + testPassed3 + "," + testPassed4 + "," + testPassed5 + "," + testPassed5+  "\n\n");
             }
             else
             {
 
             }
 
-            Common.WriteLog("End CustomerPaging test", "passed:" + testPassed + "\n\n");
+            Common.WriteLog("End C_Paging test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
@@ -838,9 +856,10 @@ namespace ContactHubSdkLibrary.Test
                                         }";
                     node.GetCustomers(ref pagedCustomers, 10, null, querySTR, null, ref error);
 
-                    if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
+                    //if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
+                    if (pagedCustomers.elements != null)
                     {
-                        Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
+                        Customer myTestCustomer1 = pagedCustomers.elements.First();
                         //compare source data
                         //  bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
                         CompareLogic compareLogic = new CompareLogic();
@@ -902,11 +921,10 @@ namespace ContactHubSdkLibrary.Test
                     qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = newCustomer.id });
                     node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null, ref error);
 
-                    if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null)
+                    if (pagedCustomers.elements != null && pagedCustomers.elements != null)
                     {
-                        Customer myTestCustomer1 = pagedCustomers._embedded.customers.First();
+                        Customer myTestCustomer1 = pagedCustomers.elements.First();
                         //compare source data
-                        //                        bool testPassed1 = Util.Compare<Customer>(myTestCustomer1, newCustomer, new List<String>() { "extra" });
                         CompareLogic compareLogic = new CompareLogic();
                         compareLogic.Config.MembersToIgnore.Add("extra");
                         bool testPassed1 = compareLogic.Compare(myTestCustomer1, newCustomer).AreEqual;

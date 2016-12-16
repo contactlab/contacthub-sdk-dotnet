@@ -1,6 +1,7 @@
 ﻿using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -101,7 +102,7 @@ namespace ContactHubSdkLibrary.Models
                 }
                 else
                 {
-                    return Convert.ToDateTime(_date,new CultureInfo("en-US")).ToUniversalTime();                    
+                    return Convert.ToDateTime(_date, new CultureInfo("en-US")).ToUniversalTime();
                 }
             }
             set
@@ -116,9 +117,24 @@ namespace ContactHubSdkLibrary.Models
     }
     public class PagedEvent
     {
-        public EmbeddedEvents _embedded { get; set; }
-        public PageLink _links { get; set; }
+        // public EmbeddedEvents _embedded { get; set; }
+        public List<Event> elements;
+        //    public PageLink _links { get; set; }
         public Page page { get; set; }
+        [JsonIgnore]
+        public PagedEventFilter filter { get; set; }  //query string for relative paging
+    }
+
+    public class PagedEventFilter
+    {
+        public int pageSize { get; set; }
+        public int pageNumber { get; set; }
+        public string customerID { get; set; }
+        public EventTypeEnum? type { get; set; }
+        public EventContextEnum? context { get; set; }
+        public EventModeEnum? mode { get; set; }
+        public DateTime? dateFrom { get; set; }
+        public DateTime? dateTo { get; set; }
     }
 
 

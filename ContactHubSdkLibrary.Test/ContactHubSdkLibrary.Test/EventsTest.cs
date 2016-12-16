@@ -64,9 +64,10 @@ namespace ContactHubSdkLibrary.Test
                     PagedEvent events=null;
                     bool tmp = node.GetEvents(ref events, 1, newCustomer.id, null, null, null, null, null, ref error);
                     bool testPassed2 = false;
-                    if (events._embedded!=null && events._embedded.events.Count==1)
+                    //if (events._embedded!=null && events._embedded.events.Count==1)
+                    if (events.elements != null && events.elements.Count == 1)
                     {
-                        Event firstEvent = events._embedded.events.First();
+                        Event firstEvent = events.elements.First();//events._embedded.events.First();
                         PostEvent firstPostEvent = firstEvent.ToPostEvent();
                         CompareLogic compareLogic = new CompareLogic();
                         ComparisonResult compare = compareLogic.Compare(firstPostEvent, newEvent);
@@ -136,8 +137,10 @@ namespace ContactHubSdkLibrary.Test
                     //get events
                     PagedEvent pagedEvents = null;
                     bool pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null, ref error);
-                    bool testPassed2 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
-                    Event addedEvent = pagedEvents._embedded.events.First();
+                    //bool testPassed2 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    bool testPassed2 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
+                    Event addedEvent = pagedEvents.elements.First();
+//                    Event addedEvent = pagedEvents._embedded.events.First();
                     PostEvent addedPostEvent = addedEvent.ToPostEvent();  //scale to subclass
                     CompareLogic compareLogic = new CompareLogic();
                     ComparisonResult compare = compareLogic.Compare(addedPostEvent, newEvent);
@@ -215,7 +218,8 @@ namespace ContactHubSdkLibrary.Test
                     //test reconciliation: get events
                     PagedEvent pagedEvents = null;
                     bool pageIsValid = node.GetEvents(ref pagedEvents, 10, customerID, null, null, null, null, null, ref error);
-                    bool testPassed4 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    //bool testPassed4 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    bool testPassed4 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
                     //delete customer
                     bool testPassed5 = node.DeleteCustomer(updatedCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -275,7 +279,8 @@ namespace ContactHubSdkLibrary.Test
                     bool pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id,
                         null, null, null, null, null,
                         ref error);
-                    bool testPassed4 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    //bool testPassed4 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    bool testPassed4 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
                     //delete customer
                     bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
@@ -298,7 +303,7 @@ namespace ContactHubSdkLibrary.Test
         [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 250, true)]
         public void E_EventPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxEvents, bool tpResult)
         {
-            Common.WriteLog("Start EventPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
+            Common.WriteLog("Start E_EventPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
             PostCustomer newPostCustomer = createTestPostCustomer(tpNodeID);
@@ -309,7 +314,7 @@ namespace ContactHubSdkLibrary.Test
                 //wait for elastic update
                 Thread.Sleep(1000);
                 bool testPassed1 = true;
-                int pageSize = 10;
+                int pageSize = 5;
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     int totalItem = 0;
@@ -330,7 +335,7 @@ namespace ContactHubSdkLibrary.Test
                             totalItem++;
                         }
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     //get pages
                     int expectedPages = totalItem / pageSize;
                     if (totalItem % pageSize != 0) expectedPages++;
@@ -345,11 +350,26 @@ namespace ContactHubSdkLibrary.Test
                         testPassed3 = true;
                         for (int i = 1; i < pagedEvents.page.totalPages; i++)
                         {
-                            testPassed3 = testPassed3 || node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
+                            testPassed3 = testPassed3 && node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                             totPage++;
                         }
                     }
                     bool testPassed4 = totPage == pagedEvents.page.totalPages;
+                    //reverse paging
+                    pageIsValid = node.GetEvents(ref pagedEvents, pageSize, newCustomer.id, null, null, null, null, null, ref error);
+                    pageIsValid= node.GetEvents(ref pagedEvents, PageRefEnum.last, ref error); //get last page
+                    bool testPassed9 = false;
+                    if (pageIsValid)
+                    {
+                        totPage = pagedEvents.page.totalPages;
+                        testPassed9 = true;
+                        for (int i = pagedEvents.page.totalPages-1; i>0 ; i--)
+                        {
+                            testPassed9 = testPassed9 && node.GetEvents(ref pagedEvents, PageRefEnum.previous, ref error);
+                            totPage--;
+                        }
+                    }
+                    bool testPassed10 = totPage == 1;
                     //test filter
                     pagedEvents = null;
                     pageIsValid = node.GetEvents(ref pagedEvents, pageSize, newCustomer.id,
@@ -357,7 +377,6 @@ namespace ContactHubSdkLibrary.Test
                         EventModeEnum.ACTIVE, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1),
                         ref error);
                     bool testPassed6 = expectedPages == pagedEvents.page.totalPages && totalItem == pagedEvents.page.totalElements;
-
                     bool testPassed7 = false;
                     totPage = 1;
                     if (pageIsValid)
@@ -365,23 +384,20 @@ namespace ContactHubSdkLibrary.Test
                         testPassed7 = true;
                         for (int i = 1; i < pagedEvents.page.totalPages; i++)
                         {
-                            testPassed7 = testPassed7 || node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
+                            testPassed7 = testPassed7 &&  node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                             totPage++;
                         }
                     }
                     bool testPassed8 = totPage == pagedEvents.page.totalPages;
-
                     //delete customer
                     bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
-
-                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6 && testPassed7 && testPassed8;
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6 && testPassed7 && testPassed8 && testPassed9 && testPassed10;
                 }
             }
-            Common.WriteLog("End EventPaging test", "passed:" + testPassed + "\n\n");
+            Common.WriteLog("End E_EventPaging test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Const.TIMEEXIT); //wait
         }
-
 
         /// <summary>
         /// Get test node

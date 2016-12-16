@@ -3,6 +3,7 @@ using ContactHubSdkLibrary.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.Net;
 
 namespace ContactHubSdkLibrary.SDKclasses
@@ -51,7 +52,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (pagedEvent == null)
                 return false;
             else
-                return GetEvents(ref pagedEvent, page, pagedEvent.page.size, 0, null, null, null, null, null, null, ref error);
+            {
+                return GetEvents(ref pagedEvent, page, pagedEvent.page.size, 0,null, null, null, null, null, null, ref error);
+            }
         }
         /// <summary>
         /// Get other customers pages specifying the page number
@@ -64,6 +67,50 @@ namespace ContactHubSdkLibrary.SDKclasses
                 return GetEvents(ref pagedEvent, PageRefEnum.none, pagedEvent.page.size, pageNumber, null, null, null, null, null, null, ref error);
         }
 
+        /// <summary>
+        /// Create query string for get events
+        /// </summary>
+        private string GetEventsGetQueryString(
+            string _node, string customerID, EventTypeEnum? type,
+            EventContextEnum? context, EventModeEnum? mode,
+            DateTime? dateFrom, DateTime? dateTo, int pageSize, int pageNumber)
+        {
+            string querySTR = String.Format("/events?nodeId={0}", _node);
+            /* crea la stringa */
+            if (!string.IsNullOrEmpty(customerID))
+            {
+                querySTR += String.Format("&customerId={0}", WebUtility.UrlEncode(customerID));
+            }
+            if (type != null)
+            {
+                string displayValue = ContactHubSdkLibrary.EnumHelper<EventTypeEnum>.GetDisplayValue((EventTypeEnum)type);
+                querySTR += String.Format("&type={0}", WebUtility.UrlEncode(displayValue));
+            }
+            if (context != null)
+            {
+                string displayValue = ContactHubSdkLibrary.EnumHelper<EventContextEnum>.GetDisplayValue((EventContextEnum)context);
+                querySTR += String.Format("&context={0}", WebUtility.UrlEncode(displayValue));
+            }
+            if (mode != null)
+            {
+                string displayValue = ContactHubSdkLibrary.EnumHelper<EventModeEnum>.GetDisplayValue((EventModeEnum)mode);
+                querySTR += String.Format("&mode={0}", WebUtility.UrlEncode(displayValue));
+            }
+            if (dateFrom != null)
+            {
+                string dateStr = Common.ConvertToIso8601Date(((DateTime)dateFrom));
+                querySTR += String.Format("&dateFrom={0}", WebUtility.UrlEncode(dateStr));
+            }
+            if (dateTo != null)
+            {
+                string dateStr = Common.ConvertToIso8601Date(((DateTime)dateTo));
+                querySTR += String.Format("&dateTo={0}", WebUtility.UrlEncode(dateStr));
+            }
+            querySTR += String.Format("&size={0}", pageSize);
+            querySTR += String.Format("&page={0}", pageNumber);
+            return querySTR;
+
+        }
         private bool GetEvents(ref PagedEvent pagedEvent, PageRefEnum page,
             int pageSize,
             int pageNumber,
@@ -81,44 +128,85 @@ namespace ContactHubSdkLibrary.SDKclasses
             - dateFrom: From datetime for search of event
             - dateTo: To datetime for search of event
             */
-
+            string querySTR = "";
+            string jsonResponse = "";
+            PagedEventFilter filter = null;
             if (pagedEvent == null && page == PageRefEnum.first)
             {
-                string querySTR = String.Format("/events?nodeId={0}", _node);
-                /* crea la stringa */
-                if (!string.IsNullOrEmpty(customerID))
+                querySTR = GetEventsGetQueryString(_node, customerID, type, context, mode, dateFrom, dateTo, pageSize, 0); //get first page
+                //save filter for next calls
+                filter = new PagedEventFilter()
                 {
-                    querySTR += String.Format("&customerId={0}", WebUtility.UrlEncode(customerID));
-                }
-                if (type != null)
-                {
-                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventTypeEnum>.GetDisplayValue((EventTypeEnum)type);
-                    querySTR += String.Format("&type={0}", WebUtility.UrlEncode(displayValue));
-                }
-                if (context != null)
-                {
-                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventContextEnum>.GetDisplayValue((EventContextEnum)context);
-                    querySTR += String.Format("&context={0}", WebUtility.UrlEncode(displayValue));
-                }
-                if (mode != null)
-                {
-                    string displayValue = ContactHubSdkLibrary.EnumHelper<EventModeEnum>.GetDisplayValue((EventModeEnum)mode);
-                    querySTR += String.Format("&mode={0}", WebUtility.UrlEncode(displayValue));
-                }
-                if (dateFrom != null)
-                {
-                    string dateStr = Common.ConvertToIso8601Date(((DateTime)dateFrom));
-                    querySTR += String.Format("&dateFrom={0}", WebUtility.UrlEncode(dateStr));
-                }
-                if (dateTo != null)
-                {
-                    string dateStr = Common.ConvertToIso8601Date(((DateTime)dateTo));
-                    querySTR += String.Format("&dateTo={0}", WebUtility.UrlEncode(dateStr));
-                }
-                querySTR += String.Format("&size={0}", pageSize);
-                querySTR += String.Format("&page={0}", 0); //first page
+                    customerID = customerID,
+                    type = type,
+                    context = context,
+                    mode = mode,
+                    dateFrom = dateFrom,
+                    dateTo = dateTo,
+                    pageSize = pageSize,
+                    pageNumber = pageNumber
+                };
+            }
+            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
+            {
+                //restore previous filter
+                filter = pagedEvent.filter;
+                //get total customers
+                int totEvents = pagedEvent.page.totalElements;
+                int totPages = pagedEvent.page.totalPages;
+                int targetPage = 0;
 
-                string jsonResponse = DoGetWebRequest(querySTR);
+                switch (page)
+                {
+                    case PageRefEnum.first:
+                        targetPage = 0;
+                        break;
+                    case PageRefEnum.last:
+                        targetPage = totPages - 1;
+                        break;
+                    case PageRefEnum.next:
+                        if (pagedEvent.page.number < totPages)
+                        {
+                            targetPage = pagedEvent.page.number + 1;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    case PageRefEnum.previous:
+                        if (pagedEvent.page.number > 0)
+                        {
+                            targetPage = pagedEvent.page.number - 1;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    default:
+                        targetPage = 0;
+                        break;
+                }
+                querySTR = GetEventsGetQueryString(_node,filter.customerID, filter.type, filter.context, filter.mode, filter.dateFrom, filter.dateTo, filter.pageSize, targetPage); 
+            }
+            else if (page == PageRefEnum.none) //get specific page number
+            {
+                //restore previous filter
+                filter = pagedEvent.filter;
+                //if page number is not valid, return current pagecustomer with error
+                if (pageNumber < 0 || pageNumber >= pagedEvent.page.totalPages)
+                {
+                    return false; //return invalid page
+                }
+                querySTR = GetEventsGetQueryString(_node, filter.customerID, filter.type, filter.context, filter.mode, filter.dateFrom, filter.dateTo, filter.pageSize, pageNumber);
+            }
+
+            if (!string.IsNullOrEmpty(querySTR))
+            {
+                Debug.Print(querySTR);
+
+                jsonResponse = DoGetWebRequest(querySTR);
                 Common.WriteLog("-> GetEvents() get data:", "querystring:" + querySTR);
                 Common.WriteLog("<- GetEvents() return data:", jsonResponse);
 
@@ -128,6 +216,8 @@ namespace ContactHubSdkLibrary.SDKclasses
                     if (error == null)
                     {
                         pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse, new EventPropertiesJsonConverter());
+                        //save current filter for next calls
+                        pagedEvent.filter = filter;
                     }
                     else
                     {
@@ -135,102 +225,14 @@ namespace ContactHubSdkLibrary.SDKclasses
                         return false;
                     }
                 }
-                if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
+                // if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
+                if (pagedEvent.elements == null) return false;
                 return true;
             }
-            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
+            else
             {
-                //in these cases the link also contains the applied filters previously
-                string otherPageUrl = null;
-                switch (page)
-                {
-                    case PageRefEnum.first:
-                        otherPageUrl = pagedEvent._links.first.href;
-                        break;
-                    case PageRefEnum.last:
-                        otherPageUrl = pagedEvent._links.last.href;
-                        break;
-                    case PageRefEnum.next:
-                        if (pagedEvent._links.next != null)
-                        {
-                            otherPageUrl = pagedEvent._links.next.href;
-                        }
-                        else
-                        {
-                            return false; //return not valid page
-                        }
-                        break;
-                    case PageRefEnum.previous:
-                        if (pagedEvent._links.prev != null)
-                        {
-                            otherPageUrl = pagedEvent._links.prev.href;
-                        }
-                        else
-                        {
-                            return false; //return not valid page
-                        }
-                        break;
-                    default:
-                        otherPageUrl = pagedEvent._links.first.href;
-                        break;
-                }
-                //calls the link that represents the other page, as previously returned by ContactLab
-                string jsonResponse = DoGetWebRequest(otherPageUrl, false);
-                Common.WriteLog("-> GetEvents() get data:", "querystring:" + otherPageUrl);
-                Common.WriteLog("<- GetEvents() return data:", jsonResponse);
-
-                if (jsonResponse != null)
-                {
-                    error = Common.ResponseIsError(jsonResponse);
-                    if (error == null)
-                    {
-                        pagedEvent = JsonConvert.DeserializeObject<PagedEvent>(jsonResponse);
-                    }
-                    else
-                    {
-                        pagedEvent = null;
-                        return false;
-                    }
-                }
-                if (pagedEvent._embedded == null || pagedEvent._embedded.events == null) return false;
-                return true;
+                return false; //return invalid page
             }
-            else if (page == PageRefEnum.none)
-            {
-                //this is a specific page number. You can get specific page link replacing page number from 'self' link.
-                string currentUrl = pagedEvent._links.self.href;
-
-                //if page number is not valid, return current pagecustomer with error
-                if (pageNumber < 0 || pageNumber >= pagedEvent.page.totalPages)
-                {
-                    return false; //return invalid page
-                }
-                Uri currentUri = new Uri(currentUrl);
-                string currentQuery = currentUri.Query;
-                if (currentQuery.StartsWith("?"))
-                {
-                    currentQuery = currentQuery.Substring(1);
-                }
-                string[] currentParameters = currentQuery.Split('&');
-                currentQuery = "";
-                bool isFirst = true;
-                foreach (string param in currentParameters)
-                {
-                    if (!param.StartsWith("page="))
-                    {
-                        currentQuery += String.Format("{0}{1}", (isFirst ? "?" : "&"), param);
-
-                    }
-                    else
-                    {
-                        currentQuery += String.Format("{0}{1}{2}", (isFirst ? "?" : "&"), "page=", pageNumber);
-                    }
-                    isFirst = false;
-                }
-
-                return true; //return valid page
-            }
-            return false; //return invalid page
         }
 
         /// <summary>

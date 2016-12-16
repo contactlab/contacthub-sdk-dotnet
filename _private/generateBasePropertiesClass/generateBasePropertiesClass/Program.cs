@@ -30,11 +30,11 @@ namespace generateBasePropertiesClass
 
             List<String> enumList = new List<string>();
             List<Context> contextList = new List<Context>();
-            int currentPage = 0;
-            int totalPages = 9999;
-            while (currentPage < totalPages)
+  //          int currentPage = 1;
+//            int totalPages = 9999;
+    //        while (currentPage < totalPages)
             {
-                string jsonString = Connection.DoGetWebRequest("/models/contexts?page="+currentPage);
+                string jsonString = Connection.DoGetWebRequest("/models/contexts"); //?page="+currentPage);
                 if (string.IsNullOrEmpty(jsonString))
                 {
                     Console.WriteLine("Error: not valid token");
@@ -42,14 +42,15 @@ namespace generateBasePropertiesClass
                 }
                 //get the list of contexts
                 EventContextPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventContextPropertiesSchemaRoot>(jsonString);
-                totalPages = root.page.totalPages;
-                foreach (Context c in root.embedded.contexts)
+                //                totalPages = root.page.totalPages;
+                //   foreach (Context c in root.embedded.contexts)
+                foreach (Context c in root.elements)
                 {
                     var item = c.id;
                     enumList.Add(item);
                     contextList.Add(c);
                 }
-                currentPage++;
+  //              currentPage++;
             }
 
             string outputFileStr = "";
@@ -169,7 +170,8 @@ namespace generateBasePropertiesClass
                 if (!string.IsNullOrEmpty(jsonString))
                 {
                     EventPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventPropertiesSchemaRoot>(jsonString);
-                    list.AddRange(root.embedded.events);
+                    //list.AddRange(root.embedded.elements);
+                    list.AddRange(root.elements);
                     totalPages = root.page.totalPages;
                 }
                 else

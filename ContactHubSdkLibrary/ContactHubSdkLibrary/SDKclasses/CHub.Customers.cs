@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 
@@ -48,6 +49,30 @@ namespace ContactHubSdkLibrary.SDKclasses
                 return GetCustomers(ref pagedCustomer, PageRefEnum.none, pagedCustomer.page.size, pageNumber, null, null, null, ref error);
         }
 
+
+        /// <summary>
+        /// Create query string for get customers
+        /// </summary>
+        private string GetCustomersGetQueryString(string _node,string externalId,string query,string fields,int pageSize,int pageNumber)
+        {
+            string querySTR = String.Format("/customers?nodeId={0}", _node);
+            if (!string.IsNullOrEmpty(externalId))
+            {
+                querySTR += String.Format("&externalId={0}", WebUtility.UrlEncode(externalId));
+            }
+            if (!string.IsNullOrEmpty(query))
+            {
+                querySTR += String.Format("&query={0}", WebUtility.UrlEncode(query));
+            }
+            if (!string.IsNullOrEmpty(fields))
+            {
+                querySTR += String.Format("&fields={0}", WebUtility.UrlEncode(fields));
+            }
+            querySTR += String.Format("&size={0}", pageSize);
+            querySTR += String.Format("&page={0}", pageNumber); 
+            return querySTR;
+        }
+
         private bool GetCustomers(ref PagedCustomer pagedCustomer, PageRefEnum page, int pageSize, int pageNumber, string externalId, string query, string fields, ref Error error)
         {
             /* parameters:            
@@ -56,25 +81,83 @@ namespace ContactHubSdkLibrary.SDKclasses
              * query: Query for filter the customers Required: No	
              * fields: Comma - separated list of properties to include in the response  Required:No
              */
+            string querySTR = "";
+            string jsonResponse = "";
+            PagedCustomerFilter filter = null;
 
             if (pagedCustomer == null && page == PageRefEnum.first)
             {
-                string querySTR = String.Format("/customers?nodeId={0}", _node);
-                if (!string.IsNullOrEmpty(externalId))
+                 querySTR = GetCustomersGetQueryString(_node, externalId, query, fields, pageSize, 0); //get first page
+                //save filter for next call
+                filter = new PagedCustomerFilter()
                 {
-                    querySTR += String.Format("&externalId={0}", WebUtility.UrlEncode(externalId));
-                }
-                if (!string.IsNullOrEmpty(query))
+                    externalId = externalId,
+                    fields = fields,
+                    pageNumber = pageNumber,
+                    pageSize = pageSize,
+                    query = query
+                };
+            }
+            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
+            {
+                //restore filter parameters
+                filter = pagedCustomer.filter;
+                //get total customers
+                int totCustomer = pagedCustomer.page.totalElements;
+                int totPages = pagedCustomer.page.totalPages;
+                int targetPage = 0;
+                //in these cases the link also contains the applied filters previously
+                //string otherPageUrl = null;
+                switch (page)
                 {
-                    querySTR += String.Format("&query={0}", WebUtility.UrlEncode(query));
+                    case PageRefEnum.first:
+                        targetPage = 0;
+                        break;
+                    case PageRefEnum.last:
+                        targetPage = totPages - 1;
+                        break;
+                    case PageRefEnum.next:
+                        if (pagedCustomer.page.number < totPages)
+                        {
+                            targetPage =pagedCustomer.page.number+1;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    case PageRefEnum.previous:
+                        if (pagedCustomer.page.number > 0)
+                        {
+                            targetPage = pagedCustomer.page.number - 1;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        break;
+                    default:
+                        targetPage = 0;
+                        break;
                 }
-                if (!string.IsNullOrEmpty(fields))
+                 querySTR = GetCustomersGetQueryString(_node, filter.externalId, filter.query, filter.fields, filter.pageSize, targetPage); 
+            }
+            else if (page == PageRefEnum.none) //get specific page number
+            {
+                //restore filter parameters
+                filter = pagedCustomer.filter;
+
+                //if the page number is invalid, the page returns an error and the current customer
+                if (pageNumber < 0 || pageNumber >= pagedCustomer.page.totalPages)
                 {
-                    querySTR += String.Format("&fields={0}", WebUtility.UrlEncode(fields));
+                    return false; //return invalid page
                 }
-                querySTR += String.Format("&size={0}", pageSize);
-                querySTR += String.Format("&page={0}", 0); //first page
-                string jsonResponse = DoGetWebRequest(querySTR);
+                querySTR = GetCustomersGetQueryString(_node, filter.externalId, filter.query, filter.fields, filter.pageSize, pageNumber); 
+            }
+            if (!string.IsNullOrEmpty(querySTR))
+            {
+                Debug.Print(querySTR);
+                jsonResponse = DoGetWebRequest(querySTR);
                 Common.WriteLog("-> GetCustomers() get data:", "querystring:" + querySTR);
                 Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
                 if (jsonResponse != null)
@@ -83,6 +166,8 @@ namespace ContactHubSdkLibrary.SDKclasses
                     if (error == null)
                     {
                         pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
+                        //save current filter parameters
+                        pagedCustomer.filter = filter;
                     }
                     else
                     {
@@ -90,104 +175,15 @@ namespace ContactHubSdkLibrary.SDKclasses
                         return false;
                     }
                 }
-                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
+                //if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
+                if (pagedCustomer.elements == null || pagedCustomer.elements == null) return false;
 
                 return true;
             }
-            else if (page != PageRefEnum.none)  //relative page first|last|next|prev
+            else
             {
-                //in these cases the link also contains the applied filters previously
-                string otherPageUrl = null;
-                switch (page)
-                {
-                    case PageRefEnum.first:
-                        otherPageUrl = pagedCustomer._links.first.href;
-                        break;
-                    case PageRefEnum.last:
-                        otherPageUrl = pagedCustomer._links.last.href;
-                        break;
-                    case PageRefEnum.next:
-                        if (pagedCustomer._links.next != null)
-                        {
-                            otherPageUrl = pagedCustomer._links.next.href;
-                        }
-                        else
-                        {
-                            return false; //return invalid page
-                        }
-                        break;
-                    case PageRefEnum.previous:
-                        if (pagedCustomer._links.prev != null)
-                        {
-                            otherPageUrl = pagedCustomer._links.prev.href;
-                        }
-                        else
-                        {
-                            return false; //return invalid page
-                        }
-                        break;
-                    default:
-                        otherPageUrl = pagedCustomer._links.first.href;
-                        break;
-                }
-                //calls the link that represents the other page, as previously returned by Contacthub
-                string jsonResponse = DoGetWebRequest(otherPageUrl, false);
-                Common.WriteLog("-> GetCustomers() get data:", "querystring:" + otherPageUrl);
-                Common.WriteLog("<- GetCustomers() return data:", jsonResponse);
-                if (jsonResponse != null)
-                {
-                    error = Common.ResponseIsError(jsonResponse);
-                    if (error == null)
-                    {
-                        pagedCustomer = JsonConvert.DeserializeObject<PagedCustomer>(jsonResponse);
-                    }
-                    else
-                    {
-                        pagedCustomer = null;
-                        return false;
-                    }
-                }
-                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
-
-                return true;
+                return false;
             }
-            else if (page == PageRefEnum.none)
-            {
-                //is a specific page number. You can get the link simply by replacing the page number from 'self' link
-                string currentUrl = pagedCustomer._links.self.href;
-
-                //if the page number is invalid, the page returns an error and the current customer
-                if (pageNumber < 0 || pageNumber >= pagedCustomer.page.totalPages)
-                {
-                    return false; //return invalid page
-                }
-
-                Uri currentUri = new Uri(currentUrl);
-                string currentQuery = currentUri.Query;
-                if (currentQuery.StartsWith("?"))
-                {
-                    currentQuery = currentQuery.Substring(1);
-                }
-                string[] currentParameters = currentQuery.Split('&');
-                currentQuery = "";
-                bool isFirst = true;
-                foreach (string param in currentParameters)
-                {
-                    if (!param.StartsWith("page="))
-                    {
-                        currentQuery += String.Format("{0}{1}", (isFirst ? "?" : "&"), param);
-                    }
-                    else
-                    {
-                        currentQuery += String.Format("{0}{1}{2}", (isFirst ? "?" : "&"), "page=", pageNumber);
-                    }
-                    isFirst = false;
-                }
-                if (pagedCustomer._embedded == null || pagedCustomer._embedded.customers == null) return false;
-
-                return true; //return valid page
-            }
-            return false; //return invalid page
         }
 
 
@@ -228,8 +224,9 @@ namespace ContactHubSdkLibrary.SDKclasses
             if (isError && forceUpdate && statusCode != null && statusCode.Trim()=="409")
             {
                 //convert postcustomer in customer
-                string[] links = error._links.customer.href.Split('/');
-                string existingID = links[links.Length - 1];
+                //string[] links = error._links.customer.href.Split('/');
+                //string existingID = links[links.Length - 1];
+                string existingID = error.data.customer.id;
                 Customer c = Common.CreateObject<Customer>(customer);
                 c.id = existingID;
                 postData = JsonConvert.SerializeObject(c, settings);
@@ -294,9 +291,11 @@ namespace ContactHubSdkLibrary.SDKclasses
             //get customers filtered by external ID
             GetCustomers(ref pagedCustomers, 1, externalID, null, null, ref error);
 
-            if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
+            //if (pagedCustomers._embedded != null && pagedCustomers._embedded.customers != null && pagedCustomers._embedded.customers.Count > 0)
+
+            if (pagedCustomers.elements != null && pagedCustomers.elements.Count > 0)
             {
-                returnValue = pagedCustomers._embedded.customers;
+                returnValue = pagedCustomers.elements; //pagedCustomers._embedded.customers;
             }
             else
             {

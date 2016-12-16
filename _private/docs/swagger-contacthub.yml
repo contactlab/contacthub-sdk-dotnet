@@ -125,20 +125,12 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  baseProperties:
-                    description: the list of base properties
-                    type: array
-                    items:
-                      $ref: '#/definitions/BasePropertyConfiguration'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of base properties
+                type: array
+                items:
+                  $ref: '#/definitions/BasePropertyConfiguration'
+
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -278,7 +270,6 @@ paths:
           },
           ........
         }
-
         ```
       parameters:
         - name: id-workspace
@@ -376,20 +367,13 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  entryNodes:
-                    description: the list of node
-                    type: array
-                    items:
-                      $ref: '#/definitions/EntryNodeConfiguration'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of node
+                type: array
+                items:
+                  $ref: '#/definitions/EntryNodeConfiguration'
+              page:
+                  $ref: '#/definitions/Page'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -467,7 +451,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/PutEntryNodeConfiguration'
+            $ref: '#/definitions/EntryNodeConfiguration'
       security:
          - Bearer: []
       responses:
@@ -497,20 +481,13 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  viewNodes:
-                    description: the list of node view
-                    type: array
-                    items:
-                      $ref: '#/definitions/ViewNodeConfiguration'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of node view
+                type: array
+                items:
+                  $ref: '#/definitions/ViewNodeConfiguration'
+              page:
+                $ref: '#/definitions/Page'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -534,7 +511,7 @@ paths:
       security:
          - Bearer: []
       responses:
-        '200':
+        '201':
           description: Successful response
           schema:
             $ref: '#/definitions/ViewNodeConfiguration'
@@ -588,7 +565,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/PutViewNodeConfiguration'
+            $ref: '#/definitions/ViewNodeConfiguration'
       security:
          - Bearer: []
       responses:
@@ -691,20 +668,13 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  sources:
-                    description: the list of source configuration
-                    type: array
-                    items:
-                      $ref: '#/definitions/SourceConfiguration'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of source configuration
+                type: array
+                items:
+                  $ref: '#/definitions/SourceConfiguration'
+              page:
+                $ref: '#/definitions/Page'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -861,20 +831,13 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  events:
-                    description: the list of event
-                    type: array
-                    items:
-                      $ref: '#/definitions/EventConfiguration'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of event
+                type: array
+                items:
+                  $ref: '#/definitions/EventConfiguration'
+              page:
+                $ref: '#/definitions/Page'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -925,7 +888,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/PutEventConfiguration'
+            $ref: '#/definitions/EventConfiguration'
       security:
          - Bearer: []
       responses:
@@ -1009,16 +972,11 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  users:
-                    description: the list of user
-                    type: array
-                    items:
-                      $ref: '#/definitions/User'
-              _links:
-                $ref: '#/definitions/PageLink'
+              elements:
+                description: the list of user
+                type: array
+                items:
+                  $ref: '#/definitions/User'
               page:
                 $ref: '#/definitions/Page'
         '403':
@@ -1228,7 +1186,7 @@ paths:
           required: true
           description: Object necessary to update customer
           schema:
-            $ref: '#/definitions/PostCustomer'
+            $ref: '#/definitions/PutCustomer'
       security:
          - Bearer: []
       responses:
@@ -1288,20 +1246,11 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  sources:
-                    description: the list of source customer
-                    type: array
-                    items:
-                      $ref: '#/definitions/SourceCustomer'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of source customer
+                type: array
+                items:
+                  $ref: '#/definitions/SourceCustomer'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -2182,20 +2131,11 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  sources:
-                    description: the list of session customer
-                    type: array
-                    items:
-                      $ref: '#/definitions/Session'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of session customer
+                type: array
+                items:
+                  $ref: '#/definitions/Session'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -2398,6 +2338,31 @@ paths:
             $ref: '#/definitions/Event'
         '403':
           description: "You don't have the necessary permissions for the resource"
+      tags:
+        - event
+    delete:
+      description: |
+        Deletes a specific event
+      parameters:
+        - name: id
+          in: path
+          description: The event identifier
+          required: true
+          type: string
+        - name: id-workspace
+          in: path
+          description: The unique identifier of workspace
+          required: true
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '204':
+          description: "Successful response"
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+        '404':
+          description: "If no event corresponds to the specified identifier"
       tags:
         - event
   '/workspaces/{id-workspace}/segments':
@@ -2691,12 +2656,7 @@ paths:
               ],
               "nodeId": "node_1"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/trend/customer?mode=MONTHLY&startDate=2016-01-01&endDate=2016-08-31"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -2801,12 +2761,7 @@ paths:
               ],
               "nodeId": "node_1"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/trend/event?mode=MONTHLY&startDate=2016-01-01&endDate=2016-08-31"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -2860,79 +2815,6 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - analytic
-  '/workspaces/{id-workspace}/analytics/kpis/{id}':
-    get:
-      description: |
-        Get value of specific kpi for one o multiple node
-        #### EXAMPLE
-        ```json
-        {
-          "name": "analytics kpi rfm",
-          "parameters": {
-            "nodes": null
-          },
-          "headers": {
-            "nodeId": {
-              "description": "the node Id",
-              "type": "string"
-            },
-            "distribution": {
-              "description": "the distribution list",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "description": "Name of kpi",
-                    "type": "string"
-                  },
-                  "value": {
-                    "description": "Value of kpi",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          },
-          "data": [
-            {
-              "nodeId": "node_1",
-              "distribution":[{"name": 1, "value": 12000}, {"name": 2, "value": 10000}, ....]
-            }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/kpi/rfm"
-            }
-          }
-        }
-        ```
-      parameters:
-        - name: id-workspace
-          in: path
-          description: The unique identifier of workspace
-          required: true
-          type: string
-        - name: id
-          in: path
-          description: The identifier of kpi
-          required: true
-          type: string
-        - name: nodes
-          in: query
-          description: The list of nodeId separated by comma
-          type: string
-      security:
-         - Bearer: []
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/Kpi'
-        '403':
-          description: "You don't have the necessary permissions for the resource"
-      tags:
-        - analytic
   '/workspaces/{id-workspace}/analytics/composition/gender':
     get:
       description: |
@@ -2974,12 +2856,7 @@ paths:
               "distribution": [{"name": "male", "value": 7},{"name": "N/A", "value": 1},{"name": "female", "value": 1}],
               "nodeId": "node_1"
             }, ...
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/composition/gender"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3057,12 +2934,7 @@ paths:
               ],
               "nodeId": "node_1"
             },...
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/composition/age-range"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3142,12 +3014,7 @@ paths:
               "nodeId": "2",
               "distribution":[{"name": "italy", "value": 12000}, {"name": "spain", "value": 10000}, ....]
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/composition/geo/country"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3223,12 +3090,7 @@ paths:
               "distribution":[{"name": "rome", "value": 12000}, {"name": "milan", "value": 10000}, ....],
               "nodeId": "node_1"
             },...
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/composition/geo/city"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3304,12 +3166,7 @@ paths:
               "count": 0,
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/node?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3399,12 +3256,7 @@ paths:
               ],
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/source?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3518,12 +3370,7 @@ paths:
               ],
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/customer/time?mode=DAYOFWEEK&nodes=bebbe268-0900-4184-9849-bc609fc90a32"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3606,12 +3453,7 @@ paths:
               "count": 12,
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/event/node?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3710,12 +3552,7 @@ paths:
               ],
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/event/source?nodes=bebbe268-0900-4184-9849-bc609fc90a32&startDate=2016-08-26&endDate=2016-09-02"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3838,12 +3675,7 @@ paths:
               ],
               "nodeId": "bebbe268-0900-4184-9849-bc609fc90a32"
             }
-          ],
-          "_links": {
-            "self": {
-              "href": "http://xxx/workspaces/xxx/analytics/distribution/events/time?mode=DAYOFWEEK&nodes=bebbe268-0900-4184-9849-bc609fc90a32"
-            }
-          }
+          ]
         }
         ```
       parameters:
@@ -3894,6 +3726,81 @@ paths:
           description: "You don't have the necessary permissions for the resource"
       tags:
         - analytic
+  '/workspaces/{id-workspace}/analytics/query/numeric':
+    get:
+      description: |
+        Analytic numeric query on events
+      parameters:
+        - name: id-workspace
+          in: path
+          description: Unique identifier of workspace
+          required: true
+          type: string
+        - name: query
+          in: query
+          description: Numeric Query object
+          type: string
+      security:
+         - Bearer: []
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AnalyticQueryNumericResp'
+        '403':
+          description: "You don't have the necessary permissions for the resource"
+      tags:
+        - analytic
+  '/workspaces/{id-workspace}/analytics/query/trend':
+      get:
+        description: |
+          Analytic trend query on events
+        parameters:
+          - name: id-workspace
+            in: path
+            description: Unique identifier of workspace
+            required: true
+            type: string
+          - name: query
+            in: query
+            description: Trend Query object
+            type: string
+        security:
+           - Bearer: []
+        responses:
+          '200':
+            description: Successful response
+            schema:
+              $ref: '#/definitions/AnalyticQueryTrendResp'
+          '403':
+            description: "You don't have the necessary permissions for the resource"
+        tags:
+          - analytic
+  '/workspaces/{id-workspace}/analytics/query/distribution':
+      get:
+        description: |
+          Analytic distribution query on events
+        parameters:
+          - name: id-workspace
+            in: path
+            description: Unique identifier of workspace
+            required: true
+            type: string
+          - name: query
+            in: query
+            description: Distribution Query object
+            type: string
+        security:
+           - Bearer: []
+        responses:
+          '200':
+            description: Successful response
+            schema:
+              $ref: '#/definitions/AnalyticQueryDistributionResp'
+          '403':
+            description: "You don't have the necessary permissions for the resource"
+        tags:
+          - analytic
 
   '/workspaces/{id-workspace}/dashboards':
     get:
@@ -3983,23 +3890,21 @@ paths:
         #### EXAMPLE
         ```json
         {
-          "_embedded": {
-            "merge-policies":[
-              {
-                "id": "OBJ_PRIORITY",
-                "label": "Priority",
-                "description": "Substitution of value by defined priority",
-                "supportedTypes": ["string", "object", "number", "array"]
-              },
-              {
-                "id": "OBJ_CONCATENATE",
-                "label": "Concatenatennnnnnnnnnnnnnnnnnnnnn",
-                "description": "Concatenate value of property",
-                "supportedTypes": ["string", "number", "array"]
-              },
-              ........
-            ]
-          }
+          "elements":[
+            {
+              "id": "OBJ_PRIORITY",
+              "label": "Priority",
+              "description": "Substitution of value by defined priority",
+              "supportedTypes": ["string", "object", "number", "array"]
+            },
+            {
+              "id": "OBJ_CONCATENATE",
+              "label": "Concatenatennnnnnnnnnnnnnnnnnnnnn",
+              "description": "Concatenate value of property",
+              "supportedTypes": ["string", "number", "array"]
+            },
+            ........
+          ]
         }
         ```
       parameters:
@@ -4016,20 +3921,11 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  merge-policies:
-                    description: the list of merge policy
-                    type: array
-                    items:
-                      $ref: '#/definitions/MergePolicy'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of merge policy
+                type: array
+                items:
+                  $ref: '#/definitions/MergePolicy'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -4041,41 +3937,39 @@ paths:
         #### EXAMPLE
         ```json
         {
-          "_embedded": {
-            "providers":[
-              {
-                "id": "API",
-                "label": "Contachub API",
-                "description": "contachub api",
-                "propertiesSchema": {
-                  "allowedIPs": {
-                    "description": "the list of IP addresses allowed to read and write a given source",
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "ipv4"
-                    }
+          "elements":[
+            {
+              "id": "API",
+              "label": "Contachub API",
+              "description": "contachub api",
+              "propertiesSchema": {
+                "allowedIPs": {
+                  "description": "the list of IP addresses allowed to read and write a given source",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "ipv4"
                   }
                 }
-              },
-              {
-                "id": "JavaScript",
-                "label": "JavaScript website",
-                "description": "JavaScript website",
-                "propertiesSchema": {
-                  "allowedURLs": {
-                    "description": "the list of URLs allowed to write a given source",
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "uri"
-                    }
+              }
+            },
+            {
+              "id": "JavaScript",
+              "label": "JavaScript website",
+              "description": "JavaScript website",
+              "propertiesSchema": {
+                "allowedURLs": {
+                  "description": "the list of URLs allowed to write a given source",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
                   }
                 }
-              },
-              ........
-            ]
-          }
+              }
+            },
+            ........
+          ]
         }
         ```
       parameters:
@@ -4092,20 +3986,11 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  providers:
-                    description: the list of provider
-                    type: array
-                    items:
-                      $ref: '#/definitions/Provider'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of provider
+                type: array
+                items:
+                  $ref: '#/definitions/Provider'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
@@ -4117,93 +4002,38 @@ paths:
         #### EXAMPLE
         ```json
         {
-          "_embedded": {
-            "contexts":[
-              {
-                "id": "WEB",
-                "label": "Web event",
-                "description": "Events made in web context",
-                "propertiesSchema": {
-                  "type": "object",
-                  "$schema": "http://api.contactlab.it/hub#",
-                  "additionalProperties": false,
-                  "properties": {
-                    "client": {
-                      "type": "object",
-                      "properties": {
-                        "userAgent": {
-                          "type": "string"
-                        },
-                        "ip": {
-                          "type": "string",
-                          "format": "ipv4-cidr"
-                        }
+          "elements":[
+            {
+              "id": "WEB",
+              "label": "Web event",
+              "description": "Events made in web context",
+              "propertiesSchema": {
+                "type": "object",
+                "$schema": "http://api.contactlab.it/hub#",
+                "additionalProperties": false,
+                "properties": {
+                  "client": {
+                    "type": "object",
+                    "properties": {
+                      "userAgent": {
+                        "type": "string"
+                      },
+                      "ip": {
+                        "type": "string",
+                        "format": "ipv4-cidr"
                       }
                     }
                   }
                 }
-              },
-              {
-                "id": "MOBILE",
-                "label": "Mobile event",
-                "description": "Events made in mobile context"
-              },
-              ........
-            ]
-          }
-        }
-        ```
-      parameters:
-        - name: id-workspace
-          in: path
-          description: The unique identifier of workspace
-          required: true
-          type: string
-      security:
-         - Bearer: []
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            type: object
-            properties:
-              _embedded:
-                type: object
-                properties:
-                  contexts:
-                    description: the list of context
-                    type: array
-                    items:
-                      $ref: '#/definitions/Context'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
-        '403':
-          description: "You don't have the necessary permissions for the resource"
-      tags:
-        - model
-  '/workspaces/{id-workspace}/models/kpi':
-    get:
-      description: |
-        Gets list of available kpis
-        #### EXAMPLE
-        ```json
-        {
-          "_embedded": {
-            "kpi":[
-              {
-                "kpi": "rfm",
-                "description": "Lorem ipsum"
-              },
-              {
-                "kpi": "engadgement",
-                "description": "Lorem ipsum"
               }
-            ]
-          }
+            },
+            {
+              "id": "MOBILE",
+              "label": "Mobile event",
+              "description": "Events made in mobile context"
+            },
+            ........
+          ]
         }
         ```
       parameters:
@@ -4220,24 +4050,17 @@ paths:
           schema:
             type: object
             properties:
-              _embedded:
-                type: object
-                properties:
-                  kpi:
-                    description: the list of kpi
-                    type: array
-                    items:
-                      $ref: '#/definitions/KpiModel'
-              _links:
-                type: object
-                properties:
-                  self:
-                    description: self link
-                    $ref: '#/definitions/Link'
+              elements:
+                description: the list of context
+                type: array
+                items:
+                  $ref: '#/definitions/Context'
         '403':
           description: "You don't have the necessary permissions for the resource"
       tags:
         - model
+
+########################################################## DEFINITIONS ###############################################################
 definitions:
   # [BEGIN] EVENT AUTOMATION DEFINITION TYPES
   EventContext:
@@ -4251,27 +4074,19 @@ definitions:
       - SOCIAL
       - DIGITAL_CAMPAIGN
       - CONTACT_CENTER
+      - IOT
       - OTHER
 
   PagedAutomationConfigurationValues:
     type: object
     properties:
-      _embedded:
-        type: object
-        properties:
-          automations:
-            $ref: '#/definitions/AutomationConfigurationValues'
-      _links:
-        $ref: '#/definitions/PageLink'
+      elements:
+        type: array
+        description: List of workspaces provisioning configurations
+        items:
+          $ref: '#/definitions/AutomationConfiguration'
       page:
         $ref: '#/definitions/Page'
-
-  AutomationConfigurationValues:
-    type: array
-    description: List of workspaces provisioning configurations
-    items:
-      $ref: '#/definitions/AutomationConfiguration'
-
   AutomationConfigurationPayload:
     type: object
     description: "Workspace provisioning configuration"
@@ -4384,7 +4199,8 @@ definitions:
     description: Object that represents a "WEBHOOK" action
     properties:
       url:
-        $ref: '#/definitions/Link'
+        type: string
+        format: uri
       format:
         type: string
         enum:
@@ -4449,80 +4265,78 @@ definitions:
         type: string
         description: Data source
       graph:
-        type: object
-        description: Graph
         $ref: '#/definitions/Graph'
 
   Dashboard:
-      type: object
-      description: Dashboard
-      properties:
-          id:
-              type: string
-              description: Dashboard identifier
-          name:
-              type: string
-              description: Name
-          label:
-              type: string
-              description: Label
-          description:
-              type: string
-              description: Description
-          industry:
-              type: string
-              description: Industy
-          enabled:
-              type: boolean
-              description: Enabled flag
-          status:
-              type: string
-              description: Status
-          range:
-              type: string
-              description: Range
-          widgets:
-              type: array
-              description: Widgets
-              items:
-                  $ref: '#/definitions/Widget'
+    type: object
+    description: Dashboard
+    properties:
+      id:
+        type: string
+        description: Dashboard identifier
+      name:
+        type: string
+        description: Name
+      label:
+        type: string
+        description: Label
+      description:
+        type: string
+        description: Description
+      industry:
+        type: string
+        description: Industy
+      enabled:
+        type: boolean
+        description: Enabled flag
+      status:
+        type: string
+        description: Status
+      range:
+        type: string
+        description: Range
+      widgets:
+        type: array
+        description: Widgets
+        items:
+          $ref: '#/definitions/Widget'
 
   CompositionAgeRange:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the analytics name
-        headers:
-          type: object
-          description: the schema of object inside data property list
-        parameters:
+    type: object
+    properties:
+      name:
+        type: string
+        description: the analytics name
+      headers:
+        type: object
+        description: the schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          nodes:
+            description: The list of nodeId separated by comma
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+      data:
+        type: array
+        description: list of node
+        items:
           type: object
           properties:
-            nodes:
-              description: The list of nodeId separated by comma
+            nodeId:
+              description: id of node
               type: string
-            startDate:
-              description: Start date
-              type: string
-              format: date
-            endDate:
-              description: End date
-              type: string
-              format: date
-        data:
-          type: array
-          description: list of node
-          items:
-            type: object
-            properties:
-              nodeId:
-                description: id of node
-                type: string
-              distribution:
-                type: array
-                items:
-                  $ref: '#/definitions/CompositionAgeRangeValue'
+            distribution:
+              type: array
+              items:
+                $ref: '#/definitions/CompositionAgeRangeValue'
   CompositionAgeRangeValue:
       type: object
       properties:
@@ -4670,34 +4484,6 @@ definitions:
       value:
         type: string
         description: Value for gender
-  Kpi:
-    type: object
-    properties:
-      name:
-        type: string
-        description: the analytics name
-      headers:
-        type: object
-        description: the schema of object inside data property list
-      parameters:
-        type: object
-        properties:
-          nodes:
-            description: The list of nodeId separated by comma
-            type: string
-      data:
-        type: array
-        description: list of node
-        items:
-          type: object
-          properties:
-            nodeId:
-              description: id of node
-              type: string
-            distribution:
-              type: array
-              items:
-                $ref: '#/definitions/KpiValue'
 
   AnalyticDistributionCustomerNode:
     type: object
@@ -4727,11 +4513,6 @@ definitions:
         description: List of data aggregated by node identifiers
         items:
           $ref: '#/definitions/AnalyticDistributionCustomerNodeValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionCustomerNodeValue:
     type: array
     description: Distribution for node of 'customerCreated' events
@@ -4773,11 +4554,6 @@ definitions:
         description: List of data aggregated by node and source identifiers
         items:
           $ref: '#/definitions/AnalyticDistributionCustomerSourceValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionCustomerSourceValue:
     type: array
     description: Distribution for node and source of 'customerCreated' events
@@ -4835,11 +4611,6 @@ definitions:
         description: List of data aggregated by node identifiers and time format
         items:
           $ref: '#/definitions/AnalyticDistributionCustomerTimeValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionCustomerTimeValue:
     type: array
     description: Distribution for node and time of 'customerCreated' events
@@ -4896,11 +4667,6 @@ definitions:
         description: List of data aggregated by node identifiers
         items:
           $ref: '#/definitions/AnalyticDistributionEventNodeValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionEventNodeValue:
     type: array
     description: Distribution for node of events
@@ -4948,11 +4714,6 @@ definitions:
         description: List of data aggregated by node and source identifiers
         items:
           $ref: '#/definitions/AnalyticDistributionEventSourceValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionEventSourceValue:
     type: array
     description: Distribution for node and source of events
@@ -5016,11 +4777,6 @@ definitions:
         description: List of data aggregated by node identifiers and time format
         items:
           $ref: '#/definitions/AnalyticDistributionEventTimeValue'
-      _links:
-        type: object
-        properties:
-          self:
-            $ref: '#/definitions/Link'
   AnalyticDistributionEventTimeValue:
     type: array
     description: Distribution for node and time of events
@@ -5041,26 +4797,7 @@ definitions:
                 description: Time label
               count:
                 type: integer
-                description: Count of events
-
-  KpiValue:
-    type: object
-    properties:
-      name:
-        type: string
-        description: Name of kpi
-      value:
-        type: string
-        description: Value of kpi
-  KpiModel:
-    type: object
-    properties:
-      kpi:
-        type: string
-        description: Name of kpi
-      description:
-        type: string
-        description: Description of kpi
+                description: Count of event
   EventTrend:
     type: object
     properties:
@@ -5111,12 +4848,6 @@ definitions:
               type: array
               items:
                 $ref: '#/definitions/TrendValue'
-      _links:
-        type: object
-        properties:
-          self:
-            description: self link
-            $ref: '#/definitions/Link'
   Trend:
     type: object
     properties:
@@ -5161,12 +4892,6 @@ definitions:
               type: array
               items:
                 $ref: '#/definitions/TrendValue'
-      _links:
-        type: object
-        properties:
-          self:
-            description: self link
-            $ref: '#/definitions/Link'
   TrendValue:
     type: object
     properties:
@@ -5182,6 +4907,274 @@ definitions:
       total:
         type: integer
         description: Number of total customer in the node
+
+  AnalyticQueryNumericResp:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          nodeId:
+            description: Node identifier
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          eventType:
+            description: Event type
+            type: string
+          context:
+            description: Event context
+            type: string
+          optionalFilters:
+            description: Additional Filters
+            type: array
+            items:
+              type: object
+              properties:
+                fieldPath:
+                  type: string
+                  description: Json path of property
+                value:
+                  type: string
+                  description: Property value
+          aggregation:
+            type: object
+            properties:
+              operator:
+                description: Metric Operator
+                type: string
+                enum:
+                 - SUM
+                 - COUNT
+                 - COUNT_DISTINCT
+              fieldPath:
+                type: string
+                description: Json path of aggregation property
+              optionalFilters:
+                description: Additional Filters
+                type: array
+                items:
+                  type: object
+                  properties:
+                    fieldPath:
+                      type: string
+                      description: Json path of property
+                    value:
+                      type: string
+                      description: Property value
+      data:
+        type: object
+        properties:
+          nodeId:
+            description: Node Identifier
+            type: string
+          value:
+            description: metric value
+            type: number
+
+  AnalyticQueryTrendResp:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          nodeId:
+            description: Node identifier
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          eventType:
+            description: Event type
+            type: string
+          context:
+            description: Event context
+            type: string
+          optionalFilters:
+            description: Additional Filters
+            type: array
+            items:
+              type: object
+              properties:
+                fieldPath:
+                  type: string
+                  description: Json path of property
+                value:
+                  type: string
+                  description: Property value
+          aggregation:
+            type: object
+            properties:
+              operator:
+                description: Metric Operator
+                type: string
+                enum:
+                 - SUM
+                 - COUNT
+                 - COUNT_DISTINCT
+              fieldPath:
+                type: string
+                description: Json path of aggregation property
+              optionalFilters:
+                description: Additional Filters
+                type: array
+                items:
+                  type: object
+                  properties:
+                    fieldPath:
+                      type: string
+                      description: Json path of property
+                    value:
+                      type: string
+                      description: Property value
+          mode:
+            description: 'Mode of aggretation daily, weekly, monthly'
+            type: string
+            enum:
+              - DAILY
+              - WEEKLY
+              - MONTHLY
+      data:
+        type: object
+        properties:
+          nodeId:
+            description: Node Identifier
+            type: string
+          values:
+            description: metric values
+            type: array
+            items:
+              type: object
+              properties:
+                time:
+                  description: Date referral to mode defined in request
+                  type: string
+                new:
+                  description: metric value
+                  type: number
+                total:
+                  description: metric total value
+                  type: number
+  AnalyticQueryDistributionResp:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Analytics name
+      headers:
+        type: object
+        description: Schema of object inside data property list
+      parameters:
+        type: object
+        properties:
+          nodeId:
+            description: Node identifier
+            type: string
+          startDate:
+            description: Start date
+            type: string
+            format: date
+          endDate:
+            description: End date
+            type: string
+            format: date
+          eventType:
+            description: Event type
+            type: string
+          context:
+            description: Event context
+            type: string
+          optionalFilters:
+            description: Additional Filters
+            type: array
+            items:
+              type: object
+              properties:
+                fieldPath:
+                  type: string
+                  description: Json path of property
+                value:
+                  type: string
+                  description: Property value
+          aggregation:
+            type: object
+            properties:
+              operator:
+                description: Metric Operator
+                type: string
+                enum:
+                 - SUM
+                 - COUNT
+                 - COUNT_DISTINCT
+              fieldPath:
+                type: string
+                description: Json path of aggregation property
+              optionalFilters:
+                description: Additional Filters
+                type: array
+                items:
+                  type: object
+                  properties:
+                    fieldPath:
+                      type: string
+                      description: Json path of property
+                    value:
+                      type: string
+                      description: Property value
+          distributionField:
+            type: object
+            properties:
+              entity:
+                description: Entity of distribution field
+                type: string
+                enum:
+                 - EVENT
+                 - CUSTOMER
+              path:
+                type: string
+                description: Json path of distribution property
+      data:
+        type: object
+        properties:
+          nodeId:
+            description: Node Identifier
+            type: string
+          distribution:
+            description: distribution values
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  description: Data of distribution
+                  type: string
+                value:
+                  description: metric value
+                  type: number
+
   PostSegment:
     type: object
     properties:
@@ -5216,31 +5209,14 @@ definitions:
             type: string
             format: date-time
             description: timestamp of segment update
-          _links:
-            type: object
-            properties:
-              segments:
-                description: segment list link
-                $ref: '#/definitions/Link'
-              customers:
-                description: segment customers list link
-                $ref: '#/definitions/Link'
-              self:
-                description: self link
-                $ref: '#/definitions/Link'
   PagedSegment:
     type: object
     properties:
-      _embedded:
-        type: object
-        properties:
-          segments:
-            description: the list of segments
-            type: array
-            items:
-              $ref: '#/definitions/Segment'
-      _links:
-        $ref: '#/definitions/PageLink'
+      elements:
+        description: the list of segments
+        type: array
+        items:
+          $ref: '#/definitions/Segment'
       page:
         $ref: '#/definitions/Page'
   MergePolicy:
@@ -5314,21 +5290,13 @@ definitions:
           - Europe/Paris
           - Europe/London
         default: Europe/Rome
-      externalIdPolicy:
-        type: string
-        enum:
-          - NO_CHECK
-          - UNIQUE_NODE
-          - UNIQUE_WORKSPACE
-        description: 'the external id check policy (NO_CHECK, UNIQUE_NODE, UNIQUE_WORKSPACE)'
-        default: UNIQUE_NODE
       customerUniquenessPolicy:
           type: string
           enum:
           - NO_CHECK
-          - UNIQUE_NODE
-          description: 'the customer uniqueness check policy (NO_CHECK, UNIQUE_NODE)'
-          default: UNIQUE_NODE
+          - BLOCK
+          description: 'the customer uniqueness check policy (NO_CHECK, BLOCK)'
+          default: BLOCK
   BasePropertyConfiguration:
     type: object
     properties:
@@ -5399,7 +5367,7 @@ definitions:
         items:
           type: string
         description: array of mandatory properties
-  PutEntryNodeConfiguration:
+  EntryNodeConfiguration:
     allOf:
       - $ref: '#/definitions/PostEntryNodeConfiguration'
       - type: object
@@ -5408,21 +5376,6 @@ definitions:
             type: string
             description: the identifier of entry node
             readOnly: true
-  EntryNodeConfiguration:
-    allOf:
-      - $ref: '#/definitions/PutEntryNodeConfiguration'
-      - type: object
-        properties:
-          _links:
-            description: the related links of entry node
-            type: object
-            properties:
-              entryNodes:
-                description: entry nodes configuration link
-                $ref: '#/definitions/Link'
-              self:
-                description: self entry node link
-                $ref: '#/definitions/Link'
   PostViewNodeConfiguration:
     type: object
     properties:
@@ -5436,7 +5389,7 @@ definitions:
         type: string
         format: uri
         description: the url of logo
-  PutViewNodeConfiguration:
+  ViewNodeConfiguration:
     allOf:
       - $ref: '#/definitions/PostViewNodeConfiguration'
       - type: object
@@ -5445,21 +5398,6 @@ definitions:
             type: string
             description: the identifier of view node
             readOnly: true
-  ViewNodeConfiguration:
-    allOf:
-      - $ref: '#/definitions/PutViewNodeConfiguration'
-      - type: object
-        properties:
-          _links:
-            description: the related links of view node
-            type: object
-            properties:
-              viewNodes:
-                description: view nodes configutation link
-                $ref: '#/definitions/Link'
-              self:
-                description: self view node link
-                $ref: '#/definitions/Link'
   NodeHierarchyConfiguration:
     type: object
     properties:
@@ -5527,20 +5465,7 @@ definitions:
             type: string
             description: the source token
             readOnly: true
-          _links:
-            description: the related links of source configuration
-            type: object
-            properties:
-              sources:
-                description: sources configutation link
-                $ref: '#/definitions/Link'
-              refresh-token:
-                description: refresh source token link
-                $ref: '#/definitions/Link'
-              self:
-                description: self source configuration link
-                $ref: '#/definitions/Link'
-  PutEventConfiguration:
+  EventConfiguration:
     type: object
     properties:
       id:
@@ -5577,21 +5502,7 @@ definitions:
         type: boolean
         description: flag for enable-disable event
         default: true
-  EventConfiguration:
-    allOf:
-      - $ref: '#/definitions/PutEventConfiguration'
-      - type: object
-        properties:
-          _links:
-            description: the related links of configuration event
-            type: object
-            properties:
-              events:
-                description: events configutation link
-                $ref: '#/definitions/Link'
-              self:
-                description: self link
-                $ref: '#/definitions/Link'
+
   Page:
     type: object
     properties:
@@ -5607,30 +5518,7 @@ definitions:
       number:
         description: the number of the current page
         type: integer
-  Link:
-    type: object
-    properties:
-      href:
-        type: string
-        format: uri
-  PageLink:
-    type: object
-    properties:
-      first:
-        description: first page link
-        $ref: '#/definitions/Link'
-      last:
-        description: last page link
-        $ref: '#/definitions/Link'
-      next:
-        description: next page link
-        $ref: '#/definitions/Link'
-      previous:
-        description: previous page link
-        $ref: '#/definitions/Link'
-      self:
-        description: self page link
-        $ref: '#/definitions/Link'
+
   PostCustomer:
     type: object
     properties:
@@ -5667,6 +5555,14 @@ definitions:
         type: boolean
         description: flag for soft delete
     required: [ nodeId ]
+  PutCustomer:
+    allOf:
+      - $ref: '#/definitions/PostCustomer'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: the customer id
   PatchCustomer:
     type: object
     properties:
@@ -5715,38 +5611,14 @@ definitions:
             type: string
             format: date-time
             description: the customer update timestamp
-          _links:
-            description: the related links of customer
-            type: object
-            properties:
-              customers:
-                description: customer list link
-                $ref: '#/definitions/Link'
-              events:
-                description: events of the customer link
-                $ref: '#/definitions/Link'
-              sources:
-                description: sources of the customer link
-                $ref: '#/definitions/Link'
-              sessions:
-                description: sessions of the customer link
-                $ref: '#/definitions/Link'
-              self:
-                description: self customer link
-                $ref: '#/definitions/Link'
   PagedCustomer:
     type: object
     properties:
-      _embedded:
-        type: object
-        properties:
-          customers:
-            description: the list of customer
-            type: array
-            items:
-              $ref: '#/definitions/Customer'
-      _links:
-        $ref: '#/definitions/PageLink'
+      elements:
+        description: the list of customer
+        type: array
+        items:
+          $ref: '#/definitions/Customer'
       page:
         $ref: '#/definitions/Page'
   SourceCustomer:
@@ -5795,19 +5667,6 @@ definitions:
       enabled:
         type: boolean
         description: flag for soft delete
-      _links:
-        description: the related links of source customer
-        type: object
-        properties:
-          customer:
-            description: customer link
-            $ref: '#/definitions/Link'
-          sources:
-            description: sources of the customer link
-            $ref: '#/definitions/Link'
-          self:
-            description: self customer link
-            $ref: '#/definitions/Link'
   Session:
     type: object
     properties:
@@ -5817,19 +5676,6 @@ definitions:
       value:
         type: string
         description: the session id of customer. the value is unique for a single node
-      _links:
-        description: the related links of session
-        type: object
-        properties:
-          customer:
-            description: customer link
-            $ref: '#/definitions/Link'
-          sessions:
-            description: sessions of the customer link
-            $ref: '#/definitions/Link'
-          self:
-            description: self session link
-            $ref: '#/definitions/Link'
 
   PostEvent:
     type: object
@@ -5866,19 +5712,6 @@ definitions:
           id:
             type: string
             description: Unique identifier of event
-          _links:
-            description: the related links of event
-            type: object
-            properties:
-              customer:
-                description: customer link if customer exist
-                $ref: '#/definitions/Link'
-              events:
-                description: events customer link if customer exist
-                $ref: '#/definitions/Link'
-              self:
-                description: self event link
-                $ref: '#/definitions/Link'
 
   AuditEvent:
     type: object
@@ -5905,43 +5738,26 @@ definitions:
         type: string
         format: date-time
         description: the timestamp of event
-      _links:
-        description: the related links of event
-        type: object
-        properties:
-          self:
-            description: self event link
-            $ref: '#/definitions/Link'
 
   PagedEvent:
     type: object
     properties:
-      _embedded:
-        type: object
-        properties:
-          events:
-            description: the list of events
-            type: array
-            items:
-              $ref: '#/definitions/Event'
-      _links:
-        $ref: '#/definitions/PageLink'
+      elements:
+        description: the list of events
+        type: array
+        items:
+          $ref: '#/definitions/Event'
       page:
         $ref: '#/definitions/Page'
 
   PagedAuditEvent:
     type: object
     properties:
-      _embedded:
-        type: object
-        properties:
-          events:
-            description: the list of events
-            type: array
-            items:
-              $ref: '#/definitions/AuditEvent'
-      _links:
-        $ref: '#/definitions/PageLink'
+      elements:
+        description: the list of events
+        type: array
+        items:
+          $ref: '#/definitions/AuditEvent'
       page:
         $ref: '#/definitions/Page'
 
@@ -5964,10 +5780,6 @@ definitions:
   PutUser:
     type: object
     properties:
-      id:
-        type: string
-        description: unique identifier of event
-        readOnly: true
       nodes:
         type: array
         items:
@@ -5978,6 +5790,9 @@ definitions:
       - $ref: '#/definitions/PutUser'
       - type: object
         properties:
+          id:
+            type: string
+            description: unique identifier of user
           name:
             type: string
             description: the user name
@@ -5989,16 +5804,6 @@ definitions:
             type: string
             format: date-time
             description: the user update timestamp
-          _links:
-            description: the related links of user
-            type: object
-            properties:
-              users:
-                description: users link
-                $ref: '#/definitions/Link'
-              self:
-                description: self link
-                $ref: '#/definitions/Link'
   NodePermission:
     type: object
     properties:
@@ -6115,11 +5920,11 @@ definitions:
       startDate:
         description: job start date
         type: string
-        pattern: "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+        format: date
       endDate:
         description: job end date
         type: string
-        pattern: "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+        format: date
       isCurrent:
         type: boolean
   Subscription:
@@ -6143,11 +5948,11 @@ definitions:
           - OTHER
       enable:
         type: boolean
-      dateStart:
+      startDate:
         description: start date of subscription
         type: string
         format: date-time
-      dateEnd:
+      endDate:
         description: end date of subscription
         type: string
         format: date-time

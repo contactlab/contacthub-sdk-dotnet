@@ -56,8 +56,9 @@ namespace generateBasePropertiesClass
 
     public class EventPropertiesSchemaRoot
     {
-        [JsonProperty("_embedded")]
-        public EventPropertySchema embedded { get; set; }
+        public List<Event> elements { get; set; }
+        //[JsonProperty("_embedded")]
+        //        public EventPropertySchema embedded { get; set; }
         public Page page { get; set; }
     }
 
@@ -69,10 +70,10 @@ namespace generateBasePropertiesClass
         public int number { get; set; }
     }
 
-    public class EventPropertySchema
-    {
-        public List<Event> events { get; set; }
-    }
+    //public class EventPropertySchema
+    //{
+    //    public List<Event> events { get; set; }
+    //}
 
     public class Event
     {
@@ -90,15 +91,16 @@ namespace generateBasePropertiesClass
 
     public class EventContextPropertiesSchemaRoot
     {
-        [JsonProperty("_embedded")]
-        public EventContextPropertySchema embedded { get; set; }
-        public Page page { get; set; }
+        public List<Context> elements { get; set; }
+        //[JsonProperty("_embedded")]
+        //public EventContextPropertySchema embedded { get; set; }
+      //  public Page page { get; set; }
     }
 
-    public class EventContextPropertySchema
-    {
-        public List<Context> contexts { get; set; }
-    }
+    //public class EventContextPropertySchema
+    //{
+    //    public List<Context> contexts { get; set; }
+    //}
 
     public class Context
     {

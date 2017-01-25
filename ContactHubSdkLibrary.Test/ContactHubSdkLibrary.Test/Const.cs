@@ -8,6 +8,5 @@ namespace ContactHubSdkLibrary.Test
 {
     public static class Const
     {
-        public static int TIMEEXIT = 1000;
     }
 }

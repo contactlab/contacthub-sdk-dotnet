@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 15/12/2016 16:24:11 */
+/* selfgenerated from version 0.0.0.1 25/01/2017 18:48:15 */
 
 using System;
 using System.Collections.Generic;
@@ -167,9 +167,9 @@ public class Address
 public class Geo
 {
 	[Display(Name="latitude")]
-    public decimal lat {get;set;}
+    public decimal? lat {get;set;}
 	[Display(Name="longitude")]
-    public decimal lon {get;set;}
+    public decimal? lon {get;set;}
 }
 
 

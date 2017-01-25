@@ -34,21 +34,28 @@ namespace ConsoleSample
 
             #region CUSTOMERS
             #region Example: get all customers
-            if (false)
+            if (true)
             {
                 int pageSize = 50;
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
+                    int totPages =pagedCustomers.page.totalPages;
                     //allCustomers.AddRange(pagedCustomers._embedded.customers);
                     allCustomers.AddRange(pagedCustomers.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                    for (int i = 1; i < pagedCustomers.page.totalPages; i++)
+                    for (int i = 1; i < totPages; i++)
                     {
                         pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error);
-                        //allCustomers.AddRange(pagedCustomers._embedded.customers);
-                        allCustomers.AddRange(pagedCustomers.elements);
-                        Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+                        if (pagedCustomers != null)
+                        {
+                            allCustomers.AddRange(pagedCustomers.elements);
+                            Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
+                        }
+                        else
+                        {
+                            Debug.Print(String.Format("ERROR on current page {0}", i+1));
+                        }
                     }
                 }
             }
@@ -169,12 +176,25 @@ namespace ConsoleSample
             #endregion
 
             #region Example: delete customer by name
-            if (false)
+            if (true)
             {
                 foreach (Customer c in allCustomers)
                 {
-                    if (c.@base.firstName == "Donald")
+                    if (c.@base!=null &&
+                        c.@base.contacts!=null &&
+                        c.@base.contacts.email != null &&
+                         (c.@base.contacts.email.ToLowerInvariant().StartsWith("john") &&
+                          c.@base.contacts.email.ToLowerInvariant().EndsWith("example.com") 
+                         ||
+                         c.@base.contacts.email.ToLowerInvariant().EndsWith("dduck@yourdomain.it")
+                         ||
+                         c.@base.contacts.email.ToLowerInvariant().EndsWith("dduck@yourdomain.com")
+                         ||
+                           c.@base.contacts.email.ToLowerInvariant().StartsWith("diego@dimension.it")
+                        )
+                        )
                     {
+                       Debug.Print("Delete " + c.id + " " + c.@base.contacts.email);
                         currentNode.DeleteCustomer(c.id, ref error);
                     }
                 }
@@ -693,7 +713,7 @@ namespace ConsoleSample
                 };
 
                 string result = currentNode.AddEvent(newEvent, ref error);
-                Thread.Sleep(1000);
+                Thread.Sleep(5000);
                 if (result != "202")
                 {
                     //insert error
@@ -716,10 +736,10 @@ namespace ConsoleSample
                         }
                     };
                     Customer newCustomer = currentNode.AddCustomer(newPostCustomer, ref error);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     Session returnSession = currentNode.AddCustomerSession(newCustomer.id, currentSession, ref error);
                     bool testPassed3 = (returnSession != null);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     //test reconciliation: get events
                     pagedEvents = null;
                     bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id,
@@ -734,7 +754,7 @@ namespace ConsoleSample
             #endregion
 
             #region Example: get customers events (with paging)
-            if (true)
+            if (false)
             {
                 List<Event> allEvents = new List<Event>();
                 int pageSize = 3;

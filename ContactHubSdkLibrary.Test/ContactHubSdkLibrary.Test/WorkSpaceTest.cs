@@ -16,7 +16,7 @@ namespace ContactHubSdkLibrary.Test
                 );
 
             Assert.AreEqual(currentWorkspace.isValid, tpIsValid);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
 
         }
     }

@@ -57,6 +57,7 @@
     <Compile Include="Connection.cs" />
     <Compile Include="Datatype.cs" />
     <Compile Include="EnumHelper.cs" />
+    <Compile Include="JsonUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

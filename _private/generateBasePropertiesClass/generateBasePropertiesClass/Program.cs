@@ -1,5 +1,6 @@
 ﻿using Microsoft.CSharp;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace generateBasePropertiesClass
             Console.WriteLine("press key...");
             Console.ReadKey();
         }
-      
+
         static void generateEventContext()
         {
             BasePropertiesItem propertiesTree = null;
@@ -30,27 +31,63 @@ namespace generateBasePropertiesClass
 
             List<String> enumList = new List<string>();
             List<Context> contextList = new List<Context>();
-  //          int currentPage = 1;
-//            int totalPages = 9999;
-    //        while (currentPage < totalPages)
+
+            //read enum with eventType list
+            string jsonString = Connection.DoGetWebRequest("/docs/schema/enums.json");
+            JObject definitions = JObject.Parse(jsonString);
+
+
+            foreach (var c in definitions["definitions"])
             {
-                string jsonString = Connection.DoGetWebRequest("/models/contexts"); //?page="+currentPage);
-                if (string.IsNullOrEmpty(jsonString))
+                if (c.Path == "definitions.EventContext")
                 {
-                    Console.WriteLine("Error: not valid token");
-                    Console.ReadKey();
+                    var listType = c.First["enum"];
+                    foreach (string eType in listType)
+                    {
+                        enumList.Add(eType);
+                    }
                 }
-                //get the list of contexts
-                EventContextPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventContextPropertiesSchemaRoot>(jsonString);
-                //                totalPages = root.page.totalPages;
-                //   foreach (Context c in root.embedded.contexts)
-                foreach (Context c in root.elements)
+            }
+
+            Context e = null;
+
+            //request single context schema
+
+            foreach (string c in enumList)
+            {
+                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant() + ".post.json");  //get specific context schema
+                if (jsonString != null)
                 {
-                    var item = c.id;
-                    enumList.Add(item);
-                    contextList.Add(c);
+                    JObject eventObj = JObject.Parse(jsonString);
+
+                    e = new Context()
+                    {
+                        id = c,
+                        description = c,
+                        //type = eventObj["type"].ToString(),
+                        propertiesSchema = eventObj["properties"]["client"]
+                    };
+
+                    contextList.Add(e);
                 }
-  //              currentPage++;
+                else //use common schema
+                {
+                    jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/context.post.json");  //get common schema
+                    if (jsonString != null)
+                    {
+                        JObject eventObj = JObject.Parse(jsonString);
+
+                        e = new Context()
+                        {
+                            id = c,
+                            description = c,
+                            //type = eventObj["type"].ToString(),
+                            propertiesSchema = eventObj["properties"]["client"]
+                        };
+
+                        contextList.Add(e);
+                    }
+                }
             }
 
             string outputFileStr = "";
@@ -67,7 +104,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
 
             string contextJson = null;
-            foreach (Context ev in contextList) //root.embedded.contexts
+            foreach (Context ev in contextList)
             {
                 outputFileStr += "//context class '" + ev.id + "': " + ev.description;
                 if (ev.propertiesSchema != null)
@@ -122,7 +159,12 @@ namespace generateBasePropertiesClass
             BasePropertiesItem propertiesTree = null;
 
             /* download dynamically updated based properties */
-            string jsonString = Connection.DoGetWebRequest("/models/properties/base");
+            // string jsonString = Connection.DoGetWebRequest("/models/properties/base");
+            string jsonString = Connection.DoGetWebRequest("/docs/schema/base-property/base-properties.json");
+
+            jsonString = JSONUtilities.FixReference(jsonString);
+
+
             if (string.IsNullOrEmpty(jsonString))
             {
                 Console.WriteLine("Error: not valid token");
@@ -151,6 +193,7 @@ namespace generateBasePropertiesClass
                                 }
             ";
 
+            //generate class
             createClassFile(propertiesTree, ref outputFileStr);
 
             outputFileStr += "\n}\n";
@@ -159,31 +202,45 @@ namespace generateBasePropertiesClass
         static void generateEventProperties()
         {
             BasePropertiesItem propertiesTree = null;
-            Boolean go = true;
-            List<Event> list = new List<Event>();
-            int currentPage = 0;
-            int totalPages = 9999;
-            while (currentPage<totalPages)
+            List<String> list = new List<String>();
+            List<Event> eventList = new List<Event>();
+
+            //read enum with eventType list
+            string jsonString = Connection.DoGetWebRequest("/docs/schema/enums.json");
+            JObject definitions = JObject.Parse(jsonString);
+            foreach (var c in definitions["definitions"])
             {
-                //download dynamically updated based properties 
-                string jsonString = Connection.DoGetWebRequest("/configuration/events?page="+currentPage);
-                if (!string.IsNullOrEmpty(jsonString))
+                if (c.Path == "definitions.EventType")
                 {
-                    EventPropertiesSchemaRoot root = JsonConvert.DeserializeObject<EventPropertiesSchemaRoot>(jsonString);
-                    //list.AddRange(root.embedded.elements);
-                    list.AddRange(root.elements);
-                    totalPages = root.page.totalPages;
+                    var listType = c.First["enum"];
+                    foreach (string eType in listType)
+                    {
+                        list.Add(eType);
+                    }
                 }
-                else
-                {
-                    totalPages = 0;
-                }
-                currentPage++;
             }
+            Event e = null;
+            //request single eventType schema
+            foreach (string c in list)
+            {
+                jsonString = Connection.DoGetWebRequest("/docs/schema/event/" + c + ".post.json");  //get specific eventType schema
+                JObject eventObj = JObject.Parse(jsonString);
+
+                e = new Event()
+                {
+                    id = c,
+                    description = eventObj["description"].ToString(),
+                    type = eventObj["type"].ToString(),
+                    propertiesSchema = eventObj["properties"]["properties"]
+                };
+
+                eventList.Add(e);
+            }
+
 
             string eventJson = "";
             //scroll through the events and generates the corresponding classes
-            
+
             //generate file baseProperties.cs 
             string outputFileStr = String.Empty;
 
@@ -197,12 +254,14 @@ namespace generateBasePropertiesClass
             outputFileStr += "namespace ContactHubSdkLibrary.Events {\n";
             outputFileStr += "public class EventBaseProperty {}\n";
 
-            foreach (Event ev in list)
+            foreach (Event ev in eventList)
             {
 
                 outputFileStr += "/// <summary>\n";
                 outputFileStr += "/// Event class '" + ev.id + "': " + ev.description + "\n";
                 outputFileStr += "/// </summary>";
+
+                //
                 eventJson = ev.propertiesSchema.ToString();
                 propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(eventJson);
                 propertiesTree.name = "EventProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
@@ -255,7 +314,6 @@ namespace generateBasePropertiesClass
             File.WriteAllText("eventPropertiesClass.cs", outputFileStr);
         }
 
-
         private static string processObject(BasePropertiesItem p)
         {
             string name = p.name;
@@ -271,7 +329,6 @@ namespace generateBasePropertiesClass
             processObject = String.Format("    public {0} {1} {{get;set;}}\n", uppercaseFirst(JsonUtil.fixName(name)), JsonUtil.fixName(name));
             return processObject;
         }
-
         private static string processDynamicObject(BasePropertiesItem p)
         {
             string name = p.name;
@@ -297,7 +354,7 @@ namespace generateBasePropertiesClass
             };
             List<String> dateListField = new List<String>
             {
-                "startDate", "endDate" 
+                "startDate", "endDate"
             };
 
             string name = p.name;
@@ -307,7 +364,7 @@ namespace generateBasePropertiesClass
             }
             string processString = "";
 
-            if (name== "startDate")
+            if (name == "startDate")
             {
 
             }
@@ -322,7 +379,7 @@ namespace generateBasePropertiesClass
                 if (p.format != null) processString += "    //format: " + p.format + "\n";
                 processString += String.Format("    public string {0} {{get;set;}}\n", JsonUtil.fixName(name));
             }
-            else if (dateTimeListField.Contains(name) && p.format.ToLowerInvariant().Trim()=="date-time" )//is a list of specific fields ranging rendered as datetime
+            else if (dateTimeListField.Contains(name) && p.format.ToLowerInvariant().Trim() == "date-time")//is a list of specific fields ranging rendered as datetime
             {
                 processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);
                 processString += String.Format("    public string _{0} {{get;set;}}\n", JsonUtil.fixName(name));
@@ -358,7 +415,7 @@ namespace generateBasePropertiesClass
         }
             ";
             }
-            else if (dateListField.Contains(name) && p.format.ToLowerInvariant().Trim()=="date")//is a list of special fields that are to be rendered as dates
+            else if (dateListField.Contains(name) && p.format.ToLowerInvariant().Trim() == "date")//is a list of special fields that are to be rendered as dates
             {
 
                 processString += String.Format("    [JsonProperty(\"{0}\")]\n", name);
@@ -412,7 +469,7 @@ namespace generateBasePropertiesClass
             }
             if (p.description != null)
                 processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
-            processString += String.Format("    public decimal {0} {{get;set;}}\n", JsonUtil.fixName(name));
+            processString += String.Format("    public decimal? {0} {{get;set;}}\n", JsonUtil.fixName(name));
             return processString;
         }
         private static string processNumberInteger(BasePropertiesItem p)
@@ -512,7 +569,9 @@ namespace generateBasePropertiesClass
             outputFileStr += "{\n";
             List<BasePropertiesItem> classToGenerate = new List<BasePropertiesItem>();
             Hashtable enumToGenerate = new Hashtable();
-            switch (outputProperties.type)
+            string localType = (outputProperties.type is String ? outputProperties.type.ToString() : outputProperties.type[0].ToString());
+
+            switch (localType)
             {
                 case "object"://It is an object that contains properties
                     {
@@ -520,12 +579,9 @@ namespace generateBasePropertiesClass
                         {
                             foreach (BasePropertiesItem p in outputProperties.properties)
                             {
-                                if (p.name.Contains("extraProperties"))
-                                {
-
-                                }
+                                localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
                                 //if it is a container, then processes the properties inside
-                                switch (p.type)
+                                switch (localType)
                                 {
                                     case "object":
                                         {
@@ -560,7 +616,7 @@ namespace generateBasePropertiesClass
                                         {
                                             if (p.@enum == null) //normal string
                                             {
-                                                
+
                                                 outputFileStr += processString(p);
                                             }
                                             else  //It is a string base enum

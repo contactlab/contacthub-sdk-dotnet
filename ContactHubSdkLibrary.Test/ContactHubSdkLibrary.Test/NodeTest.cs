@@ -25,7 +25,7 @@ namespace ContactHubSdkLibrary.Test
             currentNode = currentWorkspace.GetNode(nodeID);
             
             Assert.AreEqual(currentNode != null, tpIsValid);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
 
         }
     }

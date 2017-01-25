@@ -93,23 +93,61 @@ namespace ContactHubSdkLibrary.Models
         public DateTime date
         {
             //format:  2016-09-15T08:41:20.224+0000
+            //get
+            //{
+            //    string currentValue = _date;
+            //    if (currentValue == null)
+            //    {
+            //        return DateTime.MinValue;
+            //    }
+            //    else
+            //    {
+            //        return Convert.ToDateTime(_date, new CultureInfo("en-US")).ToUniversalTime();
+            //    }
+            //}
+            //set
+            //{
+            //    try
+            //    {
+            //        _date = value.ToString("yyyy-MM-dd");
+            //    }
+            //    catch { _date = null; }
+            //}
             get
             {
                 string currentValue = _date;
-                if (currentValue == null)
+                if (currentValue != null)
                 {
-                    return DateTime.MinValue;
+                    if (!_date.Contains("T"))
+                    {
+                        return
+                             //DateTime.ParseExact(_date,
+                             //              "MM/dd/yyyy HH:mm:ss",
+                             //              CultureInfo.InvariantCulture,
+                             //              DateTimeStyles.AssumeUniversal |
+                             //              DateTimeStyles.AdjustToUniversal);
+                             Convert.ToDateTime(_date, new CultureInfo("en-US")).ToUniversalTime();
+                    }
+                    else
+                    {
+                        return
+                            DateTime.ParseExact(_date,
+                                          "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                          CultureInfo.InvariantCulture,
+                                          DateTimeStyles.AssumeUniversal |
+                                          DateTimeStyles.AdjustToUniversal);
+                    }
                 }
                 else
                 {
-                    return Convert.ToDateTime(_date, new CultureInfo("en-US")).ToUniversalTime();
+                    return DateTime.MinValue;
                 }
             }
             set
             {
                 try
                 {
-                    _date = value.ToString("yyyy-MM-dd");
+                    _date = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 }
                 catch { _date = null; }
             }

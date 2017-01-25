@@ -47,7 +47,7 @@ namespace ContactHubSdkLibrary.Test
 
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
@@ -67,7 +67,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddCustomer test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
 
@@ -92,8 +92,14 @@ namespace ContactHubSdkLibrary.Test
                     contacts = new Contacts()
                     {
                         email = DateTime.Now.Ticks.ToString() +
-                        "dduck@yourdomain.it"
+                        "dduck@yourdomain.it",
+                        otherContacts = new List<OtherContacts>(),
+                        mobileDevices = new List<MobileDevices>()
                     },
+                    educations = new List<Educations>(),
+                    jobs = new List<Jobs>(),
+                    likes = new List<Likes>(),
+                    subscriptions = new List<Subscriptions>(),
                     timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 },
                 extended = new List<ExtendedProperty>()
@@ -135,7 +141,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
@@ -164,12 +170,11 @@ namespace ContactHubSdkLibrary.Test
                     //delete added customer
                     bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4;
-
                 }
             }
             Common.WriteLog("End CustomerAddCustomerWithExtendedProperties test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
 
@@ -194,8 +199,14 @@ namespace ContactHubSdkLibrary.Test
                     contacts = new Contacts()
                     {
                         email = DateTime.Now.Ticks.ToString() +
-                        "dduck@yourdomain.it"
+                        "dduck@yourdomain.it",
+                        otherContacts = new List<OtherContacts>(),
+                        mobileDevices = new List<MobileDevices>()
                     },
+                    educations = new List<Educations>(),
+                    jobs = new List<Jobs>(),
+                    likes = new List<Likes>(),
+                    subscriptions = new List<Subscriptions>(),
                     timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 },
                 extended = new List<ExtendedProperty>()
@@ -300,7 +311,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
@@ -334,7 +345,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End C_AddCustomerWithExtendedPropertiesFull test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -367,8 +378,14 @@ namespace ContactHubSdkLibrary.Test
                                 type=MobileDevicesTypeEnum.IOS,
                                 identifier=Guid.NewGuid().ToString()
                             }
-                        }
+                        },
+                        otherContacts = new List<OtherContacts>(),
+
                     },
+                    educations = new List<Educations>(),
+                    jobs = new List<Jobs>(),
+                    likes = new List<Likes>(),
+                    subscriptions = new List<Subscriptions>(),
                     timezone = BasePropertiesTimezoneEnum.AfricaAlgiers
                 }
             };
@@ -378,7 +395,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     //customer is created!
@@ -406,7 +423,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddCustomerWithComplexContacts test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -439,7 +456,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
 
-                Thread.Sleep(1000); //waiting for elastic update
+                Thread.Sleep(Util.GetWaitTime()); //waiting for elastic update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -468,7 +485,7 @@ namespace ContactHubSdkLibrary.Test
             Common.WriteLog("End CustomerUpdateCustomer test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -501,7 +518,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
 
-                Thread.Sleep(1000); //waiting for elastic update
+                Thread.Sleep(Util.GetWaitTime()); //waiting for elastic update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -533,7 +550,7 @@ namespace ContactHubSdkLibrary.Test
             Common.WriteLog("End CustomerPartialUpdateCustomer test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
 
@@ -566,7 +583,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 //create clone on PostCustomer subclass
                 if (error == null)
                 {
@@ -604,7 +621,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerUpdateCustomerForced test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -640,7 +657,7 @@ namespace ContactHubSdkLibrary.Test
             //detect current customer number
             PagedCustomer pagedCustomers = null;
             int totalItem = 0;
-            int pageSize = 10;
+            int pageSize = 50;
             List<String> ids = new List<string>();
             List<String> extIDs = new List<string>();
             int startTotalItem = 0;
@@ -684,7 +701,7 @@ namespace ContactHubSdkLibrary.Test
                     }
                     totalItem++;
                 }
-                Thread.Sleep(2000); //wait for remote db update
+                Thread.Sleep(Util.GetWaitTime()); //wait for remote db update
                 int expectedPages = totalItem / pageSize;
                 if (totalItem % pageSize != 0) expectedPages++;
 
@@ -714,14 +731,14 @@ namespace ContactHubSdkLibrary.Test
                 {
                     totPage = pagedCustomers.page.totalPages;
                     testPassed5 = true;
-                    for (int i = pagedCustomers.page.totalPages -1;i>0 ; i--)
+                    for (int i = pagedCustomers.page.totalPages - 1; i > 0; i--)
                     {
                         testPassed5 = testPassed5 && node.GetCustomers(ref pagedCustomers, PageRefEnum.previous, ref error);
                         totPage--;
                     }
                 }
                 bool testPassed6 = (totPage == 1);
-                Common.WriteLog("pageSize|totalItem|totPage|expectedPageg:",pageSize +  "|"  + totalItem + "|"+ totPage + "|" + expectedPages+ "\n\n");
+                Common.WriteLog("pageSize|totalItem|totPage|expectedPageg:", pageSize + "|" + totalItem + "|" + totPage + "|" + expectedPages + "\n\n");
                 bool testPassed2 = true;
                 if (!testPassed1)
                 {
@@ -738,7 +755,7 @@ namespace ContactHubSdkLibrary.Test
                 }
 
                 testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 & testPassed6;
-                Common.WriteLog("result:", testPassed1+ "," + testPassed2 + "," + testPassed3 + "," + testPassed4 + "," + testPassed5 + "," + testPassed5+  "\n\n");
+                Common.WriteLog("result:", testPassed1 + "," + testPassed2 + "," + testPassed3 + "," + testPassed4 + "," + testPassed5 + "," + testPassed5 + "\n\n");
             }
             else
             {
@@ -748,7 +765,7 @@ namespace ContactHubSdkLibrary.Test
             Common.WriteLog("End C_Paging test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -781,7 +798,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -801,7 +818,7 @@ namespace ContactHubSdkLibrary.Test
             Common.WriteLog("End CustomerGetCustomerByExternaID test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -834,7 +851,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -876,7 +893,7 @@ namespace ContactHubSdkLibrary.Test
             Common.WriteLog("End CustomerGetCustomerByCustomQuery test", "passed:" + testPassed + "\n\n");
 
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -909,7 +926,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -938,7 +955,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerGetCustomerByQueryBuilder test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -969,7 +986,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 string likeID = "LIKE" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -983,8 +1000,9 @@ namespace ContactHubSdkLibrary.Test
                     Likes addLike = node.AddCustomerLike(newCustomer.id, newLike, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
+                    //    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
                     bool testPassed2 = compareLogic.Compare(newLike, getLike).AreEqual;
                     getLike.category = "music";
                     Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike, ref error);
@@ -997,11 +1015,11 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerLikesLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
         /// <summary>
@@ -1032,7 +1050,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 string eduID = "EDU" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -1047,7 +1065,7 @@ namespace ContactHubSdkLibrary.Test
                     Educations addEdu = node.AddCustomerEducation(newCustomer.id, newEdu, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newEdu, addEdu).AreEqual;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Educations getEdu = node.GetCustomerEducation(newCustomer.id, eduID, ref error);
                     bool testPassed2 = compareLogic.Compare(newEdu, getEdu).AreEqual;
                     getEdu.schoolName = "Marconi";
@@ -1060,11 +1078,11 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 & testPassed6;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerEducationLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
 
@@ -1096,7 +1114,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 string jobID = "JOB" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -1115,7 +1133,7 @@ namespace ContactHubSdkLibrary.Test
                     {
                         CompareLogic compareLogic = new CompareLogic();
                         bool testPassed1 = compareLogic.Compare(newJob, addJob).AreEqual;
-                        Thread.Sleep(1000); //wait remote update
+                        Thread.Sleep(Util.GetWaitTime()); //wait remote update
                         Jobs getJob = node.GetCustomerJob(newCustomer.id, jobID, ref error);
                         bool testPassed2 = compareLogic.Compare(newJob, getJob).AreEqual;
                         getJob.companyName = "Acme Inc.";
@@ -1129,11 +1147,11 @@ namespace ContactHubSdkLibrary.Test
 
                         testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
                     }
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerJobLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
 
@@ -1165,7 +1183,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 string subID = "SUB" + DateTime.Now.Ticks.ToString();
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -1193,7 +1211,7 @@ namespace ContactHubSdkLibrary.Test
                     Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription, ref error);
                     CompareLogic compareLogic = new CompareLogic();
                     bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);
                     bool testPassed2 = compareLogic.Compare(newSubscription, getSub).AreEqual;
                     getSub.type = "newTYPE";
@@ -1206,11 +1224,11 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerSubscriptionLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
 
@@ -1242,7 +1260,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -1253,11 +1271,11 @@ namespace ContactHubSdkLibrary.Test
                     ////delete data
                     bool testPassed2 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2;
-                    Thread.Sleep(1000); //wait remote update
+                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerAddSession test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
 
@@ -1290,7 +1308,7 @@ namespace ContactHubSdkLibrary.Test
             if (node != null)
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
-                Thread.Sleep(1000); //wait remote update
+                Thread.Sleep(Util.GetWaitTime()); //wait remote update
 
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -1313,7 +1331,7 @@ namespace ContactHubSdkLibrary.Test
                 }
                 Common.WriteLog("End CustomerTagsLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
-                Thread.Sleep(Const.TIMEEXIT); //wait
+                Thread.Sleep(Util.GetExitTime()); //wait
             }
         }
 
@@ -1333,7 +1351,7 @@ namespace ContactHubSdkLibrary.Test
             testPassed = id1 != id2 && !string.IsNullOrEmpty(id1) && !string.IsNullOrEmpty(id2);
             Common.WriteLog("End ResetSession test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
     }
 }

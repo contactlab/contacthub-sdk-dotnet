@@ -24,14 +24,21 @@ namespace generateBasePropertiesClass
                 returnValue.Add(prop);
             }
             return returnValue;
-        }
+        }    
 
-        /* deserializza la proprietà items che contiene la definizione degli array */
+        /* deserialize properties items with array definition  */
         public static BasePropertiesItem deserializeItems(dynamic list)
         {
             if (list == null) return null;
-
             BasePropertiesItem returnValue = JsonConvert.DeserializeObject<BasePropertiesItem>(list.ToString());
+            //if returnValue contains external ref, read external schema and replace it
+            if (!string.IsNullOrEmpty (returnValue.reference))
+            {
+                string externalSchema = Connection.DoGetWebRequest(JSONUtilities.FixReference( returnValue.reference),false);
+                BasePropertiesItem c = null;
+                c = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                returnValue = c;
+            }
             return returnValue;
         }
 
@@ -50,7 +57,6 @@ namespace generateBasePropertiesClass
         public string label;
         public bool enabled;
     }
-
 
     #region Event Properties
 
@@ -79,10 +85,10 @@ namespace generateBasePropertiesClass
     {
         public string id { get; set; }
         public string type { get; set; }
-        public string mode { get; set; }
-        public string label { get; set; }
+        //public string mode { get; set; }
+        //public string label { get; set; }
         public string description { get; set; }
-        public bool enabled { get; set; }
+        //public bool enabled { get; set; }
         public object propertiesSchema { get; set; }
     }
     #endregion
@@ -94,7 +100,7 @@ namespace generateBasePropertiesClass
         public List<Context> elements { get; set; }
         //[JsonProperty("_embedded")]
         //public EventContextPropertySchema embedded { get; set; }
-      //  public Page page { get; set; }
+        //  public Page page { get; set; }
     }
 
     //public class EventContextPropertySchema
@@ -120,8 +126,11 @@ namespace generateBasePropertiesClass
         public string description { get; set; }
         public string format { get; set; }
         public string pattern { get; set; }
-        public string type { get; set; }
+        public dynamic type { get; set; }
         public string[] @enum { get; set; }
+        [JsonProperty("ref")]
+        public string reference {get;set;}
+
 
         public dynamic items
         {
@@ -134,6 +143,8 @@ namespace generateBasePropertiesClass
                 _items = JsonUtil.deserializeItems(value);
             }
         }
+
+
 
         public dynamic contactlabProperties
         {
@@ -166,4 +177,16 @@ namespace generateBasePropertiesClass
     }
 
 
+    public class Enums
+    {
+        public Dictionary<string,string> definitions { get; set; }
+    }
+
+    //public class Definition
+    //{
+    //    public string description { get; set; }
+    //    public string type { get; set; }
+    //    //[JsonProperty("enum")]
+    //    //public List<String> enumValues { get;set; }
+    //}
 }

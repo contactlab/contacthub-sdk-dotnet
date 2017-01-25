@@ -32,7 +32,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 bool testPassed1 = false;
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -41,7 +41,11 @@ namespace ContactHubSdkLibrary.Test
                         customerId = newCustomer.id,
                         type = EventTypeEnum.clickedLink,
                         context = EventContextEnum.OTHER,
-                        properties = new EventPropertyClickedLink(),
+                        properties = new EventPropertyClickedLink()
+                        {
+                            title = "hello",
+                            path = "/tests/1"
+                        },
                         contextInfo=new EventContextPropertyOTHER
                         {
                             client=new Client()
@@ -58,11 +62,20 @@ namespace ContactHubSdkLibrary.Test
                     {
                         testPassed1 = true;
                     }
-                    Thread.Sleep(1000);
 
                     //verify if customer has added event
-                    PagedEvent events=null;
-                    bool tmp = node.GetEvents(ref events, 1, newCustomer.id, null, null, null, null, null, ref error);
+                    PagedEvent events = null;
+                    bool tmp = false;
+                    //polling on insert
+                    if (testPassed1)
+                    {
+                        while (events == null || events.elements.Count == 0)
+                        {
+                            events = null;
+                            tmp = node.GetEvents(ref events, 1, newCustomer.id, null, null, null, null, null, ref error);
+                            Thread.Sleep(1000);
+                        }
+                    }
                     bool testPassed2 = false;
                     //if (events._embedded!=null && events._embedded.events.Count==1)
                     if (events.elements != null && events.elements.Count == 1)
@@ -79,7 +92,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddEvent test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -97,7 +110,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 bool testPassed1 = false;
                 if (newCustomer != null && newCustomer.id != null)
                 {
@@ -133,14 +146,23 @@ namespace ContactHubSdkLibrary.Test
                     {
                         testPassed1 = true;
                     }
-                    Thread.Sleep(1000);
+                 
                     //get events
                     PagedEvent pagedEvents = null;
-                    bool pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null, ref error);
-                    //bool testPassed2 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+
+                    //polling on insert
+                    bool pageIsValid = false;
+                    if (testPassed1)
+                    {
+                        while (pagedEvents == null || pagedEvents.elements.Count == 0)
+                        {
+                            pagedEvents = null;
+                            pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null, ref error);
+                            Thread.Sleep(1000); 
+                        }
+                    }
                     bool testPassed2 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
                     Event addedEvent = pagedEvents.elements.First();
-//                    Event addedEvent = pagedEvents._embedded.events.First();
                     PostEvent addedPostEvent = addedEvent.ToPostEvent();  //scale to subclass
                     CompareLogic compareLogic = new CompareLogic();
                     ComparisonResult compare = compareLogic.Compare(addedPostEvent, newEvent);
@@ -151,7 +173,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddEventWithComplexProperties test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -213,7 +235,7 @@ namespace ContactHubSdkLibrary.Test
                     Customer updatedCustomer = node.UpdateCustomer(postCustomer, customerID, ref error, false);
                     bool testPassed3 = updatedCustomer != null && !string.IsNullOrEmpty(updatedCustomer.id);
                     //wait queue elaboration
-                    Thread.Sleep(1000);
+                    Thread.Sleep(Util.GetWaitTime());
                     customerID = updatedCustomer.id;
                     //test reconciliation: get events
                     PagedEvent pagedEvents = null;
@@ -227,7 +249,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddEventWithExtIdReconciliation test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -267,19 +289,18 @@ namespace ContactHubSdkLibrary.Test
                     {
                         testPassed1 = true;
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(Util.GetWaitTime());
                     Customer newCustomer = node.AddCustomer(newPostCustomer, ref error);
                     bool testPassed2 = (newCustomer != null && !string.IsNullOrEmpty(newCustomer.id));
-                    Thread.Sleep(1000);
+                    Thread.Sleep(Util.GetWaitTime());
                     Session returnSession = node.AddCustomerSession(newCustomer.id, currentSession, ref error);
                     bool testPassed3 = (returnSession != null);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(Util.GetWaitTime());
                     //test reconciliation: get events
                     PagedEvent pagedEvents = null;
                     bool pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id,
                         null, null, null, null, null,
                         ref error);
-                    //bool testPassed4 = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
                     bool testPassed4 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
                     //delete customer
                     bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
@@ -288,7 +309,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End CustomerAddEventWithSessionIdReconciliation test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>
@@ -312,7 +333,7 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
-                Thread.Sleep(1000);
+                Thread.Sleep(Util.GetWaitTime());
                 bool testPassed1 = true;
                 int pageSize = 5;
                 if (newCustomer != null && newCustomer.id != null)
@@ -396,7 +417,7 @@ namespace ContactHubSdkLibrary.Test
             }
             Common.WriteLog("End E_EventPaging test", "passed:" + testPassed + "\n\n");
             Assert.AreEqual(testPassed, tpResult);
-            Thread.Sleep(Const.TIMEEXIT); //wait
+            Thread.Sleep(Util.GetExitTime()); //wait
         }
 
         /// <summary>

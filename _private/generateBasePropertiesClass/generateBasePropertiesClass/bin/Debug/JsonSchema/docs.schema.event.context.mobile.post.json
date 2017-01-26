@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "$schema": "http://api.contactlab.it/hub#",
+  "additionalProperties": false,
+  "properties": {
+    "client": {
+      "type": "object",
+      "properties": {
+        "userAgent": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string",
+          "format": "ipv4"
+        }
+      }
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "bundleIdentifier": {
+          "type": "string"
+        },
+        "versionNumber": {
+          "type": "string"
+        },
+        "buildNumber": {
+          "type": "string"
+        },
+        "identifierForVendor": {
+          "type": "string"
+        },
+        "systemVersion": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "deviceVendor": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

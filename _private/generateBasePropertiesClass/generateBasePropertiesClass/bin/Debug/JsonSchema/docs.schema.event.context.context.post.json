@@ -1,0 +1,19 @@
+{
+  "$schema": "http://api.contactlab.it/hub#",
+  "type": "object",
+  "properties": {
+    "client": {
+      "type": "object",
+      "properties": {
+        "userAgent": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string",
+          "format": "ipv4"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

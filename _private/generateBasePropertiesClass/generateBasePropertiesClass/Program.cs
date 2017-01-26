@@ -34,6 +34,7 @@ namespace generateBasePropertiesClass
 
             //read enum with eventType list
             string jsonString = Connection.DoGetWebRequest("/docs/schema/enums.json");
+            JSONUtilities.SaveJsonSchema("docs.schema.enums.json", jsonString);
             JObject definitions = JObject.Parse(jsonString);
 
 
@@ -56,6 +57,8 @@ namespace generateBasePropertiesClass
             foreach (string c in enumList)
             {
                 jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant() + ".post.json");  //get specific context schema
+                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant() + ".post.json", jsonString);
+
                 if (jsonString != null)
                 {
                     JObject eventObj = JObject.Parse(jsonString);
@@ -73,6 +76,8 @@ namespace generateBasePropertiesClass
                 else //use common schema
                 {
                     jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/context.post.json");  //get common schema
+                    JSONUtilities.SaveJsonSchema("docs.schema.event.context.context.post.json", jsonString);
+
                     if (jsonString != null)
                     {
                         JObject eventObj = JObject.Parse(jsonString);
@@ -161,6 +166,8 @@ namespace generateBasePropertiesClass
             /* download dynamically updated based properties */
             // string jsonString = Connection.DoGetWebRequest("/models/properties/base");
             string jsonString = Connection.DoGetWebRequest("/docs/schema/base-property/base-properties.json");
+            JSONUtilities.SaveJsonSchema("docs.schema.base-property.base-properties.json", jsonString);
+
 
             jsonString = JSONUtilities.FixReference(jsonString);
 
@@ -207,6 +214,7 @@ namespace generateBasePropertiesClass
 
             //read enum with eventType list
             string jsonString = Connection.DoGetWebRequest("/docs/schema/enums.json");
+
             JObject definitions = JObject.Parse(jsonString);
             foreach (var c in definitions["definitions"])
             {
@@ -224,6 +232,8 @@ namespace generateBasePropertiesClass
             foreach (string c in list)
             {
                 jsonString = Connection.DoGetWebRequest("/docs/schema/event/" + c + ".post.json");  //get specific eventType schema
+                JSONUtilities.SaveJsonSchema("docs.schema.event." + c + ".post.json", jsonString);
+
                 JObject eventObj = JObject.Parse(jsonString);
 
                 e = new Event()

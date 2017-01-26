@@ -46,13 +46,10 @@ namespace ContactHubSdkLibrary.Test
                             title = "hello",
                             path = "/tests/1"
                         },
-                        contextInfo=new EventContextPropertyOTHER
+                        contextInfo = new EventContextPropertyOTHER
                         {
-                            client=new Client()
-                            {
-                                ip="8.8.8.8",
-                                userAgent= "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
-                            }
+                            ip = "8.8.8.8",
+                            userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
                         },
                         date = DateTime.Now
                     };
@@ -124,11 +121,8 @@ namespace ContactHubSdkLibrary.Test
 
                     EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
                     {
-                        client = new Client()
-                        {
-                            ip = "192.168.1.1",
-                            userAgent = "Mozilla"
-                        }
+                        ip = "192.168.1.1",
+                        userAgent = "Mozilla"
                     };
 
                     PostEvent newEvent = new PostEvent()
@@ -146,7 +140,7 @@ namespace ContactHubSdkLibrary.Test
                     {
                         testPassed1 = true;
                     }
-                 
+
                     //get events
                     PagedEvent pagedEvents = null;
 
@@ -158,7 +152,7 @@ namespace ContactHubSdkLibrary.Test
                         {
                             pagedEvents = null;
                             pageIsValid = node.GetEvents(ref pagedEvents, 10, newCustomer.id, null, null, null, null, null, ref error);
-                            Thread.Sleep(1000); 
+                            Thread.Sleep(1000);
                         }
                     }
                     bool testPassed2 = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
@@ -212,13 +206,14 @@ namespace ContactHubSdkLibrary.Test
                     // creation of the event also triggers the user creation with only externalID
                     Customer extIdCustomer = null;
                     int maxCount = 600;
-                    while (extIdCustomer == null && maxCount>0)
+                    while (extIdCustomer == null && maxCount > 0)
                     {
                         try
                         {
                             extIdCustomer = node.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
                         }
-                        catch (Exception ex) {
+                        catch (Exception ex)
+                        {
                         }
 
                         Thread.Sleep(1000);  //wait remote processing
@@ -356,7 +351,7 @@ namespace ContactHubSdkLibrary.Test
                             totalItem++;
                         }
                     }
-                    Thread.Sleep(5000);
+                    Thread.Sleep(Util.GetWaitTime());
                     //get pages
                     int expectedPages = totalItem / pageSize;
                     if (totalItem % pageSize != 0) expectedPages++;
@@ -378,13 +373,13 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed4 = totPage == pagedEvents.page.totalPages;
                     //reverse paging
                     pageIsValid = node.GetEvents(ref pagedEvents, pageSize, newCustomer.id, null, null, null, null, null, ref error);
-                    pageIsValid= node.GetEvents(ref pagedEvents, PageRefEnum.last, ref error); //get last page
+                    pageIsValid = node.GetEvents(ref pagedEvents, PageRefEnum.last, ref error); //get last page
                     bool testPassed9 = false;
                     if (pageIsValid)
                     {
                         totPage = pagedEvents.page.totalPages;
                         testPassed9 = true;
-                        for (int i = pagedEvents.page.totalPages-1; i>0 ; i--)
+                        for (int i = pagedEvents.page.totalPages - 1; i > 0; i--)
                         {
                             testPassed9 = testPassed9 && node.GetEvents(ref pagedEvents, PageRefEnum.previous, ref error);
                             totPage--;
@@ -405,7 +400,7 @@ namespace ContactHubSdkLibrary.Test
                         testPassed7 = true;
                         for (int i = 1; i < pagedEvents.page.totalPages; i++)
                         {
-                            testPassed7 = testPassed7 &&  node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
+                            testPassed7 = testPassed7 && node.GetEvents(ref pagedEvents, PageRefEnum.next, ref error);
                             totPage++;
                         }
                     }
@@ -445,7 +440,7 @@ namespace ContactHubSdkLibrary.Test
                     lastName = "Duck",
                     contacts = new Contacts()
                     {
-                        email = DateTime.Now.Ticks.ToString()+
+                        email = DateTime.Now.Ticks.ToString() +
                         "dduck@yourdomain.it"
                     },
                     timezone = BasePropertiesTimezoneEnum.AfricaAbidjan

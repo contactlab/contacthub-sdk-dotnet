@@ -392,12 +392,26 @@ namespace generateBasePropertiesClass
             {
                 if (_$NAME$ != null)
                 {
-                    return
+                    if (_$NAME$.Contains(""+""))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_$NAME$).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_$NAME$.Contains(""T"")) 
+                        {
+                         return
                          DateTime.ParseExact(_$NAME$,
                                        ""yyyy-MM-dd'T'HH:mm:ss'Z'"",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {

@@ -40,7 +40,7 @@ namespace ConsoleSample
                 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
                 if (pageIsValid)
                 {
-                    int totPages =pagedCustomers.page.totalPages;
+                    int totPages = pagedCustomers.page.totalPages;
                     //allCustomers.AddRange(pagedCustomers._embedded.customers);
                     allCustomers.AddRange(pagedCustomers.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
@@ -54,7 +54,7 @@ namespace ConsoleSample
                         }
                         else
                         {
-                            Debug.Print(String.Format("ERROR on current page {0}", i+1));
+                            Debug.Print(String.Format("ERROR on current page {0}", i + 1));
                         }
                     }
                 }
@@ -72,7 +72,7 @@ namespace ConsoleSample
                     //allCustomers.AddRange(pagedCustomers._embedded.customers);
                     allCustomers.AddRange(pagedCustomers.elements);
                     Debug.Print(String.Format("Current page {0}/{1}", pagedCustomers.page.number + 1, pagedCustomers.page.totalPages));
-                  
+
                     while (currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next, ref error))
                     {
 
@@ -128,9 +128,9 @@ namespace ConsoleSample
             if (false)
             {
                 List<Customer> customersByExtID = currentNode.GetCustomerByExternalID("2dc51963-4a15-4ffa-943d-16bcc28d19e0", ref error);
-                if (customersByExtID!=null)
+                if (customersByExtID != null)
                 {
-                    Customer customerByExtID= customersByExtID.First();
+                    Customer customerByExtID = customersByExtID.First();
                 }
             }
             #endregion
@@ -180,22 +180,26 @@ namespace ConsoleSample
             {
                 foreach (Customer c in allCustomers)
                 {
-                    if (c.@base!=null &&
-                        c.@base.contacts!=null &&
+                    if (c.@base != null &&
+                        c.@base.contacts != null &&
                         c.@base.contacts.email != null &&
-                         (c.@base.contacts.email.ToLowerInvariant().StartsWith("john") &&
-                          c.@base.contacts.email.ToLowerInvariant().EndsWith("example.com") 
+                         (
+                          c.@base.contacts.email.ToLowerInvariant().Contains("example.com")
                          ||
-                         c.@base.contacts.email.ToLowerInvariant().EndsWith("dduck@yourdomain.it")
+                         c.@base.contacts.email.ToLowerInvariant().Contains("yourdomain.it")
                          ||
-                         c.@base.contacts.email.ToLowerInvariant().EndsWith("dduck@yourdomain.com")
+                         c.@base.contacts.email.ToLowerInvariant().Contains("yourdomain.com")
                          ||
-                           c.@base.contacts.email.ToLowerInvariant().StartsWith("diego@dimension.it")
+                           c.@base.contacts.email.ToLowerInvariant().Contains("dimension.it")
                         )
                         )
                     {
-                       Debug.Print("Delete " + c.id + " " + c.@base.contacts.email);
-                        currentNode.DeleteCustomer(c.id, ref error);
+                        Debug.Print("Delete " + c.id + " " + c.@base.contacts.email);
+                        if (!currentNode.DeleteCustomer(c.id, ref error))
+                        {
+                            Debug.Print("Error Delete " + c.id + " " + c.@base.contacts.email);
+                        }
+                        Thread.Sleep(250);
                     }
                 }
             }
@@ -213,7 +217,7 @@ namespace ConsoleSample
                         lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
+                            email = DateTime.Now.Ticks.ToString() + "dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                     }
@@ -243,7 +247,7 @@ namespace ConsoleSample
             {
                 currentNode.GetCustomers(ref pagedCustomers, 110, "2dc51963-4a15-4ffa-943d-16bcc28d19e0", null, null, ref error);
 
-//                Customer updateCustomer = pagedCustomers._embedded.customers.First();
+                //                Customer updateCustomer = pagedCustomers._embedded.customers.First();
                 Customer updateCustomer = pagedCustomers.elements.First();
                 updateCustomer.extra = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
@@ -280,7 +284,7 @@ namespace ConsoleSample
                         lastName = "Duck",
                         contacts = new Contacts()
                         {
-                            email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
+                            email = DateTime.Now.Ticks.ToString() + "dduck@yourdomain.it"
                         },
                         timezone = BasePropertiesTimezoneEnum.AmericaArgentinaRioGallegos
                     },
@@ -611,11 +615,10 @@ namespace ConsoleSample
 
                 EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
                 {
-                    client = new Client()
-                    {
-                        ip = "192.168.1.1/16",
-                        userAgent = "Mozilla"
-                    }
+
+                    ip = "192.168.1.1/16",
+                    userAgent = "Mozilla"
+
                 };
 
                 PostEvent newEvent = new PostEvent()
@@ -674,7 +677,7 @@ namespace ConsoleSample
                             lastName = "Duck",
                             contacts = new Contacts()
                             {
-                                email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
+                                email = DateTime.Now.Ticks.ToString() + "dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.AfricaAbidjan
                         }
@@ -730,7 +733,7 @@ namespace ConsoleSample
                             lastName = "Duck",
                             contacts = new Contacts()
                             {
-                                email = DateTime.Now.Ticks.ToString()+"dduck@yourdomain.it"
+                                email = DateTime.Now.Ticks.ToString() + "dduck@yourdomain.it"
                             },
                             timezone = BasePropertiesTimezoneEnum.AmericaArgentinaRioGallegos
                         }
@@ -745,8 +748,8 @@ namespace ConsoleSample
                     bool pageIsValid = currentNode.GetEvents(ref pagedEvents, 10, newCustomer.id,
                         null, null, null, null, null,
                         ref error);
-//                    bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
-                    bool testPassed = (pagedEvents != null && pagedEvents.elements != null &&  pagedEvents.elements.Count == 1);
+                    //                    bool testPassed = (pagedEvents != null && pagedEvents._embedded != null && pagedEvents._embedded.events != null && pagedEvents._embedded.events.Count == 1);
+                    bool testPassed = (pagedEvents != null && pagedEvents.elements != null && pagedEvents.elements.Count == 1);
                     //delete customer
                     currentNode.DeleteCustomer(newCustomer.id, ref error);
                 }

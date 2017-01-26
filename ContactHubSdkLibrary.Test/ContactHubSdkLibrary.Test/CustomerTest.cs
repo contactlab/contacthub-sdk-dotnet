@@ -417,8 +417,6 @@ namespace ContactHubSdkLibrary.Test
 
 
                     testPassed = testPassed1 && testPassed2 && testPassed3;
-
-
                 }
             }
             Common.WriteLog("End CustomerAddCustomerWithComplexContacts test", "passed:" + testPassed + "\n\n");
@@ -938,7 +936,7 @@ namespace ContactHubSdkLibrary.Test
                     qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = newCustomer.id });
                     node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null, ref error);
 
-                    if (pagedCustomers.elements != null && pagedCustomers.elements != null)
+                    if (pagedCustomers.elements != null && pagedCustomers.elements != null && pagedCustomers.elements.Count > 0)
                     {
                         Customer myTestCustomer1 = pagedCustomers.elements.First();
                         //compare source data
@@ -1002,7 +1000,7 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
-                    //    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
                     bool testPassed2 = compareLogic.Compare(newLike, getLike).AreEqual;
                     getLike.category = "music";
                     Likes updatedLike = node.UpdateCustomerLike(newCustomer.id, getLike, ref error);
@@ -1015,7 +1013,6 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
-                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerLikesLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
@@ -1213,6 +1210,11 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
+                    compareLogic.Config.MembersToIgnore.Add("_startDate");
+                    compareLogic.Config.MembersToIgnore.Add("_endDate");
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt");
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");
                     bool testPassed2 = compareLogic.Compare(newSubscription, getSub).AreEqual;
                     getSub.type = "newTYPE";
                     Subscriptions updatedSub = node.UpdateCustomerSubscription(newCustomer.id, getSub, ref error);
@@ -1224,7 +1226,6 @@ namespace ContactHubSdkLibrary.Test
                     bool testPassed6 = node.DeleteCustomer(newCustomer.id, ref error);
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5 && testPassed6;
-                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerSubscriptionLifeCycle test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);
@@ -1271,7 +1272,6 @@ namespace ContactHubSdkLibrary.Test
                     ////delete data
                     bool testPassed2 = node.DeleteCustomer(newCustomer.id, ref error);
                     testPassed = testPassed1 && testPassed2;
-                    Thread.Sleep(Util.GetWaitTime()); //wait remote update
                 }
                 Common.WriteLog("End CustomerAddSession test", "passed:" + testPassed + "\n\n");
                 Assert.AreEqual(testPassed, tpResult);

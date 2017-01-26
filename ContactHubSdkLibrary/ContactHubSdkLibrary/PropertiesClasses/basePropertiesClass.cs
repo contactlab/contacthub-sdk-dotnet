@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 25/01/2017 16:37:20 */
+/* selfgenerated from version 0.0.0.1 26/01/2017 10:33:54 */
 
 using System;
 using System.Collections.Generic;
@@ -236,12 +236,26 @@ public class Likes
             {
                 if (_createdTime != null)
                 {
-                    return
+                    if (_createdTime.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_createdTime).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_createdTime.Contains("T")) 
+                        {
+                         return
                          DateTime.ParseExact(_createdTime,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {
@@ -383,12 +397,26 @@ public class Subscriptions
             {
                 if (_startDate != null)
                 {
-                    return
+                    if (_startDate.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_startDate).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_startDate.Contains("T")) 
+                        {
+                         return
                          DateTime.ParseExact(_startDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {
@@ -415,12 +443,26 @@ public class Subscriptions
             {
                 if (_endDate != null)
                 {
-                    return
+                    if (_endDate.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_endDate).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_endDate.Contains("T")) 
+                        {
+                         return
                          DateTime.ParseExact(_endDate,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {
@@ -448,12 +490,26 @@ public class Subscriptions
             {
                 if (_registeredAt != null)
                 {
-                    return
+                    if (_registeredAt.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_registeredAt).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_registeredAt.Contains("T")) 
+                        {
+                         return
                          DateTime.ParseExact(_registeredAt,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {
@@ -480,12 +536,26 @@ public class Subscriptions
             {
                 if (_updatedAt != null)
                 {
-                    return
+                    if (_updatedAt.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                        {
+                           return Convert.ToDateTime(_updatedAt).ToUniversalTime();
+                        }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_updatedAt.Contains("T")) 
+                        {
+                         return
                          DateTime.ParseExact(_updatedAt,
                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                        CultureInfo.InvariantCulture,
                                        DateTimeStyles.AssumeUniversal |
                                        DateTimeStyles.AdjustToUniversal);
+                       }
+                       else
+                       {
+                            return DateTime.MinValue;
+                       }
+                    }
                 }
                 else
                 {

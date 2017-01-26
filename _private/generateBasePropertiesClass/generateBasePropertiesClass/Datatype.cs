@@ -24,7 +24,7 @@ namespace generateBasePropertiesClass
                 returnValue.Add(prop);
             }
             return returnValue;
-        }    
+        }
 
         /* deserialize properties items with array definition  */
         public static BasePropertiesItem deserializeItems(dynamic list)
@@ -32,9 +32,9 @@ namespace generateBasePropertiesClass
             if (list == null) return null;
             BasePropertiesItem returnValue = JsonConvert.DeserializeObject<BasePropertiesItem>(list.ToString());
             //if returnValue contains external ref, read external schema and replace it
-            if (!string.IsNullOrEmpty (returnValue.reference))
+            if (!string.IsNullOrEmpty(returnValue.reference))
             {
-                string externalSchema = Connection.DoGetWebRequest(JSONUtilities.FixReference( returnValue.reference),false);
+                string externalSchema = Connection.DoGetWebRequest(JSONUtilities.FixReference(returnValue.reference), false);
                 BasePropertiesItem c = null;
                 c = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
                 returnValue = c;
@@ -47,7 +47,6 @@ namespace generateBasePropertiesClass
             if (prop == null) return null;
 
             ContactLabProperty returnValue = JsonConvert.DeserializeObject<ContactLabProperty>(prop.ToString());
-            //   prop.name = property.Name;
             return returnValue;
         }
     }
@@ -63,8 +62,6 @@ namespace generateBasePropertiesClass
     public class EventPropertiesSchemaRoot
     {
         public List<Event> elements { get; set; }
-        //[JsonProperty("_embedded")]
-        //        public EventPropertySchema embedded { get; set; }
         public Page page { get; set; }
     }
 
@@ -76,19 +73,11 @@ namespace generateBasePropertiesClass
         public int number { get; set; }
     }
 
-    //public class EventPropertySchema
-    //{
-    //    public List<Event> events { get; set; }
-    //}
-
     public class Event
     {
         public string id { get; set; }
         public string type { get; set; }
-        //public string mode { get; set; }
-        //public string label { get; set; }
         public string description { get; set; }
-        //public bool enabled { get; set; }
         public object propertiesSchema { get; set; }
     }
     #endregion
@@ -98,15 +87,7 @@ namespace generateBasePropertiesClass
     public class EventContextPropertiesSchemaRoot
     {
         public List<Context> elements { get; set; }
-        //[JsonProperty("_embedded")]
-        //public EventContextPropertySchema embedded { get; set; }
-        //  public Page page { get; set; }
     }
-
-    //public class EventContextPropertySchema
-    //{
-    //    public List<Context> contexts { get; set; }
-    //}
 
     public class Context
     {
@@ -129,7 +110,7 @@ namespace generateBasePropertiesClass
         public dynamic type { get; set; }
         public string[] @enum { get; set; }
         [JsonProperty("ref")]
-        public string reference {get;set;}
+        public string reference { get; set; }
 
 
         public dynamic items
@@ -143,8 +124,6 @@ namespace generateBasePropertiesClass
                 _items = JsonUtil.deserializeItems(value);
             }
         }
-
-
 
         public dynamic contactlabProperties
         {
@@ -176,17 +155,8 @@ namespace generateBasePropertiesClass
 
     }
 
-
     public class Enums
     {
-        public Dictionary<string,string> definitions { get; set; }
+        public Dictionary<string, string> definitions { get; set; }
     }
-
-    //public class Definition
-    //{
-    //    public string description { get; set; }
-    //    public string type { get; set; }
-    //    //[JsonProperty("enum")]
-    //    //public List<String> enumValues { get;set; }
-    //}
 }

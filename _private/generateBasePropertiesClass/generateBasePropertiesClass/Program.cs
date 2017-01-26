@@ -68,7 +68,7 @@ namespace generateBasePropertiesClass
                         id = c,
                         description = c,
                         //type = eventObj["type"].ToString(),
-                        propertiesSchema = eventObj["properties"]["client"]
+                        propertiesSchema = eventObj
                     };
 
                     contextList.Add(e);
@@ -87,7 +87,7 @@ namespace generateBasePropertiesClass
                             id = c,
                             description = c,
                             //type = eventObj["type"].ToString(),
-                            propertiesSchema = eventObj["properties"]["client"]
+                            propertiesSchema = eventObj
                         };
 
                         contextList.Add(e);

@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 26/01/2017 10:33:58 */
+/* selfgenerated from version 0.0.0.1 26/01/2017 16:11:06 */
 
 using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
@@ -9,6 +9,12 @@ namespace ContactHubSdkLibrary.Events
     //context class 'CONTACT_CENTER': CONTACT_CENTER
     public class EventContextPropertyCONTACT_CENTER : EventBaseProperty
     {
+        public Client client { get; set; }
+    }
+
+
+    public class Client
+    {
         public string userAgent { get; set; }
         //format: ipv4
         public string ip { get; set; }
@@ -18,72 +24,127 @@ namespace ContactHubSdkLibrary.Events
     //context class 'WEB': WEB
     public class EventContextPropertyWEB : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
     }
 
 
     //context class 'MOBILE': MOBILE
     public class EventContextPropertyMOBILE : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
+        public Device device { get; set; }
+    }
+
+
+    public class Device
+    {
+        public string bundleIdentifier { get; set; }
+        public string versionNumber { get; set; }
+        public string buildNumber { get; set; }
+        public string identifierForVendor { get; set; }
+        public string systemVersion { get; set; }
+        public string model { get; set; }
+        public string deviceVendor { get; set; }
+        public string locale { get; set; }
+        public string language { get; set; }
     }
 
 
     //context class 'ECOMMERCE': ECOMMERCE
     public class EventContextPropertyECOMMERCE : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
+        public Store store { get; set; }
     }
 
 
+    public class Store
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        [JsonProperty("type")]
+        public string _type { get; set; }
+        [JsonProperty("hidden_type")]
+        [JsonIgnore]
+        public StoreTypeEnum type
+        {
+            get
+            {
+                StoreTypeEnum enumValue = ContactHubSdkLibrary.EnumHelper<StoreTypeEnum>.GetValueFromDisplayName(_type);
+                return enumValue;
+            }
+            set
+            {
+                var displayValue = ContactHubSdkLibrary.EnumHelper<StoreTypeEnum>.GetDisplayValue(value);
+                _type = (displayValue == "NoValue" ? null : displayValue);
+            }
+        }
+        public string street { get; set; }
+        public string city { get; set; }
+        public string country { get; set; }
+        public string province { get; set; }
+        public string zip { get; set; }
+        public Geo geo { get; set; }
+        public string website { get; set; }
+    }
+
+    public enum StoreTypeEnum
+    {
+        NoValue,
+        [Display(Name = "AIRPORT")]
+        AIRPORT,
+        [Display(Name = "ECOMMERCE")]
+        ECOMMERCE,
+        [Display(Name = "FLAGSHIP")]
+        FLAGSHIP,
+        [Display(Name = "FREE-STANDING")]
+        FREEMinusSTANDING,
+        [Display(Name = "MALL")]
+        MALL,
+        [Display(Name = "OUTLET")]
+        OUTLET,
+        [Display(Name = "RESORT")]
+        RESORT,
+        [Display(Name = "SIS")]
+        SIS,
+        [Display(Name = "WAREHOUSE")]
+        WAREHOUSE,
+        [Display(Name = "NOT-DEFINED")]
+        NOTMinusDEFINED
+    }
     //context class 'RETAIL': RETAIL
     public class EventContextPropertyRETAIL : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
+        public Store store { get; set; }
     }
 
 
     //context class 'IOT': IOT
     public class EventContextPropertyIOT : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
     }
 
 
     //context class 'SOCIAL': SOCIAL
     public class EventContextPropertySOCIAL : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
     }
 
 
     //context class 'DIGITAL_CAMPAIGN': DIGITAL_CAMPAIGN
     public class EventContextPropertyDIGITAL_CAMPAIGN : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
     }
 
 
     //context class 'OTHER': OTHER
     public class EventContextPropertyOTHER : EventBaseProperty
     {
-        public string userAgent { get; set; }
-        //format: ipv4
-        public string ip { get; set; }
+        public Client client { get; set; }
     }
 
 

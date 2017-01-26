@@ -615,10 +615,11 @@ namespace ConsoleSample
 
                 EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
                 {
-
+                    client=new Client()
+                    {
                     ip = "192.168.1.1/16",
                     userAgent = "Mozilla"
-
+                    }
                 };
 
                 PostEvent newEvent = new PostEvent()

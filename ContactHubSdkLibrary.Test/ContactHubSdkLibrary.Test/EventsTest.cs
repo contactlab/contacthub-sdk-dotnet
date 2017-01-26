@@ -48,8 +48,11 @@ namespace ContactHubSdkLibrary.Test
                         },
                         contextInfo = new EventContextPropertyOTHER
                         {
-                            ip = "8.8.8.8",
-                            userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
+                            client = new Client()
+                            {
+                                ip = "8.8.8.8",
+                                userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
+                            }
                         },
                         date = DateTime.Now
                     };
@@ -121,8 +124,11 @@ namespace ContactHubSdkLibrary.Test
 
                     EventContextPropertyWEB contextProperties = new EventContextPropertyWEB()
                     {
-                        ip = "192.168.1.1",
-                        userAgent = "Mozilla"
+                        client = new Client()
+                        {
+                            ip = "192.168.1.1",
+                            userAgent = "Mozilla"
+                        }
                     };
 
                     PostEvent newEvent = new PostEvent()

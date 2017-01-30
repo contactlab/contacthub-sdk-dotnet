@@ -1,6 +1,7 @@
 {
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "client": {
       "type": "object",
@@ -14,6 +15,5 @@
         }
       }
     }
-  },
-  "additionalProperties": true
+  }
 }

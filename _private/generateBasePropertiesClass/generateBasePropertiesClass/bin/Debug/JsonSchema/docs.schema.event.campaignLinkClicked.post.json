@@ -28,7 +28,7 @@
       "format": "date-time"
     },
     "contextInfo": {
-      "$ref": "https://api.contactlab.it/hub/v1/docs/schema/event/context/context.post.json"
+      "type": "object"
     },
     "properties": {
       "type": "object",

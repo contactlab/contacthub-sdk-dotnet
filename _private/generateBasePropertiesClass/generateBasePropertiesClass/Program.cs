@@ -56,8 +56,8 @@ namespace generateBasePropertiesClass
 
             foreach (string c in enumList)
             {
-                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant() + ".post.json");  //get specific context schema
-                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant() + ".post.json", jsonString);
+                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".post.json");  //get specific context schema
+                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant().Replace("_","-") + ".post.json", jsonString);
 
                 if (jsonString != null)
                 {
@@ -73,26 +73,7 @@ namespace generateBasePropertiesClass
 
                     contextList.Add(e);
                 }
-                else //use common schema
-                {
-                    jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/context.post.json");  //get common schema
-                    JSONUtilities.SaveJsonSchema("docs.schema.event.context.context.post.json", jsonString);
-
-                    if (jsonString != null)
-                    {
-                        JObject eventObj = JObject.Parse(jsonString);
-
-                        e = new Context()
-                        {
-                            id = c,
-                            description = c,
-                            //type = eventObj["type"].ToString(),
-                            propertiesSchema = eventObj
-                        };
-
-                        contextList.Add(e);
-                    }
-                }
+                
             }
 
             string outputFileStr = "";

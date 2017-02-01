@@ -1,2 +1,2 @@
-copy generateBasePropertiesClass\generateBasePropertiesClass\bin\Debug\*.cs ..\ContactHubSdkLibrary\ContactHubSdkLibrary\PropertiesClasses
+copy classBuilder\generateBasePropertiesClass\bin\Debug\*.cs ..\ContactHubSdkLibrary\ContactHubSdkLibrary\PropertiesClasses
 pause

@@ -75,7 +75,7 @@ namespace ContactHubSdkLibrary.SDKclasses
         /// <summary>
         /// Remove tag from customer
         /// </summary>
-        public Tags RemoveCustomerTag(string customerID, string tag, CustomerTagTypeEnum type, ref Error error)
+        public Tags DeleteCustomerTag(string customerID, string tag, CustomerTagTypeEnum type, ref Error error)
         {
             string fixedTag = tag.Trim();
             Tags currentTags = GetCustomerTags(customerID, ref error);

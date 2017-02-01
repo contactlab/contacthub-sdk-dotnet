@@ -913,7 +913,7 @@ namespace ConsoleSample
             #region Example: remove customers tag 
             if (false)
             {
-                Tags currentTags = currentNode.RemoveCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual, ref error);
+                Tags currentTags = currentNode.DeleteCustomerTag("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", "sport", CustomerTagTypeEnum.Manual, ref error);
             }
             #endregion
             #endregion

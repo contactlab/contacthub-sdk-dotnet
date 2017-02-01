@@ -1318,13 +1318,13 @@ namespace ContactHubSdkLibrary.Test
                     node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual, ref error);
                     Tags addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Manual, ref error);
                     bool testPassed2 = addCustomerTags.manual != null || addCustomerTags.manual.Count == 2;
-                    Tags removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual, ref error);
+                    Tags removeCustomerTags = node.DeleteCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Manual, ref error);
                     bool testPassed3 = removeCustomerTags.manual != null || removeCustomerTags.manual.Count == 1;
                     //auto
                     node.AddCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto, ref error);
                     addCustomerTags = node.AddCustomerTag(newCustomer.id, "life", CustomerTagTypeEnum.Auto, ref error);
                     bool testPassed4 = addCustomerTags.auto != null || addCustomerTags.auto.Count == 2;
-                    removeCustomerTags = node.RemoveCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto, ref error);
+                    removeCustomerTags = node.DeleteCustomerTag(newCustomer.id, "sport", CustomerTagTypeEnum.Auto, ref error);
                     bool testPassed5 = removeCustomerTags.auto != null || removeCustomerTags.auto.Count == 1;
 
                     testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;

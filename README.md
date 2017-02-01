@@ -131,7 +131,7 @@ Workspace currentWorkspace = new Workspace(
 Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This code doesb’t actually make the call to the remote system. It’s only used
+This code doesn’t actually make the call to the remote system. It’s only used
 to initialize the node.
 
 <a name="6Getallcustomers"/>
@@ -408,7 +408,7 @@ Sample:
 
 To get a list of customer you have to go through a pager. Each page is returned
 as PageCustomers object that is passed by ref to the function. Customers array
-is in ._embedded.customers attribute
+is in ._embedded.customers attribute. Max value for page size is 50.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 PagedEvent pagedEvents = null;

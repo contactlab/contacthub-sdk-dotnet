@@ -1013,9 +1013,9 @@ The session ID is automatically generated in the attribute .value
 
 \#\#\# System Update Time
 
-The writing of data on the remote platform has latency of approximately 1
-second. For example, if you add or delete a customer, it will take about 1
-second before its GetCustomers return a consistent data.
+The writing of data on the remote platform has latency of approximately 30
+seconds. For example, if you add or delete a customer, it will take about 30
+seconds before its GetCustomers return a consistent data.
 
 \#\#\# Logs You can enable a detailed log of all calls to the rest of Contacthub
 remote system. To enable logging you simply add in your app.config \| web.config

@@ -45,14 +45,14 @@ Table of contents
     -   [System Update Time](#SystemUpdateTime)
     -   [Logs](#Logs)
 
-## Introduction
+## Introduction <a name="introduction"/>
 
 This SDK allows you to easily access Contacthub REST API, simplifying all
 authentication and data read/write operation. The project is based on the Visual
 Studio 2015 IDE. The project can be compiled as a library (dll) and is
 accompanied by a sample project and unit test.
 
-## Dependencies
+## Dependencies <a name="Dependencies"/>
 
 The only dependency is NewtonsoftJson library, a very popular high-performance
 Json framework for .NET [(read
@@ -62,7 +62,7 @@ Newtonsoft Json is available as NuGet package and is already configured in the
 testing (NUnit.CompareNETObject). If you are not using units test, these
 packages are not required.
 
-## Getting Started
+## Getting Started <a name="GettingStarted"/>
 
 These instructions will help you a get copy of the project up and running on
 your local machine for development and testing purposes.

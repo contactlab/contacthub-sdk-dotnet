@@ -7,15 +7,15 @@ Table of contents
 -   [Introduction](#introduction)
 -   [Dependencies](#Dependencies)
 -   [Getting Started](#GettingStarted)
--   [1. Create your client application](#1Createyourclientapplication)
--   [2. Download required packages](#2Downloadrequiredpackages)
--   [3. Include sdk library](#3Includesdklibrary)
--   [4. Configure credential](#4Configurecredential)
--   [5. Instantiate the workspace and the
-    node](#5Instantiatetheworkspaceandthenode)
--   [6. Getallcustomers](#6Getallcustomers)
--   [7. Add customer](#7Addcustomer)
--   [8. Error handling](#8ErrorHandling)
+	-   [1. Create your client application](#1Createyourclientapplication)
+	-   [2. Download required packages](#2Downloadrequiredpackages)
+	-   [3. Include sdk library](#3Includesdklibrary)
+	-   [4. Configure credential](#4Configurecredential)
+	-   [5. Instantiate the workspace and the
+		node](#5Instantiatetheworkspaceandthenode)
+	-   [6. Getallcustomers](#6Getallcustomers)
+	-   [7. Add customer](#7Addcustomer)
+	-   [8. Error handling](#8ErrorHandling)
 -   [Usage](#usage)
 -   [Customer Class](#customerClass)
     -   [Add a customer](#addACustomer)
@@ -980,7 +980,9 @@ The writing of data on the remote platform has latency of approximately 30
 seconds. For example, if you add or delete a customer, it will take about 30
 seconds before its GetCustomers return a consistent data.
 
-### Logs You can enable a detailed log of all calls to the rest of Contacthub
+### Logs 
+
+You can enable a detailed log of all calls to the rest of Contacthub
 remote system. To enable logging you simply add in your app.config \| web.config
 the following keys
 

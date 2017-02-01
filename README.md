@@ -604,10 +604,10 @@ Get and update a customer job:
         Jobs updatedJob = currentNode.UpdateCustomerJob(customerID, j,ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove a customer job: (TO BE DONE)
+Remove a customer job: 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
-(TO BE DONE)
+	bool idDeleted = node.DeleteCustomerJob(customerID, jobID, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \#\#\#\#\# Education Add new education:
@@ -633,10 +633,10 @@ Get and update a customer education:
   Educations updatedEducation = currentNode.UpdateCustomerEducation(customerID, edu,ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove a customer education: (TO BE DONE)
+Remove a customer education:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
-(TO BE DONE)
+	bool isDeleted = node.DeleteCustomerEducation(customerID, educationID, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \#\#\#\#\# Subscription Add new subscription:
@@ -674,10 +674,10 @@ Get and update a customer subscription:
     Subscriptions updatedSubscription = currentNode.UpdateCustomerSubscription(customerID, s, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove a customer subscription: (TO BE DONE)
+Remove a customer subscription: 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
-(TO BE DONE)
+	bool isDeleted = node.DeleteCustomerSubscription(customerID, subscriptionID, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \#\#\#\#\# Like Add new like:
@@ -702,10 +702,10 @@ Get and update a customer like:
     Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove a customer subscription: (TO BE DONE)
+Remove a customer subscription: 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
-(TO BE DONE)
+	bool isDeleted = node.DeleteCustomerLike(customerID, likeID, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \#\#\#\#\# Tag The tags consist of two arrays of strings called 'auto' and

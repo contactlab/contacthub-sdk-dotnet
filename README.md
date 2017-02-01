@@ -149,7 +149,7 @@ bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, 
 List<Customer> customers = pagedCustomers._embedded.customers;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the call is correct, pageIsCalid return *true*.
+If the call is correct, pageIsValid return *true*.
 
 <a name="7Addcustomer"/>
 ### 7. Add customer

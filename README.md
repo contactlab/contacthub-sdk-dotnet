@@ -42,6 +42,7 @@ Table of contents
 -   [Others](#Others)
     -   [System Update Time](#SystemUpdateTime)
     -   [Logs](#Logs)
+-   [Class builder] (#classBuilder)
 
 <a name="introduction"/>
 ## Introduction 
@@ -1039,3 +1040,25 @@ the following keys
 
 This can be useful for intercept the server-side errors, not visible on SDK
 client side.
+
+<a name="classBuilder"/>
+## Class builder
+
+The are some properties aren’t static in Contacthub, that you may want to change in the future. For example to add new type of events or new enum values as prefix for some properties. 
+These definitions are available in a JSON schema, publicly available with REST API. 
+To make developer life easier, the SDK provide the required classes and enums for the schema, related to the customer base properties (basePropertiesClass.cs), events properties (eventPropertiesClass.cs) and events context properties (eventContextClass.cs).
+You can create the classes every time you want, automatically, using the provided project available in the classBuilder folder. 
+
+To update the classes: 
+
+- Open the project available in the classBuilder folder 
+- Copy all generated files from bin/debug to /PropertiesClasses in sdk project, overwriting the existing files 
+- Rebuild the sdk project 
+
+All the new files has a comment in the first line with the generated date, as follow: 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
+/* selfgenerated from version 0.0.0.1 30/01/2017 12:37:51 */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+At this time the real version number is not available (fixed value 0.0.0.1)
+

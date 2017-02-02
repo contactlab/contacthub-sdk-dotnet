@@ -1,0 +1,8 @@
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.exe.config
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.exe
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.pdb
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.exe
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.pdb
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csprojResolveAssemblyReference.cache

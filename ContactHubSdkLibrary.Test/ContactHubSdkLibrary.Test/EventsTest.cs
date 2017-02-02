@@ -20,7 +20,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event to customer
         /// </summary>
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
         public void E_AddEvent(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEvent TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
@@ -98,7 +98,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add complex event to customer
         /// </summary>
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
         public void E_AddEventWithComplexProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithComplexProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
@@ -179,7 +179,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event + externalID reconciliation
         /// </summary>
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
         public void E_AddEventWithExtIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithExtIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
@@ -256,7 +256,7 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event + session ID reconciliation
         /// </summary>
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
         public void E_AddEventWithSessionIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
         {
             Common.WriteLog("Start CustomerAddEventWithSessionIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
@@ -316,13 +316,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event to customer
         /// </summary>
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 1, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 3, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 5, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 10, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 50, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 100, true)]
-        [TestCase("e9062bbf-4c71-42a0-af4e-3a145b0beb35", "0027255e02344ac1a0426d896cd899386beaf7d41c224c229e77432923f9301f", "d35a5485-ff59-4b85-bbc3-1eb45ed9bcd6", 250, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 1, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 3, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 5, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 10, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 50, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 100, true)]
+        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 250, true)]
         public void E_EventPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxEvents, bool tpResult)
         {
             Common.WriteLog("Start E_EventPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);

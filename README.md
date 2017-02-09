@@ -1,8 +1,6 @@
-Contact Hub C# .NET SDK for Windows
-====================================
+# Contacthub C# .NET SDK for Windows
 
-Table of contents
------------------
+## Table of contents
 
 -   [Introduction](#introduction)
 -   [Dependencies](#Dependencies)
@@ -42,7 +40,7 @@ Table of contents
 -   [Others](#Others)
     -   [System Update Time](#SystemUpdateTime)
     -   [Logs](#Logs)
--   [Class builder] (#classBuilder)
+-   [Class builder](#classBuilder)
 
 <a name="introduction"/>
 ## Introduction 

@@ -37,7 +37,7 @@
     -   [Get paged events](#Getevents)
     -   [Get single event](#Gesingletevents)
     -   [Session](#Session)
--   [Others](#Others)
+-   [Further information](#Others)
     -   [System Update Time](#SystemUpdateTime)
     -   [Logs](#Logs)
 -   [Class builder](#classBuilder)
@@ -45,52 +45,51 @@
 <a name="introduction"/>
 ## Introduction 
 
-This SDK allows you to easily access Contacthub REST API, simplifying all
-authentication and data read/write operation. The project is based on the Visual
-Studio 2015 IDE. The project can be compiled as a library (dll) and is
-accompanied by a sample project and unit test.
+This SDK enables you to easily access the Contacthub REST API, and simplifies all
+authentication and data read/write operations. The project is based on the Visual
+Studio 2015 IDE and can be compiled as a DLL library. It is accompanied by a 
+sample project and a unit test.
 
 <a name="Dependencies"/>
 ## Dependencies
 
-The only dependency is NewtonsoftJson library, a very popular high-performance
-Json framework for .NET [(read
-license)](https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md).
-Newtonsoft Json is available as NuGet package and is already configured in the
-*packages.config* file. The project also uses other NuGet packages for unit
-testing (NUnit.CompareNETObject). If you are not using units test, these
+The only dependency is the Newtonsoft Json library, a very popular high-performance
+JSON framework for .NET [(read license)](https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md).
+ Newtonsoft Json is available as a NuGet package and is already configured in the
+`packages.config` file. The project also uses other NuGet packages for unit
+testing (NUnit.CompareNETObject). If you are not using unit tests, these
 packages are not required.
 
 <a name="GettingStarted"/>
-## Getting Started 
+## Getting started 
 
-These instructions will help you a get copy of the project up and running on
-your local machine for development and testing purposes.
+These instructions will help you to get a copy of the project up and running on
+your local machine, for development and testing purposes.
 
 <a name="1Createyourclientapplication"/>
 ### 1. Create your client application
 
-Create a new Visual Studio solution with a new console application and add the
-project Contacthub SDK Library in the references. If you do not need unit test,
-ContactHubSdkLibrary.Test is not required.
+Create a new Visual Studio solution with a new console application, and add the
+Contacthub SDK Library belonging to the project, to the references. If you do not need unit test,
+`ContactHubSdkLibrary.Test` is not required.
 
 <a name="2Downloadrequiredpackages"/>
-### 2. Download required packages
+### 2. Download the required packages
 
-You can compile this SDK library only if you get the packages listed in
-packages.config. To get all required packages, open NuGet Package Manager
+You can only compile this SDK library if you have the packages listed in
+`packages.config`. To get all required packages, open the NuGet Package Manager
 Console and type:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ shell
 PM> update-package -reinstall
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Then clean and rebuild all solution.
+Then clean and rebuild the solution.
 
 <a name="3Includesdklibrary"/>
-### 3. Include SDK library
+### 3. Include the SDK library
 
-Add references to SDK library in your application.
+Add references to the SDK library in your application:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 using ContactHubSdkLibrary;
@@ -100,9 +99,9 @@ using ContactHubSdkLibrary.SDKclasses;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="4Configurecredential"/>
-### 4. Configure credential
+### 4. Configure the credentials
 
-Edit your app.config (or web.config) file and add the following settings:
+Edit your `app.config` (or `web.config`) file and add the following settings:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ xml
 <appSettings>
@@ -112,15 +111,15 @@ Edit your app.config (or web.config) file and add the following settings:
 </appSettings>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Replace the sample values with real credentials provided by Contactlab.
-AppSettings is the most convenient way to configure the credentials, but if you
-wish, you can use your favorite techniques to save and retrive them in order for
-the SDK to work.
+Replace the sample values above with the real credentials, which are provided by Contactlab.
+`appSettings` is the most convenient way to configure the credentials, but if you
+wish, you can use your favorite technique to save and retrieve them so
+the SDK will work.
 
 <a name="5Instantiatetheworkspaceandthenode"/>
 ### 5. Instantiate the workspace and the node
 
-To instantiate the workspace, use the following code:
+To instantiate the workspace, use the following:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 Workspace currentWorkspace = new Workspace(
@@ -130,15 +129,15 @@ Workspace currentWorkspace = new Workspace(
 Node currentNode = currentWorkspace.GetNode(ConfigurationManager.AppSettings["nodeID"].ToString());
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This code doesn’t actually make the call to the remote system. It’s only used
+This code doesn’t actually make the call to the remote system. It is only used
 to initialize the node.
 
 <a name="6Getallcustomers"/>
 ### 6. Get all customers
 
-The most simple call is reading customers. If your workspace is empty you’ll get
-any results, but it will confirm if your credentials are working.  To get
-customers, use PagedCostumer object.
+The most simple call is to read customers. If your workspace is empty you will not get
+any results, but it will confirm whether your credentials are working. To get
+customers, use the `PagedCustomer` object:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 int pageSize = 5;
@@ -148,12 +147,12 @@ bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, 
 List<Customer> customers = pagedCustomers._embedded.customers;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the call is correct, pageIsValid return *true*.
+If the call is correct, `pageIsValid` returns `true`.
 
 <a name="7Addcustomer"/>
 ### 7. Add customer
 
-To complete your first application, add a *customer* to Contacthub node.
+To complete your first application, add a *customer* to the Contacthub node:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 PostCustomer newCustomer = new PostCustomer()
@@ -174,26 +173,26 @@ Error error=null;
 Customer createdCustomer = currentNode.AddCustomer(newCustomer,ref error, false);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the call is correct, you should get a *customer* object with all of its
-fields and its *id* attribute not null. This is the internal *id* you'll be
-using as an identifier for your customer.
+If the call is correct, you should get a `customer` object with all of its
+fields, while its `id` attribute is not shown as null. This is the internal ID that you will 
+use as an identifier for your customer.
 
 <a name="8ErrorHandling"/>
 ### 8. Error handling
 
-Each call requires an Error class parameter passed by ref, that allows you to
-throw an exception if required.
+Each call requires an `Error` class parameter passed by a reference, which allows you to
+throw an exception if required:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  Error error=null;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The parameter must be void. All functions returns an Error object with error
-description in the *message* attribute. If no error are present, null is
+The parameter must be void. All functions return an `Error` object with an error
+description in the `message` attribute. If no errors are present, null is
 returned.
 
 <a name="usage"/>
-## Usage
+## Use
 
 <a name="customerClass"/>
 ### Customer Class
@@ -201,13 +200,13 @@ returned.
 <a name="addACustomer"/>
 #### Add a customer
 
-To create a customer instantiate an object of type Customer and assigns the
-required attributes. @base field contains the main customer data. This code
-creates a customer with name, surname, email, timezone and an External ID. The
-External ID is a field in which the client application can write its own primary
-key and use in searches to get the customer.
+To create a customer, instantiate a `Customer` type object and assign the
+required attributes. The `@base` field contains the main customer data. This code
+creates a customer with a name, last name, email, time zone and an External ID. The
+`externalId` is a field in which the client application can write its own primary
+key and use it in searches to get the customer.
 
-Sample:
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 PostCustomer newCustomer = new PostCustomer()
@@ -227,14 +226,14 @@ PostCustomer newCustomer = new PostCustomer()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Addcustomerwithforcedupdate"/>
-#### Add customer with forced update
+#### Add a customer with a forced update
 
-You can force insert a costumer if it already exists in the node. The remote
-system verifies the presence of the customer according to the rules defined in
-the Contacthub configuration. To force the update use the *true* in forceUpdate
+You can force a customer to be inserted, if they already exist in the node. The remote
+system verifies the presence of the customer, according to the rules defined in
+the Contacthub configuration. To force the update use `true` in the `forceUpdate`
 parameter.
 
-Sample:
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 PostCustomer updateCustomer = [...]
@@ -243,26 +242,29 @@ Customer createdCustomer = currentNode.AddCustomer(updateCustomer,ref error, tru
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="updateCustomerFullUpdate"/>
-#### Update customer (full update)
+#### Update a customer (full update)
 
-To update all customer fields, you need to create a PostCustomer object and call
-the updateCustomer function with fullUpdate parameter set to *true*. In this way
+To update all customer fields, you need to create a `PostCustomer` object and call
+the `updateCustomer` function, with the `fullUpdate` parameter set to `true`. In this way, 
 the customer object will be completely replaced with the new data, including all
-fields set to null.
+fields that are set to null.
 
-Sample:
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 Customer customer = currentNode.UpdateCustomer((PostCustomer)updateCustomer, updateCustomer.id,ref error, true);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You have to include the customer id to update, because the PostCustomer object
-does not have the id attribute. We recommend using partial update to avoid
-deleting fields already setted previously.
+To be able to update, you have to include the customer ID, because the `PostCustomer` object
+does not have the ID attribute. We recommend using *partial update* (see below) to avoid
+deleting fields that have already been previously set.
 
-Important! If you need to update a customer remember to always use a
-PostCustomer object. You can’t cast Customer to PostCustomer, you must use
-.ToPostCustomer() method.
+**Important:**
+
+If you need to update a customer, always remember to use a`PostCustomer` object. 
+You cannot cast `Customer` to `PostCustomer`, you must use the `.ToPostCustomer()` method.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
                 Customer newCustomer = [...] //set customer
@@ -270,50 +272,68 @@ PostCustomer object. You can’t cast Customer to PostCustomer, you must use
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="updateCustomerPartialUpdate"/>
-#### Update customer (partial update)
+#### Update a customer (partial update)
 
-If you need to update only certain fields of the customer, you can make a
-partial update. In this case only the not null fields will be used in the
+If you only need to update certain fields belonging to a customer, you can make a
+partial update. In this case, only the `not null` fields will be used for the
 update.
 
-Sample:
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 Customer customer = currentNode.UpdateCustomer((PostCustomer)partialData, customerID,ref error, false);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="addOrUpdateWithExtProperties"/>
-#### Add or update customer with extended properties
+#### Add or update a customer with extended properties
 
-The extended properties have a dynamic structure that is defined in the
-server-side workspace configuration. You can not have on client an auto-builder
-that get a class already structured as extended properties on server side. You
-must build your data structure exactly as it is structured on the server.
+Extended properties have a dynamic structure that is defined in the
+server-side workspace configuration. You cannot use an auto-builder on the client, which 
+gets a class that is already structured, as the extended properties are on the server side.
+ You must build your data structure exactly as it defined on the server.
 
-Extended properties validator is not available in this sdk. For each extended
-property you must use the correct datatype.
+An extended properties validator is not part of this SDK. 
+You must use the correct data type For each extended property.
 
-Available datatype are:
+Available data types are:
 
-* ExtendedPropertyString: string
+* `ExtendedPropertyString`
 
-* ExtendedPropertyStringArray: array of string
+  String
 
-* ExtendedPropertyNumber: number
+* `ExtendedPropertyStringArray`
 
-* ExtendedPropertyNumberArray: array of number
+  Array of strings
 
-* ExtendedPropertyBoolean: boolean
+* `ExtendedPropertyNumber`
 
-* ExtendedPropertyObject: object
+  Number
 
-* ExtendedPropertyObjectArray: array of object
+* `ExtendedPropertyNumberArray`
 
-* ExtendedPropertyDateTime: datetime
+  Array of numbers
 
-* ExtendedPropertyDateTimeArray: array of datetime
+* `ExtendedPropertyBoolean`
 
-Sample:
+  Boolean
+
+* `ExtendedPropertyObject`
+
+  Object
+
+* `ExtendedPropertyObjectArray`
+
+  Array of objects
+
+* `ExtendedPropertyDateTime`
+
+  Datetime
+
+* `ExtendedPropertyDateTimeArray`
+
+  Array of datetimes
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
   PostCustomer newCustomer = new PostCustomer()
@@ -405,9 +425,11 @@ Sample:
 <a name="Getpagedcustomers"/>
 #### Get paged customers
 
-To get a list of customer you have to go through a pager. Each page is returned
-as PageCustomers object that is passed by ref to the function. Customers array
-is in ._embedded.customers attribute. Max value for page size is 50.
+To get a list of customers, you must go through a pager. Each page is returned
+as a `PageCustomers` object, which is passed by a reference to the function. The customers array
+is in the `._embedded.customers` attribute. The maximum value for the page size is 50.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 PagedEvent pagedEvents = null;
@@ -415,13 +437,13 @@ int pageSize = 5;
 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After the first page, you can easily cycle on next pages with
+After the first page, you can easily cycle through the next pages with:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 pageIsValid = currentNode.GetCustomers(ref pagedCustomers, PageRefEnum.next,ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sample:
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize, null, null, null,ref error);  //first page
@@ -436,7 +458,7 @@ if (pageIsValid)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-or in this way:
+or:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, pageSize,
@@ -451,52 +473,66 @@ or in this way:
  }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have already got the first page or one of the following, you can jump to
-a specific page. You can do it if you pass a PagedCustomer object already
-valorized by a previous call. Make sure it is not null. Sample: get third page
+If you already have the first or one of the following pages, you can jump to
+a specific page. You can do this if you pass a `PagedCustomer` object that has already been 
+identified by a previous call. Make sure it is not null. 
+
+**Example:**
+
+Get the third page:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 bool pageIsValid = currentNode.GetCustomers(ref pagedCustomers, 3, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="GetSingleCustomer"/>
-#### Get single customer
+#### Get a single customer
 
-You can get a customer through internal id or by the ExternalID
+You can get a customer through the internal `ID` or the `ExternalID`
 
-Sample: get customer by ID (internal)
+**Example:**
+
+Get a customer by the `ID` (internal):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 Customer customer = currentNode.GetCustomerByID(customerID,ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sample: get customer by external ID
+**Example:**
+
+Get a customer by the `ExternalID`:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 Customer customerByExtID = currentNode.GetCustomerByExternalID(extID, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can get the customer through external ID also using GetCustomers(). If the
-external id is unique, it should always return a single result.
+You can also get the customer through the external ID by using `GetCustomers()`. If the
+external ID is unique, it should always return a single result.
 
-Sample: get customer by external ID
+**Example:**
+
+Get a customer by the external ID:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 bool isValid = currentNode.GetCustomers(ref pagedCustomers, 10, extID, null, null, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Queryoncustomers"/>
-#### Query on customers
+#### Query customers
 
-You can create a query to refine GetCustomers(). You have two ways to specify a
-query, the simple mode and the advance mode.
+You can create a query to refine `GetCustomers()`. You have two ways to specify a
+query, the simple mode and the advanced mode.
 
-Simple mode: this mode use a query builder to get query string. Sample: query on
-firstName and lastName (AND condition).
+* Simple mode
 
-The simple mode allows you to easily build a query with AND or OR operator. If
-you want to build a complex query, you can pass it directly in json format,
-according to the rest api specifications.
+  Uses a query builder to get the query string. For example, Query 
+`firstName` and `lastName` (AND condition).
+
+The simple mode allows you to easily build a query with an AND or an OR operator. If
+you want to build a complex query, you can pass it directly in JSON (see below)
+according to the REST API specifications.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 QueryBuilder qb = new QueryBuilder();
@@ -514,7 +550,11 @@ currentNode.GetCustomers(ref pagedCustomers, 10, null,
                             ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Advanced mode: pass a query string in json format
+* Advanced mode
+
+  Pass a query string using JSON
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 string querySTR = @"{
@@ -538,16 +578,20 @@ currentNode.GetCustomers(ref pagedCustomers, 10, null, querySTR, null,ref error)
 <a name="Selectfields"/>
 #### Select fields
 
-You can select the fields returned from the get customers
+You can select the fields returned by `GetCustomers`
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 currentNode.GetCustomers(ref pagedCustomers, 10, null, null, "base.firstName,base.lastName",ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Deletecustomer"/>
-#### Delete customer
+#### Delete a customer
 
-You can delete a customer just by knowing its id
+You can delete a customer by just using their ID
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 currentNode.DeleteCustomer(c.id,ref error);
@@ -556,16 +600,24 @@ currentNode.DeleteCustomer(c.id,ref error);
 <a name="Customershortcuts"/>
 #### Customer data shortcuts
 
-There are 5 entities over which you can access directly without updating the
-customer, despite being Customer attributes. Subclasses Jobs, Education,
-Subscription and Like from Customer Class can be managed directly with specific
-add, update and delete method. In a similar way it is also possible to act on
-the Tag subclass.
+Although they are Customer attributes, there are five entities that you can 
+access directly, without carrying out a full or partial customer update. The following 
+subclasses of the `Customer Class` can be managed directly with specific 
+`add`, `update` and `delete` methods:
+
+- `Jobs`
+- `Education`
+- `Subscription`
+- `Like` 
+
+The `Tag` subclass can also be managed in a similar way.
 
 <a name="Jobs"/>
 ##### Jobs 
 
-Add new job:
+**Examples:**
+
+Add a new job:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
   Customer myCustomer = currentNode.GetCustomerByID("16917ed3-6789-48e0-9f8e-e5e8d3c92310",ref error);
@@ -600,7 +652,9 @@ Remove a customer job:
 <a name="Education"/>
 ##### Education 
 
-Add new education:
+**Examples:**
+
+Add a new education entry:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
   Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
@@ -632,7 +686,9 @@ Remove a customer education:
 <a name="Subscription"/>
 ##### Subscription 
 
-Add new subscription:
+**Examples:**
+
+Add a new subscription:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
@@ -676,7 +732,9 @@ Remove a customer subscription:
 <a name="Like"/>
 ##### Like 
 
-Add new like:
+**Examples:**
+
+Add a new like:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f", ref error);
@@ -698,7 +756,7 @@ Get and update a customer like:
     Likes updatedLike = currentNode.UpdateCustomerLike(customerID, l, ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove a customer subscription: 
+Remove a customer like: 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 	bool isDeleted = node.DeleteCustomerLike(customerID, likeID, ref error);
@@ -707,16 +765,22 @@ Remove a customer subscription:
 <a name="tags"/>
 ##### Tags 
 
-The tags consist of two arrays of strings called 'auto' and
-'manual' (CustomerTagTypeEnum.Auto CustomerTagTypeEnum.Manual) Get customer
-tags:
+Tags consist of two arrays of strings known as 'auto' and
+'manual' (CustomerTagTypeEnum.Auto CustomerTagTypeEnum.Manual) 
+
+**Example:**
+
+Get customer tags:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     Tags customerTag = currentNode.GetCustomerTags("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can add and delete a single element using these shortcuts. Add customer
-tags:
+You can add and delete a single element using the following shortcuts:
+
+**Examples:**
+
+Add customer tags:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
    Tags currentTags = currentNode.AddCustomerTag(
@@ -739,23 +803,25 @@ Remove customer tags:
 <a name="EventClass"/>
 ### Event Class
 
-The events are based on the template, choose the value for the 'type' field will
-then have to use therefore the right template for the field 'properties'.
+Events are based on the appropriate template. By entering the value for the 
+`type` field, the right template is defined for the `properties` field.
 
-The same thing also applies to the 'context' field, which defines the template
-to be used for the field 'contextInfo' Type and Context are defined in
-eventPropertiesClass.cs and eventContextClass.cs files.
+The same thing also applies to the `context` field, which defines the template
+that is used for the `contextInfo` field. `ype` and `context` are defined in the
+`eventPropertiesClass.cs` and `eventContextClass.cs` files.
 
-The correspondence between the value of the enum and its class is very intuitive
-because you can derive the name of each other. For example if you choose
-type=EventTypeEnum.openedTicket, the properties will be allocated through
-EventPropertyOpenedTicket class; if you choose context = EventContextEnum.WEB,
-the contextInfo will be allocated through a EventContextPropertyWEB class.
+The correlation between the value of the enumeration and its class is very intuitive,
+because you can derive the name of one from the other. For example, if you choose
+`type=EventTypeEnum.openedTicket`, the properties will be allocated through the
+`EventPropertyOpenedTicket` class. If you choose `context = EventContextEnum.WEB`,
+the `contextInfo` will be allocated through an `EventContextPropertyWEB` class.
 
 <a name="CustomerEvents"/>
 #### Customer Events
 
-You can add an event directly to a customer if you know the id.
+You can directly add an event to a customer if you know their ID.
+
+**Examples:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
   Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
@@ -773,7 +839,7 @@ You can add an event directly to a customer if you know the id.
                 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-in this example are used both properties and contextInfo data:
+in the following, both the properties and the `contextInfo` data are used:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     Customer myCustomer = currentNode.GetCustomerByID("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
@@ -811,21 +877,27 @@ in this example are used both properties and contextInfo data:
 <a name="AnonymousEvents"/>
 #### Anonymous Events
 
-The event class allows you to add events to customer even if they do not have
-immediate access to a customer. You can create an event and using
-BringBackProperties in two different ways: through a sessionID or through a
-ExternalID.
+The `event` class allows you to add customer events, even if you do not have
+immediate access to the appropriate customer. You can create an event using
+`BringBackProperties` in two different ways, through:
 
-If you use a sessionID, you must first create a session and then use it in any
-event. At the end when you create a customer, you will associate the customer
-session and reconcile it to all added events so far.
+* A `sessionID` 
 
-If you create an event using in BringBackProperties with ExternalID, you will
-create automatically an empty customer and all events will be associated with
-him. Eventually you will be able to update that customer through the ExternalID.
-In general the addition of events is not synchronous to which you can not obtain
-the newly generated id, as it is put in a processing queue. Add an anonymous
-event with a externalID and then reconciles to the customer
+  or:
+
+* An `ExternalID`
+
+If you use a `sessionID`, you must first create a session, then use it for any 
+events. When the customer is created, you can associate and reconcile them 
+with all events that have been added so far.
+
+If you create an event using `BringBackProperties` with an `ExternalID,` you can
+automatically create an empty customer, and all relevant events will be associated with 
+them. Later, you will can update the associated customer through the `ExternalID`.
+
+**Examples:**
+
+Add an anonymous event with a `externalID` and then reconcile it with a customer:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     string extID = Guid.NewGuid().ToString();
@@ -878,7 +950,7 @@ event with a externalID and then reconciles to the customer
         }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add an anonymous event with a Session and then reconciles to the customer.
+Add an anonymous event with a `Session` and then reconcile it with a customer:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     //create new session
@@ -930,10 +1002,13 @@ Add an anonymous event with a Session and then reconciles to the customer.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Getevents"/>
-#### Get paged events
+#### Get paged Events
 
-This example allows you to get all the events filtered by customerID. Pagination
-follows the same rules as described above for paging customer.
+The following enables you to get all events that are filtered using a `customerID`. 
+The pagination rules are the same as those described in the **Get paged customers** 
+section above.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     List<Event> allEvents = new List<Event>();
@@ -955,7 +1030,9 @@ follows the same rules as described above for paging customer.
     }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to customer id you can filter by type:
+In addition to the `customerID`, you can filter by event type.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
     bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
@@ -963,7 +1040,9 @@ In addition to customer id you can filter by type:
                                                 ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Or filter by context:
+Or filter by context.
+`
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
@@ -971,7 +1050,9 @@ Or filter by context:
                                                 ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Or filter by active/passive event:
+Or filter by active/passive event.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
@@ -979,7 +1060,9 @@ Or filter by active/passive event:
                                                 ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Or filter by dates:
+Or filter by dates.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  bool pageIsValid = currentNode.GetEvents(ref pagedEvents, pageSize, "9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",
@@ -991,7 +1074,9 @@ Or filter by dates:
 <a name="Gesingletevents"/>
 #### Get single event
 
-You can get a single event knowing its id.
+You can get a single event, if you know its `ID`.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  Tags customerTag = currentNode.GetCustomerTags("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
@@ -1000,10 +1085,12 @@ You can get a single event knowing its id.
 <a name="Session"/>
 #### Session
 
-The session object allows you to have a session to connect with each other
-events and eventually reconcile them to a customer. The Session object is local
-in the client SDK, it does not create any type of object on Contact Hub server.
-The session ID is automatically generated in the attribute .value
+The `Session` object enables you to use a session to locate each event and 
+eventually reconcile them with a customer. The `Session` object is local to the 
+client SDK. It does not create any type of object on the Contacthub server. 
+The `session ID` is automatically generated in the `.value` attribute.
+
+**Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
  Customer myCustomer = currentNode.GetCustomerByID("9bdca5a7-5ecf-4da4-86f0-78dbf1fa950f",ref error);
@@ -1015,48 +1102,60 @@ The session ID is automatically generated in the attribute .value
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Others"/>
-## Others
+## Further information
 
 <a name="SystemUpdateTime"/>
-### System Update Time
+### System update time
 
-The writing of data on the remote platform has latency of approximately 30
-seconds. For example, if you add or delete a customer, it will take about 30
-seconds before its GetCustomers return a consistent data.
+Writing data on the remote platform has a latency of approximately 30 seconds. 
+For example, if you add or delete a customer, it will take about 30 seconds 
+before `GetCustomers` returns consistent data.
 
 <a name="Logs"/>
 ### Logs 
 
-You can enable a detailed log of all calls to the rest of Contacthub
-remote system. To enable logging you simply add in your app.config \| web.config
-the following keys
+You can enable a detailed log of all calls to the Contacthub remote system. 
+To enable logging, you simply add the following keys to your `app.config \| web.config`:
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ xml
     <add key="ContactHubSdkEnableLog" value= "true"/>
     <add key="ContactHubSdkPathLog" value= "c:\temp\trace.log"/>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This can be useful for intercept the server-side errors, not visible on SDK
-client side.
+This can be useful to intercept any server-side errors that are not visible on 
+the SDK client side.
 
 <a name="classBuilder"/>
 ## Class builder
 
-The are some properties aren’t static in Contacthub, that you may want to change in the future. For example to add new type of events or new enum values as prefix for some properties. 
-These definitions are available in a JSON schema, publicly available with REST API. 
-To make developer life easier, the SDK provide the required classes and enums for the schema, related to the customer base properties (basePropertiesClass.cs), events properties (eventPropertiesClass.cs) and events context properties (eventContextClass.cs).
-You can create the classes every time you want, automatically, using the provided project available in the classBuilder folder. 
+Some properties that you may want to change in the future, are not static 
+in Contacthub. For example, if you want to add new event types, or new 
+enumeration values as a prefix to some properties. 
+These definitions are available in a JSON schema, which is readily 
+accessible with the REST API. 
+
+To make developer life easier, the SDK provides the required classes and 
+enumerators for the schema, which are related to the customer base properties 
+(`basePropertiesClass.cs`), events properties (`eventPropertiesClass.cs`) 
+and events context properties (`eventContextClass.cs`).
+
+You can automatically create the classes as required, by using the project 
+that is available in the `classBuilder` folder. 
 
 To update the classes: 
 
-- Open the project available in the classBuilder folder 
-- Copy all generated files from bin/debug to /PropertiesClasses in sdk project, overwriting the existing files 
-- Rebuild the sdk project 
+- Open the project that is available in the `classBuilder` folder 
+- Copy all generated files from `bin/debug` to `/PropertiesClasses` in the SDK project, overwriting the existing files 
+- Rebuild the SDK project 
 
-All the new files has a comment in the first line with the generated date, as follow: 
+All new files include a comment with the date of generation in the first line, as follows: 
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
 /* selfgenerated from version 0.0.0.1 30/01/2017 12:37:51 */
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-At this time the real version number is not available (fixed value 0.0.0.1)
+**Note:**
+
+The real version number is not available at present (fixed value 0.0.0.1)
 

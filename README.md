@@ -895,6 +895,9 @@ If you create an event using `BringBackProperties` with an `ExternalID,` you can
 automatically create an empty customer, and all relevant events will be associated with 
 them. Later, you will can update the associated customer through the `ExternalID`.
 
+In general, adding an event in this way is asynchronous and, as a result, the API does not 
+reply with the newly generated identifier. 
+
 **Examples:**
 
 Add an anonymous event with a `externalID` and then reconcile it with a customer:

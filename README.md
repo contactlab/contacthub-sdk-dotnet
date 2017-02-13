@@ -1,3 +1,5 @@
+![Version 1.0.0 rc](https://img.shields.io/badge/version-1.0.0%20release%20candidate-0072bc.svg)
+
 # Contacthub C# .NET SDK for Windows
 
 ## Table of contents

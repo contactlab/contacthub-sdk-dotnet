@@ -5,6 +5,7 @@ using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -220,6 +221,7 @@ namespace ContactHubSdkLibrary.Test
                         }
                         catch (Exception ex)
                         {
+                            Debug.Print(ex.Message);
                         }
 
                         Thread.Sleep(1000);  //wait remote processing

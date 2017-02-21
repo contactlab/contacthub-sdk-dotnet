@@ -591,16 +591,16 @@ namespace ContactHubSdkLibrary.Test
                     {
                         string testField = "CAMPO AGGIORNATO IN PUT " + DateTime.Now.ToShortTimeString();
 
-                        //customer is created, then update id
+                        ////customer is created, then update id
                         customer.extra = testField;
-                        //change external id, try to test duplicate check on email
+                        ////change external id, try to test duplicate check on email
                         Customer updatedCustomer = node.AddCustomer(customer, ref error, true);
-                        //get customer by ID
+                        ////get customer by ID
                         Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
-                        //compare results
+                        ////compare results
                         CompareLogic compareLogic = new CompareLogic();
                         bool test1Passed = compareLogic.Compare(myTestCustomer1, updatedCustomer).AreEqual;
-                        //compare source data
+                        ////compare source data
                         compareLogic.Config.MembersToIgnore.Add("extra");
                         compareLogic.Config.MembersToIgnore.Add("_updatedAt");
                         compareLogic.Config.MembersToIgnore.Add("updatedAt");

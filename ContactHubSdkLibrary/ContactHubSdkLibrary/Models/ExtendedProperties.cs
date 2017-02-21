@@ -420,7 +420,7 @@ namespace ContactHubSdkLibrary.Models
                         break;
                     default:
                         {
-                            return "Error: SerializeExtendedProperties() unknown datatype";
+                            returnValue= "Error: SerializeExtendedProperties() unknown datatype";
                         }
                         break;
 

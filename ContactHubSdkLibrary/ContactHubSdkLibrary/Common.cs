@@ -43,7 +43,7 @@ public static class Common
     }
 
     /// <summary>
-    /// Converte la data in stringa formato Iso8601
+    /// Convert Data to string format Iso8601
     /// </summary>
     public static string ConvertToIso8601Date(DateTime d)
     {
@@ -54,7 +54,7 @@ public static class Common
     /// </summary>
     public static Error ResponseIsError(string json)
     {
-        if (json != null  && (json.ToLower().Contains("logref") || json.ToLower().Contains("error")))
+        if (json != null && (json.ToLower().Contains("logref") || json.ToLower().Contains("error")))
         {
             try
             {
@@ -106,8 +106,6 @@ public static class Common
     /// <summary>
     /// Object conversion
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     public static TOut CreateObject<TOut>(this Object objIn)
     {
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,24 @@ namespace generateBasePropertiesClass
         public static void SaveJsonSchema(string name, string json)
         {
             File.WriteAllText( "JsonSchema\\" + name,json);
+        }
+
+        public static List<String> GetEnumList(string jsonString)
+        {
+            List<String> list = new List<String>();
+            JObject definitions = JObject.Parse(jsonString);
+            foreach (var c in definitions["definitions"])
+            {
+                if (c.Path == "definitions.EventType")
+                {
+                    var listType = c.First["enum"];
+                    foreach (string eType in listType)
+                    {
+                        list.Add(eType);
+                    }
+                }
+            }
+            return list;
         }
     }
 }

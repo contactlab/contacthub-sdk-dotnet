@@ -13,15 +13,15 @@
           "type": "null"
         },
         {
-          "$ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventBringBackProperties"
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventBringBackProperties"
         }
       ]
     },
     "type": {
-      "$ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventType"
+      "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventType"
     },
     "context": {
-      "$ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventContext"
+      "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventContext"
     },
     "date": {
       "type": "string",

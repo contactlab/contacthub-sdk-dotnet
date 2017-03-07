@@ -196,23 +196,14 @@ namespace generateBasePropertiesClass
             //read enum with eventType list
             string jsonString = Connection.DoGetWebRequest("/docs/schema/enums.json");
 
-            JObject definitions = JObject.Parse(jsonString);
-            foreach (var c in definitions["definitions"])
-            {
-                if (c.Path == "definitions.EventType")
-                {
-                    var listType = c.First["enum"];
-                    foreach (string eType in listType)
-                    {
-                        list.Add(eType);
-                    }
-                }
-            }
+            list = JSONUtilities.GetEnumList(jsonString);
             Event e = null;
             //request single eventType schema
             foreach (string c in list)
             {
                 jsonString = Connection.DoGetWebRequest("/docs/schema/event/" + c + ".post.json");  //get specific eventType schema
+                jsonString = JSONUtilities.FixReference(jsonString);
+
                 JSONUtilities.SaveJsonSchema("docs.schema.event." + c + ".post.json", jsonString);
 
                 JObject eventObj = JObject.Parse(jsonString);
@@ -580,83 +571,117 @@ namespace generateBasePropertiesClass
             {
                 case "object"://It is an object that contains properties
                     {
+
                         if (outputProperties.properties != null)
                         {
-                            foreach (BasePropertiesItem p in outputProperties.properties)
+                            foreach (BasePropertiesItem pItem in outputProperties.properties)
                             {
-                                localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
-                                //if it is a container, then processes the properties inside
-                                switch (localType)
+                                if (pItem != null)
                                 {
-                                    case "object":
-                                        {
-                                            if (p.properties != null)
-                                            {
-                                                outputFileStr += processObject(p);
-                                                classToGenerate.Add(p);
-                                            }
-                                            else
-                                            {
-                                                //It is a generic object, dynamic, untyped
-                                                outputFileStr += processDynamicObject(p);
-                                            }
-                                        }
-                                        break;
-                                    case "number":
-                                        {
-                                            outputFileStr += processNumberDecimal(p);
-                                        }
-                                        break;
-                                    case "integer":
-                                        {
-                                            outputFileStr += processNumberInteger(p);
-                                        }
-                                        break;
-                                    case "boolean":
-                                        {
-                                            outputFileStr += processBoolean(p);
-                                        }
-                                        break;
-                                    case "string":
-                                        {
-                                            if (p.@enum == null) //normal string
-                                            {
+                                    BasePropertiesItem p = pItem;
 
-                                                outputFileStr += processString(p);
-                                            }
-                                            else  //It is a string base enum
+                                    if (pItem.type == null)
+                                    {
+                                        //object definition is in external ref files, probably is a Enum
+                                        string jsonString = "";
+                                        if (p.reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        {
+                                            string[] tmp = p.reference.Split('#');
+                                            jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                            string pathName = tmp[1].Replace("/", ".");
+                                            pathName = pathName.Substring(1, pathName.Length - 1);
+                                            JObject obj = JObject.Parse(jsonString);
+                                            foreach (var c in obj["definitions"])
                                             {
-                                                //if  class name contains inheritance, remove parent class
-                                                if (outputProperties.name.Contains(":"))
+                                                if (c.Path == pathName)  //path name with format: "definitions.Currency"
                                                 {
-                                                    outputProperties.name = outputProperties.name.Split(':')[0];
+                                                    string externalSchema = c.First.ToString();
+                                                    BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                                    externalSchemaObj.name = p.name; //hold orig name
+                                                    p = externalSchemaObj;
                                                 }
-                                                outputFileStr += processEnum(outputProperties, p);
-                                                //creates an enum that has the name of the father, to avoid multiple definitions of different objects with the same name
-                                                enumToGenerate.Add(uppercaseFirst(outputProperties.name) + uppercaseFirst(JsonUtil.fixName(p.name) + "Enum"), p.@enum);
                                             }
                                         }
-                                        break;
-                                    case "array":
+                                    }
+
+                                    {
+                                        localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
+                                        //if it is a container, then processes the properties inside
+
+                                        switch (localType)
                                         {
+                                            case "object":
+                                                {
+                                                    if (p.properties != null)
+                                                    {
+                                                        outputFileStr += processObject(p);
+                                                        classToGenerate.Add(p);
+                                                    }
+                                                    else
+                                                    {
+                                                        //It is a generic object, dynamic, untyped
+                                                        outputFileStr += processDynamicObject(p);
+                                                    }
+                                                }
+                                                break;
+                                            case "number":
+                                                {
+                                                    outputFileStr += processNumberDecimal(p);
+                                                }
+                                                break;
+                                            case "integer":
+                                                {
+                                                    outputFileStr += processNumberInteger(p);
+                                                }
+                                                break;
+                                            case "boolean":
+                                                {
+                                                    outputFileStr += processBoolean(p);
+                                                }
+                                                break;
+                                            case "string":
+                                                {
+                                                    if (p.@enum == null) //normal string
+                                                    {
 
-                                            //items contains the definition of the class that makes up the array
-                                            p.items.name = p.name;
-                                            p.items.description = p.description;
-                                            outputFileStr += processArray(p);
-                                            //items containing the model of the array elements. If it is an object you must then fill, provided it is really an object with the properties
-                                            var itemType = p.items.type;
-                                            if ((String)itemType == "object")
-                                            {
-                                                classToGenerate.Add(p.items);
-                                            }
+                                                        outputFileStr += processString(p);
+                                                    }
+                                                    else  //It is a string base enum
+                                                    {
+                                                        //if  class name contains inheritance, remove parent class
+                                                        if (outputProperties.name.Contains(":"))
+                                                        {
+                                                            outputProperties.name = outputProperties.name.Split(':')[0];
+                                                        }
+                                                        outputFileStr += processEnum(outputProperties, p);
+                                                        //creates an enum that has the name of the father, to avoid multiple definitions of different objects with the same name
+                                                        enumToGenerate.Add(uppercaseFirst(outputProperties.name) + uppercaseFirst(JsonUtil.fixName(p.name) + "Enum"), p.@enum);
+                                                    }
+                                                }
+                                                break;
+                                            case "array":
+                                                {
+
+                                                    //items contains the definition of the class that makes up the array
+                                                    p.items.name = p.name;
+                                                    p.items.description = p.description;
+                                                    outputFileStr += processArray(p);
+                                                    //items containing the model of the array elements. If it is an object you must then fill, provided it is really an object with the properties
+                                                    var itemType = p.items.type;
+                                                    if ((String)itemType == "object")
+                                                    {
+                                                        classToGenerate.Add(p.items);
+                                                    }
+                                                }
+                                                break;
+                                            default:
+                                                //error other types
+                                                break;
+
                                         }
-                                        break;
-                                    default:
-                                        //error other types
-                                        break;
-
+                                    }
                                 }
+
                             }
                         }
                         else //It is a generic object

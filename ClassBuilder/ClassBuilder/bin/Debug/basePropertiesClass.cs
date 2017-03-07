@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 02/02/2017 10:39:54 */
+/* selfgenerated from version 0.0.0.1 07/03/2017 19:28:11 */
 
 using System;
 using System.Collections.Generic;
@@ -14,28 +14,28 @@ namespace ContactHubSdkLibrary {
             
 public class BaseProperties
 {
-	[Display(Name="the picture url of customer")]
+	[Display(Name="The URL of the customer picture")]
     //format: uri
     public string pictureUrl {get;set;}
-	[Display(Name="the title")]
+	[Display(Name="The customer professional or academic qualifications")]
     public string title {get;set;}
-	[Display(Name="the prefix")]
+	[Display(Name="The prefix added to the name of the customer")]
     public string prefix {get;set;}
-	[Display(Name="the first name")]
+	[Display(Name="The first name of the customer")]
     public string firstName {get;set;}
-	[Display(Name="the last name")]
+	[Display(Name="The last name of the customer")]
     public string lastName {get;set;}
-	[Display(Name="the middle name")]
+	[Display(Name="The middle name of the customer")]
     public string middleName {get;set;}
-	[Display(Name="gender")]
+	[Display(Name="The gender of the customer")]
     public string gender {get;set;}
-	[Display(Name="date of birth")]
+	[Display(Name="The date of birth of the customer")]
     //format: date
     public string dob {get;set;}
 	[ValidatePattern(@"^[a-z]{2}(_([a-zA-Z]{2}){1,2})?_[A-Z]{2}$")]
-	[Display(Name="the locale")]
+	[Display(Name="The parameter that defines the user language and the region of the customer")]
     public string locale {get;set;}
-	[Display(Name="the time zone")]
+	[Display(Name="The time zone of the customer")]
 [JsonProperty("timezone")]public string _timezone {get;set;}
 [JsonProperty("hidden_timezone")][JsonIgnore]
                     public BasePropertiesTimezoneEnum timezone 
@@ -54,39 +54,41 @@ public class BaseProperties
                 public Contacts contacts {get;set;}
     public Address address {get;set;}
     public Credential credential {get;set;}
-	[Display(Name="educations")]
+	[Display(Name="The education history of the customer")]
     public List<Educations> educations {get;set;}
-	[Display(Name="likes")]
+	[Display(Name="The likes list of the customer")]
     public List<Likes> likes {get;set;}
     public SocialProfile socialProfile {get;set;}
-	[Display(Name="jobs")]
+	[Display(Name="The job history of the customer")]
     public List<Jobs> jobs {get;set;}
-	[Display(Name="subscriptions")]
+	[Display(Name="The subscriptions section for the customer")]
     public List<Subscriptions> subscriptions {get;set;}
 }
 
 
 public class Contacts
 {
-	[Display(Name="the e-mail")]
+	[Display(Name="The e-mail address of the customer")]
     //format: email
     public string email {get;set;}
-	[Display(Name="the fax number")]
+	[Display(Name="The fax number of the customer")]
     public string fax {get;set;}
-	[Display(Name="the mobile phone number")]
+	[Display(Name="The mobile phone number of the customer")]
     public string mobilePhone {get;set;}
-	[Display(Name="the phone")]
+	[Display(Name="The phone number of the customer")]
     public string phone {get;set;}
-	[Display(Name="other contacts")]
+	[Display(Name="The list of additional contact details for the customer")]
     public List<OtherContacts> otherContacts {get;set;}
-	[Display(Name="mobile device")]
+	[Display(Name="The list of mobile devices belonging to the customer")]
     public List<MobileDevices> mobileDevices {get;set;}
 }
 
 
 public class OtherContacts
 {
+	[Display(Name="The name of an additional contact entry for the customer")]
     public string name {get;set;}
+	[Display(Name="The type of additional contact entry for the customer")]
 [JsonProperty("type")]public string _type {get;set;}
 [JsonProperty("hidden_type")][JsonIgnore]
                     public OtherContactsTypeEnum type 
@@ -102,7 +104,8 @@ public class OtherContacts
                         _type = (displayValue=="NoValue"? null : displayValue);
                 }
             }
-                public string value {get;set;}
+            	[Display(Name="The value of the additional contact entry for the customer")]
+    public string value {get;set;}
 }
 
 public enum OtherContactsTypeEnum {
@@ -120,8 +123,11 @@ public enum OtherContactsTypeEnum {
 }
 public class MobileDevices
 {
+	[Display(Name="The identifier of a mobile device belonging to the customer")]
     public string identifier {get;set;}
+	[Display(Name="The name of a mobile device belonging to the customer")]
     public string name {get;set;}
+	[Display(Name="The type of mobile device belonging to the customer")]
 [JsonProperty("type")]public string _type {get;set;}
 [JsonProperty("hidden_type")][JsonIgnore]
                     public MobileDevicesTypeEnum type 
@@ -150,15 +156,15 @@ public enum MobileDevicesTypeEnum {
 }
 public class Address
 {
-	[Display(Name="the street")]
+	[Display(Name="The customer address street component")]
     public string street {get;set;}
-	[Display(Name="the city")]
+	[Display(Name="The customer address city component")]
     public string city {get;set;}
-	[Display(Name="the country")]
+	[Display(Name="The customer address country component")]
     public string country {get;set;}
-	[Display(Name="the province")]
+	[Display(Name="The customer address province component")]
     public string province {get;set;}
-	[Display(Name="the zip code")]
+	[Display(Name="The customer address zip code component")]
     public string zip {get;set;}
     public Geo geo {get;set;}
 }
@@ -166,25 +172,27 @@ public class Address
 
 public class Geo
 {
-	[Display(Name="latitude")]
+	[Display(Name="The latitude coordinate for the customer")]
     public decimal? lat {get;set;}
-	[Display(Name="longitude")]
+	[Display(Name="The longitude coordinate for the customer")]
     public decimal? lon {get;set;}
 }
 
 
 public class Credential
 {
-	[Display(Name="the password")]
+	[Display(Name="The password of the customer")]
     public string password {get;set;}
-	[Display(Name="the user name")]
+	[Display(Name="The username of the customer")]
     public string username {get;set;}
 }
 
 
 public class Educations
 {
+	[Display(Name="The ID used to identify the education establishment")]
     public string id {get;set;}
+	[Display(Name="The type of education establishment")]
 [JsonProperty("schoolType")]public string _schoolType {get;set;}
 [JsonProperty("hidden_schoolType")][JsonIgnore]
                     public EducationsSchoolTypeEnum schoolType 
@@ -200,10 +208,15 @@ public class Educations
                         _schoolType = (displayValue=="NoValue"? null : displayValue);
                 }
             }
-                public string schoolName {get;set;}
+            	[Display(Name="The name of the education establishment")]
+    public string schoolName {get;set;}
+	[Display(Name="The study concentration or core subjects")]
     public string schoolConcentration {get;set;}
+	[Display(Name="The year study began")]
     public int startYear {get;set;}
+	[Display(Name="The year study ended")]
     public int endYear {get;set;}
+	[Display(Name="The flag that defines whether the study is current")]
     public Boolean isCurrent {get;set;}
 }
 
@@ -222,8 +235,11 @@ public enum EducationsSchoolTypeEnum {
 }
 public class Likes
 {
+	[Display(Name="The ID used to identify the like")]
     public string id {get;set;}
+	[Display(Name="The category of the like")]
     public string category {get;set;}
+	[Display(Name="The name of the like")]
     public string name {get;set;}
     [JsonProperty("createdTime")]
     public string _createdTime {get;set;}
@@ -276,26 +292,30 @@ public class Likes
 
 public class SocialProfile
 {
-	[Display(Name="facebook")]
+	[Display(Name="The Facebook profile of the customer")]
     public string facebook {get;set;}
-	[Display(Name="google+")]
+	[Display(Name="The Google+ profile of the customer")]
     public string google {get;set;}
-	[Display(Name="instagram")]
+	[Display(Name="The Instagram profile of the customer")]
     public string instagram {get;set;}
-	[Display(Name="linkedin")]
+	[Display(Name="The Linkedin profile of the customer")]
     public string linkedin {get;set;}
-	[Display(Name="qzone")]
+	[Display(Name="The Qzone profile of the customer")]
     public string qzone {get;set;}
-	[Display(Name="twitter")]
+	[Display(Name="The Twitter profile of the customer")]
     public string twitter {get;set;}
 }
 
 
 public class Jobs
 {
+	[Display(Name="The ID used to identify the job")]
     public string id {get;set;}
+	[Display(Name="The industry to which the company belongs")]
     public string companyIndustry {get;set;}
+	[Display(Name="The name of the company")]
     public string companyName {get;set;}
+	[Display(Name="The job title")]
     public string jobTitle {get;set;}
     [JsonProperty("startDate")]
     public string _startDate {get;set;}
@@ -361,15 +381,20 @@ public class Jobs
                 catch { _endDate = null; }
             }
         }
-                public Boolean isCurrent {get;set;}
+            	[Display(Name="The flag that defines whether the job is current")]
+    public Boolean isCurrent {get;set;}
 }
 
 
 public class Subscriptions
 {
+	[Display(Name="The ID used to identify the subscription")]
     public string id {get;set;}
+	[Display(Name="The name of the subscription")]
     public string name {get;set;}
+	[Display(Name="The type of subscription")]
     public string type {get;set;}
+	[Display(Name="The kind of subscription")]
 [JsonProperty("kind")]public string _kind {get;set;}
 [JsonProperty("hidden_kind")][JsonIgnore]
                     public SubscriptionsKindEnum kind 
@@ -385,7 +410,8 @@ public class Subscriptions
                         _kind = (displayValue=="NoValue"? null : displayValue);
                 }
             }
-                public Boolean subscribed {get;set;}
+            	[Display(Name="The flag that defines a subscriber")]
+    public Boolean subscribed {get;set;}
     [JsonProperty("startDate")]
     public string _startDate {get;set;}
     [JsonProperty("_startDate")]
@@ -478,7 +504,8 @@ public class Subscriptions
                 catch { _endDate = null; }
             }
         }
-                public string subscriberId {get;set;}
+            	[Display(Name="The ID used to identify the subscriber")]
+    public string subscriberId {get;set;}
     [JsonProperty("registeredAt")]
     public string _registeredAt {get;set;}
     [JsonProperty("_registeredAt")]
@@ -571,13 +598,16 @@ public class Subscriptions
                 catch { _updatedAt = null; }
             }
         }
-                public List<Preferences> preferences {get;set;}
+            	[Display(Name="The list of customer subscription preferences")]
+    public List<Preferences> preferences {get;set;}
 }
 
 
 public class Preferences
 {
+	[Display(Name="The subscription preference key")]
     public string key {get;set;}
+	[Display(Name="The subscription preference value")]
     public string value {get;set;}
 }
 

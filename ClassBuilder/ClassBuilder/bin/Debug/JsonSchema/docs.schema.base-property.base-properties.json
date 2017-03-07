@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "properties": {
     "pictureUrl": {
-      "description": "the picture url of customer",
+      "description": "The URL of the customer picture",
       "type": [
         "string",
         "null"
@@ -15,7 +15,7 @@
       }
     },
     "title": {
-      "description": "the title",
+      "description": "The customer professional or academic qualifications",
       "type": [
         "string",
         "null"
@@ -25,7 +25,7 @@
       }
     },
     "prefix": {
-      "description": "the prefix",
+      "description": "The prefix added to the name of the customer",
       "type": [
         "string",
         "null"
@@ -35,7 +35,7 @@
       }
     },
     "firstName": {
-      "description": "the first name",
+      "description": "The first name of the customer",
       "type": [
         "string",
         "null"
@@ -45,7 +45,7 @@
       }
     },
     "lastName": {
-      "description": "the last name",
+      "description": "The last name of the customer",
       "type": [
         "string",
         "null"
@@ -55,7 +55,7 @@
       }
     },
     "middleName": {
-      "description": "the middle name",
+      "description": "The middle name of the customer",
       "type": [
         "string",
         "null"
@@ -65,17 +65,18 @@
       }
     },
     "gender": {
-      "description": "gender",
+      "description": "The gender of the customer",
       "type": [
         "string",
         "null"
       ],
       "contactlabProperties": {
-        "label": "Gender"
+        "label": "Gender",
+        "notAnalyzed": true
       }
     },
     "dob": {
-      "description": "date of birth",
+      "description": "The date of birth of the customer",
       "type": [
         "string",
         "null"
@@ -86,7 +87,7 @@
       }
     },
     "locale": {
-      "description": "the locale",
+      "description": "The parameter that defines the user language and the region of the customer",
       "type": [
         "string",
         "null"
@@ -97,7 +98,7 @@
       }
     },
     "timezone": {
-      "description": "the time zone",
+      "description": "The time zone of the customer",
       "type": [
         "string",
         "null"
@@ -454,7 +455,7 @@
       "contactlabProperties": {
         "label": "Contacts"
       },
-      "description": "the contact information",
+      "description": "The contact information for the customer",
       "type": [
         "object",
         "null"
@@ -462,7 +463,7 @@
       "additionalProperties": false,
       "properties": {
         "email": {
-          "description": "the e-mail",
+          "description": "The e-mail address of the customer",
           "type": [
             "string",
             "null"
@@ -473,7 +474,7 @@
           }
         },
         "fax": {
-          "description": "the fax number",
+          "description": "The fax number of the customer",
           "type": [
             "string",
             "null"
@@ -483,7 +484,7 @@
           }
         },
         "mobilePhone": {
-          "description": "the mobile phone number",
+          "description": "The mobile phone number of the customer",
           "type": [
             "string",
             "null"
@@ -493,7 +494,7 @@
           }
         },
         "phone": {
-          "description": "the phone",
+          "description": "The phone number of the customer",
           "type": [
             "string",
             "null"
@@ -503,14 +504,15 @@
           }
         },
         "otherContacts": {
-          "description": "other contacts",
+          "description": "The list of additional contact details for the customer",
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "The name of an additional contact entry for the customer"
               },
               "type": {
                 "type": [
@@ -523,10 +525,12 @@
                   "EMAIL",
                   "FAX",
                   "OTHER"
-                ]
+                ],
+                "description": "The type of additional contact entry for the customer"
               },
               "value": {
-                "type": "string"
+                "type": "string",
+                "description": "The value of the additional contact entry for the customer"
               }
             }
           },
@@ -535,17 +539,19 @@
           }
         },
         "mobileDevices": {
-          "description": "mobile device",
+          "description": "The list of mobile devices belonging to the customer",
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "identifier": {
-                "type": "string"
+                "type": "string",
+                "description": "The identifier of a mobile device belonging to the customer"
               },
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "The name of a mobile device belonging to the customer"
               },
               "type": {
                 "type": [
@@ -556,7 +562,8 @@
                   "IOS",
                   "GCM",
                   "WP"
-                ]
+                ],
+                "description": "The type of mobile device belonging to the customer"
               }
             }
           },
@@ -570,7 +577,7 @@
       "contactlabProperties": {
         "label": "Address"
       },
-      "description": "the address information",
+      "description": "The address details of the customer",
       "type": [
         "object",
         "null"
@@ -578,7 +585,7 @@
       "additionalProperties": false,
       "properties": {
         "street": {
-          "description": "the street",
+          "description": "The customer address street component",
           "type": [
             "string",
             "null"
@@ -588,7 +595,7 @@
           }
         },
         "city": {
-          "description": "the city",
+          "description": "The customer address city component",
           "type": [
             "string",
             "null"
@@ -598,7 +605,7 @@
           }
         },
         "country": {
-          "description": "the country",
+          "description": "The customer address country component",
           "type": [
             "string",
             "null"
@@ -608,7 +615,7 @@
           }
         },
         "province": {
-          "description": "the province",
+          "description": "The customer address province component",
           "type": [
             "string",
             "null"
@@ -618,7 +625,7 @@
           }
         },
         "zip": {
-          "description": "the zip code",
+          "description": "The customer address zip code component",
           "type": [
             "string",
             "null"
@@ -631,7 +638,7 @@
           "contactlabProperties": {
             "label": "Geographic localization"
           },
-          "description": "the geographic localization",
+          "description": "The geographic location of the customer",
           "type": [
             "object",
             "null"
@@ -643,14 +650,14 @@
                 "number",
                 "null"
               ],
-              "description": "latitude"
+              "description": "The latitude coordinate for the customer"
             },
             "lon": {
               "type": [
                 "number",
                 "null"
               ],
-              "description": "longitude"
+              "description": "The longitude coordinate for the customer"
             }
           }
         }
@@ -660,7 +667,7 @@
       "contactlabProperties": {
         "label": "Credential"
       },
-      "description": "credential",
+      "description": "The customer login credentials",
       "type": [
         "object",
         "null"
@@ -668,7 +675,7 @@
       "additionalProperties": false,
       "properties": {
         "password": {
-          "description": "the password",
+          "description": "The password of the customer",
           "type": [
             "string",
             "null"
@@ -678,7 +685,7 @@
           }
         },
         "username": {
-          "description": "the user name",
+          "description": "The username of the customer",
           "type": [
             "string",
             "null"
@@ -690,7 +697,7 @@
       }
     },
     "educations": {
-      "description": "educations",
+      "description": "The education history of the customer",
       "contactlabProperties": {
         "label": "Educations"
       },
@@ -701,7 +708,7 @@
       }
     },
     "likes": {
-      "description": "likes",
+      "description": "The likes list of the customer",
       "contactlabProperties": {
         "label": "Likes"
       },
@@ -715,7 +722,7 @@
       "contactlabProperties": {
         "label": "Social profile"
       },
-      "description": "Social profile",
+      "description": "The social profiles of the customer",
       "type": [
         "object",
         "null"
@@ -723,7 +730,7 @@
       "additionalProperties": false,
       "properties": {
         "facebook": {
-          "description": "facebook",
+          "description": "The Facebook profile of the customer",
           "type": [
             "string",
             "null"
@@ -733,7 +740,7 @@
           }
         },
         "google": {
-          "description": "google+",
+          "description": "The Google+ profile of the customer",
           "type": [
             "string",
             "null"
@@ -743,7 +750,7 @@
           }
         },
         "instagram": {
-          "description": "instagram",
+          "description": "The Instagram profile of the customer",
           "type": [
             "string",
             "null"
@@ -753,7 +760,7 @@
           }
         },
         "linkedin": {
-          "description": "linkedin",
+          "description": "The Linkedin profile of the customer",
           "type": [
             "string",
             "null"
@@ -763,7 +770,7 @@
           }
         },
         "qzone": {
-          "description": "qzone",
+          "description": "The Qzone profile of the customer",
           "type": [
             "string",
             "null"
@@ -773,7 +780,7 @@
           }
         },
         "twitter": {
-          "description": "twitter",
+          "description": "The Twitter profile of the customer",
           "type": [
             "string",
             "null"
@@ -785,7 +792,7 @@
       }
     },
     "jobs": {
-      "description": "jobs",
+      "description": "The job history of the customer",
       "contactlabProperties": {
         "label": "Jobs"
       },
@@ -796,7 +803,7 @@
       }
     },
     "subscriptions": {
-      "description": "subscriptions",
+      "description": "The subscriptions section for the customer",
       "contactlabProperties": {
         "label": "Subscriptions"
       },

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactHubSdkLibrary.Test
 {
@@ -18,6 +14,24 @@ namespace ContactHubSdkLibrary.Test
         {
             return Convert.ToInt32(ConfigurationManager.AppSettings["exitTime"]);
         }
+
+        #region get configuration
+
+        public static string getTestWorkspace()
+        {
+            return ConfigurationManager.AppSettings["workspaceID"].ToString();
+        }
+
+        public static string getTestNode()
+        {
+            return ConfigurationManager.AppSettings["nodeID"].ToString();
+        }
+
+        public static string getTestToken()
+        {
+            return ConfigurationManager.AppSettings["token"].ToString();
+        }
+        #endregion
 
     }
 }

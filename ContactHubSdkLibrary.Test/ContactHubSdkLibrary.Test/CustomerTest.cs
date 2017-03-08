@@ -4,6 +4,7 @@ using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 
@@ -19,9 +20,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer life cycle: create, query and delete
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_AddCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_AddCustomer( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -43,8 +48,6 @@ namespace ContactHubSdkLibrary.Test
             bool testPassed = false;
             if (node != null)
             {
-                // var x = node.GetCustomerByID("ae2b1da7-8bfb-47b7-ad8c-4458f9fdcc67", ref error);
-
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
                 Thread.Sleep(Util.GetWaitTime());
@@ -74,9 +77,12 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer life cycle with extended properties
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_AddCustomerWithExtendedProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_AddCustomerWithExtendedProperties( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
             Common.WriteLog("Start CustomerAddCustomerWithExtendedProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -181,9 +187,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer life cycle with extended properties. This test use all property data types.
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_AddCustomerWithExtendedPropertiesFull(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_AddCustomerWithExtendedPropertiesFull(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start C_AddCustomerWithExtendedPropertiesFull TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -351,9 +361,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer life cycle with extended properties
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_AddCustomerWithComplexContacts(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_AddCustomerWithComplexContacts(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddCustomerWithComplexContacts TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -427,9 +441,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer update (use .UpdateCustomer, full mode -> put)
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_UpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_UpdateCustomer(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -489,9 +507,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer update (use .UpdateCustomer, partial mode -> patch)
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_PartialUpdateCustomer(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_PartialUpdateCustomer( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerPartialUpdateCustomer TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -555,9 +577,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer update (use .AddCustomer with FORCE)
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_UpdateCustomerForced(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_UpdateCustomerForced(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerUpdateCustomerForced TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -638,16 +664,20 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer life cycle with paging
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 1, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 3, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 5, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 10, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 50, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 100, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 250, true)]
+        [TestCase( 1, true)]
+        [TestCase( 3, true)]
+        [TestCase( 5, true)]
+        [TestCase( 10, true)]
+        [TestCase( 50, true)]
+        [TestCase( 100, true)]
+        [TestCase( 250, true)]
 
-        public void C_Paging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxCustomers, bool tpResult)
+        public void C_Paging( int maxCustomers, bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start C_Paging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID + " maxCustomer:" + maxCustomers);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -769,9 +799,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test get customer, by external ID
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_GetCustomerByExternaID(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_GetCustomerByExternaID(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerGetCustomerByExternaID TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -822,9 +856,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test get customer with custom query
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_GetCustomerByCustomQuery(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_GetCustomerByCustomQuery(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerGetCustomerByCustomQuery TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -897,9 +935,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test get customer with QueryBuilder
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_GetCustomerByQueryBuilder(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_GetCustomerByQueryBuilder(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerGetCustomerByQueryBuilder TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -959,9 +1001,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer likes
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_LikesLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_LikesLifeCycle(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerLikesLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1022,9 +1068,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer educations
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}d", true)]
-        public void C_EducationLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_EducationLifeCycle( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerEducationLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1086,9 +1136,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer jobs
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_JobLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_JobLifeCycle(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerJobLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1155,9 +1209,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test customer subscription
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_SubscriptionLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_SubscriptionLifeCycle( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerSubscriptionLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1236,9 +1294,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add session to customer
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_AddSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void C_AddSession(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1283,9 +1345,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add session to customer
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void C_TagsLifeCycle(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase( true)]
+        public void C_TagsLifeCycle( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerTagsLifeCycle TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -1338,9 +1404,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test reset session ID
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void S_ResetSession(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void S_ResetSession( bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start ResetSession TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
             bool testPassed = false;
             Session newSession = new Session();
@@ -1353,6 +1423,8 @@ namespace ContactHubSdkLibrary.Test
             Assert.AreEqual(testPassed, tpResult);
             Thread.Sleep(Util.GetExitTime()); //wait
         }
+
+     
     }
 }
 

@@ -812,6 +812,8 @@ The same thing also applies to the `context` field, which defines the template
 that is used for the `contextInfo` field. `ype` and `context` are defined in the
 `eventPropertiesClass.cs` and `eventContextClass.cs` files.
 
+`tracking` field contains tracking information (for example: google analitycs).
+
 The correlation between the value of the enumeration and its class is very intuitive,
 because you can derive the name of one from the other. For example, if you choose
 `type=EventTypeEnum.openedTicket`, the properties will be allocated through the
@@ -1144,6 +1146,7 @@ To make developer life easier, the SDK provides the required classes and
 enumerators for the schema, which are related to the customer base properties 
 (`basePropertiesClass.cs`), events properties (`eventPropertiesClass.cs`) 
 and events context properties (`eventContextClass.cs`).
+Events have additional properties for tracking data (google analitycs, etc). In trackingClass.cs there are related tracking classes.
 
 You can automatically create the classes as required, by using the project 
 that is available in the `classBuilder` folder. 

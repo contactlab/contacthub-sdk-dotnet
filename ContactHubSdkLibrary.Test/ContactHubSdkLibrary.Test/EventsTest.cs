@@ -21,9 +21,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event to customer
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void E_AddEvent(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void E_AddEvent(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddEvent TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -53,6 +57,16 @@ namespace ContactHubSdkLibrary.Test
                             {
                                 ip = "8.8.8.8",
                                 userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
+                            }
+                        },
+                        tracking = new TrackingProperties()
+                        {
+                            ga=new Ga()
+                            {
+                                utm_source="test",
+                                utm_campaign="test",
+                                utm_term="test",
+                                utm_content="test"
                             }
                         },
                         date = DateTime.Now
@@ -99,9 +113,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add complex event to customer
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void E_AddEventWithComplexProperties(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void E_AddEventWithComplexProperties(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddEventWithComplexProperties TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -180,9 +198,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event + externalID reconciliation
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void E_AddEventWithExtIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void E_AddEventWithExtIdReconciliation(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddEventWithExtIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -258,9 +280,13 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event + session ID reconciliation
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-        public void E_AddEventWithSessionIdReconciliation(string tpWorkspaceID, string tpTokenID, string tpNodeID, bool tpResult)
+        [TestCase(true)]
+        public void E_AddEventWithSessionIdReconciliation(bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start CustomerAddEventWithSessionIdReconciliation TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);
@@ -318,15 +344,19 @@ namespace ContactHubSdkLibrary.Test
         /// <summary>
         /// Test add event to customer
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 1, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 3, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 5, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 10, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 50, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 100, true)]
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", 250, true)]
-        public void E_EventPaging(string tpWorkspaceID, string tpTokenID, string tpNodeID, int maxEvents, bool tpResult)
+        [TestCase(1, true)]
+        [TestCase(3, true)]
+        [TestCase(5, true)]
+        [TestCase(10, true)]
+        [TestCase(50, true)]
+        [TestCase(100, true)]
+        [TestCase(250, true)]
+        public void E_EventPaging(int maxEvents, bool tpResult)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Common.WriteLog("Start E_EventPaging TEST", "workspace:" + tpWorkspaceID + " token:" + tpTokenID + " node:" + tpNodeID);
 
             Node node = GetTestNode(tpWorkspaceID, tpTokenID, tpNodeID);

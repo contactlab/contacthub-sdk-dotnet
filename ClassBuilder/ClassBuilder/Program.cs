@@ -20,6 +20,7 @@ namespace generateBasePropertiesClass
             generateBaseProperties();  //generate the classes corresponding to the properties of the customer base
             generateEventProperties(); //generate the classes corresponding to properties of events
             generateEventContext();    //generate the classes corresponding to properties  in the events contextInfo field
+            generateEventTrackingProperties(); //generate the classed corresponding to properties in the event's tracking attribute 
             Console.WriteLine("press key...");
             Console.ReadKey();
         }
@@ -187,6 +188,53 @@ namespace generateBasePropertiesClass
             outputFileStr += "\n}\n";
             File.WriteAllText("basePropertiesClass.cs", outputFileStr);
         }
+
+        static void generateEventTrackingProperties()
+        {
+            //this function is identical to generateBaseProperties...
+
+            BasePropertiesItem propertiesTree = null;
+
+            /* download dynamically updated based properties */
+            string jsonString = Connection.DoGetWebRequest("/docs/schema/event/tracking.json");
+            JSONUtilities.SaveJsonSchema("docs.schema.event.tracking.json", jsonString);
+
+            jsonString = JSONUtilities.FixReference(jsonString);
+
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                Console.WriteLine("Error: not valid token");
+                Console.ReadKey();
+            }
+            propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+            propertiesTree.name = "TrackingProperties";
+
+            if (propertiesTree == null) return;
+
+            //generate file baseProperties.cs 
+            string outputFileStr = String.Empty;
+
+            outputFileStr += "/* selfgenerated from version 0.0.0.1 " + DateTime.Now.ToString() + " */\n\n";
+            outputFileStr += "using System;\n";
+            outputFileStr += "using System.Collections.Generic;\n";
+            outputFileStr += "using System.Globalization;\n";
+            outputFileStr += "using Newtonsoft.Json;\n";
+            outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
+            outputFileStr += "namespace ContactHubSdkLibrary {\n";
+
+            //outputFileStr += @"
+            //                    public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
+            //                    {
+            //                        public ValidatePatternAttribute(string data) : base(data) { }
+            //                    }
+            //";
+
+            //generate class
+            createClassFile(propertiesTree, ref outputFileStr);
+            outputFileStr += "\n}\n";
+            File.WriteAllText("trackingClass.cs", outputFileStr);
+        }
+
         static void generateEventProperties()
         {
             BasePropertiesItem propertiesTree = null;

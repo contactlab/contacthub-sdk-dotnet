@@ -546,12 +546,13 @@
             "additionalProperties": false,
             "properties": {
               "identifier": {
-                "type": "string",
-                "description": "The identifier of a mobile device belonging to the customer"
+                "type": "string"
+              },
+              "appId": {
+                "type": "string"
               },
               "name": {
-                "type": "string",
-                "description": "The name of a mobile device belonging to the customer"
+                "type": "string"
               },
               "type": {
                 "type": [
@@ -560,15 +561,30 @@
                 ],
                 "enum": [
                   "IOS",
-                  "GCM",
-                  "WP"
+                  "ANDROID",
+                  "WINDOWS_PHONE",
+                  "FIREOS"
+                ]
+              },
+              "notificationService": {
+                "type": [
+                  "string",
+                  "null"
                 ],
-                "description": "The type of mobile device belonging to the customer"
+                "enum": [
+                  "APN",
+                  "GCM",
+                  "WNS",
+                  "ADM",
+                  "SNS"
+                ],
+                "description": "APN -> Apple Push Notification Service; GCM -> Google Cloud Messaging; WNS -> Windows Push Notification Services; ADM -> Amazon Device Messaging; SNS -> Amazon Simple Notification Service"
               }
             }
           },
           "contactlabProperties": {
-            "label": "Mobile devices"
+            "label": "Mobile devices",
+            "enabled": true
           }
         }
       }

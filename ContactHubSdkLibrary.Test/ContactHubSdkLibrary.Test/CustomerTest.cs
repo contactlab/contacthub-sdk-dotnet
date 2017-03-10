@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -50,12 +51,25 @@ namespace ContactHubSdkLibrary.Test
             {
                 Customer newCustomer = node.AddCustomer(newPostCustomer, ref error, false);
                 //wait for elastic update
+                DateTime start = DateTime.Now;
                 Thread.Sleep(Util.GetWaitTime());
                 if (newCustomer != null && newCustomer.id != null)
                 {
+                    double sec = 0;
                     //customer is created!
                     //get customer by ID
                     Customer myTestCustomer1 = node.GetCustomerByID(newCustomer.id, ref error);
+
+                    while (node.GetCustomerByExternalID(newCustomer.externalId, ref error)==null)
+                    {
+                        DateTime end2 = DateTime.Now;
+                        sec = (end2 - start).TotalSeconds;
+                        Debug.Print(sec.ToString());
+                        Thread.Sleep(10000);
+                    }
+                    DateTime end = DateTime.Now;
+                    sec = (end - start).TotalSeconds;
+
                     Customer myTestCustomer2 = node.GetCustomerByExternalID(newCustomer.externalId, ref error).FirstOrDefault();
                     //compare results
                     CompareLogic compareLogic = new CompareLogic();

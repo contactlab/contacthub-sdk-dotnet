@@ -1,7 +1,7 @@
 {
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
-  "description": "Customer was invited at an event",
+  "description": "Customer is eligible to be invited at the event",
   "properties": {
     "customerId": {
       "type": "string",

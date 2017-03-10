@@ -7,26 +7,26 @@ namespace ContactHubSdkLibrary.Test
     [TestFixture]
     public class NodeTest
     {
-
-
         /// <summary>
         /// Get node from workspace with specific node ID
         /// </summary>
-        [TestCase("{{workspaceID}}", "{{token}}", "{{nodeID}}", true)]
-//        [TestCase("{{workspaceID}}", "{{token}}", "invalidCode", false)]
-        public void S_OpenSpecificNodeInWorkSpace(string tpWorkspaceID, string tpToken, string nodeID, bool tpIsValid)
+        [TestCase( true)]
+        public void S_OpenSpecificNodeInWorkSpace(bool tpIsValid)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+            string tpNodeID = Util.getTestNode();
+
             Workspace currentWorkspace = new Workspace(
                     tpWorkspaceID,
-                    tpToken
+                    tpTokenID
                 );
             Node currentNode = null;
            
-            currentNode = currentWorkspace.GetNode(nodeID);
+            currentNode = currentWorkspace.GetNode(tpNodeID);
             
             Assert.AreEqual(currentNode != null, tpIsValid);
             Thread.Sleep(Util.GetExitTime()); //wait
-
         }
     }
 }

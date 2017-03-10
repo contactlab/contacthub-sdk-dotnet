@@ -7,12 +7,15 @@ namespace ContactHubSdkLibrary.Test
     [TestFixture]
     public class WorkSpaceTest
     {
-        [TestCase("{{workspaceID}}", "{{token}}", true)]
-        public void S_OpenWorkSpace(string tpWorkspaceID, string tpToken, bool tpIsValid)
+        [TestCase( true)]
+        public void S_OpenWorkSpace(bool tpIsValid)
         {
+            string tpWorkspaceID = Util.getTestWorkspace();
+            string tpTokenID = Util.getTestToken();
+
             Workspace currentWorkspace = new Workspace(
                     tpWorkspaceID,
-                    tpToken
+                    tpTokenID
                 );
 
             Assert.AreEqual(currentWorkspace.isValid, tpIsValid);

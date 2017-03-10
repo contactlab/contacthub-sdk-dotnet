@@ -53,6 +53,7 @@
     <Compile Include="bin\Debug\basePropertiesClass.cs" />
     <Compile Include="bin\Debug\eventContextClass.cs" />
     <Compile Include="bin\Debug\eventPropertiesClass.cs" />
+    <Compile Include="bin\Debug\trackingClass.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Datatype.cs" />

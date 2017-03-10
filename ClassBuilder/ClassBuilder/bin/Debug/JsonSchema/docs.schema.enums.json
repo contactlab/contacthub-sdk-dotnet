@@ -24,7 +24,7 @@
         "MEDIA_COMM_SPORT",
         "NO_PROFIT",
         "TRAVEL",
-        "THRIRD_PTY",
+        "THIRD_PTY",
         "OTHER",
         "PUBLIC_SECTOR"
       ]
@@ -62,7 +62,12 @@
         "clickedLink",
         "closedTicket",
         "completedOrder",
+        "eventConfirmed",
+        "eventDeclined",
+        "eventEligible",
         "eventInvited",
+        "eventNoShow",
+        "eventNotInvited",
         "eventParticipated",
         "formCompiled",
         "genericActiveEvent",
@@ -536,6 +541,22 @@
         "subscriptions",
         "timezone",
         "title"
+      ]
+    },
+    "Providers": {
+      "type": "string",
+      "enum": [
+        "API",
+        "MAGENTO",
+        "JavaScript",
+        "CONTACTSEND",
+        "CONTACTPLAN",
+        "ANDROID_SDK",
+        "OBJECTIVEC_SDK",
+        "NODEJS_SDK",
+        "JAVA_SDK",
+        "SCALA_SDK",
+        "DOTNET_SDK"
       ]
     }
   }

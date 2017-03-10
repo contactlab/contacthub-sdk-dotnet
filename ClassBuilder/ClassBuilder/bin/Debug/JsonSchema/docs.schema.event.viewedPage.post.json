@@ -30,6 +30,9 @@
     "contextInfo": {
       "type": "object"
     },
+    "tracking": {
+      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+    },
     "properties": {
       "type": "object",
       "properties": {

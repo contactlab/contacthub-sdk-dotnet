@@ -5,9 +5,6 @@ namespace generateBasePropertiesClass
 {
     public static class Connection
     {
-        private const string _baseURL = "https://api.contactlab.it/hub/v1/workspaces/{id-workspace}";
-        private static string _workspaceID = ConfigurationManager.AppSettings["workspaceID"].ToString();
-
         private static string GetUrl(string functionPath)
         {
             return GetBaseUrl() + functionPath;

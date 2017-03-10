@@ -84,6 +84,7 @@ namespace ContactHubSdkLibrary.Models
             }
         }
 
+        public TrackingProperties tracking { get; set; }
         public EventBaseProperty properties { get; set; }
         public EventBaseProperty contextInfo { get; set; }
         [JsonProperty("date")]

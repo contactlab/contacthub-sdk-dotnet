@@ -72,7 +72,7 @@ namespace ContactHubSdkLibrary.Models
 				querySTR += string.Format("\"attribute\": \"{0}\",", q.attributeName);
 				querySTR += string.Format("\"operator\": \"{0}\",", q.attributeOperator.ToString());
 				querySTR += @" ""type"": ""atomic"",";
-				querySTR += string.Format("\"value\": \"{0}\"", q.attributeValue);
+                querySTR += string.Format("\"value\": {0}", q.attributeValue);
 				querySTR += @"
 												}
 										 },

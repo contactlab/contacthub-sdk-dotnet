@@ -987,9 +987,9 @@ namespace ContactHubSdkLibrary.Test
                     PagedCustomer pagedCustomers = null;
 
                     QueryBuilder qb = new QueryBuilder();
-                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Donald" });
-                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "Duck" });
-                    qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = newCustomer.id });
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.firstName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "\"Donald\"" }); //use \" to delimit string value
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "base.lastName", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = "\"Duck\"" });
+                    qb.AddQuery(new QueryBuilderItem() { attributeName = "id", attributeOperator = QueryBuilderOperatorEnum.EQUALS, attributeValue = String.Format("\"{0}\"",newCustomer.id) });
                     node.GetCustomers(ref pagedCustomers, 10, null, qb.GenerateQuery(QueryBuilderConjunctionEnum.AND), null, ref error);
 
                     if (pagedCustomers.elements != null && pagedCustomers.elements != null && pagedCustomers.elements.Count > 0)

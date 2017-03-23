@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 10/03/2017 11:53:51 */
+/* selfgenerated from version 0.0.0.1 22/03/2017 18:32:26 */
 
 using Newtonsoft.Json;
 using System;

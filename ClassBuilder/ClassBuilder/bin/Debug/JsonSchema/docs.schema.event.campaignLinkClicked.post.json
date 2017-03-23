@@ -18,7 +18,10 @@
       ]
     },
     "type": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventType"
+      "type": "string",
+      "enum": [
+        "campaignLinkClicked"
+      ]
     },
     "context": {
       "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/EventContext"
@@ -35,6 +38,7 @@
     },
     "properties": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "linkUrl": {
           "type": "string",

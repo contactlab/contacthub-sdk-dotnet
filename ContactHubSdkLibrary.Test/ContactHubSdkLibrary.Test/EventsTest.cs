@@ -239,6 +239,7 @@ namespace ContactHubSdkLibrary.Test
                     {
                         try
                         {
+                            //var x = node.GetCustomerByExternalID(extID, ref error);
                             extIdCustomer = node.GetCustomerByExternalID(extID, ref error).FirstOrDefault();
                         }
                         catch (Exception ex)

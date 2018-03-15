@@ -1057,6 +1057,7 @@ namespace ContactHubSdkLibrary.Test
                     };
                     Likes addLike = node.AddCustomerLike(newCustomer.id, newLike, ref error);
                     CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
                     bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
@@ -1279,6 +1280,12 @@ namespace ContactHubSdkLibrary.Test
 
                     Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription, ref error);
                     CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
+                    compareLogic.Config.MembersToIgnore.Add("_startDate");
+                    compareLogic.Config.MembersToIgnore.Add("_endDate");
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt");
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+
                     bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);

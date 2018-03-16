@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -49,7 +56,8 @@
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

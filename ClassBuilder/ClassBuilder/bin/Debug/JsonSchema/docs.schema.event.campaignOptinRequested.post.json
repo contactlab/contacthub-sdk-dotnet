@@ -1,7 +1,7 @@
 {
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
-  "description": "Customer unsubscribed from a service subscription",
+  "description": "Customer was sent the optin request",
   "properties": {
     "customerId": {
       "type": "string",
@@ -20,7 +20,7 @@
     "type": {
       "type": "string",
       "enum": [
-        "serviceUnsubscribed"
+        "campaignOptinRequested"
       ]
     },
     "context": {
@@ -47,31 +47,47 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "listId": {
+          "type": "string",
+          "description": "Id used to identify a list"
+        },
+        "listName": {
+          "type": "string",
+          "description": "Name used to identify a list"
+        },
         "subscriberId": {
           "type": "string",
           "description": "An ID used to identify the subscriber"
         },
-        "serviceId": {
+        "channel": {
           "type": "string",
-          "description": "The idenfier of service"
+          "description": "The campaign medium",
+          "enum": [
+            "SMS",
+            "EMAIL",
+            "PUSH",
+            "FAX",
+            "IM"
+          ]
         },
-        "serviceName": {
+        "channelType": {
           "type": "string",
-          "description": "The name of service"
+          "description": "The type of campaign medium"
         },
-        "serviceType": {
+        "invitationChannel": {
           "type": "string",
-          "description": "The type of service"
+          "description": "The invitation medium",
+          "enum": [
+            "SMS",
+            "EMAIL",
+            "PUSH",
+            "FAX",
+            "IM"
+          ]
         },
-        "startDate": {
+        "invitationChannelType": {
           "type": "string",
-          "description": "Date time of the start of service subscription",
-          "format": "date-time"
-        },
-        "endDate": {
-          "type": "string",
-          "description": "Date time of the end of service subscription",
-          "format": "date-time"
+          "description": "The type of invitation medium"
         },
         "extraProperties": {
           "type": "object",

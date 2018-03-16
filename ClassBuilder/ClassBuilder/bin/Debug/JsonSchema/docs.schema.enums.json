@@ -2,16 +2,6 @@
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
   "definitions": {
-    "AuditEventType": {
-      "type": "string",
-      "enum": [
-        "customerCreated",
-        "customerUpdated",
-        "customerDeleted",
-        "eventCreated",
-        "eventDeleted"
-      ]
-    },
     "IndustryType": {
       "description": "industrial sector",
       "type": "string",
@@ -47,6 +37,7 @@
       "type": "string",
       "enum": [
         "abandonedCart",
+        "abandonedSession",
         "addedCompare",
         "addedProduct",
         "addedWishlist",
@@ -55,6 +46,7 @@
         "campaignLinkClicked",
         "campaignMarkedSpam",
         "campaignOpened",
+        "campaignOptinRequested",
         "campaignSent",
         "campaignSubscribed",
         "campaignUnsubscribed",
@@ -69,6 +61,7 @@
         "eventNoShow",
         "eventNotInvited",
         "eventParticipated",
+        "eventRegistered",
         "formCompiled",
         "genericActiveEvent",
         "genericPassiveEvent",
@@ -114,12 +107,15 @@
           ]
         },
         "value": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "nodeId": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
-      }
+      },
+      "required": ["type", "value", "nodeId"]
     },
     "Currency": {
       "type": "string",
@@ -510,6 +506,7 @@
         "address.province",
         "address.street",
         "address.zip",
+        "address.region",
         "contacts",
         "contacts.email",
         "contacts.fax",
@@ -558,6 +555,29 @@
         "SCALA_SDK",
         "DOTNET_SDK"
       ]
+    },
+    "GeographicLocation": {
+      "type": "object",
+      "description": "The geographic location",
+      "properties": {
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "The latitude"
+        },
+        "lon": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "The longitude"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "additionalProperties": false
     }
   }
 }

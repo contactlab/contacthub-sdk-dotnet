@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -67,6 +74,10 @@
             "paypal",
             "other"
           ]
+        },
+        "shippingMethod": {
+          "type": "string",
+          "description": "Shipping method"
         },
         "amount": {
           "type": "object",
@@ -141,6 +152,13 @@
                 "type": "string",
                 "description": "Sku of the product"
               },
+              "vendor": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Vendor of the product"
+              },
               "type": {
                 "type": "string",
                 "description": "The type of order line",
@@ -148,6 +166,10 @@
                   "sale",
                   "return"
                 ]
+              },
+              "orderLineId": {
+                "type": "integer",
+                "description": "Order line identifier"
               },
               "classifications": {
                 "type": "array",
@@ -164,7 +186,11 @@
                       "type": "string",
                       "description": "The value of the classification"
                     }
-                  }
+                  },
+                  "required": [
+                    "key",
+                    "value"
+                  ]
                 }
               },
               "category": {
@@ -199,6 +225,27 @@
               "id": {
                 "type": "string",
                 "description": "Database id of the product"
+              },
+              "weight": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The weight of the product"
+              },
+              "itemQuantity": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The items quantity of the product"
+              },
+              "unitOfMeasure": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Unit of measure"
               }
             }
           }
@@ -212,7 +259,8 @@
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

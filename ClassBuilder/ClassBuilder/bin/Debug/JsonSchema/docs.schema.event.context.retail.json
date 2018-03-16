@@ -1,0 +1,174 @@
+{
+  "type": "object",
+  "$schema": "http://api.contactlab.it/hub#",
+  "additionalProperties": false,
+  "properties": {
+    "client": {
+      "type": "object",
+      "properties": {
+        "userAgent": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ip": {
+          "type": "string",
+          "format": "ipv4"
+        },
+        "localization": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "province": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            },
+            "geo": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90,
+                  "description": "latitude"
+                },
+                "lon": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180,
+                  "description": "longitude"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "salesAssistant": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "The identifier of the sales assistant",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The first name of the sales assistant",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastName": {
+          "description": "The last name of the sales assistant",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contacts": {
+          "description": "The contact information for the sales assistant",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "email": {
+              "description": "The email address of the sales assistant",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "email"
+            },
+            "mobilePhone": {
+              "description": "The mobile phone number of the sales assistant",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "phone": {
+              "description": "The phone number of the sales assistant",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "store": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "AIRPORT",
+            "ECOMMERCE",
+            "FLAGSHIP",
+            "FREE-STANDING",
+            "MALL",
+            "OUTLET",
+            "RESORT",
+            "SIS",
+            "WAREHOUSE",
+            "NOT-DEFINED"
+          ]
+        },
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "province": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "geo": {
+          "$ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/GeographicLocation"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "$ref": "https://api.contactlab.it/hub/v1/docs/schema/event/user.json"
+    }
+  }
+}

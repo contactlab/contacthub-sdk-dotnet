@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -73,7 +80,11 @@
                 "type": "string",
                 "description": "The value of the classification"
               }
-            }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
           }
         },
         "category": {
@@ -91,6 +102,13 @@
           "type": "string",
           "description": "The sku of the product"
         },
+        "vendor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Vendor of the product"
+        },
         "name": {
           "type": "string",
           "description": "Name of the product"
@@ -102,13 +120,35 @@
         "quantity": {
           "type": "number",
           "description": "Quantity of a product"
+        },
+        "weight": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The weight of the product"
+        },
+        "itemQuantity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The items quantity of the product"
+        },
+        "unitOfMeasure": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Unit of measure"
         }
       }
     }
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

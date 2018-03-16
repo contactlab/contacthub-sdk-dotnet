@@ -18,6 +18,7 @@ namespace generateBasePropertiesClass
         static void Main(string[] args)
         {
             generateBaseProperties();  //generate the classes corresponding to the properties of the customer base
+            generateConsensProperties();  //generate the classes corresponding to the properties of the customer base
             generateEventProperties(); //generate the classes corresponding to properties of events
             generateEventContext();    //generate the classes corresponding to properties  in the events contextInfo field
             generateEventTrackingProperties(); //generate the classed corresponding to properties in the event's tracking attribute 
@@ -57,8 +58,11 @@ namespace generateBasePropertiesClass
 
             foreach (string c in enumList)
             {
-                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".post.json");  //get specific context schema
-                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant().Replace("_","-") + ".post.json", jsonString);
+
+
+                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".json");  //get specific context schema
+                //                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".post.json");  //get specific context schema
+                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant().Replace("_", "-") + ".json", jsonString);
 
                 if (jsonString != null)
                 {
@@ -74,7 +78,7 @@ namespace generateBasePropertiesClass
 
                     contextList.Add(e);
                 }
-                
+
             }
 
             string outputFileStr = "";
@@ -93,6 +97,11 @@ namespace generateBasePropertiesClass
             string contextJson = null;
             foreach (Context ev in contextList)
             {
+                //force object when type is null
+                if (string.IsNullOrEmpty(ev.type))
+                {
+                    ev.type = "object";
+                }
                 outputFileStr += "//context class '" + ev.id + "': " + ev.description;
                 if (ev.propertiesSchema != null)
                 {
@@ -104,6 +113,7 @@ namespace generateBasePropertiesClass
                     propertiesTree = new BasePropertiesItem();
                 }
                 propertiesTree.name = "EventContextProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
+
                 createClassFile(propertiesTree, ref outputFileStr);
                 outputFileStr += "\n";
             }
@@ -187,6 +197,52 @@ namespace generateBasePropertiesClass
 
             outputFileStr += "\n}\n";
             File.WriteAllText("basePropertiesClass.cs", outputFileStr);
+        }
+        static void generateConsensProperties()
+        {
+            BasePropertiesItem propertiesTree = null;
+
+            /* download dynamically updated based properties */
+            // string jsonString = Connection.DoGetWebRequest("/models/properties/base");
+            string jsonString = Connection.DoGetWebRequest("https://raw.githubusercontent.com/contactlab/contacthub-json-schemas/master/customer/consents.json", false);
+            JSONUtilities.SaveJsonSchema("raw.githubusercontent.com.contactlab.contacthub-json-schemas.master.customer.consents.json", jsonString);
+
+            jsonString = JSONUtilities.FixReference(jsonString);
+
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                Console.WriteLine("Error: not valid token");
+                Console.ReadKey();
+            }
+            propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+            propertiesTree.name = "ConsensProperties";
+
+            if (propertiesTree == null) return;
+
+            //generate file baseProperties.cs 
+            string outputFileStr = String.Empty;
+
+            outputFileStr += "/* selfgenerated from version 0.0.0.1 " + DateTime.Now.ToString() + " */\n\n";
+            outputFileStr += "using System;\n";
+            outputFileStr += "using System.Collections.Generic;\n";
+            outputFileStr += "using System.Globalization;\n";
+            outputFileStr += "using Newtonsoft.Json;\n";
+            outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
+            outputFileStr += "namespace ContactHubSdkLibrary {\n";
+
+            //removed: 
+            //outputFileStr += @"
+            //                    public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
+            //                    {
+            //                        public ValidatePatternAttribute(string data) : base(data) { }
+            //                    }
+            //";
+
+            //generate class
+            createClassFile(propertiesTree, ref outputFileStr);
+
+            outputFileStr += "\n}\n";
+            File.WriteAllText("consensPropertiesClass.cs", outputFileStr);
         }
 
         static void generateEventTrackingProperties()
@@ -631,10 +687,45 @@ namespace generateBasePropertiesClass
                                     if (pItem.type == null)
                                     {
                                         //object definition is in external ref files, probably is a Enum
+                                        //reference url is in p.reference attribute
                                         string jsonString = "";
-                                        if (p.reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        if (p.reference != null) // && p.reference.Contains("#")) 
                                         {
-                                            string[] tmp = p.reference.Split('#');
+                                            //there are two types of reference
+                                            //a) reference splitted with #  with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency
+                                            //b) direct reference: https://api.contactlab.it/hub/v1/docs/schema/event/user.json
+                                            if (p.reference.Contains("#"))
+                                            {
+                                                string[] tmp = p.reference.Split('#');
+                                                jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                                string pathName = tmp[1].Replace("/", ".");
+                                                pathName = pathName.Substring(1, pathName.Length - 1);
+                                                JObject obj = JObject.Parse(jsonString);
+                                                foreach (var c in obj["definitions"])
+                                                {
+                                                    if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                                    {
+                                                        string externalSchema = c.First.ToString();
+                                                        BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                                        externalSchemaObj.name = p.name; //hold orig name
+                                                        p = externalSchemaObj;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                jsonString = Connection.DoGetWebRequest(p.reference, false);
+                                                BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+                                                externalSchemaObj.name = p.name; //hold orig name
+                                                p = externalSchemaObj;
+
+                                            }
+                                        }
+                                        //this section is similar to previous: object definition is in external ref files, probably is a Enum
+                                        //reference url is in "OneOf" json structure
+                                        if (p.referenceOneOf != null && p.referenceOneOf[0].reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        {
+                                            string[] tmp = p.referenceOneOf[0].reference.Split('#');
                                             jsonString = Connection.DoGetWebRequest(tmp[0], false);
                                             string pathName = tmp[1].Replace("/", ".");
                                             pathName = pathName.Substring(1, pathName.Length - 1);
@@ -653,6 +744,11 @@ namespace generateBasePropertiesClass
                                     }
 
                                     {
+                                        if (p.type == null)
+                                        {
+                                            p.type = "object";
+                                        }
+
                                         localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
                                         //if it is a container, then processes the properties inside
 
@@ -771,8 +867,11 @@ namespace generateBasePropertiesClass
             string str = "";
             foreach (string enumItem in (string[])enumObj.Value)
             {
-                outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);
-                outputFileStr += String.Format("\t{0},\n", Common.makeValidFileName(enumItem));
+                if (!string.IsNullOrEmpty(enumItem))
+                {
+                    outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);
+                    outputFileStr += String.Format("\t{0},\n", Common.makeValidFileName(enumItem));
+                }
             }
             if (outputFileStr.EndsWith(",\n"))
             {

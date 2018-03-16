@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -78,8 +85,13 @@
             "SMS",
             "EMAIL",
             "PUSH",
-            "FAX"
+            "FAX",
+            "IM"
           ]
+        },
+        "channelType": {
+          "type": "string",
+          "description": "The type of a channel"
         },
         "listId": {
           "type": "string",
@@ -90,7 +102,8 @@
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

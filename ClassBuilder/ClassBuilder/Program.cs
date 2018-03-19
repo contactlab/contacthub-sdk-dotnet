@@ -436,7 +436,8 @@ namespace generateBasePropertiesClass
             List<String> dateTimeListField = new List<String> {
                 "createdTime",
                 "updatedAt", "registeredAt",
-                "startDate", "endDate"
+                "startDate", "endDate",
+                "date"
             };
             List<String> dateListField = new List<String>
             {

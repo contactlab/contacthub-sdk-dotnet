@@ -5,3 +5,4 @@ C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\generateBa
 C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.pdb
 C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.dll
 C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ContactLab\ContactHub\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csprojResolveAssemblyReference.cache

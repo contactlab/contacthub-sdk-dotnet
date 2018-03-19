@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 19/03/2018 11:14:28 */
+/* selfgenerated from version 0.0.0.1 19/03/2018 11:21:20 */
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

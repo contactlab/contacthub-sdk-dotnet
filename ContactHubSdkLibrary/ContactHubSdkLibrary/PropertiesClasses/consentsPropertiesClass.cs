@@ -1,11 +1,13 @@
-/* selfgenerated from version 0.0.0.1 19/03/2018 11:04:02 */
+/* selfgenerated from version 0.0.0.1 19/03/2018 11:21:16 */
 
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 namespace ContactHubSdkLibrary
 {
 
-    public class ConsensProperties
+    public class ConsentsProperties
     {
         public Disclaimer disclaimer { get; set; }
         public Marketing marketing { get; set; }
@@ -17,9 +19,52 @@ namespace ContactHubSdkLibrary
 
     public class Disclaimer
     {
-        [Display(Name = "Version of disclaimer")]
-        //format: date-time
-        public string date { get; set; }
+        [JsonProperty("date")]
+        public string _date { get; set; }
+        [JsonProperty("_date")]
+        [JsonIgnore]
+
+        public DateTime date
+        {
+            get
+            {
+                if (_date != null)
+                {
+                    if (_date.Contains("+"))  //date format: 2017-01-25T17:14:01.000+0000
+                    {
+                        return Convert.ToDateTime(_date).ToUniversalTime();
+                    }
+                    else  //date format yyyy-MM-dd'T'HH:mm:ssZ
+                    {
+                        if (_date.Contains("T"))
+                        {
+                            return
+                            DateTime.ParseExact(_date,
+                                          "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                          CultureInfo.InvariantCulture,
+                                          DateTimeStyles.AssumeUniversal |
+                                          DateTimeStyles.AdjustToUniversal);
+                        }
+                        else
+                        {
+                            return DateTime.MinValue;
+                        }
+                    }
+                }
+                else
+                {
+                    return DateTime.MinValue;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _date = value.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
+                }
+                catch { _date = null; }
+            }
+        }
         [Display(Name = "The date of acceptance of the disclaimer")]
         public string version { get; set; }
     }

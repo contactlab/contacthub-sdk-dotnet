@@ -57,6 +57,12 @@ namespace ContactHubSdkLibrary.Test
                             {
                                 ip = "8.8.8.8",
                                 userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0"
+                            },
+                            user=new User()
+                            {
+                                firstName="John",
+                                lastName="White",
+                                id=Guid.NewGuid().ToString().Replace("-","")
                             }
                         },
                         tracking = new TrackingProperties()

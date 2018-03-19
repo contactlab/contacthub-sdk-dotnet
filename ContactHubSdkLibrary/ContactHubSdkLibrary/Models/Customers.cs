@@ -93,7 +93,7 @@ namespace ContactHubSdkLibrary.Models
         public string externalId { get; set; }
         public string nodeId { get; set; }
         public BaseProperties @base { get; set; }
-        public ConsensProperties consens { get; set; }
+        public ConsentsProperties consents { get; set; }
 
         [JsonIgnore]
         [JsonProperty("_extended")]

@@ -445,6 +445,7 @@ namespace ContactHubSdkLibrary.Test
 
                     //compare results with original data
                     compareLogic.Config.MembersToIgnore.Add("enabled");
+                    compareLogic.Config.MembersToIgnore.Add("_date");
                     PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
                     bool testPassed1 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
 

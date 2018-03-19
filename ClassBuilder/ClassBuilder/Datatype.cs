@@ -113,6 +113,8 @@ namespace generateBasePropertiesClass
         public string reference { get; set; }
         [JsonProperty("oneOf")]
         public List<OneOf> referenceOneOf { get; set; }
+        [JsonProperty("anyOf")]
+        public List<BasePropertiesItem> anyOf { get; set; }
 
 
         public dynamic items
@@ -158,6 +160,12 @@ namespace generateBasePropertiesClass
     }
 
     public class OneOf
+    {
+        [JsonProperty("ref")]
+        public string reference { get; set; }
+    }
+
+    public class AnyOf
     {
         [JsonProperty("ref")]
         public string reference { get; set; }

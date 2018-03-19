@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 19/03/2018 11:04:07 */
+/* selfgenerated from version 0.0.0.1 22/03/2017 18:32:32 */
 
 using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;
@@ -10,7 +10,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyCONTACT_CENTER : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -19,34 +18,6 @@ namespace ContactHubSdkLibrary.Events
         public string userAgent { get; set; }
         //format: ipv4
         public string ip { get; set; }
-        public Localization localization { get; set; }
-    }
-
-
-    public class Localization
-    {
-        public string city { get; set; }
-        public string country { get; set; }
-        public string region { get; set; }
-        public string province { get; set; }
-        public string zip { get; set; }
-        public Geo geo { get; set; }
-    }
-
-
-    public class User
-    {
-        [Display(Name = "The identifier of the user")]
-        public string id { get; set; }
-        [Display(Name = "The external identifier of the user")]
-        public string externalId { get; set; }
-        [Display(Name = "The username of the user")]
-        public string username { get; set; }
-        [Display(Name = "The first name of the user")]
-        public string firstName { get; set; }
-        [Display(Name = "The last name of the user")]
-        public string lastName { get; set; }
-        public Contacts contacts { get; set; }
     }
 
 
@@ -54,7 +25,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyWEB : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -63,7 +33,6 @@ namespace ContactHubSdkLibrary.Events
     {
         public Client client { get; set; }
         public Device device { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -86,7 +55,6 @@ namespace ContactHubSdkLibrary.Events
     {
         public Client client { get; set; }
         public Store store { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -115,7 +83,6 @@ namespace ContactHubSdkLibrary.Events
         public string city { get; set; }
         public string country { get; set; }
         public string province { get; set; }
-        public string region { get; set; }
         public string zip { get; set; }
         public Geo geo { get; set; }
         public string website { get; set; }
@@ -149,21 +116,7 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyRETAIL : EventBaseProperty
     {
         public Client client { get; set; }
-        public SalesAssistant salesAssistant { get; set; }
         public Store store { get; set; }
-        public User user { get; set; }
-    }
-
-
-    public class SalesAssistant
-    {
-        [Display(Name = "The identifier of the sales assistant")]
-        public string id { get; set; }
-        [Display(Name = "The first name of the sales assistant")]
-        public string firstName { get; set; }
-        [Display(Name = "The last name of the sales assistant")]
-        public string lastName { get; set; }
-        public Contacts contacts { get; set; }
     }
 
 
@@ -171,7 +124,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyIOT : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -179,7 +131,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertySOCIAL : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -187,7 +138,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyDIGITAL_CAMPAIGN : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 
@@ -195,7 +145,6 @@ namespace ContactHubSdkLibrary.Events
     public class EventContextPropertyOTHER : EventBaseProperty
     {
         public Client client { get; set; }
-        public User user { get; set; }
     }
 
 

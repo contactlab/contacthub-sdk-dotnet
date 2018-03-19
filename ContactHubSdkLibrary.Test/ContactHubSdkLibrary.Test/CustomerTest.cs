@@ -1028,6 +1028,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1096,6 +1098,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1164,6 +1168,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1237,6 +1243,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1328,6 +1336,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1379,6 +1389,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",

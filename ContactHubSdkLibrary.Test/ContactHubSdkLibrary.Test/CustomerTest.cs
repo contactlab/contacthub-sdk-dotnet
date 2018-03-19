@@ -390,6 +390,14 @@ namespace ContactHubSdkLibrary.Test
             {
                 nodeId = tpNodeID,
                 externalId = Guid.NewGuid().ToString(),
+                consens=new ConsensProperties()
+                {
+                    disclaimer=new Disclaimer()
+                    {
+                        date=DateTime.Now.ToString("yyyy-mm-dd"),
+                        version="v1"
+                    }
+                },
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",

@@ -18,7 +18,7 @@ namespace generateBasePropertiesClass
         static void Main(string[] args)
         {
             generateBaseProperties();  //generate the classes corresponding to the properties of the customer base
-            generateConsensProperties();  //generate the classes corresponding to the properties of the customer base
+            generateConsentsProperties();  //generate the classes corresponding to the properties of the customer base
             generateEventProperties(); //generate the classes corresponding to properties of events
             generateEventContext();    //generate the classes corresponding to properties  in the events contextInfo field
             generateEventTrackingProperties(); //generate the classed corresponding to properties in the event's tracking attribute 
@@ -198,7 +198,7 @@ namespace generateBasePropertiesClass
             outputFileStr += "\n}\n";
             File.WriteAllText("basePropertiesClass.cs", outputFileStr);
         }
-        static void generateConsensProperties()
+        static void generateConsentsProperties()
         {
             BasePropertiesItem propertiesTree = null;
 
@@ -215,7 +215,7 @@ namespace generateBasePropertiesClass
                 Console.ReadKey();
             }
             propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
-            propertiesTree.name = "ConsensProperties";
+            propertiesTree.name = "ConsentsProperties";
 
             if (propertiesTree == null) return;
 
@@ -242,7 +242,7 @@ namespace generateBasePropertiesClass
             createClassFile(propertiesTree, ref outputFileStr);
 
             outputFileStr += "\n}\n";
-            File.WriteAllText("consensPropertiesClass.cs", outputFileStr);
+            File.WriteAllText("consentsPropertiesClass.cs", outputFileStr);
         }
 
         static void generateEventTrackingProperties()

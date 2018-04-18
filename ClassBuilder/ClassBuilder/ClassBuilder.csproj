@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bin\Debug\basePropertiesClass.cs" />
+    <Compile Include="bin\Debug\consentsPropertiesClass.cs" />
     <Compile Include="bin\Debug\eventContextClass.cs" />
     <Compile Include="bin\Debug\eventPropertiesClass.cs" />
     <Compile Include="bin\Debug\trackingClass.cs" />

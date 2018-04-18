@@ -18,6 +18,7 @@ namespace generateBasePropertiesClass
         static void Main(string[] args)
         {
             generateBaseProperties();  //generate the classes corresponding to the properties of the customer base
+            generateConsentsProperties();  //generate the classes corresponding to the properties of the customer base
             generateEventProperties(); //generate the classes corresponding to properties of events
             generateEventContext();    //generate the classes corresponding to properties  in the events contextInfo field
             generateEventTrackingProperties(); //generate the classed corresponding to properties in the event's tracking attribute 
@@ -57,8 +58,11 @@ namespace generateBasePropertiesClass
 
             foreach (string c in enumList)
             {
-                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".post.json");  //get specific context schema
-                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant().Replace("_","-") + ".post.json", jsonString);
+
+
+                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".json");  //get specific context schema
+                //                jsonString = Connection.DoGetWebRequest("/docs/schema/event/context/" + c.ToLowerInvariant().Replace("_", "-") + ".post.json");  //get specific context schema
+                JSONUtilities.SaveJsonSchema("docs.schema.event.context." + c.ToLowerInvariant().Replace("_", "-") + ".json", jsonString);
 
                 if (jsonString != null)
                 {
@@ -74,7 +78,7 @@ namespace generateBasePropertiesClass
 
                     contextList.Add(e);
                 }
-                
+
             }
 
             string outputFileStr = "";
@@ -93,6 +97,11 @@ namespace generateBasePropertiesClass
             string contextJson = null;
             foreach (Context ev in contextList)
             {
+                //force object when type is null
+                if (string.IsNullOrEmpty(ev.type))
+                {
+                    ev.type = "object";
+                }
                 outputFileStr += "//context class '" + ev.id + "': " + ev.description;
                 if (ev.propertiesSchema != null)
                 {
@@ -104,6 +113,7 @@ namespace generateBasePropertiesClass
                     propertiesTree = new BasePropertiesItem();
                 }
                 propertiesTree.name = "EventContextProperty" + uppercaseFirst(ev.id) + ": EventBaseProperty";
+
                 createClassFile(propertiesTree, ref outputFileStr);
                 outputFileStr += "\n";
             }
@@ -187,6 +197,51 @@ namespace generateBasePropertiesClass
 
             outputFileStr += "\n}\n";
             File.WriteAllText("basePropertiesClass.cs", outputFileStr);
+        }
+        static void generateConsentsProperties()
+        {
+            BasePropertiesItem propertiesTree = null;
+
+            /* download dynamically updated based properties */
+            string jsonString = Connection.DoGetWebRequest("/docs/schema/consents/consents.json");
+            JSONUtilities.SaveJsonSchema("docs.schema.consents.consents.json", jsonString);
+
+            jsonString = JSONUtilities.FixReference(jsonString);
+
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                Console.WriteLine("Error: not valid token");
+                Console.ReadKey();
+            }
+            propertiesTree = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+            propertiesTree.name = "ConsentsProperties";
+
+            if (propertiesTree == null) return;
+
+            //generate file baseProperties.cs 
+            string outputFileStr = String.Empty;
+
+            outputFileStr += "/* selfgenerated from version 0.0.0.1 " + DateTime.Now.ToString() + " */\n\n";
+            outputFileStr += "using System;\n";
+            outputFileStr += "using System.Collections.Generic;\n";
+            outputFileStr += "using System.Globalization;\n";
+            outputFileStr += "using Newtonsoft.Json;\n";
+            outputFileStr += "using System.ComponentModel.DataAnnotations;\n";
+            outputFileStr += "namespace ContactHubSdkLibrary {\n";
+
+            //removed: 
+            //outputFileStr += @"
+            //                    public class ValidatePatternAttribute : System.ComponentModel.DisplayNameAttribute
+            //                    {
+            //                        public ValidatePatternAttribute(string data) : base(data) { }
+            //                    }
+            //";
+
+            //generate class
+            createClassFile(propertiesTree, ref outputFileStr);
+
+            outputFileStr += "\n}\n";
+            File.WriteAllText("consentsPropertiesClass.cs", outputFileStr);
         }
 
         static void generateEventTrackingProperties()
@@ -380,7 +435,8 @@ namespace generateBasePropertiesClass
             List<String> dateTimeListField = new List<String> {
                 "createdTime",
                 "updatedAt", "registeredAt",
-                "startDate", "endDate"
+                "startDate", "endDate",
+                "date"
             };
             List<String> dateListField = new List<String>
             {
@@ -631,105 +687,215 @@ namespace generateBasePropertiesClass
                                     if (pItem.type == null)
                                     {
                                         //object definition is in external ref files, probably is a Enum
+                                        //reference url is in p.reference attribute
                                         string jsonString = "";
-                                        if (p.reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        if (p.reference != null) // && p.reference.Contains("#")) 
                                         {
-                                            string[] tmp = p.reference.Split('#');
-                                            jsonString = Connection.DoGetWebRequest(tmp[0], false);
-                                            string pathName = tmp[1].Replace("/", ".");
-                                            pathName = pathName.Substring(1, pathName.Length - 1);
-                                            JObject obj = JObject.Parse(jsonString);
-                                            foreach (var c in obj["definitions"])
+                                            //there are two types of reference
+                                            //a) reference splitted with #  with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency
+                                            //b) direct reference: https://api.contactlab.it/hub/v1/docs/schema/event/user.json
+                                            if (p.reference.Contains("#"))
                                             {
-                                                if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                                string[] tmp = p.reference.Split('#');
+                                                jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                                string pathName = tmp[1].Replace("/", ".");
+                                                pathName = pathName.Substring(1, pathName.Length - 1);
+                                                JObject obj = JObject.Parse(jsonString);
+                                                foreach (var c in obj["definitions"])
                                                 {
-                                                    string externalSchema = c.First.ToString();
-                                                    BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                                    if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                                    {
+                                                        string externalSchema = c.First.ToString();
+                                                        BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                                        externalSchemaObj.name = p.name; //hold orig name
+                                                        p = externalSchemaObj;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                jsonString = Connection.DoGetWebRequest(p.reference, false);
+                                                BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+                                                externalSchemaObj.name = p.name; //hold orig name
+                                                p = externalSchemaObj;
+
+                                            }
+                                        }
+                                        //this section is similar to previous: object definition is in external ref files, probably is a Enum
+                                        //reference url is in "OneOf" json structure
+                                        if (p.referenceOneOf != null) // && p.referenceOneOf[0].reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        {
+                                            //string[] tmp = p.referenceOneOf[0].reference.Split('#');
+                                            //jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                            //string pathName = tmp[1].Replace("/", ".");
+                                            //pathName = pathName.Substring(1, pathName.Length - 1);
+                                            //JObject obj = JObject.Parse(jsonString);
+                                            //foreach (var c in obj["definitions"])
+                                            //{
+                                            //    if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                            //    {
+                                            //        string externalSchema = c.First.ToString();
+                                            //        BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                            //        externalSchemaObj.name = p.name; //hold orig name
+                                            //        p = externalSchemaObj;
+                                            //    }
+                                            //}
+
+                                            //$ref in OneOf
+                                            if (p.referenceOneOf[0].reference.Contains("#"))
+                                            {
+                                                string[] tmp = p.referenceOneOf[0].reference.Split('#');
+                                                jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                                string pathName = tmp[1].Replace("/", ".");
+                                                pathName = pathName.Substring(1, pathName.Length - 1);
+                                                JObject obj = JObject.Parse(jsonString);
+                                                foreach (var c in obj["definitions"])
+                                                {
+                                                    if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                                    {
+                                                        string externalSchema = c.First.ToString();
+                                                        BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                                        externalSchemaObj.name = p.name; //hold orig name
+                                                        p = externalSchemaObj;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                jsonString = Connection.DoGetWebRequest(p.referenceOneOf[0].reference, false);
+                                                BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+                                                //extenal reference could be a multiple definition (AnyOf)
+                                                if (externalSchemaObj.anyOf==null)
+                                                {
                                                     externalSchemaObj.name = p.name; //hold orig name
                                                     p = externalSchemaObj;
                                                 }
+                                                else
+                                                {
+                                                    //use first definition
+                                                    externalSchemaObj.anyOf[0].name = p.name; //hold orig name
+                                                    p = externalSchemaObj.anyOf[0];
+                                                }
                                             }
                                         }
+
+                                        //if (p.anyOf != null) // && p.referenceAnyOf[0].reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
+                                        //{
+                                        //    BasePropertiesItem externalSchemaObj = p.anyOf[0];
+                                        //    externalSchemaObj.name = p.anyOf[0].name; //hold orig name
+                                        //    p = externalSchemaObj;
+
+                                        //    ////$ref in AnyOf
+                                        //    //if (p.referenceAnyOf[0].reference.Contains("#"))
+                                        //    //{
+                                        //    //    string[] tmp = p.referenceAnyOf[0].reference.Split('#');
+                                        //    //    jsonString = Connection.DoGetWebRequest(tmp[0], false);
+                                        //    //    string pathName = tmp[1].Replace("/", ".");
+                                        //    //    pathName = pathName.Substring(1, pathName.Length - 1);
+                                        //    //    JObject obj = JObject.Parse(jsonString);
+                                        //    //    foreach (var c in obj["definitions"])
+                                        //    //    {
+                                        //    //        if (c.Path == pathName)  //path name with format: "definitions.Currency"
+                                        //    //        {
+                                        //    //            string externalSchema = c.First.ToString();
+                                        //    //            BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(externalSchema);
+                                        //    //            externalSchemaObj.name = p.name; //hold orig name
+                                        //    //            p = externalSchemaObj;
+                                        //    //        }
+                                        //    //    }
+                                        //    //}
+                                        //    //else
+                                        //    //{
+                                        //    //    jsonString = Connection.DoGetWebRequest(p.referenceAnyOf[0].reference, false);
+                                        //    //    BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
+                                        //    //    externalSchemaObj.name = p.name; //hold orig name
+                                        //    //    p = externalSchemaObj;
+
+                                        //    //}
+                                        //}
                                     }
 
+
+                                    if (p.type == null)
                                     {
-                                        localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
-                                        //if it is a container, then processes the properties inside
+                                        p.type = "object";
+                                    }
 
-                                        switch (localType)
-                                        {
-                                            case "object":
-                                                {
-                                                    if (p.properties != null)
-                                                    {
-                                                        outputFileStr += processObject(p);
-                                                        classToGenerate.Add(p);
-                                                    }
-                                                    else
-                                                    {
-                                                        //It is a generic object, dynamic, untyped
-                                                        outputFileStr += processDynamicObject(p);
-                                                    }
-                                                }
-                                                break;
-                                            case "number":
-                                                {
-                                                    outputFileStr += processNumberDecimal(p);
-                                                }
-                                                break;
-                                            case "integer":
-                                                {
-                                                    outputFileStr += processNumberInteger(p);
-                                                }
-                                                break;
-                                            case "boolean":
-                                                {
-                                                    outputFileStr += processBoolean(p);
-                                                }
-                                                break;
-                                            case "string":
-                                                {
-                                                    if (p.@enum == null) //normal string
-                                                    {
+                                    localType = (p.type is String ? p.type.ToString() : p.type[0].ToString());
+                                    //if it is a container, then processes the properties inside
 
-                                                        outputFileStr += processString(p);
-                                                    }
-                                                    else  //It is a string base enum
-                                                    {
-                                                        //if  class name contains inheritance, remove parent class
-                                                        if (outputProperties.name.Contains(":"))
-                                                        {
-                                                            outputProperties.name = outputProperties.name.Split(':')[0];
-                                                        }
-                                                        outputFileStr += processEnum(outputProperties, p);
-                                                        //creates an enum that has the name of the father, to avoid multiple definitions of different objects with the same name
-                                                        enumToGenerate.Add(uppercaseFirst(outputProperties.name) + uppercaseFirst(JsonUtil.fixName(p.name) + "Enum"), p.@enum);
-                                                    }
+                                    switch (localType)
+                                    {
+                                        case "object":
+                                            {
+                                                if (p.properties != null)
+                                                {
+                                                    outputFileStr += processObject(p);
+                                                    classToGenerate.Add(p);
                                                 }
-                                                break;
-                                            case "array":
+                                                else
+                                                {
+                                                    //It is a generic object, dynamic, untyped
+                                                    outputFileStr += processDynamicObject(p);
+                                                }
+                                            }
+                                            break;
+                                        case "number":
+                                            {
+                                                outputFileStr += processNumberDecimal(p);
+                                            }
+                                            break;
+                                        case "integer":
+                                            {
+                                                outputFileStr += processNumberInteger(p);
+                                            }
+                                            break;
+                                        case "boolean":
+                                            {
+                                                outputFileStr += processBoolean(p);
+                                            }
+                                            break;
+                                        case "string":
+                                            {
+                                                if (p.@enum == null) //normal string
                                                 {
 
-                                                    //items contains the definition of the class that makes up the array
-                                                    p.items.name = p.name;
-                                                    p.items.description = p.description;
-                                                    outputFileStr += processArray(p);
-                                                    //items containing the model of the array elements. If it is an object you must then fill, provided it is really an object with the properties
-                                                    var itemType = p.items.type;
-                                                    if ((String)itemType == "object")
-                                                    {
-                                                        classToGenerate.Add(p.items);
-                                                    }
+                                                    outputFileStr += processString(p);
                                                 }
-                                                break;
-                                            default:
-                                                //error other types
-                                                break;
+                                                else  //It is a string base enum
+                                                {
+                                                    //if  class name contains inheritance, remove parent class
+                                                    if (outputProperties.name.Contains(":"))
+                                                    {
+                                                        outputProperties.name = outputProperties.name.Split(':')[0];
+                                                    }
+                                                    outputFileStr += processEnum(outputProperties, p);
+                                                    //creates an enum that has the name of the father, to avoid multiple definitions of different objects with the same name
+                                                    enumToGenerate.Add(uppercaseFirst(outputProperties.name) + uppercaseFirst(JsonUtil.fixName(p.name) + "Enum"), p.@enum);
+                                                }
+                                            }
+                                            break;
+                                        case "array":
+                                            {
 
-                                        }
+                                                //items contains the definition of the class that makes up the array
+                                                p.items.name = p.name;
+                                                p.items.description = p.description;
+                                                outputFileStr += processArray(p);
+                                                //items containing the model of the array elements. If it is an object you must then fill, provided it is really an object with the properties
+                                                var itemType = p.items.type;
+                                                if ((String)itemType == "object")
+                                                {
+                                                    classToGenerate.Add(p.items);
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            //error other types
+                                            break;
+
                                     }
                                 }
-
                             }
                         }
                         else //It is a generic object
@@ -771,8 +937,11 @@ namespace generateBasePropertiesClass
             string str = "";
             foreach (string enumItem in (string[])enumObj.Value)
             {
-                outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);
-                outputFileStr += String.Format("\t{0},\n", Common.makeValidFileName(enumItem));
+                if (!string.IsNullOrEmpty(enumItem))
+                {
+                    outputFileStr += String.Format("\t[Display(Name=\"{0}\")]\n", enumItem);
+                    outputFileStr += String.Format("\t{0},\n", Common.makeValidFileName(enumItem));
+                }
             }
             if (outputFileStr.EndsWith(",\n"))
             {

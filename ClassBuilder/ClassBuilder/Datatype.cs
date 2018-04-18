@@ -19,7 +19,7 @@ namespace generateBasePropertiesClass
             List<BasePropertiesItem> returnValue = new List<BasePropertiesItem>();
             foreach (var property in list)
             {
-                BasePropertiesItem prop = JsonConvert.DeserializeObject<BasePropertiesItem>(property.Value.ToString());
+                BasePropertiesItem prop = JsonConvert.DeserializeObject<BasePropertiesItem>(JSONUtilities.FixReference(property.Value.ToString()));
                 prop.name = property.Name;
                 returnValue.Add(prop);
             }
@@ -111,6 +111,10 @@ namespace generateBasePropertiesClass
         public string[] @enum { get; set; }
         [JsonProperty("ref")]
         public string reference { get; set; }
+        [JsonProperty("oneOf")]
+        public List<OneOf> referenceOneOf { get; set; }
+        [JsonProperty("anyOf")]
+        public List<BasePropertiesItem> anyOf { get; set; }
 
 
         public dynamic items
@@ -153,6 +157,18 @@ namespace generateBasePropertiesClass
 
         private BasePropertiesItem _items;
 
+    }
+
+    public class OneOf
+    {
+        [JsonProperty("ref")]
+        public string reference { get; set; }
+    }
+
+    public class AnyOf
+    {
+        [JsonProperty("ref")]
+        public string reference { get; set; }
     }
 
     public class Enums

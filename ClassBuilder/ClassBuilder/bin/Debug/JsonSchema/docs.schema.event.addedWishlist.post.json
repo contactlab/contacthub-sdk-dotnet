@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -70,7 +77,11 @@
                 "type": "string",
                 "description": "The value of the classification"
               }
-            }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
           }
         },
         "id": {
@@ -80,6 +91,13 @@
         "sku": {
           "type": "string",
           "description": "The sku of the product"
+        },
+        "vendor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Vendor of the product"
         },
         "name": {
           "type": "string",
@@ -98,13 +116,28 @@
           "type": "string",
           "description": "The online catalogue of the product",
           "format": "uri"
+        },
+        "weight": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The weight of the product"
+        },
+        "itemQuantity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The items quantity of the product"
         }
       }
     }
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

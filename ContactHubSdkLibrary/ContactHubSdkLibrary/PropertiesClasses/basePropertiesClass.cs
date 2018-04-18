@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 22/03/2017 18:32:26 */
+/* selfgenerated from version 0.0.0.1 17/04/2018 12:19:18 */
 
 using Newtonsoft.Json;
 using System;
@@ -36,7 +36,6 @@ namespace ContactHubSdkLibrary
         [ValidatePattern(@"^[a-z]{2}(_([a-zA-Z]{2}){1,2})?_[A-Z]{2}$")]
         [Display(Name = "The parameter that defines the user language and the region of the customer")]
         public string locale { get; set; }
-        [Display(Name = "The time zone of the customer")]
         [JsonProperty("timezone")]
         public string _timezone { get; set; }
         [JsonProperty("hidden_timezone")]
@@ -205,6 +204,8 @@ namespace ContactHubSdkLibrary
         public string country { get; set; }
         [Display(Name = "The customer address province component")]
         public string province { get; set; }
+        [Display(Name = "The customer address region component")]
+        public string region { get; set; }
         [Display(Name = "The customer address zip code component")]
         public string zip { get; set; }
         public Geo geo { get; set; }

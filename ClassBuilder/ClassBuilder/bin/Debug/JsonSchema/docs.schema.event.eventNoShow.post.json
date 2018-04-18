@@ -1,7 +1,7 @@
 {
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
-  "description": "Customer was invited to an event",
+  "description": "The customer didn't show up at the event",
   "properties": {
     "customerId": {
       "type": "string",
@@ -34,7 +34,14 @@
       "type": "object"
     },
     "tracking": {
-      "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json#"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "ref": "https://api.contactlab.it/hub/v1/docs/schema/event/tracking.json"
+        }
+      ]
     },
     "properties": {
       "type": "object",
@@ -185,32 +192,19 @@
                   }
                 },
                 "geo": {
-                  "type": [
-                    "object",
-                    "null"
-                  ],
-                  "description": "The geographic coordinate of the location",
                   "contactlabProperties": {
                     "label": "Geographic location",
                     "enabled": true
                   },
-                  "additionalProperties": false,
-                  "properties": {
-                    "lat": {
-                      "type": [
-                        "number",
-                        "null"
-                      ],
-                      "description": "The latitude coordinate for the location"
+                  "oneOf": [
+                    {
+                      "type": "null"
                     },
-                    "lon": {
-                      "type": [
-                        "number",
-                        "null"
-                      ],
-                      "description": "The longitude coordinate for the location"
+                    {
+                      "ref": "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/GeographicLocation"
                     }
-                  }
+                  ],
+                  "description": "The geographic coordinate of the location"
                 }
               }
             }
@@ -225,7 +219,8 @@
   },
   "required": [
     "type",
-    "context"
+    "context",
+    "properties"
   ],
   "additionalProperties": false
 }

@@ -390,6 +390,14 @@ namespace ContactHubSdkLibrary.Test
             {
                 nodeId = tpNodeID,
                 externalId = Guid.NewGuid().ToString(),
+                consents=new ConsentsProperties()
+                {
+                    disclaimer=new Disclaimer()
+                    {
+                        date=DateTime.Now,
+                        version="v1"
+                    }
+                },
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -437,6 +445,7 @@ namespace ContactHubSdkLibrary.Test
 
                     //compare results with original data
                     compareLogic.Config.MembersToIgnore.Add("enabled");
+                    compareLogic.Config.MembersToIgnore.Add("_date");
                     PostCustomer myPostTestCustomer1 = myTestCustomer1.ToPostCustomer();
                     bool testPassed1 = compareLogic.Compare(newPostCustomer, myPostTestCustomer1).AreEqual;
 
@@ -1028,6 +1037,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1057,6 +1068,7 @@ namespace ContactHubSdkLibrary.Test
                     };
                     Likes addLike = node.AddCustomerLike(newCustomer.id, newLike, ref error);
                     CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
                     bool testPassed1 = compareLogic.Compare(newLike, addLike).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Likes getLike = node.GetCustomerLike(newCustomer.id, likeID, ref error);
@@ -1095,6 +1107,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1163,6 +1177,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1236,6 +1252,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1279,6 +1297,12 @@ namespace ContactHubSdkLibrary.Test
 
                     Subscriptions addSub = node.AddCustomerSubscription(newCustomer.id, newSubscription, ref error);
                     CompareLogic compareLogic = new CompareLogic();
+                    compareLogic.Config.MembersToIgnore.Add("_createdTime"); //ignore createdTime
+                    compareLogic.Config.MembersToIgnore.Add("_startDate");
+                    compareLogic.Config.MembersToIgnore.Add("_endDate");
+                    compareLogic.Config.MembersToIgnore.Add("_registeredAt");
+                    compareLogic.Config.MembersToIgnore.Add("_updatedAt");
+
                     bool testPassed1 = compareLogic.Compare(newSubscription, addSub).AreEqual;
                     Thread.Sleep(Util.GetWaitTime()); //wait remote update
                     Subscriptions getSub = node.GetCustomerSubscription(newCustomer.id, subID, ref error);
@@ -1321,6 +1345,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",
@@ -1372,6 +1398,8 @@ namespace ContactHubSdkLibrary.Test
             PostCustomer newPostCustomer = new PostCustomer()
             {
                 nodeId = tpNodeID,
+                externalId = DateTime.Now.Ticks.ToString(),
+
                 @base = new BaseProperties()
                 {
                     firstName = "Donald",

@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 22/03/2017 18:32:32 */
+/* selfgenerated from version 0.0.0.1 17/04/2018 12:19:25 */
 
 using System.ComponentModel.DataAnnotations;
 namespace ContactHubSdkLibrary

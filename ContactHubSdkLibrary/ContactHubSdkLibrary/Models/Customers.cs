@@ -53,7 +53,7 @@ namespace ContactHubSdkLibrary.Models
             }
             set { }
         }
-      //  public Links _links { get; set; }
+        //  public Links _links { get; set; }
 
         /// <summary>
         /// Return PostCustomer subclass from Customer
@@ -90,12 +90,11 @@ namespace ContactHubSdkLibrary.Models
 
     public class PostCustomer
     {
-
-
-
         public string externalId { get; set; }
         public string nodeId { get; set; }
         public BaseProperties @base { get; set; }
+        public ConsentsProperties consents { get; set; }
+
         [JsonIgnore]
         [JsonProperty("_extended")]
         public List<ExtendedProperty> extended
@@ -147,7 +146,7 @@ namespace ContactHubSdkLibrary.Models
         // public PageLink _links { get; set; }
         public Page page { get; set; }
         [JsonIgnore]
-        public  PagedCustomerFilter filter {get;set;}  //query string for relative paging
+        public PagedCustomerFilter filter { get; set; }  //query string for relative paging
     }
 
     public class PagedCustomerFilter
@@ -165,7 +164,7 @@ namespace ContactHubSdkLibrary.Models
         public string message { get; set; }
         public string error { get; set; }
         public string status { get; set; }
-      //  public CustomerPageLink _links { get; set; }
+        //  public CustomerPageLink _links { get; set; }
         public CustomerDataError data { get; set; }
     }
 
@@ -194,7 +193,7 @@ namespace ContactHubSdkLibrary.Models
 
         public string id { get; set; }
         public string value { get; set; }
-      //  public SessionPageLink _links { get; set; }
+        //  public SessionPageLink _links { get; set; }
     }
 
     //public class EmbeddedCustomers
@@ -218,7 +217,7 @@ namespace ContactHubSdkLibrary.Models
 
     public class Event : PostEvent
     {
-      //  public EventPageLink _links { get; set; }
+        //  public EventPageLink _links { get; set; }
         public string id { get; set; }
 
         /// <summary>

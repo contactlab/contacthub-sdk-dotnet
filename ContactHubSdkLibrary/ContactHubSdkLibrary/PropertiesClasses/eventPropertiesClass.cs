@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 22/03/2017 18:32:31 */
+/* selfgenerated from version 0.0.0.1 17/04/2018 12:19:23 */
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -407,6 +407,8 @@ namespace ContactHubSdkLibrary.Events
         public string name { get; set; }
         [Display(Name = "Sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "The type of order line")]
         [JsonProperty("type")]
         public string _type { get; set; }
@@ -425,6 +427,8 @@ namespace ContactHubSdkLibrary.Events
                 _type = (displayValue == "NoValue" ? null : displayValue);
             }
         }
+        [Display(Name = "Order line identifier")]
+        public int orderLineId { get; set; }
         [Display(Name = "The list of classifications of the product")]
         public List<Classifications> classifications { get; set; }
         [Display(Name = "Categories list of the product")]
@@ -443,6 +447,12 @@ namespace ContactHubSdkLibrary.Events
         public decimal? tax { get; set; }
         [Display(Name = "Database id of the product")]
         public string id { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
+        [Display(Name = "Unit of measure")]
+        public string unitOfMeasure { get; set; }
     }
 
 
@@ -463,6 +473,20 @@ namespace ContactHubSdkLibrary.Events
         @return
     }
     /// <summary>
+    /// Event class 'abandonedSession': Customer that left current session
+    /// </summary>
+    public class EventPropertyAbandonedSession : EventBaseProperty
+    {
+        [Display(Name = "The URL to recover the abandoned session")]
+        //format: uri
+        public string abandonedSessionUrl { get; set; }
+        [Display(Name = "Details of transaction")]
+        public List<Products> products { get; set; }
+        public dynamic extraProperties { get; set; }
+    }
+
+
+    /// <summary>
     /// Event class 'addedCompare': Customer added a product to comparator
     /// </summary>
     public class EventPropertyAddedCompare : EventBaseProperty
@@ -478,6 +502,8 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
@@ -488,6 +514,10 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "The online catalogue of the product")]
         //format: uri
         public string linkUrl { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
     }
 
 
@@ -513,12 +543,20 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
         public decimal? price { get; set; }
         [Display(Name = "Quantity of a product")]
         public decimal? quantity { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
+        [Display(Name = "Unit of measure")]
+        public string unitOfMeasure { get; set; }
     }
 
 
@@ -538,6 +576,8 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
@@ -548,6 +588,10 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "The online catalogue of the product")]
         //format: uri
         public string linkUrl { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
     }
 
 
@@ -803,6 +847,88 @@ namespace ContactHubSdkLibrary.Events
         FAX
     }
     /// <summary>
+    /// Event class 'campaignOptinRequested': Customer was sent the optin request
+    /// </summary>
+    public class EventPropertyCampaignOptinRequested : EventBaseProperty
+    {
+        [Display(Name = "Id used to identify a list")]
+        public string listId { get; set; }
+        [Display(Name = "Name used to identify a list")]
+        public string listName { get; set; }
+        [Display(Name = "An ID used to identify the subscriber")]
+        public string subscriberId { get; set; }
+        [Display(Name = "The campaign medium")]
+        [JsonProperty("channel")]
+        public string _channel { get; set; }
+        [JsonProperty("hidden_channel")]
+        [JsonIgnore]
+        public EventPropertyCampaignOptinRequestedChannelEnum channel
+        {
+            get
+            {
+                EventPropertyCampaignOptinRequestedChannelEnum enumValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOptinRequestedChannelEnum>.GetValueFromDisplayName(_channel);
+                return enumValue;
+            }
+            set
+            {
+                var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOptinRequestedChannelEnum>.GetDisplayValue(value);
+                _channel = (displayValue == "NoValue" ? null : displayValue);
+            }
+        }
+        [Display(Name = "The type of campaign medium")]
+        public string channelType { get; set; }
+        [Display(Name = "The invitation medium")]
+        [JsonProperty("invitationChannel")]
+        public string _invitationChannel { get; set; }
+        [JsonProperty("hidden_invitationChannel")]
+        [JsonIgnore]
+        public EventPropertyCampaignOptinRequestedInvitationChannelEnum invitationChannel
+        {
+            get
+            {
+                EventPropertyCampaignOptinRequestedInvitationChannelEnum enumValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOptinRequestedInvitationChannelEnum>.GetValueFromDisplayName(_invitationChannel);
+                return enumValue;
+            }
+            set
+            {
+                var displayValue = ContactHubSdkLibrary.EnumHelper<EventPropertyCampaignOptinRequestedInvitationChannelEnum>.GetDisplayValue(value);
+                _invitationChannel = (displayValue == "NoValue" ? null : displayValue);
+            }
+        }
+        [Display(Name = "The type of invitation medium")]
+        public string invitationChannelType { get; set; }
+        public dynamic extraProperties { get; set; }
+    }
+
+    public enum EventPropertyCampaignOptinRequestedChannelEnum
+    {
+        NoValue,
+        [Display(Name = "SMS")]
+        SMS,
+        [Display(Name = "EMAIL")]
+        EMAIL,
+        [Display(Name = "PUSH")]
+        PUSH,
+        [Display(Name = "FAX")]
+        FAX,
+        [Display(Name = "IM")]
+        IM
+    }
+    public enum EventPropertyCampaignOptinRequestedInvitationChannelEnum
+    {
+        NoValue,
+        [Display(Name = "SMS")]
+        SMS,
+        [Display(Name = "EMAIL")]
+        EMAIL,
+        [Display(Name = "PUSH")]
+        PUSH,
+        [Display(Name = "FAX")]
+        FAX,
+        [Display(Name = "IM")]
+        IM
+    }
+    /// <summary>
     /// Event class 'campaignSent': Customer received a campaign
     /// </summary>
     public class EventPropertyCampaignSent : EventBaseProperty
@@ -835,6 +961,8 @@ namespace ContactHubSdkLibrary.Events
                 _channel = (displayValue == "NoValue" ? null : displayValue);
             }
         }
+        [Display(Name = "The type of a channel")]
+        public string channelType { get; set; }
         public dynamic extraProperties { get; set; }
     }
 
@@ -848,7 +976,9 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "PUSH")]
         PUSH,
         [Display(Name = "FAX")]
-        FAX
+        FAX,
+        [Display(Name = "IM")]
+        IM
     }
     /// <summary>
     /// Event class 'campaignSubscribed': Customer subscribed a list
@@ -879,6 +1009,8 @@ namespace ContactHubSdkLibrary.Events
                 _channel = (displayValue == "NoValue" ? null : displayValue);
             }
         }
+        [Display(Name = "The type of a channel")]
+        public string channelType { get; set; }
         public dynamic extraProperties { get; set; }
     }
 
@@ -892,7 +1024,9 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "PUSH")]
         PUSH,
         [Display(Name = "FAX")]
-        FAX
+        FAX,
+        [Display(Name = "IM")]
+        IM
     }
     /// <summary>
     /// Event class 'campaignUnsubscribed': Customer unsubscribed from a list
@@ -930,6 +1064,8 @@ namespace ContactHubSdkLibrary.Events
                 _channel = (displayValue == "NoValue" ? null : displayValue);
             }
         }
+        [Display(Name = "The type of a channel")]
+        public string channelType { get; set; }
         [Display(Name = "Id used to identify a list")]
         public string listId { get; set; }
     }
@@ -944,7 +1080,9 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "PUSH")]
         PUSH,
         [Display(Name = "FAX")]
-        FAX
+        FAX,
+        [Display(Name = "IM")]
+        IM
     }
     /// <summary>
     /// Event class 'changedSetting': Customer changed a setting on website/app
@@ -1078,6 +1216,8 @@ namespace ContactHubSdkLibrary.Events
                 _paymentMethod = (displayValue == "NoValue" ? null : displayValue);
             }
         }
+        [Display(Name = "Shipping method")]
+        public string shippingMethod { get; set; }
         public Amount amount { get; set; }
         [Display(Name = "Products in the order")]
         public List<Products> products { get; set; }
@@ -1234,7 +1374,7 @@ namespace ContactHubSdkLibrary.Events
 
 
     /// <summary>
-    /// Event class 'eventNoShow': Customer was invited to an event
+    /// Event class 'eventNoShow': The customer didn't show up at the event
     /// </summary>
     public class EventPropertyEventNoShow : EventBaseProperty
     {
@@ -1275,6 +1415,25 @@ namespace ContactHubSdkLibrary.Events
     /// Event class 'eventParticipated': Customer has participated to an event
     /// </summary>
     public class EventPropertyEventParticipated : EventBaseProperty
+    {
+        [Display(Name = "The idenfier of the event")]
+        public string eventId { get; set; }
+        [Display(Name = "The name of the event")]
+        public string eventName { get; set; }
+        [Display(Name = "The date-time of the event")]
+        //format: date-time
+        public string eventDate { get; set; }
+        [Display(Name = "The type of the event (e.g.: Cocktail, Meeting, etc)")]
+        public string eventType { get; set; }
+        public EventLocation eventLocation { get; set; }
+        public dynamic extraProperties { get; set; }
+    }
+
+
+    /// <summary>
+    /// Event class 'eventRegistered': Customer has registered at an event
+    /// </summary>
+    public class EventPropertyEventRegistered : EventBaseProperty
     {
         [Display(Name = "The idenfier of the event")]
         public string eventId { get; set; }
@@ -1401,6 +1560,8 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
@@ -1411,6 +1572,10 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "The online catalogue of the product")]
         //format: uri
         public string linkUrl { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
     }
 
 
@@ -1436,12 +1601,20 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
         public decimal? price { get; set; }
         [Display(Name = "Quantity of a product")]
         public decimal? quantity { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
+        [Display(Name = "Unit of measure")]
+        public string unitOfMeasure { get; set; }
     }
 
 
@@ -1461,6 +1634,8 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
@@ -1471,6 +1646,10 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "The online catalogue of the product")]
         //format: uri
         public string linkUrl { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
     }
 
 
@@ -1793,6 +1972,8 @@ namespace ContactHubSdkLibrary.Events
         public string id { get; set; }
         [Display(Name = "The sku of the product")]
         public string sku { get; set; }
+        [Display(Name = "Vendor of the product")]
+        public string vendor { get; set; }
         [Display(Name = "Name of the product")]
         public string name { get; set; }
         [Display(Name = "Price of the product")]
@@ -1803,6 +1984,10 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "The online catalogue of the product")]
         //format: uri
         public string linkUrl { get; set; }
+        [Display(Name = "The weight of the product")]
+        public decimal? weight { get; set; }
+        [Display(Name = "The items quantity of the product")]
+        public decimal? itemQuantity { get; set; }
     }
 
 
@@ -1822,6 +2007,8 @@ namespace ContactHubSdkLibrary.Events
         NoValue,
         [Display(Name = "abandonedCart")]
         abandonedCart,
+        [Display(Name = "abandonedSession")]
+        abandonedSession,
         [Display(Name = "addedCompare")]
         addedCompare,
         [Display(Name = "addedProduct")]
@@ -1838,6 +2025,8 @@ namespace ContactHubSdkLibrary.Events
         campaignMarkedSpam,
         [Display(Name = "campaignOpened")]
         campaignOpened,
+        [Display(Name = "campaignOptinRequested")]
+        campaignOptinRequested,
         [Display(Name = "campaignSent")]
         campaignSent,
         [Display(Name = "campaignSubscribed")]
@@ -1866,6 +2055,8 @@ namespace ContactHubSdkLibrary.Events
         eventNotInvited,
         [Display(Name = "eventParticipated")]
         eventParticipated,
+        [Display(Name = "eventRegistered")]
+        eventRegistered,
         [Display(Name = "formCompiled")]
         formCompiled,
         [Display(Name = "genericActiveEvent")]
@@ -1916,6 +2107,8 @@ namespace ContactHubSdkLibrary.Events
             {
                 case "abandonedcart": return jo["properties"].ToObject<EventPropertyAbandonedCart>(serializer); break;
 
+                case "abandonedsession": return jo["properties"].ToObject<EventPropertyAbandonedSession>(serializer); break;
+
                 case "addedcompare": return jo["properties"].ToObject<EventPropertyAddedCompare>(serializer); break;
 
                 case "addedproduct": return jo["properties"].ToObject<EventPropertyAddedProduct>(serializer); break;
@@ -1931,6 +2124,8 @@ namespace ContactHubSdkLibrary.Events
                 case "campaignmarkedspam": return jo["properties"].ToObject<EventPropertyCampaignMarkedSpam>(serializer); break;
 
                 case "campaignopened": return jo["properties"].ToObject<EventPropertyCampaignOpened>(serializer); break;
+
+                case "campaignoptinrequested": return jo["properties"].ToObject<EventPropertyCampaignOptinRequested>(serializer); break;
 
                 case "campaignsent": return jo["properties"].ToObject<EventPropertyCampaignSent>(serializer); break;
 
@@ -1959,6 +2154,8 @@ namespace ContactHubSdkLibrary.Events
                 case "eventnotinvited": return jo["properties"].ToObject<EventPropertyEventNotInvited>(serializer); break;
 
                 case "eventparticipated": return jo["properties"].ToObject<EventPropertyEventParticipated>(serializer); break;
+
+                case "eventregistered": return jo["properties"].ToObject<EventPropertyEventRegistered>(serializer); break;
 
                 case "formcompiled": return jo["properties"].ToObject<EventPropertyFormCompiled>(serializer); break;
 

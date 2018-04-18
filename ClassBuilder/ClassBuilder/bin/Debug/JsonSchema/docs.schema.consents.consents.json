@@ -1,0 +1,213 @@
+{
+  "$schema": "http://api.contactlab.it/hub#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "disclaimer": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "marketing": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "traditional": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "telephonic": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "papery": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "automatic": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "sms": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "email": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "push": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "im": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "telephonic": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "profiling": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "classic": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "online": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "softSpam": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "papery": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "thirdPartyTransfer": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "profiling": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "marketing": {
+          "oneOf": [
+            {
+              "$ref": "https://api.contactlab.it/hub/v1/docs/schema/consents/consent.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

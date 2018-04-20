@@ -290,13 +290,14 @@ namespace ContactHubSdkLibrary.SDKclasses
         #endregion
 
 
-        //public void DeleteEvent(string id)
-        //{
-        //    string jsonResponse = DoDeleteWebRequest(String.Format("/events/{1}?nodeId={0}", _node, id));
-        //Common.WriteLog("-> AddEvent() get data:", "querystring:" + url + " data:" +postData);
-        //    Common.WriteLog("<- AddEvent() return data:", jsonResponse);
+        public void DeleteEvent(string id)
+        {
+            string url = String.Format("/events/{1}?nodeId={0}", _node, id);
+            string jsonResponse = DoDeleteWebRequest(url);
+            Common.WriteLog("-> GetEvents() get data:", "querystring:" + url);
+            Common.WriteLog("<- AddEvent() return data:", jsonResponse);
 
-        //}
+        }
 
     }
 }

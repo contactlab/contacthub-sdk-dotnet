@@ -39,6 +39,7 @@ namespace ContactHubSdkLibrary.Test
                 //wait for elastic update
                 Thread.Sleep(Util.GetWaitTime());
                 bool testPassed1 = false;
+
                 if (newCustomer != null && newCustomer.id != null)
                 {
                     PostEvent newEvent = new PostEvent()
@@ -98,6 +99,8 @@ namespace ContactHubSdkLibrary.Test
                         }
                     }
                     bool testPassed2 = false;
+                    bool testPassed3 = false;
+                    bool testPassed4 = false;
                     //if (events._embedded!=null && events._embedded.events.Count==1)
                     if (events.elements != null && events.elements.Count == 1)
                     {
@@ -106,9 +109,30 @@ namespace ContactHubSdkLibrary.Test
                         CompareLogic compareLogic = new CompareLogic();
                         ComparisonResult compare = compareLogic.Compare(firstPostEvent, newEvent);
                         testPassed2 = compare.AreEqual;
+
+                        //try get single event
+                        Event ev= node.GetEvent(firstEvent.id, ref error);
+                        PostEvent evPostEvent = firstEvent.ToPostEvent();
+
+                        compareLogic = new CompareLogic();
+                        compareLogic.Config.MembersToIgnore.Add("_date");
+                        compare = compareLogic.Compare(evPostEvent, newEvent);
+                        testPassed3 = compare.AreEqual;
+
+                        //test delete event
+                        node.DeleteEvent(ev.id);
+
+
+                         ev = node.GetEvent(firstEvent.id, ref error);
+
+                        if (ev==null)
+                        {
+                            testPassed4 = true;
+                        }
+
                     }
-                    bool testPassed3 = node.DeleteCustomer(newCustomer.id, ref error);
-                    testPassed = testPassed1 && testPassed2 && testPassed3;
+                    bool testPassed5 = node.DeleteCustomer(newCustomer.id, ref error);
+                    testPassed = testPassed1 && testPassed2 && testPassed3 && testPassed4 && testPassed5;
                 }
             }
             Common.WriteLog("End CustomerAddEvent test", "passed:" + testPassed + "\n\n");

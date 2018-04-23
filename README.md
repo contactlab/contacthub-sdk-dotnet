@@ -1,4 +1,4 @@
-![Version 1.0.0 rc](https://img.shields.io/badge/version-1.0.0%20release%20candidate-0072bc.svg)
+![Version 1.0.1]
 
 # Contacthub C# .NET SDK for Windows
 
@@ -1086,7 +1086,7 @@ You can get a single event, if you know its `ID`.
 **Example:**
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cs
- Tags customerTag = currentNode.GetCustomerTags("d14ef5ad-675d-4bac-a8bb-c4feb4641050",ref error);
+ Event ev = currentNode.GetEvent("495ccaaa-97cf-4eee-957d-fae0d39053f8", ref error);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <a name="Session"/>

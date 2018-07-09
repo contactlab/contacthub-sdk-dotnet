@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 09/07/2018 17:01:03 */
+/* selfgenerated from version 0.0.0.1 17/04/2018 12:19:24 */
 
 using ContactHubSdkLibrary.Events;
 using Newtonsoft.Json;

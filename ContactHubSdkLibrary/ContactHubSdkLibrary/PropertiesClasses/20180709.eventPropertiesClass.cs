@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 09/07/2018 17:01:02 */
+/* selfgenerated from version 0.0.0.1 17/04/2018 12:19:23 */
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -561,22 +561,6 @@ namespace ContactHubSdkLibrary.Events
 
 
     /// <summary>
-    /// Event class 'addedReward': The customer acquired a reward
-    /// </summary>
-    public class EventPropertyAddedReward : EventBaseProperty
-    {
-        [Display(Name = "the amount of reward")]
-        public decimal? rewardAmount { get; set; }
-        public string rewardDescription { get; set; }
-        [Display(Name = "type of reward")]
-        public string rewardType { get; set; }
-        [Display(Name = "the identifier of reward")]
-        public string rewardTypeId { get; set; }
-        public dynamic extraProperties { get; set; }
-    }
-
-
-    /// <summary>
     /// Event class 'addedWishlist': Customer added a product to the wish list
     /// </summary>
     public class EventPropertyAddedWishlist : EventBaseProperty
@@ -979,403 +963,9 @@ namespace ContactHubSdkLibrary.Events
         }
         [Display(Name = "The type of a channel")]
         public string channelType { get; set; }
-        public List<Contents> contents { get; set; }
         public dynamic extraProperties { get; set; }
     }
 
-
-    public class Contents
-    {
-        [Display(Name = "The type of content")]
-        [JsonProperty("type")]
-        public string _type { get; set; }
-        [JsonProperty("hidden_type")]
-        [JsonIgnore]
-        public ContentsTypeEnum type
-        {
-            get
-            {
-                ContentsTypeEnum enumValue = ContactHubSdkLibrary.EnumHelper<ContentsTypeEnum>.GetValueFromDisplayName(_type);
-                return enumValue;
-            }
-            set
-            {
-                var displayValue = ContactHubSdkLibrary.EnumHelper<ContentsTypeEnum>.GetDisplayValue(value);
-                _type = (displayValue == "NoValue" ? null : displayValue);
-            }
-        }
-        [Display(Name = "The subtype of content")]
-        public string subType { get; set; }
-        [Display(Name = "The name of content")]
-        public string name { get; set; }
-        [Display(Name = "The description of content")]
-        public string description { get; set; }
-        [Display(Name = "The cta url of the content")]
-        //format: uri
-        public string url { get; set; }
-        [Display(Name = " The url of the image shown in the content")]
-        //format: uri
-        public string imgUrl { get; set; }
-        [Display(Name = "The price shown in the content")]
-        public decimal? price { get; set; }
-        [JsonProperty("currency")]
-        public string _currency { get; set; }
-        [JsonProperty("hidden_currency")]
-        [JsonIgnore]
-        public ContentsCurrencyEnum currency
-        {
-            get
-            {
-                ContentsCurrencyEnum enumValue = ContactHubSdkLibrary.EnumHelper<ContentsCurrencyEnum>.GetValueFromDisplayName(_currency);
-                return enumValue;
-            }
-            set
-            {
-                var displayValue = ContactHubSdkLibrary.EnumHelper<ContentsCurrencyEnum>.GetDisplayValue(value);
-                _currency = (displayValue == "NoValue" ? null : displayValue);
-            }
-        }
-        [Display(Name = "The tags of content")]
-        public List<String> tags { get; set; }
-        public List<Products> products { get; set; }
-    }
-
-    public enum ContentsCurrencyEnum
-    {
-        NoValue,
-        [Display(Name = "AED")]
-        AED,
-        [Display(Name = "AFN")]
-        AFN,
-        [Display(Name = "ALL")]
-        ALL,
-        [Display(Name = "AMD")]
-        AMD,
-        [Display(Name = "ANG")]
-        ANG,
-        [Display(Name = "AOA")]
-        AOA,
-        [Display(Name = "ARS")]
-        ARS,
-        [Display(Name = "AUD")]
-        AUD,
-        [Display(Name = "AWG")]
-        AWG,
-        [Display(Name = "AZN")]
-        AZN,
-        [Display(Name = "BAM")]
-        BAM,
-        [Display(Name = "BBD")]
-        BBD,
-        [Display(Name = "BDT")]
-        BDT,
-        [Display(Name = "BGN")]
-        BGN,
-        [Display(Name = "BHD")]
-        BHD,
-        [Display(Name = "BIF")]
-        BIF,
-        [Display(Name = "BMD")]
-        BMD,
-        [Display(Name = "BND")]
-        BND,
-        [Display(Name = "BOB")]
-        BOB,
-        [Display(Name = "BRL")]
-        BRL,
-        [Display(Name = "BSD")]
-        BSD,
-        [Display(Name = "BTN")]
-        BTN,
-        [Display(Name = "BWP")]
-        BWP,
-        [Display(Name = "BYR")]
-        BYR,
-        [Display(Name = "BZD")]
-        BZD,
-        [Display(Name = "CAD")]
-        CAD,
-        [Display(Name = "CDF")]
-        CDF,
-        [Display(Name = "CHF")]
-        CHF,
-        [Display(Name = "CLP")]
-        CLP,
-        [Display(Name = "CNY")]
-        CNY,
-        [Display(Name = "COP")]
-        COP,
-        [Display(Name = "CRC")]
-        CRC,
-        [Display(Name = "CUP")]
-        CUP,
-        [Display(Name = "CVE")]
-        CVE,
-        [Display(Name = "CZK")]
-        CZK,
-        [Display(Name = "DJF")]
-        DJF,
-        [Display(Name = "DKK")]
-        DKK,
-        [Display(Name = "DOP")]
-        DOP,
-        [Display(Name = "DZD")]
-        DZD,
-        [Display(Name = "EEK")]
-        EEK,
-        [Display(Name = "EGP")]
-        EGP,
-        [Display(Name = "ERN")]
-        ERN,
-        [Display(Name = "ETB")]
-        ETB,
-        [Display(Name = "EUR")]
-        EUR,
-        [Display(Name = "FJD")]
-        FJD,
-        [Display(Name = "FKP")]
-        FKP,
-        [Display(Name = "GBP")]
-        GBP,
-        [Display(Name = "GEL")]
-        GEL,
-        [Display(Name = "GHS")]
-        GHS,
-        [Display(Name = "GIP")]
-        GIP,
-        [Display(Name = "GMD")]
-        GMD,
-        [Display(Name = "GNF")]
-        GNF,
-        [Display(Name = "GTQ")]
-        GTQ,
-        [Display(Name = "GYD")]
-        GYD,
-        [Display(Name = "HKD")]
-        HKD,
-        [Display(Name = "HNL")]
-        HNL,
-        [Display(Name = "HRK")]
-        HRK,
-        [Display(Name = "HTG")]
-        HTG,
-        [Display(Name = "HUF")]
-        HUF,
-        [Display(Name = "IDR")]
-        IDR,
-        [Display(Name = "ILS")]
-        ILS,
-        [Display(Name = "INR")]
-        INR,
-        [Display(Name = "IQD")]
-        IQD,
-        [Display(Name = "IRR")]
-        IRR,
-        [Display(Name = "ISK")]
-        ISK,
-        [Display(Name = "JMD")]
-        JMD,
-        [Display(Name = "JOD")]
-        JOD,
-        [Display(Name = "JPY")]
-        JPY,
-        [Display(Name = "KES")]
-        KES,
-        [Display(Name = "KGS")]
-        KGS,
-        [Display(Name = "KHR")]
-        KHR,
-        [Display(Name = "KMF")]
-        KMF,
-        [Display(Name = "KPW")]
-        KPW,
-        [Display(Name = "KRW")]
-        KRW,
-        [Display(Name = "KWD")]
-        KWD,
-        [Display(Name = "KYD")]
-        KYD,
-        [Display(Name = "KZT")]
-        KZT,
-        [Display(Name = "LAK")]
-        LAK,
-        [Display(Name = "LBP")]
-        LBP,
-        [Display(Name = "LKR")]
-        LKR,
-        [Display(Name = "LRD")]
-        LRD,
-        [Display(Name = "LSL")]
-        LSL,
-        [Display(Name = "LTL")]
-        LTL,
-        [Display(Name = "LVL")]
-        LVL,
-        [Display(Name = "LYD")]
-        LYD,
-        [Display(Name = "MAD")]
-        MAD,
-        [Display(Name = "MDL")]
-        MDL,
-        [Display(Name = "MGA")]
-        MGA,
-        [Display(Name = "MKD")]
-        MKD,
-        [Display(Name = "MMK")]
-        MMK,
-        [Display(Name = "MNT")]
-        MNT,
-        [Display(Name = "MOP")]
-        MOP,
-        [Display(Name = "MRO")]
-        MRO,
-        [Display(Name = "MUR")]
-        MUR,
-        [Display(Name = "MVR")]
-        MVR,
-        [Display(Name = "MWK")]
-        MWK,
-        [Display(Name = "MXN")]
-        MXN,
-        [Display(Name = "MYR")]
-        MYR,
-        [Display(Name = "MZN")]
-        MZN,
-        [Display(Name = "NAD")]
-        NAD,
-        [Display(Name = "NGN")]
-        NGN,
-        [Display(Name = "NIO")]
-        NIO,
-        [Display(Name = "NOK")]
-        NOK,
-        [Display(Name = "NPR")]
-        NPR,
-        [Display(Name = "NZD")]
-        NZD,
-        [Display(Name = "OMR")]
-        OMR,
-        [Display(Name = "PAB")]
-        PAB,
-        [Display(Name = "PEN")]
-        PEN,
-        [Display(Name = "PGK")]
-        PGK,
-        [Display(Name = "PHP")]
-        PHP,
-        [Display(Name = "PKR")]
-        PKR,
-        [Display(Name = "PLN")]
-        PLN,
-        [Display(Name = "PYG")]
-        PYG,
-        [Display(Name = "QAR")]
-        QAR,
-        [Display(Name = "RON")]
-        RON,
-        [Display(Name = "RSD")]
-        RSD,
-        [Display(Name = "RUB")]
-        RUB,
-        [Display(Name = "RWF")]
-        RWF,
-        [Display(Name = "SAR")]
-        SAR,
-        [Display(Name = "SBD")]
-        SBD,
-        [Display(Name = "SCR")]
-        SCR,
-        [Display(Name = "SDG")]
-        SDG,
-        [Display(Name = "SEK")]
-        SEK,
-        [Display(Name = "SGD")]
-        SGD,
-        [Display(Name = "SHP")]
-        SHP,
-        [Display(Name = "SKK")]
-        SKK,
-        [Display(Name = "SLL")]
-        SLL,
-        [Display(Name = "SOS")]
-        SOS,
-        [Display(Name = "SRD")]
-        SRD,
-        [Display(Name = "STD")]
-        STD,
-        [Display(Name = "SYP")]
-        SYP,
-        [Display(Name = "SZL")]
-        SZL,
-        [Display(Name = "THB")]
-        THB,
-        [Display(Name = "TJS")]
-        TJS,
-        [Display(Name = "TMM")]
-        TMM,
-        [Display(Name = "TND")]
-        TND,
-        [Display(Name = "TOP")]
-        TOP,
-        [Display(Name = "TRY")]
-        TRY,
-        [Display(Name = "TTD")]
-        TTD,
-        [Display(Name = "TWD")]
-        TWD,
-        [Display(Name = "TZS")]
-        TZS,
-        [Display(Name = "UAH")]
-        UAH,
-        [Display(Name = "UGX")]
-        UGX,
-        [Display(Name = "USD")]
-        USD,
-        [Display(Name = "UYU")]
-        UYU,
-        [Display(Name = "UZS")]
-        UZS,
-        [Display(Name = "VEB")]
-        VEB,
-        [Display(Name = "VND")]
-        VND,
-        [Display(Name = "VUV")]
-        VUV,
-        [Display(Name = "WST")]
-        WST,
-        [Display(Name = "XAF")]
-        XAF,
-        [Display(Name = "XAG")]
-        XAG,
-        [Display(Name = "XAU")]
-        XAU,
-        [Display(Name = "XOF")]
-        XOF,
-        [Display(Name = "XPD")]
-        XPD,
-        [Display(Name = "XPF")]
-        XPF,
-        [Display(Name = "XPT")]
-        XPT,
-        [Display(Name = "YER")]
-        YER,
-        [Display(Name = "ZAR")]
-        ZAR,
-        [Display(Name = "ZMK")]
-        ZMK,
-        [Display(Name = "ZWD")]
-        ZWD
-    }
-    public enum ContentsTypeEnum
-    {
-        NoValue,
-        [Display(Name = "CONTENT")]
-        CONTENT,
-        [Display(Name = "IMG")]
-        IMG,
-        [Display(Name = "OTHER")]
-        OTHER
-    }
     public enum EventPropertyCampaignSentChannelEnum
     {
         NoValue,
@@ -2029,22 +1619,6 @@ namespace ContactHubSdkLibrary.Events
 
 
     /// <summary>
-    /// Event class 'removedReward': The customer lost a reward
-    /// </summary>
-    public class EventPropertyRemovedReward : EventBaseProperty
-    {
-        [Display(Name = "the amount of reward")]
-        public decimal? rewardAmount { get; set; }
-        public string rewardDescription { get; set; }
-        [Display(Name = "type of reward")]
-        public string rewardType { get; set; }
-        [Display(Name = "the identifier of reward")]
-        public string rewardTypeId { get; set; }
-        public dynamic extraProperties { get; set; }
-    }
-
-
-    /// <summary>
     /// Event class 'removedWishlist': Customer removed a product from the wish list
     /// </summary>
     public class EventPropertyRemovedWishlist : EventBaseProperty
@@ -2135,7 +1709,7 @@ namespace ContactHubSdkLibrary.Events
         [Display(Name = "Key of search")]
         public string keyword { get; set; }
         [Display(Name = "Number of results")]
-        public int resultCount { get; set; }
+        public decimal? resultCount { get; set; }
         public dynamic extraProperties { get; set; }
     }
 
@@ -2439,8 +2013,6 @@ namespace ContactHubSdkLibrary.Events
         addedCompare,
         [Display(Name = "addedProduct")]
         addedProduct,
-        [Display(Name = "addedReward")]
-        addedReward,
         [Display(Name = "addedWishlist")]
         addedWishlist,
         [Display(Name = "campaignBlacklisted")]
@@ -2503,8 +2075,6 @@ namespace ContactHubSdkLibrary.Events
         removedCompare,
         [Display(Name = "removedProduct")]
         removedProduct,
-        [Display(Name = "removedReward")]
-        removedReward,
         [Display(Name = "removedWishlist")]
         removedWishlist,
         [Display(Name = "repliedTicket")]
@@ -2542,8 +2112,6 @@ namespace ContactHubSdkLibrary.Events
                 case "addedcompare": return jo["properties"].ToObject<EventPropertyAddedCompare>(serializer); break;
 
                 case "addedproduct": return jo["properties"].ToObject<EventPropertyAddedProduct>(serializer); break;
-
-                case "addedreward": return jo["properties"].ToObject<EventPropertyAddedReward>(serializer); break;
 
                 case "addedwishlist": return jo["properties"].ToObject<EventPropertyAddedWishlist>(serializer); break;
 
@@ -2606,8 +2174,6 @@ namespace ContactHubSdkLibrary.Events
                 case "removedcompare": return jo["properties"].ToObject<EventPropertyRemovedCompare>(serializer); break;
 
                 case "removedproduct": return jo["properties"].ToObject<EventPropertyRemovedProduct>(serializer); break;
-
-                case "removedreward": return jo["properties"].ToObject<EventPropertyRemovedReward>(serializer); break;
 
                 case "removedwishlist": return jo["properties"].ToObject<EventPropertyRemovedWishlist>(serializer); break;
 

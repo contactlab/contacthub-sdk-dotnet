@@ -1,7 +1,7 @@
 {
   "$schema": "http://api.contactlab.it/hub#",
   "type": "object",
-  "description": "Customer searched on website/app",
+  "description": "The customer lost a reward",
   "properties": {
     "customerId": {
       "type": "string",
@@ -20,7 +20,7 @@
     "type": {
       "type": "string",
       "enum": [
-        "searched"
+        "removedReward"
       ]
     },
     "context": {
@@ -45,21 +45,34 @@
     },
     "properties": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
-        "keyword": {
-          "type": "string",
-          "description": "Key of search"
+        "rewardAmount": {
+          "type": "number",
+          "description": "the amount of reward",
+          "minimum": 0
         },
-        "resultCount": {
-          "type": "integer",
-          "description": "Number of results"
+        "rewardDescription": {
+          "type": "string",
+          "descritpion": "the description of reward type"
+        },
+        "rewardType": {
+          "type": "string",
+          "description": "type of reward"
+        },
+        "rewardTypeId": {
+          "type": "string",
+          "description": "the identifier of reward"
         },
         "extraProperties": {
           "type": "object",
           "description": "Extra pieces of information you can tie to events you track"
         }
-      }
+      },
+      "required": [
+        "rewardAmount",
+        "rewardTypeId"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

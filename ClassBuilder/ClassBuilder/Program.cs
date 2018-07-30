@@ -723,6 +723,8 @@ namespace generateBasePropertiesClass
                                         }
                                         //this section is similar to previous: object definition is in external ref files, probably is a Enum
                                         //reference url is in "OneOf" json structure
+
+                                        string reference = "";
                                         if (p.referenceOneOf != null) // && p.referenceOneOf[0].reference.Contains("#")) //reference with format: "https://api.contactlab.it/hub/v1/docs/schema/enums.json#/definitions/Currency"
                                         {
                                             //string[] tmp = p.referenceOneOf[0].reference.Split('#');
@@ -740,11 +742,14 @@ namespace generateBasePropertiesClass
                                             //        p = externalSchemaObj;
                                             //    }
                                             //}
-
+                                            if (p.referenceOneOf[0].reference != null)
+                                                reference = p.referenceOneOf[0].reference;
+                                            else if (p.referenceOneOf[1].reference != null)
+                                                reference = p.referenceOneOf[1].reference;
                                             //$ref in OneOf
-                                            if (p.referenceOneOf[0].reference.Contains("#"))
+                                            if (reference.Contains("#"))
                                             {
-                                                string[] tmp = p.referenceOneOf[0].reference.Split('#');
+                                                string[] tmp = reference.Split('#');
                                                 jsonString = Connection.DoGetWebRequest(tmp[0], false);
                                                 string pathName = tmp[1].Replace("/", ".");
                                                 pathName = pathName.Substring(1, pathName.Length - 1);
@@ -762,7 +767,7 @@ namespace generateBasePropertiesClass
                                             }
                                             else
                                             {
-                                                jsonString = Connection.DoGetWebRequest(p.referenceOneOf[0].reference, false);
+                                                jsonString = Connection.DoGetWebRequest(reference, false);
                                                 BasePropertiesItem externalSchemaObj = JsonConvert.DeserializeObject<BasePropertiesItem>(jsonString);
                                                 //extenal reference could be a multiple definition (AnyOf)
                                                 if (externalSchemaObj.anyOf==null)

@@ -60,6 +60,16 @@
           "type": "object",
           "description": "Extra pieces of information you can tie to events you track"
         },
+        "extended": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "ref": "https://api.contactlab.it/hub/v1/docs/schema/empty-extended-properties.json"
+            }
+          ]
+        },
         "linkTags": {
           "type": "array",
           "description": "The list of link tags",

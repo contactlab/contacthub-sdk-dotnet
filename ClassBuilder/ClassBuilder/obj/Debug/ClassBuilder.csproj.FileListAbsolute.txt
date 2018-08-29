@@ -9,7 +9,8 @@ C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\generateBa
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.exe
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\generateBasePropertiesClass.pdb
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.dll
-C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csprojResolveAssemblyReference.cache
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.exe
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.pdb
+C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csproj.CoreCompileInputs.cache
+C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csproj.CopyComplete

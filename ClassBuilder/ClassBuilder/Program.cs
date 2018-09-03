@@ -596,10 +596,26 @@ namespace generateBasePropertiesClass
             {
                 name = "@" + name;
             }
+
+            bool isNullable = false;        
+            if (p.type.GetType().ToString() == "Newtonsoft.Json.Linq.JArray")
+            {
+                try
+                {
+                    if (p.type[1].ToString() == "null")
+                    {
+                        isNullable = true;
+                    }
+                }
+                catch
+                {
+                }
+            }
+
             string processString = "";
             if (p.description != null)
                 processString += String.Format("\t[Display(Name=\"{0}\")]\n", p.description);
-            processString += String.Format("    public Boolean {0} {{get;set;}}\n", JsonUtil.fixName(name));
+            processString += String.Format("    public Boolean{1} {0} {{get;set;}}\n", JsonUtil.fixName(name), (isNullable ? "?" : ""));
             return processString;
         }
         private static string processEnum(BasePropertiesItem parent, BasePropertiesItem p)

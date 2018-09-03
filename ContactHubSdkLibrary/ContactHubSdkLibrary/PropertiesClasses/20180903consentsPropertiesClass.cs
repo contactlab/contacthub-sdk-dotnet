@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 03/09/2018 12:35:35 */
+/* selfgenerated from version 0.0.0.1 28/08/2018 10:05:10 */
 
 using System;
 using System.Collections.Generic;
@@ -85,17 +85,17 @@ public class Traditional
 
 public class Telephonic
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
 public class Papery
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
@@ -111,33 +111,33 @@ public class Automatic
 
 public class Sms
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
 public class Email
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
 public class Push
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
 public class Im
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
@@ -150,17 +150,17 @@ public class Profiling
 
 public class Classic
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 
 public class Online
 {
-    public Boolean? status {get;set;}
-    public Boolean? limitation {get;set;}
-    public Boolean? objection {get;set;}
+    public Boolean status {get;set;}
+    public Boolean limitation {get;set;}
+    public Boolean objection {get;set;}
 }
 
 

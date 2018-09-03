@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 03/09/2018 12:35:35 */
+/* selfgenerated from version 0.0.0.1 28/08/2018 10:05:10 */
 
 using System;
 using System.Collections.Generic;
@@ -246,7 +246,7 @@ public class Educations
 	[Display(Name="The year study ended")]
     public int endYear {get;set;}
 	[Display(Name="The flag that defines whether the study is current")]
-    public Boolean? isCurrent {get;set;}
+    public Boolean isCurrent {get;set;}
 }
 
 public enum EducationsSchoolTypeEnum {
@@ -411,7 +411,7 @@ public class Jobs
             }
         }
             	[Display(Name="The flag that defines whether the job is current")]
-    public Boolean? isCurrent {get;set;}
+    public Boolean isCurrent {get;set;}
 }
 
 

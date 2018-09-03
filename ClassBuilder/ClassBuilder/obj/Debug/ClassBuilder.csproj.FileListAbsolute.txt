@@ -12,5 +12,3 @@ C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\bin\Debug\Newtonsoft
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csprojResolveAssemblyReference.cache
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.exe
 C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\generateBasePropertiesClass.pdb
-C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csproj.CoreCompileInputs.cache
-C:\Projects\contacthub-sdk-dotnet\ClassBuilder\ClassBuilder\obj\Debug\ClassBuilder.csproj.CopyComplete

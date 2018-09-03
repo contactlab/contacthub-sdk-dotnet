@@ -36,6 +36,4 @@ C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.framework.xml
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.dll
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.pdb
-C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.csproj.CoreCompileInputs.cache
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.framework.pdb
-C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.csproj.CopyComplete

@@ -346,20 +346,18 @@
           "additionalProperties": false,
           "properties": {
             "lat": {
-              "type": [
-                "number",
-                "null"
-              ],
+              "type": "number",
               "description": "The latitude coordinate for the customer"
             },
             "lon": {
-              "type": [
-                "number",
-                "null"
-              ],
+              "type": "number",
               "description": "The longitude coordinate for the customer"
             }
-          }
+          },
+          "required": [
+            "lat",
+            "lon"
+          ]
         }
       }
     },

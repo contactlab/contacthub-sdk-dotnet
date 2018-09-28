@@ -69,6 +69,7 @@
             "object",
             "null"
           ],
+          "additionalProperties": false,
           "description": "The location of the event",
           "contactlabProperties": {
             "label": "Event Location",

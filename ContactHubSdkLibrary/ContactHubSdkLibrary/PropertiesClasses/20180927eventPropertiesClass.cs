@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 27/09/2018 09:48:49 */
+/* selfgenerated from version 0.0.0.1 03/09/2018 12:35:39 */
 
 using System;
 using System.Collections.Generic;
@@ -1622,67 +1622,6 @@ public enum EventPropertyCompletedOrderPaymentMethodEnum {
 	saleMinusreturn
 }
 /// <summary>
-/// Event class 'grantedCoupon': Customer has beed granted a coupon
-/// </summary>
-public class EventPropertyGrantedCoupon: EventBaseProperty
-{
-	[Display(Name="Code or Id identifying the coupon")]
-    public string code {get;set;}
-	[Display(Name="Last date in which coupon has been used")]
-    //format: date-time
-    public string redeemDate {get;set;}
-    //format: date-time
-    public string startValidityDate {get;set;}
-	[Display(Name="Last date in which is possible to use the coupon")]
-    //format: date-time
-    public string redemptionDate {get;set;}
-	[Display(Name="An ID used to identify the marketing campaign which the coupon is related to")]
-    public string campaignId {get;set;}
-	[Display(Name="Name of the campaign related to the coupon")]
-    public string campaignName {get;set;}
-	[Display(Name="Description of the campaign related to the coupon")]
-    public string campaignDescription {get;set;}
-	[Display(Name="Current status of the coupon")]
-    public string status {get;set;}
-	[Display(Name="Indication about the type of coupon")]
-    public string type {get;set;}
-	[Display(Name="Amount of the coupon used so far")]
-    public decimal? redeemedAmount {get;set;}
-	[Display(Name="Total amount available in the coupon")]
-    public decimal? totalAmount {get;set;}
-	[Display(Name="Amount of the coupon that is still available")]
-    public decimal? remainingAmount {get;set;}
-    public DeliveryChannel deliveryChannel {get;set;}
-    public DeliveryMedium deliveryMedium {get;set;}
-    public List<String> category {get;set;}
-    public dynamic extraProperties {get;set;}
-    public dynamic extended {get;set;}
-}
-
-
-public class DeliveryChannel
-{
-	[Display(Name="An ID used to identify the channel used to delivery the coupon")]
-    public string id {get;set;}
-	[Display(Name="Name of the channel related to the coupon")]
-    public string name {get;set;}
-	[Display(Name="Description of the channel related to the coupon")]
-    public string description {get;set;}
-}
-
-
-public class DeliveryMedium
-{
-	[Display(Name="An ID used to identify the medium used to delivery the coupon")]
-    public string id {get;set;}
-	[Display(Name="Name of the meidum related to the coupon")]
-    public string name {get;set;}
-	[Display(Name="Description of the medium related to the coupon")]
-    public string description {get;set;}
-}
-
-
-/// <summary>
 /// Event class 'eventConfirmed': Customer has confirmed the invite for the event
 /// </summary>
 public class EventPropertyEventConfirmed: EventBaseProperty
@@ -2516,8 +2455,6 @@ public enum EventTypeEnum {
 	closedTicket,
 	[Display(Name="completedOrder")]
 	completedOrder,
-	[Display(Name="grantedCoupon")]
-	grantedCoupon,
 	[Display(Name="eventConfirmed")]
 	eventConfirmed,
 	[Display(Name="eventDeclined")]
@@ -2621,8 +2558,6 @@ public enum EventTypeEnum {
  case "closedticket": return jo["properties"].ToObject<EventPropertyClosedTicket>(serializer);break;
 
  case "completedorder": return jo["properties"].ToObject<EventPropertyCompletedOrder>(serializer);break;
-
- case "grantedcoupon": return jo["properties"].ToObject<EventPropertyGrantedCoupon>(serializer);break;
 
  case "eventconfirmed": return jo["properties"].ToObject<EventPropertyEventConfirmed>(serializer);break;
 

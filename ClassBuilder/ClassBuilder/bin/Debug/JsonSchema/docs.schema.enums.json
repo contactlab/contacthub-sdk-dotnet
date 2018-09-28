@@ -55,6 +55,7 @@
         "clickedLink",
         "closedTicket",
         "completedOrder",
+        "grantedCoupon",
         "eventConfirmed",
         "eventDeclined",
         "eventEligible",
@@ -100,6 +101,7 @@
     },
     "EventBringBackProperties": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "type": {
           "type": "string",

@@ -5,6 +5,7 @@
   "properties": {
     "client": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "userAgent": {
           "type": [
@@ -21,6 +22,7 @@
             "object",
             "null"
           ],
+          "additionalProperties": false,
           "properties": {
             "city": {
               "type": "string"
@@ -39,6 +41,7 @@
             },
             "geo": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "lat": {
                   "type": "number",
@@ -60,6 +63,7 @@
     },
     "device": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "bundleIdentifier": {
           "type": "string"

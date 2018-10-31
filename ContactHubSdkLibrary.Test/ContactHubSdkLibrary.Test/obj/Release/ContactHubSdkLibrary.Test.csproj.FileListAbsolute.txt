@@ -1,0 +1,14 @@
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\ContactHubSdkLibrary.Test.dll.config
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\ContactHubSdkLibrary.Test.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\ContactHubSdkLibrary.Test.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\ContactHubSdkLibrary.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\KellermanSoftware.Compare-NET-Objects.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\nunit.framework.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\Newtonsoft.Json.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\ContactHubSdkLibrary.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\KellermanSoftware.Compare-NET-Objects.xml
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\nunit.framework.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Release\nunit.framework.xml
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Release\ContactHubSdkLibrary.Test.csprojResolveAssemblyReference.cache
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Release\ContactHubSdkLibrary.Test.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Release\ContactHubSdkLibrary.Test.pdb

@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 27/09/2018 09:48:49 */
+/* selfgenerated from version 0.0.0.1 31/10/2018 11:00:42 */
 
 using System;
 using System.Collections.Generic;
@@ -448,6 +448,7 @@ public class Products
     public decimal? itemQuantity {get;set;}
 	[Display(Name="Unit of measure")]
     public string unitOfMeasure {get;set;}
+    public dynamic extended {get;set;}
 }
 
 
@@ -1863,8 +1864,27 @@ public class EventPropertyEventParticipated: EventBaseProperty
 	[Display(Name="The type of the event (e.g.: Cocktail, Meeting, etc)")]
     public string eventType {get;set;}
     public EventLocation eventLocation {get;set;}
+	[Display(Name="The date-time of the check-in")]
+    //format: date-time
+    public string checkIn {get;set;}
+	[Display(Name="The date-time of the check-out")]
+    //format: date-time
+    public string checkOut {get;set;}
+    public Host host {get;set;}
     public dynamic extraProperties {get;set;}
     public dynamic extended {get;set;}
+}
+
+
+public class Host
+{
+	[Display(Name="first name of the host")]
+    public string firstName {get;set;}
+	[Display(Name="last name of the host")]
+    public string lastName {get;set;}
+	[Display(Name="title of the hosting event")]
+    public string title {get;set;}
+    public Contacts contacts {get;set;}
 }
 
 

@@ -1,0 +1,5 @@
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Release\ContactHubSdkLibrary.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Release\ContactHubSdkLibrary.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Release\Newtonsoft.Json.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Release\ContactHubSdkLibrary.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Release\ContactHubSdkLibrary.pdb

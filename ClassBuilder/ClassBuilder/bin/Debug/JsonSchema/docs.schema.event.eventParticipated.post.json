@@ -210,6 +210,55 @@
             }
           }
         },
+        "checkIn": {
+          "type": "string",
+          "description": "The date-time of the check-in",
+          "format": "date-time"
+        },
+        "checkOut": {
+          "type": "string",
+          "description": "The date-time of the check-out",
+          "format": "date-time"
+        },
+        "host": {
+          "type": "object",
+          "description": "host of the event",
+          "additionalProperties": false,
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "description": "first name of the host"
+            },
+            "lastName": {
+              "type": "string",
+              "description": "last name of the host"
+            },
+            "title": {
+              "type": "string",
+              "description": "title of the hosting event"
+            },
+            "contacts": {
+              "type": "object",
+              "description": "contacts of the host",
+              "additionalProperties": false,
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "email of the host",
+                  "format": "email"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "phone number of the host"
+                },
+                "mobilePhone": {
+                  "type": "string",
+                  "description": "mobile phone number of the host"
+                }
+              }
+            }
+          }
+        },
         "extraProperties": {
           "type": "object",
           "description": "Extra pieces of information you can tie to events you track"

@@ -1,0 +1,9 @@
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\bin\Release\ConsoleSample.exe.config
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\bin\Release\ConsoleSample.exe
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\bin\Release\ConsoleSample.pdb
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\bin\Release\ContactHubSdkLibrary.dll
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\bin\Release\ContactHubSdkLibrary.pdb
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\obj\Release\ConsoleSample.csprojResolveAssemblyReference.cache
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\obj\Release\ConsoleSample.csproj.ConsoleSample.exe.config
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\obj\Release\ConsoleSample.exe
+C:\Projects\contacthub-sdk-dotnet\ConsoleSample\ConsoleSample\obj\Release\ConsoleSample.pdb

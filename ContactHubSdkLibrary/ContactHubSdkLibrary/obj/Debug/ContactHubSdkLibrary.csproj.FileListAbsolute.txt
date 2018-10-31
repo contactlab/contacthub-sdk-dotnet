@@ -17,3 +17,4 @@ C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\bin\Debug\Newtonsoft.Json.dll
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.dll
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary\ContactHubSdkLibrary\obj\Debug\ContactHubSdkLibrary.csprojResolveAssemblyReference.cache

@@ -227,6 +227,16 @@
                   "null"
                 ],
                 "description": "Unit of measure"
+              },
+              "extended":{
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "ref": "https://api.contactlab.it/hub/v1/docs/schema/empty-extended-properties.json"
+                  }
+                ]
               }
             }
           }

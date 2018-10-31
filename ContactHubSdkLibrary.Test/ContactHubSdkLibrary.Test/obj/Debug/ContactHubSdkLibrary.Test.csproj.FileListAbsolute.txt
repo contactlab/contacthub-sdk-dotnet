@@ -37,3 +37,7 @@ C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.csprojResolveAssemblyReference.cache
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.dll
 C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\obj\Debug\ContactHubSdkLibrary.Test.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\NUnit3.TestAdapter.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\NUnit3.TestAdapter.pdb
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.engine.dll
+C:\Projects\contacthub-sdk-dotnet\ContactHubSdkLibrary.Test\ContactHubSdkLibrary.Test\bin\Debug\nunit.engine.api.dll

@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 31/10/2018 11:00:42 */
+/* selfgenerated from version 0.0.0.1 05/11/2019 10:03:50 */
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ public class EventPropertyAbandonedCart: EventBaseProperty
 	[Display(Name="Order/Transaction ID")]
     public string orderId {get;set;}
 	[Display(Name="The URL to recover the abandoned cart")]
-    //format: uri
+    //format: url
     public string abandonedCartUrl {get;set;}
 	[Display(Name="Store or affiliation from which this transaction occurred")]
     public string storeCode {get;set;}
@@ -431,10 +431,10 @@ public class Products
 	[Display(Name="Short description of the product")]
     public string shortDescription {get;set;}
 	[Display(Name="The online catalogue of the product")]
-    //format: uri
+    //format: url
     public string linkUrl {get;set;}
 	[Display(Name="The image of online catalogue of the product")]
-    //format: uri
+    //format: url
     public string imageUrl {get;set;}
 	[Display(Name="Coupon code associated with a product")]
     public string coupon {get;set;}
@@ -473,7 +473,7 @@ public enum ProductsTypeEnum {
 public class EventPropertyAbandonedSession: EventBaseProperty
 {
 	[Display(Name="The URL to recover the abandoned session")]
-    //format: uri
+    //format: url
     public string abandonedSessionUrl {get;set;}
 	[Display(Name="Details of transaction")]
     public List<Products> products {get;set;}
@@ -616,8 +616,6 @@ public class EventPropertyAddedWishlist: EventBaseProperty
 /// </summary>
 public class EventPropertyCampaignBlacklisted: EventBaseProperty
 {
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
     public dynamic extraProperties {get;set;}
     public dynamic extended {get;set;}
 	[Display(Name="An ID used to identify the subscriber")]
@@ -646,8 +644,16 @@ public class EventPropertyCampaignBlacklisted: EventBaseProperty
                         _channel = (displayValue=="NoValue"? null : displayValue);
                 }
             }
-            	[Display(Name="Id used to identify a list")]
+            	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
     public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public int isWirelessDevice {get;set;}
+    public int isMobile {get;set;}
+    public int isTablet {get;set;}
+    public string sendImmediateId {get;set;}
 }
 
 public enum EventPropertyCampaignBlacklistedChannelEnum {
@@ -676,6 +682,17 @@ public class EventPropertyCampaignBounced: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
+	[Display(Name="Id used to identify a list")]
+    public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public int isWirelessDevice {get;set;}
+    public int isMobile {get;set;}
+    public int isTablet {get;set;}
+    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -731,6 +748,17 @@ public class EventPropertyCampaignLinkClicked: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
+	[Display(Name="Id used to identify a list")]
+    public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public int isWirelessDevice {get;set;}
+    public int isMobile {get;set;}
+    public int isTablet {get;set;}
+    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -775,6 +803,17 @@ public class EventPropertyCampaignMarkedSpam: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
+	[Display(Name="Id used to identify a list")]
+    public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public int isWirelessDevice {get;set;}
+    public int isMobile {get;set;}
+    public int isTablet {get;set;}
+    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -821,6 +860,17 @@ public class EventPropertyCampaignOpened: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
+	[Display(Name="Id used to identify a list")]
+    public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public int isWirelessDevice {get;set;}
+    public int isMobile {get;set;}
+    public int isTablet {get;set;}
+    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -943,6 +993,14 @@ public class EventPropertyCampaignSent: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
+	[Display(Name="Id used to identify a list")]
+    public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -992,10 +1050,10 @@ public class Contents
 	[Display(Name="The description of content")]
     public string description {get;set;}
 	[Display(Name="The cta url of the content")]
-    //format: uri
+    //format: url
     public string url {get;set;}
 	[Display(Name=" The url of the image shown in the content")]
-    //format: uri
+    //format: url
     public string imgUrl {get;set;}
 	[Display(Name="The price shown in the content")]
     public decimal? price {get;set;}
@@ -1415,8 +1473,6 @@ public enum EventPropertyCampaignSubscribedChannelEnum {
 /// </summary>
 public class EventPropertyCampaignUnsubscribed: EventBaseProperty
 {
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
     public dynamic extraProperties {get;set;}
     public dynamic extended {get;set;}
 	[Display(Name="An ID used to identify the subscriber")]
@@ -1447,8 +1503,14 @@ public class EventPropertyCampaignUnsubscribed: EventBaseProperty
             }
             	[Display(Name="The type of a channel")]
     public string channelType {get;set;}
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
 	[Display(Name="Id used to identify a list")]
     public string listId {get;set;}
+    public string mailDomain {get;set;}
+    public int userdbId {get;set;}
+    public string recipient {get;set;}
+    public string sendImmediateId {get;set;}
 }
 
 public enum EventPropertyCampaignUnsubscribedChannelEnum {
@@ -1622,67 +1684,6 @@ public enum EventPropertyCompletedOrderPaymentMethodEnum {
 	[Display(Name="sale-return")]
 	saleMinusreturn
 }
-/// <summary>
-/// Event class 'grantedCoupon': Customer has beed granted a coupon
-/// </summary>
-public class EventPropertyGrantedCoupon: EventBaseProperty
-{
-	[Display(Name="Code or Id identifying the coupon")]
-    public string code {get;set;}
-	[Display(Name="Last date in which coupon has been used")]
-    //format: date-time
-    public string redeemDate {get;set;}
-    //format: date-time
-    public string startValidityDate {get;set;}
-	[Display(Name="Last date in which is possible to use the coupon")]
-    //format: date-time
-    public string redemptionDate {get;set;}
-	[Display(Name="An ID used to identify the marketing campaign which the coupon is related to")]
-    public string campaignId {get;set;}
-	[Display(Name="Name of the campaign related to the coupon")]
-    public string campaignName {get;set;}
-	[Display(Name="Description of the campaign related to the coupon")]
-    public string campaignDescription {get;set;}
-	[Display(Name="Current status of the coupon")]
-    public string status {get;set;}
-	[Display(Name="Indication about the type of coupon")]
-    public string type {get;set;}
-	[Display(Name="Amount of the coupon used so far")]
-    public decimal? redeemedAmount {get;set;}
-	[Display(Name="Total amount available in the coupon")]
-    public decimal? totalAmount {get;set;}
-	[Display(Name="Amount of the coupon that is still available")]
-    public decimal? remainingAmount {get;set;}
-    public DeliveryChannel deliveryChannel {get;set;}
-    public DeliveryMedium deliveryMedium {get;set;}
-    public List<String> category {get;set;}
-    public dynamic extraProperties {get;set;}
-    public dynamic extended {get;set;}
-}
-
-
-public class DeliveryChannel
-{
-	[Display(Name="An ID used to identify the channel used to delivery the coupon")]
-    public string id {get;set;}
-	[Display(Name="Name of the channel related to the coupon")]
-    public string name {get;set;}
-	[Display(Name="Description of the channel related to the coupon")]
-    public string description {get;set;}
-}
-
-
-public class DeliveryMedium
-{
-	[Display(Name="An ID used to identify the medium used to delivery the coupon")]
-    public string id {get;set;}
-	[Display(Name="Name of the meidum related to the coupon")]
-    public string name {get;set;}
-	[Display(Name="Description of the medium related to the coupon")]
-    public string description {get;set;}
-}
-
-
 /// <summary>
 /// Event class 'eventConfirmed': Customer has confirmed the invite for the event
 /// </summary>
@@ -1948,6 +1949,67 @@ public class EventPropertyGenericPassiveEvent: EventBaseProperty
 
 
 /// <summary>
+/// Event class 'grantedCoupon': Customer has beed granted a coupon
+/// </summary>
+public class EventPropertyGrantedCoupon: EventBaseProperty
+{
+	[Display(Name="Code or Id identifying the coupon")]
+    public string code {get;set;}
+	[Display(Name="Last date in which coupon has been used")]
+    //format: date-time
+    public string redeemDate {get;set;}
+    //format: date-time
+    public string startValidityDate {get;set;}
+	[Display(Name="Last date in which is possible to use the coupon")]
+    //format: date-time
+    public string redemptionDate {get;set;}
+	[Display(Name="An ID used to identify the marketing campaign which the coupon is related to")]
+    public string campaignId {get;set;}
+	[Display(Name="Name of the campaign related to the coupon")]
+    public string campaignName {get;set;}
+	[Display(Name="Description of the campaign related to the coupon")]
+    public string campaignDescription {get;set;}
+	[Display(Name="Current status of the coupon")]
+    public string status {get;set;}
+	[Display(Name="Indication about the type of coupon")]
+    public string type {get;set;}
+	[Display(Name="Amount of the coupon used so far")]
+    public decimal? redeemedAmount {get;set;}
+	[Display(Name="Total amount available in the coupon")]
+    public decimal? totalAmount {get;set;}
+	[Display(Name="Amount of the coupon that is still available")]
+    public decimal? remainingAmount {get;set;}
+    public DeliveryChannel deliveryChannel {get;set;}
+    public DeliveryMedium deliveryMedium {get;set;}
+    public List<String> category {get;set;}
+    public dynamic extraProperties {get;set;}
+    public dynamic extended {get;set;}
+}
+
+
+public class DeliveryChannel
+{
+	[Display(Name="An ID used to identify the channel used to delivery the coupon")]
+    public string id {get;set;}
+	[Display(Name="Name of the channel related to the coupon")]
+    public string name {get;set;}
+	[Display(Name="Description of the channel related to the coupon")]
+    public string description {get;set;}
+}
+
+
+public class DeliveryMedium
+{
+	[Display(Name="An ID used to identify the medium used to delivery the coupon")]
+    public string id {get;set;}
+	[Display(Name="Name of the meidum related to the coupon")]
+    public string name {get;set;}
+	[Display(Name="Description of the medium related to the coupon")]
+    public string description {get;set;}
+}
+
+
+/// <summary>
 /// Event class 'loggedIn': The customer logged in an app/software/site web
 /// </summary>
 public class EventPropertyLoggedIn: EventBaseProperty
@@ -1999,7 +2061,7 @@ public class EventPropertyOrderShipped: EventBaseProperty
 	[Display(Name="The tracking code/number of shipment")]
     public string trackingCode {get;set;}
 	[Display(Name="The url for track the of shipment")]
-    //format: uri
+    //format: url
     public string trackingUrl {get;set;}
 	[Display(Name="The weight of packages")]
     public decimal? weight {get;set;}
@@ -2536,8 +2598,6 @@ public enum EventTypeEnum {
 	closedTicket,
 	[Display(Name="completedOrder")]
 	completedOrder,
-	[Display(Name="grantedCoupon")]
-	grantedCoupon,
 	[Display(Name="eventConfirmed")]
 	eventConfirmed,
 	[Display(Name="eventDeclined")]
@@ -2560,6 +2620,8 @@ public enum EventTypeEnum {
 	genericActiveEvent,
 	[Display(Name="genericPassiveEvent")]
 	genericPassiveEvent,
+	[Display(Name="grantedCoupon")]
+	grantedCoupon,
 	[Display(Name="loggedIn")]
 	loggedIn,
 	[Display(Name="loggedOut")]
@@ -2642,8 +2704,6 @@ public enum EventTypeEnum {
 
  case "completedorder": return jo["properties"].ToObject<EventPropertyCompletedOrder>(serializer);break;
 
- case "grantedcoupon": return jo["properties"].ToObject<EventPropertyGrantedCoupon>(serializer);break;
-
  case "eventconfirmed": return jo["properties"].ToObject<EventPropertyEventConfirmed>(serializer);break;
 
  case "eventdeclined": return jo["properties"].ToObject<EventPropertyEventDeclined>(serializer);break;
@@ -2665,6 +2725,8 @@ public enum EventTypeEnum {
  case "genericactiveevent": return jo["properties"].ToObject<EventPropertyGenericActiveEvent>(serializer);break;
 
  case "genericpassiveevent": return jo["properties"].ToObject<EventPropertyGenericPassiveEvent>(serializer);break;
+
+ case "grantedcoupon": return jo["properties"].ToObject<EventPropertyGrantedCoupon>(serializer);break;
 
  case "loggedin": return jo["properties"].ToObject<EventPropertyLoggedIn>(serializer);break;
 

@@ -47,10 +47,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "listName": {
-          "type": "string",
-          "description": "Name used to identify a list"
-        },
         "extraProperties": {
           "type": "object",
           "description": "Extra pieces of information you can tie to events you track"
@@ -98,9 +94,33 @@
             "FAX"
           ]
         },
-        "listId": {
+        "listName": {
           "type": "string",
-          "description": "Id used to identify a list"
+          "description": "Name used to identify a list"
+        },
+        "listId": {
+          "type": "string"
+        },
+        "mailDomain": {
+          "type": "string"
+        },
+        "userdbId": {
+          "type": "integer"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "isWirelessDevice": {
+          "type": "integer"
+        },
+        "isMobile": {
+          "type": "integer"
+        },
+        "isTablet": {
+          "type": "integer"
+        },
+        "sendImmediateId": {
+          "type": "string"
         }
       }
     }

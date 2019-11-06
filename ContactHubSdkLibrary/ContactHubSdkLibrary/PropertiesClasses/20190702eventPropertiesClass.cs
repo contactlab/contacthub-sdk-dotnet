@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 05/11/2019 10:03:50 */
+/* selfgenerated from version 0.0.0.1 02/07/2019 09:03:46 */
 
 using System;
 using System.Collections.Generic;
@@ -616,6 +616,8 @@ public class EventPropertyAddedWishlist: EventBaseProperty
 /// </summary>
 public class EventPropertyCampaignBlacklisted: EventBaseProperty
 {
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
     public dynamic extraProperties {get;set;}
     public dynamic extended {get;set;}
 	[Display(Name="An ID used to identify the subscriber")]
@@ -644,16 +646,8 @@ public class EventPropertyCampaignBlacklisted: EventBaseProperty
                         _channel = (displayValue=="NoValue"? null : displayValue);
                 }
             }
-            	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
+            	[Display(Name="Id used to identify a list")]
     public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public int isWirelessDevice {get;set;}
-    public int isMobile {get;set;}
-    public int isTablet {get;set;}
-    public string sendImmediateId {get;set;}
 }
 
 public enum EventPropertyCampaignBlacklistedChannelEnum {
@@ -682,17 +676,6 @@ public class EventPropertyCampaignBounced: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
-	[Display(Name="Id used to identify a list")]
-    public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public int isWirelessDevice {get;set;}
-    public int isMobile {get;set;}
-    public int isTablet {get;set;}
-    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -748,17 +731,6 @@ public class EventPropertyCampaignLinkClicked: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
-	[Display(Name="Id used to identify a list")]
-    public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public int isWirelessDevice {get;set;}
-    public int isMobile {get;set;}
-    public int isTablet {get;set;}
-    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -803,17 +775,6 @@ public class EventPropertyCampaignMarkedSpam: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
-	[Display(Name="Id used to identify a list")]
-    public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public int isWirelessDevice {get;set;}
-    public int isMobile {get;set;}
-    public int isTablet {get;set;}
-    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -860,17 +821,6 @@ public class EventPropertyCampaignOpened: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
-	[Display(Name="Id used to identify a list")]
-    public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public int isWirelessDevice {get;set;}
-    public int isMobile {get;set;}
-    public int isTablet {get;set;}
-    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -993,14 +943,6 @@ public class EventPropertyCampaignSent: EventBaseProperty
     public string campaignName {get;set;}
 	[Display(Name="The list of campaign's tags")]
     public List<String> campaignTags {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
-	[Display(Name="Id used to identify a list")]
-    public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public string sendImmediateId {get;set;}
 	[Display(Name="The campaign medium")]
 [JsonProperty("channel")]public string _channel {get;set;}
 [JsonProperty("hidden_channel")][JsonIgnore]
@@ -1473,6 +1415,8 @@ public enum EventPropertyCampaignSubscribedChannelEnum {
 /// </summary>
 public class EventPropertyCampaignUnsubscribed: EventBaseProperty
 {
+	[Display(Name="Name used to identify a list")]
+    public string listName {get;set;}
     public dynamic extraProperties {get;set;}
     public dynamic extended {get;set;}
 	[Display(Name="An ID used to identify the subscriber")]
@@ -1503,14 +1447,8 @@ public class EventPropertyCampaignUnsubscribed: EventBaseProperty
             }
             	[Display(Name="The type of a channel")]
     public string channelType {get;set;}
-	[Display(Name="Name used to identify a list")]
-    public string listName {get;set;}
 	[Display(Name="Id used to identify a list")]
     public string listId {get;set;}
-    public string mailDomain {get;set;}
-    public int userdbId {get;set;}
-    public string recipient {get;set;}
-    public string sendImmediateId {get;set;}
 }
 
 public enum EventPropertyCampaignUnsubscribedChannelEnum {

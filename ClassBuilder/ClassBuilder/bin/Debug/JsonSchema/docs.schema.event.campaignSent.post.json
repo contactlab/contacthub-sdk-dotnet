@@ -70,6 +70,26 @@
             "type": "string"
           }
         },
+        "listName": {
+          "type": "string",
+          "description": "Name used to identify a list"
+        },
+        "listId": {
+          "type": "string",
+          "description": "Id used to identify a list"
+        },
+        "mailDomain": {
+          "type": "string"
+        },
+        "userdbId": {
+          "type": "integer"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "sendImmediateId": {
+          "type": "string"
+        },
         "channel": {
           "type": "string",
           "description": "The campaign medium",
@@ -115,12 +135,12 @@
               "url": {
                 "type": "string",
                 "description": "The cta url of the content",
-                "format": "uri"
+                "format": "url"
               },
               "imgUrl": {
                 "type": "string",
                 "description": " The url of the image shown in the content",
-                "format": "uri"
+                "format": "url"
               },
               "price": {
                 "type": "number",
@@ -207,12 +227,12 @@
                     "imageUrl": {
                       "type": "string",
                       "description": "The image of online catalogue of the product",
-                      "format": "uri"
+                      "format": "url"
                     },
                     "linkUrl": {
                       "type": "string",
                       "description": "The online catalogue of the product",
-                      "format": "uri"
+                      "format": "url"
                     },
                     "weight": {
                       "type": [

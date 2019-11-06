@@ -65,7 +65,7 @@
         },
         "trackingUrl": {
           "type": "string",
-          "format": "uri",
+          "format": "url",
           "description": "The url for track the of shipment"
         },
         "weight": {

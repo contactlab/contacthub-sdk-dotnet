@@ -70,6 +70,35 @@
             "type": "string"
           }
         },
+        "listName": {
+          "type": "string",
+          "description": "Name used to identify a list"
+        },
+        "listId": {
+          "type": "string",
+          "description": "Id used to identify a list"
+        },
+        "mailDomain": {
+          "type": "string"
+        },
+        "userdbId": {
+          "type": "integer"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "isWirelessDevice": {
+          "type": "integer"
+        },
+        "isMobile": {
+          "type": "integer"
+        },
+        "isTablet": {
+          "type": "integer"
+        },
+        "sendImmediateId": {
+          "type": "string"
+        },
         "channel": {
           "type": "string",
           "description": "The campaign medium",

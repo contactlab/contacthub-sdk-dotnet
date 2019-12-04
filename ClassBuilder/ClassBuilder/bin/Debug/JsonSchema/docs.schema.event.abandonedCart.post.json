@@ -54,7 +54,7 @@
         "abandonedCartUrl": {
           "type": "string",
           "description": "The URL to recover the abandoned cart",
-          "format": "uri"
+          "format": "url"
         },
         "storeCode": {
           "type": "string",
@@ -188,12 +188,12 @@
               "linkUrl": {
                 "type": "string",
                 "description": "The online catalogue of the product",
-                "format": "uri"
+                "format": "url"
               },
               "imageUrl": {
                 "type": "string",
                 "description": "The image of online catalogue of the product",
-                "format": "uri"
+                "format": "url"
               },
               "coupon": {
                 "type": "string",

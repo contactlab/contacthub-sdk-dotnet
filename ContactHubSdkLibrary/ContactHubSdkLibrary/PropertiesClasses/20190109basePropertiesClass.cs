@@ -1,4 +1,4 @@
-/* selfgenerated from version 0.0.0.1 05/11/2019 10:03:47 */
+/* selfgenerated from version 0.0.0.1 09/01/2019 13:36:45 */
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace ContactHubSdkLibrary {
 public class BaseProperties
 {
 	[Display(Name="The URL of the customer picture")]
-    //format: url
+    //format: uri
     public string pictureUrl {get;set;}
 	[Display(Name="The customer professional or academic qualifications")]
     public string title {get;set;}

@@ -9,7 +9,7 @@
         "string",
         "null"
       ],
-      "format": "uri",
+      "format": "url",
       "contactlabProperties": {
         "label": "Picture"
       }
